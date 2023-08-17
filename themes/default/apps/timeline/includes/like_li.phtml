@@ -1,0 +1,45 @@
+<div class="post-likes-list-item" data-list-item="<?php echo($cl['li']['offset_id']); ?>">
+	<div class="avatar">
+		<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+	</div>
+	<div class="user-info-holder">
+		<h4>
+			<span class="user-name-holder <?php if ($cl['li']['verified'] == '1') {echo('verified-badge');} ?>">
+				<?php echo cl_croptxt($cl['li']['name'], 10, '..'); ?>
+			</span>
+		</h4>
+		<a href="<?php echo($cl['li']['url']); ?>">
+			<?php echo($cl['li']['username']); ?>
+		</a>
+		<p>
+			<?php echo cl_croptxt($cl['li']['about'], 120, '...'); ?>
+		</p>
+		<?php if (empty($cl['li']['is_user'])): ?>
+			<?php if ($cl['li']['follow_privacy'] == 'approved'): ?>
+				<?php if (not_empty($cl['li']['is_following'])): ?>
+					<button onclick="SMColibri.req_follow(this);" class="btn btn-custom md main-inline" data-action="unfollow" data-id="<?php echo($cl['li']['id']); ?>">
+						<?php echo cl_translate("Unfollow"); ?>
+					</button>
+				<?php elseif (not_empty($cl['li']['follow_requested'])): ?>
+					<button onclick="SMColibri.req_follow(this);" class="btn btn-custom main-inline md" data-action="cancel" data-id="<?php echo($cl['li']['id']); ?>">
+						<?php echo cl_translate("Pending"); ?>
+					</button>
+				<?php else: ?>
+					<button onclick="SMColibri.req_follow(this);" class="btn btn-custom main-outline md" data-action="follow" data-id="<?php echo($cl['li']['id']); ?>">
+						<?php echo cl_translate("Follow"); ?>
+					</button>
+				<?php endif; ?>
+			<?php else: ?>
+				<?php if (empty($cl['li']['is_following'])): ?>
+					<button onclick="SMColibri.follow(this);" class="btn btn-custom md main-outline" data-action="follow" data-id="<?php echo($cl['li']['id']); ?>">
+						<?php echo cl_translate("Follow"); ?>
+					</button>
+				<?php else: ?>
+					<button onclick="SMColibri.follow(this);" class="btn btn-custom md main-inline" data-action="unfollow" data-id="<?php echo($cl['li']['id']); ?>">
+						<?php echo cl_translate("Unfollow"); ?>
+					</button>
+				<?php endif; ?>
+			<?php endif; ?>
+		<?php endif; ?>
+	</div>
+</div>

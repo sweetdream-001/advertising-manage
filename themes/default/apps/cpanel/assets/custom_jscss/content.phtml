@@ -1,0 +1,90 @@
+<div class="cp-app-container" data-app="custom-jscss">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('custom_js'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('custom_js'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                            <?php echo cl_translate('manage_custom'); ?>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-light dark alert-dismissible fade show" role="alert">
+                                <i data-feather="alert-circle"></i>
+                                <p> <strong> <?php echo cl_translate('important'); ?>! </strong>
+                                    <br>
+                                    <?php echo cl_translate('custom_js_help'); ?> <b>777</b>
+                                    <br>
+                                <ol>
+                                    <li>
+                                        themes/default/statics/custom_code/header.js
+                                    </li>
+                                    <li>
+                                        themes/default/statics/custom_code/header.css
+                                    </li>
+                                    <li>
+                                        themes/default/statics/custom_code/footer.js
+                                    </li>
+                                </ol>
+                                </p>
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close" data-bs-original-title="" title=""></button>
+                            </div>
+
+                            <form class="form theme-form" data-an="form">
+                                <div class="row">
+                                    <div class="form-group" data-an="header_customjs-input">
+                                        <h5>
+                                        <?php echo cl_translate('header_custom'); ?> 
+                                        </h5>
+                                        <div>
+                                            <textarea class="form-control" rows="8" name="header_customjs" placeholder="Add here your JavaScript Code"><?php echo cl_get_custom_code("headerjs"); ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-an="footer_customjs-input">
+                                        <h5>
+                                        <?php echo cl_translate('footer_custom'); ?> 
+                                        </h5>
+                                        <div class="input-group">
+                                            <textarea class="form-control" rows="8" name="footer_customjs" placeholder="Add here your JavaScript Code"><?php echo cl_get_custom_code("footerjs"); ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-an="header_customcss-input">
+                                        <h5>
+                                        <?php echo cl_translate('header_custom_css'); ?> 
+                                        </h5>
+                                        <div class="form-line">
+                                            <textarea class="form-control" rows="8" name="header_customcss" placeholder="Add here your CSS Code"><?php echo cl_get_custom_code("headercss"); ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                    <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/custom_jscss/scripts/app_master_script'); ?>

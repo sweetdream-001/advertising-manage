@@ -1,0 +1,13 @@
+/*
+* Delete this comment and put a custom JSON 
+* code in this file that will overwrite the original words to yours
+* 
+* Example:
+* {
+* 	"login": "Write new text instead of (Login)",
+*   "sign_up": "The same thing you do here for (Sign up)"
+* }
+* 
+* Note that, it is very important that the keys of the json array exactly correspond to the original ones, 
+* and the text you can write whatever you need
+*/

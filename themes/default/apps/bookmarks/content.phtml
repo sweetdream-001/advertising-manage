@@ -1,0 +1,61 @@
+<div class="timeline-container" data-app="bookmarks">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();" >
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link('bookmarks'); ?>" data-spa="true">
+						<?php echo cl_translate("Bookmarks"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+			</div>
+			<div class="rp">
+			</div>
+		</div>
+	</div>
+	<div class="timeline-posts-container">
+		<?php if (not_empty($cl["bookmarks"])) : ?>
+			<div class="timeline-posts-ls" data-an="entry-list">
+				<?php foreach ($cl["bookmarks"] as $cl['li']) : ?>
+					<?php echo cl_template('timeline/post'); ?>
+				<?php endforeach; ?>
+			</div>
+
+			<?php if (count($cl["bookmarks"]) == 30) : ?>
+				<div class="load-more">
+					<button class="btn btn-custom main-outline lg" data-an="load-more">
+						<?php echo cl_translate("Show more"); ?>
+					</button>
+				</div>
+			<?php endif; ?>
+		<?php else : ?>
+			<div class="empty-bookmarks-list">
+				<div class="icon">
+					<img src="{%config theme_url%}/statics/img/book-in-bird-cage.png">
+				</div>
+
+				<div class="pl-message">
+					<h4>
+						<?php echo cl_translate("no_bookmarks_yet"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("it_looks_like_you_don_t_have_any_bookmarks_yet_to_add_a_post_to_t"); ?>
+					</p>
+				</div>
+				<div class="c2action-single">
+					<a href="<?php echo cl_link('/'); ?>" data-spa="true">
+						<button class="btn btn-custom main-inline lg">
+							<?php echo cl_translate("Go to the homepage"); ?>
+						</button>
+					</a>
+				</div>
+			</div>
+		<?php endif; ?>
+	</div>
+
+	<?php echo cl_template('bookmarks/scripts/app_master_script'); ?>
+</div>

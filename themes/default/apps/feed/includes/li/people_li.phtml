@@ -1,0 +1,127 @@
+<div class="user-list-item" data-list-item="<?php echo($cl['li']['id']); ?>">
+	<div class="user-list-item__avatar">
+		<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+			<div class="user-avatar">
+				<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+			</div>
+		</a>
+	</div>
+	<div class="user-list-item__data">
+		<div class="user-data">
+			<div class="user-data__body">
+				<div class="user-data__body-topline">
+					<div class="flex-item-left">
+						<div class="user-data__name">
+							<a href="<?php echo($cl['li']['url']); ?>" data-spa="true" data-uinfo-lbox="<?php echo($cl['li']['id']); ?>" data-toggle="popover" data-placement="bottom">
+								<span class="user-name-holder">
+									<span class="user-name-holder__name">
+										<?php echo $cl['li']['name']; ?>
+									</span>
+
+									<?php if ($cl['li']['verified'] == '1'): ?>
+										<span class="user-name-holder__badge">
+											<?php echo cl_icon("verified_user_badge"); ?>
+										</span>
+									<?php endif; ?>
+								</span>
+							</a>
+						</div>
+						<div class="user-data__stats">
+							<div class="stats-item">
+								<span>
+									<?php echo cl_number($cl['li']['posts']); ?>
+								</span>
+								<span><?php echo cl_translate("Posts"); ?></span>	
+							</div>
+							<div class="stats-item">
+								<span>
+									<?php echo cl_number($cl['li']['followers']); ?>
+								</span>
+								<span><?php echo cl_translate("Followers"); ?></span>	
+							</div>
+							<div class="stats-item">
+								<span>
+									<?php echo cl_number($cl['li']['following']); ?>
+								</span>
+								<span><?php echo cl_translate("Following"); ?></span>	
+							</div>
+						</div>
+					</div>
+					<div class="flex-item-right">
+						<div class="user-data__ctrls">
+							<?php if (empty($cl['li']['is_user'])): ?>
+								<?php if ($cl['li']['follow_privacy'] == "approved"): ?>
+									<?php if (not_empty($cl['li']['is_following'])): ?>
+										<button onclick="SMColibri.req_follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom md main-inline" data-action="unfollow" data-id="<?php echo($cl['li']['id']); ?>">
+											<?php echo cl_translate("Unfollow"); ?>
+										</button>
+									<?php elseif (not_empty($cl['li']['follow_requested'])): ?>
+										<button onclick="SMColibri.req_follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom main-inline md" data-action="cancel" data-id="<?php echo($cl['li']['id']); ?>">
+											<?php echo cl_translate("Pending"); ?>
+										</button>
+									<?php else: ?>
+										<button onclick="SMColibri.req_follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom main-outline md" data-action="follow" data-id="<?php echo($cl['li']['id']); ?>">
+											<?php echo cl_translate("Follow"); ?>
+										</button>
+									<?php endif; ?>
+								<?php else: ?>
+									<?php if (empty($cl['li']['is_following'])): ?>
+										<button onclick="SMColibri.follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom md main-outline" data-action="follow" data-id="<?php echo($cl['li']['id']); ?>">
+											<?php echo cl_translate("Follow"); ?>
+										</button>
+									<?php else: ?>
+										<button onclick="SMColibri.follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom md main-inline" data-action="unfollow" data-id="<?php echo($cl['li']['id']); ?>">
+											<?php echo cl_translate("Unfollow"); ?>
+										</button>
+									<?php endif; ?>
+								<?php endif; ?>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+				<?php if (not_empty($cl['li']['about'])): ?>
+					<div class="user-data__about">
+						<?php echo $cl['li']['about']; ?>
+
+						<?php if (not_empty($cl['li']['website'])): ?>
+							| <?php echo cl_html_el("a", $cl['li']['website'], array("href" => $cl['li']['website'], "target" => "_blank", "class" => "inline-link")); ?>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<?php if (not_empty($cl['li']['common_follows'])): ?>
+					<div class="user-data__common">
+						<div class="common-follows">
+							<div class="common-follows__title">
+								<?php if (count($cl['li']['common_follows']) > 1): ?>
+									<?php echo cl_translate("Has {@common_follows@} followers you know", array("common_follows" => count($cl['li']['common_follows']))); ?>
+								<?php else: ?>
+									<?php echo cl_translate("Has {@common_follows@} follower you know", array("common_follows" => count($cl['li']['common_follows']))); ?>
+								<?php endif; ?>
+							</div>
+							<div class="common-follows__list">
+								<?php foreach ($cl['li']['common_follows'] as $index => $udata): ?>
+									<?php if ($index <= 4): ?>
+										<div class="common-follows__item" title="<?php echo $udata["name"]; ?> | @<?php echo $udata["username"]; ?>">
+											<a href="<?php echo $udata["url"]; ?>" data-spa="true">
+												<img src="<?php echo $udata["avatar"]; ?>" alt="IMG">
+											</a>
+										</div>
+										
+									<?php endif;?>
+								<?php endforeach; ?>
+
+								<?php if (count($cl['li']['common_follows']) > 5): ?>
+									<div class="common-follows__item common-follows__item_total">
+										<span>
+											+<?php echo (count($cl['li']['common_follows']) - 5); ?>
+										</span>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>

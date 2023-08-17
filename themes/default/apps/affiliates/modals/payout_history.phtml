@@ -1,0 +1,52 @@
+<div class="modal fade payout-history" id="aff-payout-history" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header__inner">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate('Payouts history'); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_icon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="affiliates-payouts-history">
+                    <?php if (not_empty($cl["payout_history"])): ?>
+                        <?php foreach ($cl["payout_history"] as $row): ?>
+                            <div class="affiliates-payouts-history__item">
+                                <div class="history-item">
+                                    <div class="history-item__status">
+                                        <?php if ($row['status'] == 'pending'): ?>
+                                            <div class="icon icon_pending" title="<?php echo cl_translate('Status'); ?>: <?php echo cl_translate("Pending"); ?>">
+                                                <?php echo cl_icon("pending_actions"); ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="icon icon_paid" title="<?php echo cl_translate('Status'); ?>: <?php echo cl_translate("Paid"); ?>">
+                                                <?php echo cl_icon("paid"); ?>
+                                            </div>
+                                        <?php endif; ?> 
+                                    </div>
+                                    <div class="history-item__body">
+                                        <div class="history-item__body-topline">
+                                            <div class="history-item__amount" title="<?php echo cl_translate('Amount'); ?>">
+                                                <?php echo $row['amount']; ?>
+                                            </div>
+                                            <div class="history-item__date" title="<?php echo cl_translate('Date'); ?>">
+                                                <?php echo $row['time']; ?>
+                                            </div>
+                                        </div>
+                                        <div class="history-item__body-botline" title="<?php echo cl_translate('PayPal E-mail'); ?>">
+                                            <?php echo cl_translate('Send to'); ?>: <span><?php echo $row['email']; ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

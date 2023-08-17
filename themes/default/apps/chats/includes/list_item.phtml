@@ -1,0 +1,52 @@
+<div class="contacts-list__item" data-list-item="<?php echo($cl['li']['chat_id']); ?>">
+	<a href="<?php echo($cl['li']['chat_url']); ?>" class="block-link" data-spa="true">
+		<div class="contact-data">
+			<div class="contact-data__avatar">
+				<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+			</div>
+			<div class="contact-data__body">
+				<div class="contact-data__body-topline">
+					<div class="flex-item-left">
+						<span class="">
+							<span class="user-name-holder__name">
+								<?php echo($cl['li']['name']); ?>
+							</span>
+
+							<?php if ($cl['li']['verified'] == '1'): ?>
+								<span class="user-name-holder__badge">
+									<?php echo cl_icon("verified_user_badge"); ?>
+								</span>
+								
+							<?php endif; ?>
+						</span>
+						<span>@<?php echo($cl['li']['username']); ?></span>
+					</div>
+					<div class="flex-item-right">
+						<?php echo($cl['li']['time']); ?>
+					</div>
+				</div>
+				<div class="contact-data__body-midline">
+					<?php if (not_empty($cl['li']['new_messages'])): ?>
+						<div class="last-message unseen-message">
+					<?php else: ?>
+						<div class="last-message">
+					<?php endif; ?>
+						<?php if (not_empty($cl['li']['last_message'])): ?>
+							<?php echo($cl['li']['last_message']); ?>
+						<?php else: ?>
+							<?php echo cl_translate("No messages"); ?>
+						<?php endif; ?>
+					</div>
+
+					<?php if (not_empty($cl['li']['new_messages'])): ?>
+						<div class="new-message">
+							<span class="badge">
+								<?php echo($cl['li']['new_messages']); ?>
+							</span>
+						</div>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</a>
+</div>

@@ -1,0 +1,57 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-hashtags-container {
+    div.timeline-hashtags-ls {
+        div.hashtag-list-item {
+            border-bottom: 1px solid var(--cl-primary-border-color);
+            transition: all 0.27s ease-in-out;
+            padding: 20px var(--cl-primary-offset-size);
+            border-bottom: 1px solid var(--cl-primary-border-color);
+            div.hashtag-data {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                div.hashtag-data__left-icon,
+                div.hashtag-data__right-icon {
+                    flex-shrink: 0;
+                    svg {
+                        width: 24px;
+                        height: 24px;
+                        fill: var(--cl-secondary-text-color);
+                    }
+                }
+                div.hashtag-data__body {
+                    flex: 1;
+                    padding: 0px var(--cl-primary-offset-size);
+                    span:first-child {
+                        font-size: var(--cl-primary-name-size);
+                        font-weight: 700;
+                        color: var(--cl-primary-text-color);
+                    }
+                    span:last-child {
+                        color: var(--cl-secondary-text-color);
+                        font-weight: normal;
+                        font-size: 14px;
+                        margin-left: 5px;
+                    }
+                }
+            }
+            &:hover,
+            &:active {
+                background: var(--cl-event-hover-bg);
+                div.hashtag-data {
+                    div.hashtag-data__right-icon svg {
+                        fill: var(--cl-primary-color);
+                    }
+                }
+            }
+        }
+    }
+}

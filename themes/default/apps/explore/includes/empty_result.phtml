@@ -1,0 +1,24 @@
+<div class="timeline-placeholder" v-show="(query_result == '0')">
+	<div class="icon">
+		<div class="icon__bg">
+			<?php echo cl_icon('screen_search'); ?>
+		</div>
+	</div>
+	<div class="pl-message">
+		<h4>
+			<?php echo cl_translate("Nothing found"); ?>
+		</h4>
+		<p>
+			<?php echo cl_translate("Sorry, but we could not find anything in our database for your search query {@search_query@}. Please try again by typing other keywords.", array(
+				"search_query" => cl_html_el('b', '{{search_query}}', array('class' => 'seach-query'))
+			)); ?>
+		</p>
+	</div>
+	<div class="c2action-single">
+		<a href="<?php echo cl_link('/'); ?>" data-spa="true">
+			<button class="btn btn-custom main-outline lg">
+				<?php echo cl_translate("Go to the homepage"); ?>
+			</button>
+		</a>
+	</div>
+</div>

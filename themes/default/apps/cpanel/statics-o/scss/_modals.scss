@@ -1,0 +1,163 @@
+﻿.modal {
+    .modal-header {
+        border: none;
+        padding: 25px 25px 5px 25px;
+
+        .modal-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+    }
+
+    .modal-content {
+        @include border-radius(0);
+        box-shadow: 0 5px 20px rgba(0,0,0,.31) !important;
+        border: none;
+
+        .modal-body {
+            color: #777;
+            padding: 15px 25px;
+        }
+    }
+
+    .modal-footer {
+        border: none;
+    }
+
+    &.confirm-actions-modal{
+        div.modal-body{
+            padding: 20px !important;
+            h4{
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 26px;
+                padding: 0;
+                margin: 0 0 10px 0;
+                color: $black;
+                text-align: center;
+            }
+
+            p{
+                font-size: 13px;
+                line-height: 20px;
+                color: $grey;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+            }
+        }
+
+        div.modal-footer{  
+            border-top: none !important;
+            padding: 0px 20px 20px 20px !important;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            button{
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    &.popup-ticket-modal{
+        div.user-info{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            margin-bottom: 20px;
+
+            div.avatar{
+                width: 45px;
+                height: 45px;
+                overflow: hidden;
+                margin-right: 15px;
+                border-radius: 10px;
+
+                img{
+                    width: 100%;
+                }
+            }
+
+            div.uname{
+                flex: 1;
+
+                h5{
+                    font-size: 16px;
+                    color: $black;
+                    padding: 0;
+                    margin: 0 0 5px 0;
+                    line-height: 16px;
+                    font-weight: normal;
+                }
+
+                a{
+                    font-size: 13px;
+                    color: $grey;
+                    line-height: 11px;
+                    display: block;
+                }
+            }
+        }
+
+        div.text-message{
+            padding: 20px;
+            border: 1px solid $border;
+            border-radius: 6px;
+
+            h5{
+                font-size: 14px;
+                color: $black;
+                line-height: 18px;
+                padding: 0;
+                margin: 0 0 10px 0;
+            }
+
+            p{
+                font-size: 13px;
+                line-height: 18px;
+                color: #545454;
+                padding: 0;
+                margin: 0;
+            }
+
+            a{
+                text-decoration: underline;
+            }
+        }
+
+        div.modal-footer{
+            button{
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+
+@each $key, $val in $colors {
+    .modal-col-#{$key} {
+        background-color: $val;
+
+        .modal-body,
+        .modal-title {
+            color: #fff !important;
+        }
+
+        .modal-footer {
+            background-color: rgba(0,0,0,0.12);
+
+            .btn-link {
+                color: #fff !important;
+
+                &:hover,
+                &:active,
+                &:focus {
+                    background-color: rgba(0,0,0,0.12);
+                }
+            }
+        }
+    }
+}

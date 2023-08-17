@@ -1,0 +1,32 @@
+<?php if (not_empty($cl["ads_ls"])): ?>
+	<div class="timeline-posts-container">
+		<div class="timeline-posts-ls" data-an="ads-ls">
+			<?php foreach ($cl["ads_ls"] as $cl['li']): ?>
+				<?php echo cl_template("timeline/ad"); ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<?php else: ?>
+	<div class="timeline-placeholder" style="padding-top:10px;">
+		<div class="icon">
+			<div class="icon__bg_img">
+			<img src="{%config theme_url%}/statics/img/Online ads-pana.png">
+			</div>
+		</div>
+		<div class="pl-message">
+			<h4>
+				<?php echo cl_translate("No pending ads yet!"); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate("It looks like you don't have any unapproved ads yet. All your ads that are under review by the reviewer will be displayed here"); ?>
+			</p>
+		</div>
+		<div class="c2action-single">
+			<a href="<?php echo cl_link('ads/new'); ?>" data-spa="true">
+				<button class="btn btn-custom main-inline lg">
+					<?php echo cl_translate("Create new ad"); ?>
+				</button>
+			</a>
+		</div>
+	</div>
+<?php endif; ?>

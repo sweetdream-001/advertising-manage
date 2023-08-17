@@ -1,0 +1,480 @@
+<script>
+	"use strict";
+	
+	$(document).ready(function($) {
+		Vue.use(window.vuelidate.default);
+
+		if ($("form#cl-login-vue-app").length) {
+			new Vue({
+				"el": "#cl-login-vue-app",
+				data: {
+					email: "",
+					password: "",
+					submitting: false,
+					done: false,
+					unsuccessful_attempt: false,
+					invalid_feedback_email: "",
+					invalid_feedback_pass: "",
+					password_display: "password"
+				},
+				computed: {
+					is_valid_email: function() {
+						if (this.$v.email.required == true && this.$v.email.$error) {
+							this.invalid_feedback_email = "<?php echo cl_translate("The username you entered is not valid"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_email = "";
+							return false;
+						}
+					},
+					is_valid_password: function() {
+						if(this.$v.password.required == true && this.$v.password.$error) {
+							this.invalid_feedback_pass = "<?php echo cl_translate("The password you entered is not valid"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_pass = "";
+							return false;
+						}
+					}
+				},
+				validations: {
+					email: {
+						required: window.validators.required,
+						min_length: window.validators.minLength(3),
+						max_length: window.validators.maxLength(55)
+					},
+					password: {
+						required: window.validators.required,
+						min_length: window.validators.minLength(6),
+						max_length: window.validators.maxLength(20)
+					}
+				},
+				methods: {
+					submit_form: function(_self = false) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/auth/login"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function() {
+								_app_.submitting = true;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+									_app_.done = true;
+
+									delay(function() {
+										cl_redirect("<?php echo cl_link("home"); ?>");
+									}, 1000);
+								}
+
+								else {
+									_app_.unsuccessful_attempt = true;
+
+									delay(function() {
+										_app_.unsuccessful_attempt = false;
+									}, 3000);
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+							}
+						});
+					},
+					password_display_toggle: function() {
+						var _app_ = this;
+
+						if (_app_.password_display == "text") {
+							_app_.password_display = "password";
+						}
+						else{
+							_app_.password_display = "text";
+						}
+					}
+				}
+			});
+		}
+
+		if ($("form#cl-signup-vue-app").length) {
+			new Vue({
+				"el": "#cl-signup-vue-app",
+				data: {
+					done: false,
+					email: "",
+					password: "",
+					uname: "",
+					fname: "",
+					lname: "",
+					submitting: false,
+					invalid_feedback_email: "",
+					invalid_feedback_pass: "",
+					invalid_feedback_uname: "",
+					tos_agree: false,
+					uname_taken: false,
+					email_taken: false,
+					uname_denied: false,
+					email_denied: false,
+					process_failed: false,
+					grecaptcha_error: false,
+					password1_display: "password",
+					password2_display: "password",
+					invite_code: "<?php echo fetch_or_get($cl["invite_code"], ''); ?>",
+					grecaptcha: "{%config google_recaptcha%}"
+				},
+				computed: {
+					is_valid_uname: function() {
+						if (this.$v.uname.required == true && this.$v.uname.$error) {
+							this.invalid_feedback_uname = "<?php echo cl_translate("This username does not match the valid format. Please select a username of no more than 25 characters using only letters (a-z) numbers and underscores"); ?>";
+							return true;
+						}
+
+						else if(this.uname_taken == true) {
+							this.invalid_feedback_uname = "<?php echo cl_translate("This username is already taken, please select another"); ?>";
+							return true;
+						}
+						
+						else if(this.uname_denied == true) {
+							this.invalid_feedback_uname = "<?php echo cl_translate("This username is reserved, please select another"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_uname = "";
+							return false;
+						}
+					},
+					is_valid_email: function() {
+						if (this.$v.email.required == true && this.$v.email.$error) {
+							this.invalid_feedback_email = "<?php echo cl_translate("The email address you entered does not match the valid format."); ?>";
+							return true;
+						}
+
+						else if (this.email_taken == true) {
+							this.invalid_feedback_email = "<?php echo cl_translate("This email address is already taken"); ?>";
+							return true;
+						}
+
+						else if (this.email_denied == true) {
+							this.invalid_feedback_email = "<?php echo cl_translate("This email address is reserved and not available for use"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_email = "";
+							return false;
+						}
+					},
+					is_valid_password: function() {
+						if (this.$v.password.required == true && this.$v.password.$error) {
+							this.invalid_feedback_pass = "<?php echo cl_translate("Password must be between 6 and 20 characters long"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_pass  = "";
+							return false;
+						}
+					},
+					is_valid_form: function() {
+						return (this.$v.$invalid == false && this.tos_agree == true);
+					}
+				},
+				validations: {
+					uname: {
+						required: window.validators.required,
+						min_length: window.validators.minLength(3),
+						max_length: window.validators.maxLength(25),
+						is_alpha_num: cl_uname_valid
+					},
+					email: {
+						required: window.validators.required,
+						email: window.validators.email,
+						min_length: window.validators.minLength(8),
+						max_length: window.validators.maxLength(55)
+					},
+					password: {
+						required: window.validators.required,
+						min_length: window.validators.minLength(6),
+						max_length: window.validators.maxLength(20)
+					}
+				},
+				methods: {
+					submit_form: function(_self = false) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						if (_app_.grecaptcha == "on") {
+							var grecap_res = grecaptcha.getResponse();
+
+							if (grecap_res.length < 1) {
+
+								_app_.grecaptcha_error = true;
+
+								return false;
+							}
+						}
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/auth/signup"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							data: {
+								invite_code: _app_.invite_code
+							},
+							beforeSend: function() {
+								_app_.submitting     = true;
+								_app_.uname_taken    = false;
+								_app_.email_taken    = false;
+								_app_.uname_denied   = false;
+								_app_.email_denied   = false;
+								_app_.process_failed = false;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+
+									_app_.done = true;
+
+									delay(function() {
+										cl_redirect("<?php echo cl_link("start_up"); ?>");
+									}, 1500);
+								}
+								else if(data.status == 401) {
+									_app_.done = true;
+
+									delay(function() {
+										cl_redirect("<?php echo cl_link("confirm_registration"); ?>");
+									}, 1500);
+								}
+								else {
+									if (data.err_code == "doubling_uname") {
+										_app_.uname_taken = true;
+									}
+
+									else if(data.err_code == "doubling_email") {
+										_app_.email_taken = true;
+									}
+
+									else if(data.err_code == "denied_email") {
+										_app_.email_denied = true;
+									}
+
+									else if(data.err_code == "denied_uname") {
+										_app_.uname_denied = true;
+									}
+
+									else {
+										_app_.process_failed = true;
+									}
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+							}
+						});
+					},
+					password1_display_toggle: function() {
+						var _app_ = this;
+
+						if (_app_.password1_display == "text") {
+							_app_.password1_display = "password";
+						}
+						else{
+							_app_.password1_display = "text";
+						}
+					}
+				}
+			});
+		}
+
+		if ($("form#cl-resetpass-vue-app").length) {
+			new Vue({
+				"el": "#cl-resetpass-vue-app",
+				data: {
+					email: "",
+					submitting: false,
+					invalid_feedback_email: "",
+					process_failed: false,
+					process_succeeded: false,
+					unknown_email: false,
+				},
+				computed: {
+					is_valid_email: function() {
+						if (this.$v.email.required == true && this.$v.email.$error) {
+							this.invalid_feedback_email = "<?php echo cl_translate("The email address you entered does not match the valid format."); ?>";
+							return true;
+						}
+
+						else if(this.unknown_email == true) {
+							this.invalid_feedback_email = "<?php echo cl_translate("We can not find an account with this email address!"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_email = "";
+							return false;
+						}
+					},
+					is_valid_form: function() {
+						return (this.$v.$invalid == false);
+					}
+				},
+				validations: {
+					email: {
+						required: window.validators.required,
+						email: window.validators.email,
+						min_length: window.validators.minLength(8),
+						max_length: window.validators.maxLength(55)
+					}
+				},
+				methods: {
+					submit_form: function(_self = false) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/auth/resetpass"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function() {
+								_app_.submitting     = true;
+								_app_.process_failed = false;
+								_app_.unknown_email  = false;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+									_app_.process_succeeded = true;
+								}
+								else {
+									if (data.err_code == "unknown_email") {
+										_app_.unknown_email = true;
+									}
+
+									else {
+										_app_.process_failed = true;
+									}
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+							}
+						});
+					}
+				}
+			});
+		}
+
+		<?php if (not_empty($cl['em_code'])): ?>
+			if ($("form#cl-savepass-vue-app").length) {
+				new Vue({
+					"el": "#cl-savepass-vue-app",
+					data: {
+						password: "",
+						password2: "",
+						submitting: false,
+						invalid_feedback_pass: "",
+						invalid_feedback_pass2: "",
+						process_failed: false,
+						password1_display: "password",
+						password2_display: "password"
+					},
+					computed: {
+						is_valid_password: function() {
+							if (this.$v.password.required == true && this.$v.password.$error) {
+								this.invalid_feedback_pass = "<?php echo cl_translate("Password must be between 6 and 20 characters long"); ?>";
+								return true;
+							}
+
+							else {
+								this.invalid_feedback_pass  = "";
+								return false;
+							}
+
+						},
+						is_valid_password2: function() {	
+							if(this.$v.password.required == true && this.$v.password2.required == true && this.$v.password2.$error) {
+								this.invalid_feedback_pass2 = "<?php echo cl_translate("Passwords do not mutch!"); ?>";
+								return true;
+							}
+
+							else {
+								this.invalid_feedback_pass2 = "";
+								return false;
+							}
+						},
+						is_valid_form: function() {
+							return (this.$v.$invalid == false);
+						}
+					},
+					validations: {
+						password: {
+							required: window.validators.required,
+							min_length: window.validators.minLength(6),
+							max_length: window.validators.maxLength(20)
+						},
+						password2: {
+							required: window.validators.required,
+							sameAs: window.validators.sameAs('password')
+						}
+					},
+					methods: {
+						submit_form: function(_self = false) {
+							_self.preventDefault();
+
+							var _app_ = this;
+
+							$(_self.target).ajaxSubmit({
+								url: "<?php echo cl_link("native_api/auth/save_password"); ?>",
+								type: 'POST',
+								dataType: 'json',
+								beforeSend: function() {
+									_app_.submitting     = true;
+									_app_.process_failed = false;
+								},
+								success: function(data) {
+									if (data.status == 200) {
+										cl_redirect("<?php echo cl_link("home"); ?>");
+									}
+									else {
+										_app_.process_failed = true;
+									}
+								},
+								complete: function() {
+									_app_.submitting = false;
+								}
+							});
+						},
+						password1_display_toggle: function() {
+							var _app_ = this;
+
+							if (_app_.password1_display == "text") {
+								_app_.password1_display = "password";
+							}
+							else{
+								_app_.password1_display = "text";
+							}
+						},
+						password2_display_toggle: function() {
+							var _app_ = this;
+
+							if (_app_.password2_display == "text") {
+								_app_.password2_display = "password";
+							}
+							else{
+								_app_.password2_display = "text";
+							}
+						}
+					}
+				});
+			}
+		<?php endif; ?>
+	});
+</script>

@@ -1,0 +1,227 @@
+<div class="timeline-container">
+<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+				<a href="<?php echo cl_link("settings/information"); ?>" data-spa="true">
+					<?php echo cl_translate("Your information"); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+		
+		</div>
+		<div class="rp">
+			
+		</div>
+	</div>
+</div>
+	<div class="main-profile-settings-container">
+		<div class="profile-settings-nav">
+			<div class="nav-list-itemset-title">
+				<h4>
+					<?php echo cl_translate("Download my information"); ?>
+				</h4>
+			</div>
+		</div>
+		<div class="profile-settings-content">
+			<div class="settings-form">
+				<form class="form" id="cl-account-info-vue-app" v-on:submit="submit_form($event)">
+					<div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="checkbox-1" v-model="form_data.my_info" type="checkbox" class="form-check-input">
+                                <label for="checkbox-1" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("My information"); ?>
+                                    </span>
+
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("My information"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="checkbox-2" v-model="form_data.following" type="checkbox" class="form-check-input">
+                                <label for="checkbox-2" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Followings"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("List of people I follow"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="checkbox-3" v-model="form_data.followers" type="checkbox" class="form-check-input">
+                                <label for="checkbox-3" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Followers"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("List of people who follow me"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="checkbox-4" v-model="form_data.posts" type="checkbox" class="form-check-input">
+                                <label for="checkbox-4" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Posts"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("List of my publications and replies"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="checkbox-5" v-model="form_data.bookmarks" type="checkbox" class="form-check-input">
+                                <label for="checkbox-5" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Saved posts"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("List of my bookmarks"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p class="form-info-label">
+                            <?php echo cl_translate("Check the boxes in the options to select the account information you want to download"); ?>
+                        </p>
+                    </div>
+					<div class="form-group no-mb" style="max-width: 150px; float:right;">
+                    	<button v-if="submitting != true" v-bind:disabled="is_invalid_form" type="submit" class="btn btn-block btn-custom main-inline lg">
+	                        <?php echo cl_translate("Download info"); ?>
+	                    </button>
+	                    <button v-else disabled="true" type="button" class="btn btn-block btn-custom main-inline lg">
+	                        <?php echo cl_translate("Please wait"); ?>
+	                    </button>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		"use strict";
+
+		$(document).ready(function($) {
+			Vue.use(window.vuelidate.default);
+			var VueValids = window.validators;
+
+			new Vue({
+				el: "#cl-account-info-vue-app",
+				data: {
+					submitting: false,
+					unsuccessful_attempt: false,
+					form_data: {
+						my_info: false,
+						following: false,
+						followers: false,
+						posts: false,
+						bookmarks: false
+					}
+				},
+				computed: {
+					is_invalid_form: function() {
+						var _app_  = this;
+						var fields = Object.values(_app_.form_data);
+						
+						return ((fields.contains(true)) ? false : true);
+					}
+				},
+				methods: {
+					submit_form: function(_self = null) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/settings/download_profile_info"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							data: {
+								my_info: ((_app_.form_data.my_info == true) ? "Y" : "N"),
+								following: ((_app_.form_data.following == true) ? "Y" : "N"),
+								followers: ((_app_.form_data.followers == true) ? "Y" : "N"),
+								posts: ((_app_.form_data.posts == true) ? "Y" : "N"),
+								bookmarks: ((_app_.form_data.bookmarks == true) ? "Y" : "N")
+							},
+							beforeSend: function() {
+								_app_.submitting = true;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+									_app_.reset_form();
+
+									cl_redirect(data.url, true);
+								}
+
+								else {
+									_app_.unsuccessful_attempt = true;
+									_app_.submitting = false;
+								}
+							}
+						});
+					},
+					reset_form: function() {
+						var _app_ = this;
+						_app_.submitting = false;
+						_app_.unsuccessful_attempt = false;
+						_app_.form_data = Object({
+							my_info: false,
+							following: false,
+							followers: false,
+							posts: false,
+							bookmarks: false
+						});
+					}
+				}
+			});
+		});
+	</script>
+</div>
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+		max-width: 970px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.right-sb-container {
+		display: none;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+		max-width: 550px;
+	}
+	body main.main-content-container div.main-content-container-inner div.left-sb-container {
+		margin-left: -25px;
+	}
+	.main-profile-settings-container {
+		margin-left: 16px;
+		margin-right: auto;
+		padding: 16px;
+		max-width: 550px;
+	}
+</style>

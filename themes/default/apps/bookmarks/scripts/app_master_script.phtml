@@ -1,0 +1,38 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {	
+		var _app = $('div[data-app="bookmarks"]');
+
+		_app.find('button[data-an="load-more"]').on('click', function(event) {
+			event.preventDefault();
+			var bookmarks_ls = _app.find('[data-an="entry-list"]');
+			var last_li       = bookmarks_ls.find('div[data-post-offset]').last();
+			var _self         = $(this);
+
+			if (last_li.length) {
+				$.ajax({
+					url: "<?php echo cl_link("native_api/bookmarks/load_more"); ?>",
+					type: 'GET',
+					dataType: 'json',
+					data: {
+						offset: last_li.data('post-offset'),
+					},
+					beforeSend: function(){
+						_self.attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+					}
+				}).done(function(data) {
+					if (data.status == 200) {
+						bookmarks_ls.append(data.html);
+
+						_self.removeAttr('disabled').text("<?php echo cl_translate("Show more"); ?>");
+					}
+
+					else {
+						_self.text("<?php echo cl_translate("That is all for now!"); ?>");
+					}
+				});
+			}
+		});
+	});
+</script>

@@ -1,0 +1,134 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		Vue.use(window.vuelidate.default);
+
+		var _app     = $('[data-app="wallet_send"]');
+		SMColibri.PS = new Vue({
+			el: "#vue-wallet-moneysend-app",
+			data: {
+				send_amount: "",
+				send_user_id: false,
+				submitting: false,
+				searching: false,
+				keyword: "",
+				recipients: [],
+				invalid_feedback_amount: "",
+				curr_wallet: <?php echo $me["wallet"]; ?>
+			},
+			computed: {
+				is_invalid_amount: function() {
+					if (this.$v.send_amount.required && this.$v.send_amount.$invalid) {
+						this.invalid_feedback_amount = "<?php echo cl_translate("The value of the amount you entered is invalid"); ?>";
+						return true;
+					}
+
+					else if(this.send_amount > this.curr_wallet) {
+						this.invalid_feedback_amount = "<?php echo cl_translate("You have entered an amount greater than the available amount of money in your wallet"); ?>";
+						return true;
+					}
+
+					else{
+						return false;
+					}
+				},
+				is_invalid_form: function() {
+					if (this.$v.$invalid || this.send_user_id == false) {
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+			},
+			validations: {
+				send_amount: {
+					required: window.validators.required,
+					is_num: window.validators.decimal,
+					min_val: window.validators.minValue(0.1)
+				}
+			},
+			methods: {
+				search: function() {
+					if (this.keyword.length > 1) {
+						var _app_ = this;
+
+						delay(function() {
+							$.ajax({
+								url: "<?php echo cl_link("native_api/wallet/search_recipients"); ?>",
+								type: "GET",
+								dataType: "json",
+								data: {
+									query: _app_.keyword
+								},
+								beforeSend: function() {
+									_app_.searching = true;
+									_app_.send_user_id = 0;
+								}
+							}).done(function(data) {
+								if (data.status == 200) {
+									_app_.recipients = data.recipients_list;
+								}
+								else {
+									_app_.recipients = [];
+								}
+							}).always(function() {
+								_app_.searching = false;
+							});
+						}, 800);
+					}
+				},
+				select_recipient: function(id = false) {
+					var _app_ = this;
+
+					for (var i = 0; i < _app_.recipients.length; i++) {
+						if (_app_.recipients[i]["id"] == id) {
+
+							_app_.send_user_id = id;
+							_app_.keyword = _app_.recipients[i]["name"];
+
+							_app_.recipients = [];
+
+							break;
+						}
+					}
+
+					return true;
+				},
+				submit_form: function(_self = false) {
+					_self.preventDefault();
+
+					let _app_ = this;
+
+					$(_self.target).ajaxSubmit({
+						url: "<?php echo cl_link("native_api/wallet/send_money"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							amount: _app_.send_amount,
+							user_id: _app_.send_user_id
+						},
+						beforeSend: function() {
+							_app_.submitting = true;
+						},
+						success: function(data) {
+							if (data.status == 200) {
+								cl_bs_notify("<?php echo cl_translate("Your payment has been successfully transferred") ?>", 2000, "primary");
+
+								delay(function() {
+									cl_redirect("<?php echo cl_link("wallet"); ?>");
+								}, 2500);
+							}
+
+							else {
+								_app_.submitting = false;
+								SMColibri.errorMSG();
+							}
+						}
+					});
+				}
+			}
+		});
+	});
+</script>

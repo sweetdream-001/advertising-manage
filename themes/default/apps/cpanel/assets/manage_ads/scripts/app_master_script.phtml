@@ -1,0 +1,120 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+
+        SMC_CPanel.PS = Object({
+            app: $('[data-app="user-ads"]'),
+            paginate: function(e = false) {
+
+                var _self = $(e);
+                var _app_ = this.app;
+
+                if (_self.hasClass('disabled') != true) {
+                    var ads_list  = _app_.find('[data-an="ads-list"]');
+                    var dir       = ((_self.data('dir') == 'prev') ? 'up' : 'down');
+                    var offset_lt = ads_list.find('[data-ads-item]').first().data('ads-item');
+                    var offset_gt = ads_list.find('[data-ads-item]').last().data('ads-item');
+
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/cpanel/get_user_ads"); ?>',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            dir: dir, 
+                            offset_lt: offset_lt, 
+                            offset_gt: offset_gt
+                        },
+                        beforeSend: function() {
+                            _app_.find('a[data-dir]').removeClass('disabled');
+
+                            SMC_CPanel.waitme("show");
+                        }
+                    }).done(function(data) {
+                        if (data.status == 200) {
+                            ads_list.html(data.html);
+                        }
+                        else{
+                            _self.addClass('disabled');
+                        }
+                    }).always(function() {
+                        delay(function() {
+                            SMC_CPanel.waitme();
+                        }, 1000);
+                    });
+                }
+                else {
+                    return false;
+                }
+            },
+            delete: function(id = false) {
+                if ($.isNumeric(id) && id) {
+                    var _app_   = this.app;
+                    var promise = SMC_CPanel.confirm_action({
+                        btn_1: "Cancel",
+                        btn_2: "Delete",
+                        title: "Please confirm your actions!",
+                        message: "Please note that if you remove this user ad? Note that the action cannot be undone",
+                    });
+
+                    promise.done(function() {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/delete_user_ad"); ?>',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {id: id},
+                            beforeSend: function() {
+                                SMC_CPanel.waitme("show");
+                            }
+                        }).done(function(data) {
+                            if (data.status != 200) {
+                                SMC_CPanel.errorMSG();
+                            }
+                            else {
+                                $('[data-ads-item="{0}"]'.format(id)).slideUp(300, function() {
+                                    $(this).remove();
+
+                                    if ($('[data-ads-item]').length < 1) {
+                                        $(window).reloadPage(500);
+                                    }
+                                });
+                            }
+                        }).always(function() {
+                            $("div.confirm-actions-modal").modal("hide");
+                            SMC_CPanel.waitme();
+                        });
+                    });
+
+                    promise.fail(function() {
+                        $("div.confirm-actions-modal").modal("hide");
+                    });
+                }
+            },
+            approve: function(id = false) {
+                var _app_ = this.app;
+
+                if ($.isNumeric(id) && id) {
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/cpanel/approve_user_ad"); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: id},
+                        beforeSend: function() {
+                            SMC_CPanel.waitme("show");
+                        }
+                    }).done(function(data) {
+                        if (data.status != 200) {
+                            SMC_CPanel.errorMSG();
+                        }
+                        else {
+                            _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').replaceClass('bg-grey', 'bg-blue');
+                            _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').text("Yes");
+                        }
+                    }).always(function() {
+                        SMC_CPanel.waitme();
+                    });
+                }
+            }
+        });
+	});
+</script>

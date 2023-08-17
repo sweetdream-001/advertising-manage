@@ -1,0 +1,41 @@
+<script>
+	"use strict";
+	
+	$(document).ready(function($) {
+		var _app = $('[data-app="thread"]');
+
+		_app.find('div[data-an="thread-data"]').scroll2();
+
+		_app.find('button[data-an="load-more"]').on('click', function(event) {
+			event.preventDefault();
+
+			var _self     = $(this);
+			var replys_ls = _app.find('div[data-an="replys-list"]');
+			var last_item = replys_ls.find('div[data-post-offset]').last();
+
+			if (last_item.length) {
+				$.ajax({
+					url: '<?php echo cl_link("native_api/thread/load_thread_replys"); ?>',
+					type: 'GET',
+					dataType: 'json',
+					data: {
+						offset: last_item.data('post-offset'),
+						thread_id: '<?php echo($cl['thread_data']['post']['id']); ?>'
+					},
+					beforeSend: function(){
+						_self.attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+					}
+				}).done(function(data) {
+					if (data.status == 200) {
+						replys_ls.append(data.html);
+						
+						_self.removeAttr('disabled').text("<?php echo cl_translate("Show more"); ?>");
+					}
+					else {
+						_self.text("<?php echo cl_translate("That is all for now!"); ?>");
+					}
+				});
+			}
+		});
+	});
+</script>

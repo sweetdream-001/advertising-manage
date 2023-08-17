@@ -1,0 +1,615 @@
+//@*************************************************************************@
+//@ @author JOOJ Team (JOOJ.us)						            			@
+//@ @author_url 1: https://jooj.us                                          @
+//@ @author_url 2: http://jooj.us/twitter-clone                             @
+//@ @author_email: sales@jooj.us                                            @
+//@*************************************************************************@
+//@ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+//@ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+//@*************************************************************************@
+
+$border: rgb(230, 236, 240);
+$blue: #1ca1f3;
+$black: #14171a;
+$svg_col: #373737;
+$grey: #657786;
+$grey2: #b6b6b6;
+$link: #1b95e0;
+$pl_holder:#72777c;
+$btn_shadow: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+$el_hovbg: #f5f8fa;
+$red: #f6546a;
+$green: #35c85f;
+
+@mixin font($fname, $fstyle, $fweight, $furl) {
+    @font-face {
+        font-family: $fname;
+        font-style: $fstyle;
+        font-weight: $fweight;
+        src: url($furl) format('woff2');
+    }
+}
+
+@include font('Inter', normal, 300, 'content/css/fonts/Inter/Inter-Light.woff2');
+@include font('Inter', normal, 400, 'content/css/fonts/Inter/Inter-Regular.woff2');
+@include font('Inter', normal, 500, 'content/css/fonts/Inter/Inter-Medium.woff2');
+@include font('Inter', normal, 600, 'content/css/fonts/Inter/Inter-SemiBold.woff2');
+@include font('Inter', normal, 700, 'content/css/fonts/Inter/Inter-Bold.woff2');
+@include font('Inter', normal, 900, 'content/css/fonts/Inter/Inter-Black.woff2');
+
+html{
+	scroll-behavior: smooth;
+}
+
+body{
+	background: #fff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	line-height: 1.4;
+	font-family: Inter, sans-serif;
+
+	div.main-cont{
+		width: 100%;
+		height: 100%;
+		padding-top: 80px;
+		padding-bottom: 80px;
+
+		div.main-cont-header{
+			width: 100%;
+			overflow: hidden;
+			margin-bottom: 30px;
+
+			div.logo{
+				display: flex;
+				justify-content: center;
+				margin-bottom: 20px;
+
+				a{
+					text-decoration: none;
+					width: 50px;
+
+					img{
+						width: 100%;
+					}
+				}
+			}
+
+			h1{
+				font-size: 27px;
+				color: $black;
+				padding: 0;
+				margin: 0;
+				font-weight: 700;
+				text-align: center;
+				margin-bottom: 5px;
+			}
+
+			p{
+				color: $grey;
+				font-size: 14px;
+				text-align: center;
+				margin: 0;
+				padding: 0;
+			}
+		}
+
+
+		div.main-cont-inner{
+			border: 1px solid $border;
+			border-radius: 5px;
+			overflow: hidden;
+			margin-bottom: 10px;
+
+			div.cont-header{
+				width: 100%;
+				background: $blue;
+				padding: 20px;
+
+				h2{
+					padding: 0;
+					margin: 0;
+					color: #fff;
+					font-size: 18px;
+					line-height: 18px;
+					font-weight: bold;
+					display: flex;
+					align-items: center;
+
+					span.icon{
+						svg{
+							width: 25px;
+							height: 25px;
+							stroke: #fff;
+							stroke-width: 2;
+						}
+					}
+
+					span.text{
+						margin-left: 10px;
+						font-weight: 700;
+						text-transform: uppercase;
+						margin-top: 5px;
+					}
+				}
+
+				div.go-back{
+					display: flex;
+					justify-content: safe flex-end;
+
+					a{
+						text-decoration: none;
+						padding: 0;
+						margin: 0;
+
+						svg{
+							width: 25px;
+							height: 25px;
+							stroke: #fff;
+							stroke-width: 2;
+						}
+					}
+				}
+			}
+
+			div.cont-body{
+				div.terms-of-use{
+					width: 100%;
+					overflow: hidden;
+					display: block;
+					padding: 20px;
+					background: #fff;
+
+					div.agreement-def-title{
+						width: 100%;
+						overflow: hidden;
+						margin-bottom: 20px;
+
+						p{
+							padding: 0;
+							margin: 0;
+							font-size: 14px;
+							color: $grey;
+							font-weight: bold;
+
+							a{
+								color: $link;
+								font-weight: normal;
+								display: block;
+								margin-top: 10px;
+
+								svg{
+									width: 15px;
+									height: 15px;
+									stroke: $link;
+								}
+							}
+						}
+					}
+
+					table{
+
+						thead{
+							th{
+								font-size: 11px;
+								color: $grey;
+								font-weight: bold;
+								border-bottom: 1px solid #eee;
+								padding: 10px 5px;
+								text-transform: uppercase;
+							}
+						}
+
+						tr{
+							td{
+								font-size: 13px;
+								border: none;
+								padding: 7px 5px;
+								span{
+									width: 15px;
+									height: 15px;
+									display: inline-block;
+									margin-right: 5px;
+
+									svg{
+										width: 100%;
+										height: 100%;
+									}
+
+									&.allowed svg{
+										fill: $green;
+									}
+
+									&.denied svg{
+										fill: $red;
+									}
+								}
+							}
+						}
+					}
+
+					div.agreement-action{
+						width: 100%;
+						overflow: hidden;
+						border-top: 1px solid #eee;
+						padding-top: 20px;
+
+						div.agree{
+							display: block;
+							margin-bottom: 15px;
+
+							input{
+								vertical-align: middle;
+							}
+
+							label{
+								font-size: 13px;
+								color: $black;
+								padding: 0;
+								margin: 0;
+							}
+						}
+
+						button.btn{
+							color: #fff;
+							background: $blue;
+							font-size: 15px;
+							border: 1px solid $blue;
+							box-shadow: none;
+							outline: 0;
+							padding: 10px 15px;
+							text-transform: uppercase;
+							font-weight: 500;
+							display: block;
+							width: 100%;
+							border-radius: 2px;
+						
+
+							&:active,&:hover,&:focus{
+								background: darken($blue, 10);
+							}
+
+							&:disabled{
+								cursor: not-allowed;
+							}
+						}
+					}
+				}
+
+				div.requirements{
+					width: 100%;
+					overflow: hidden;
+					display: block;
+					padding: 20px;
+					background: #fff;
+
+					div.requirements-def-title{
+						width: 100%;
+						overflow: hidden;
+						margin-bottom: 20px;
+
+						p{
+							padding: 0;
+							margin: 0;
+							font-size: 14px;
+							color: $grey;
+							font-weight: bold;
+						}
+					}
+
+					table{
+						thead{
+							th{
+								font-size: 11px;
+								color: $grey;
+								font-weight: bold;
+								border-bottom: 1px solid #eee;
+								padding: 10px 5px;
+								text-transform: uppercase;
+							}
+						}
+
+						tr{
+							td{
+								font-size: 13px;
+								border: none;
+								padding: 7px 5px;
+
+								span.requirement-status{
+									display: flex;
+									flex-direction: row;
+									flex-wrap: nowrap;
+									align-items: center;
+
+									span.icon{
+										width: 15px;
+										height: 15px;
+										display: inline-block;
+										margin-right: 5px;
+
+										svg{
+											width: 100%;
+											height: 100%;
+										}
+
+										&.installed svg{
+											fill: $green;
+										}
+
+										&.not-installed svg{
+											fill: $red;
+										}
+									}
+
+									span.stat{
+										margin-left: 3px;
+									}
+								}
+
+								strong{
+									color: $grey;
+									font-weight: normal;
+									font-size: 12px;
+								}
+							}
+						}
+					}
+
+					div.next-action{
+						width: 100%;
+						overflow: hidden;
+						display: block;
+						border-top: 1px solid #eee;
+						padding-top: 20px;
+
+						a{
+							padding: 0;
+							margin: 0;
+							text-decoration: none;
+						}
+
+						button.btn{
+							color: #fff;
+							background: $blue;
+							font-size: 15px;
+							border: 1px solid $blue;
+							box-shadow: none;
+							outline: 0;
+							padding: 10px 15px;
+							text-transform: uppercase;
+							font-weight: 500;
+							display: block;
+							width: 100%;
+							border-radius: 2px;
+						
+
+							&:active,&:hover,&:focus{
+								background: darken($blue, 10);
+							}
+
+							&:disabled{
+								cursor: not-allowed;
+							}
+						}
+					}
+				}
+
+				div.installation{
+					width: 100%;
+					overflow: hidden;
+					display: block;
+					padding: 20px;
+					background: #fff;
+
+					div.installation-def-title{
+						width: 100%;
+						overflow: hidden;
+						margin-bottom: 30px;
+
+						p{
+							padding: 0;
+							margin: 0;
+							font-size: 14px;
+							color: $grey;
+							font-weight: bold;
+						}
+					}
+
+					div.form-content{
+						div.errors{
+							margin-bottom: 20px;
+							width: 100%;
+							border: 1px solid $red;
+							background: $red;
+							border-radius: 2px;
+							padding: 25px;
+
+							p{
+								font-size: 14px;
+								color: rgba(#fff, 0.9);
+								margin: 0;
+								padding: 0;
+								font-weight: 700;
+							}
+						}
+
+						div.success{
+							width: 100%;
+							text-align: center;
+							padding: 20px;
+
+							h2{
+								font-size: 34px;
+								padding: 0;
+								margin: 0;
+								color: $black;
+								font-weight: 900;
+								margin-bottom: 10px;
+							}
+
+							p{
+								font-size: 18px;
+								color: $grey;
+								margin: 0;
+								padding: 0;
+								margin-bottom: 20px;
+								opacity: 0.9;
+							}
+
+							a.lets-go{
+								display: inline-block;
+								text-decoration: none;
+
+								button{
+									color: #fff;
+									background: $green;
+									font-size: 15px;
+									border: 1px solid $green;
+									box-shadow: none;
+									outline: 0;
+									padding: 10px 15px;
+									text-transform: uppercase;
+									font-weight: 500;
+									display: block;
+									width: 100%;
+									border-radius: 2px;
+								
+
+									&:active,&:hover,&:focus{
+										background: darken($green, 10);
+									}
+								}
+							}
+						}
+
+						div.form-group-title{
+							display: block;
+							margin-bottom: 20px;
+
+							div{
+								font-size: 12px;
+								font-weight: 700;
+								color: darken($grey, 5);
+								text-transform: uppercase;
+							}
+						}
+
+						div.form-group{
+							small.info-message{
+								font-size: 13px;
+								color: $blue;
+								display: block;
+								width: 100%;
+								margin-top: 10px;
+							}
+
+							label.form-input-label{
+								padding: 0;
+								margin: 0;
+								font-size: 13px;
+								color: $black;
+							}
+
+							div.form-input{
+								input, textarea{
+									height: 48px;
+									border: none;
+									border-radius: 0px;
+									background: $el_hovbg;
+									border-bottom: 2px solid $border;
+									box-shadow: none;
+									outline: 0;
+									font-size: 13px;
+									color: #004874;
+
+									&::placeholder{
+										font-size: 13px;
+										color: $grey;
+									}
+
+									&:hover,&:focus,&:active{
+										border-bottom: 2px solid $blue;
+										background: #eff3f6;
+									}
+
+									&.block-input{
+										display: block;
+									}
+
+									&:disabled{
+										opacity: 0.5;
+										cursor: not-allowed;
+									}
+								}
+
+								textarea{
+									height: auto;
+									resize: vertical;
+									min-height: 70px;
+									max-height: 300px;
+								}
+							}
+						}
+					}
+
+					div.next-action{
+						width: 100%;
+						overflow: hidden;
+						display: block;
+						border-top: 1px solid #eee;
+						padding-top: 20px;
+
+						button.btn{
+							color: #fff;
+							background: $blue;
+							font-size: 15px;
+							border: 1px solid $blue;
+							box-shadow: none;
+							outline: 0;
+							padding: 10px 15px;
+							text-transform: uppercase;
+							font-weight: 500;
+							display: block;
+							width: 100%;
+							border-radius: 2px;
+						
+
+							&:active,&:hover,&:focus{
+								background: darken($blue, 10);
+							}
+
+							&:disabled{
+								cursor: not-allowed;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		div.main-cont-footer{
+			width: 100%;
+			overflow: hidden;
+
+			span{
+				font-size: 13px;
+				color: $grey;
+			}
+		}
+	}
+
+	a.createdby-author-link{
+		display: inline-block;
+		position: fixed;
+		top: 0;
+		right: 0;
+		transition: all 0.45s ease;
+
+		img{
+			width: 300px;
+		}
+
+		&:hover, &:active{
+			top: 10px;
+			right: 10px;
+		}
+	}
+}

@@ -1,0 +1,75 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app      = $('[data-app="invite-users"]');
+		var _form     = _app.find('form[data-an="form"]');
+
+		SMC_CPanel.PS = new Vue({
+			el: "#vue-cpanel-user-invites",
+			data: {
+				links: <?php echo cl_minify_js(json($cl["invite_links"], true)); ?>
+			},
+			methods: {
+				update_list: function() {
+					var _app_ = this;
+
+					$.ajax({
+						url: '<?php echo cl_link("native_api/cpanel/update_invite_links_list"); ?>',
+						type: 'GET',
+						dataType: 'json'
+					}).done(function(data) {
+						_app_.links = data.links;
+					});
+				},
+				delete_link: function(id = false) {
+					if ($.isNumeric(id) && id) {
+						var _app_ = this;
+
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/delete_invite_link"); ?>',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {id: id},
+                            beforeSend: function() {
+								SMC_CPanel.waitme("show");
+							}
+                        }).done(function(data) {
+                            if (data.status == 200) {
+                            	_app_.update_list();
+                            }
+                            else{
+                            	SMC_CPanel.errorMSG();
+                            }
+                        }).always(function() {
+							SMC_CPanel.waitme();
+						});
+                    }
+				}
+			}
+		});
+
+		_form.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/create_invite_link"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_form.find('small.invalid-feedback').remove();
+				_form.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+				SMC_CPanel.waitme("show");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					SMC_CPanel.PS.update_list();
+				}
+				else {
+					SMC_CPanel.errorMSG();
+				}
+			},
+			complete: function() {
+				_form.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Create");
+				SMC_CPanel.waitme();
+			}
+		});
+	});
+</script>

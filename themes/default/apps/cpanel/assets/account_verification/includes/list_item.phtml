@@ -1,0 +1,60 @@
+<tr data-list-item="<?php echo($cl['li']['id']); ?>">
+    <td>
+        <?php echo($cl['li']['id']); ?>
+    </td>
+    <td>
+        <div class="user-info-holder">
+            <div class="avatar-holder">
+                <img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+            </div>
+            <div class="uname-holder">
+                <b>
+                    <?php echo($cl['li']['full_name']); ?>
+                </b>
+                <a href="<?php echo($cl['li']['url']); ?>">
+                    <?php echo($cl['li']['username']); ?>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td>
+        <span>
+            <?php echo($cl['li']['email']); ?>
+        </span>
+    </td>
+    <td>
+        <time>
+            <?php echo($cl['li']['last_active']); ?>
+        </time>
+    </td>
+    <td>
+        <?php if ($cl['li']['verified'] == '1'): ?>
+            <span class="badge bg-blue"><?php echo cl_translate('Verified'); ?></span>
+        <?php else: ?>
+            <span class="badge bg-orange"><?php echo cl_translate('Pending'); ?></span>
+        <?php endif; ?>
+    </td>
+    <td>
+        <time>
+            <?php echo($cl['li']['time']); ?>
+        </time>
+    </td>
+    <td>
+        <div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a onclick="CSMAccountVerification.show(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Show details'); ?>
+                </a>
+                <a onclick="CSMAccountVerification.verify(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Verify account'); ?>
+                </a>
+                <a onclick="CSMAccountVerification.delete(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Delete'); ?>
+                </a>
+            </ul>
+        </div>
+    </td>
+</tr>

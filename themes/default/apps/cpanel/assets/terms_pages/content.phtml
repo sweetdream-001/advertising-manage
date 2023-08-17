@@ -1,0 +1,60 @@
+<div class="cp-app-container" data-app="terms_settings">
+<div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>    <?php echo cl_translate('terms_of_use_pages'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item">    <?php echo cl_translate('terms_of_use_pages'); ?></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+ 
+     <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card"  style="padding: 15px;">
+                  <div class="card-header">
+                    <h5>
+                       <?php echo cl_translate('terms_of_use_pages_manage'); ?>
+                    </h5>
+                </div>
+
+                    <form class="form" data-an="form">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                	<div class="form-group" data-an="terms_page-input">
+                <div class="form-line">       
+    <textarea id="editor1"  name="terms_page"  placeholder="<?php echo cl_translate('Enter a description of your site'); ?>" cols="30" rows="10">
+                    	<?php echo cl_template('terms/src/source'); ?>
+                   
+                    </textarea>
+                    </div>
+                    </div>
+            
+                            </div>
+                            
+                        </div>
+                        
+                 <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                 <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                   <?php echo cl_translate("Save changes"); ?>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php echo cl_template('cpanel/assets/terms_pages/scripts/app_master_script'); ?>

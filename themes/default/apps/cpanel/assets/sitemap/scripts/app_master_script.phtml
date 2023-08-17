@@ -1,0 +1,33 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app  = $('[data-app="sitemap"]');
+		var _data = _app.find('form[data-an="form"]');
+
+		_data.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/update_sitemap"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				SMC_CPanel.waitme("show");
+				
+				_data.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("Your site map has been updated successfully!", 3000);
+					_data.find('[data-an="last-sitemap-date"]').text(data.last_sitemap);
+				}
+				else {
+					SMC_CPanel.errorMSG();
+				}
+			},
+			complete: function() {
+				SMC_CPanel.waitme();
+
+				_data.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Update sitemap");
+			}
+		});
+	});
+</script>

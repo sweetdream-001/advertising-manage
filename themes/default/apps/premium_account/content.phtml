@@ -1,0 +1,242 @@
+<div class="timeline-container" data-app="premium_account">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("premium_account"); ?>" data-spa="true">
+						<?php echo cl_translate('Premium account'); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+
+			</div>
+			<div class="rp">
+
+			</div>
+		</div>
+	</div>
+	<div class="timeline-placeholder">
+		<div class="icon2">
+			<img src="{%config theme_url%}/statics/img/loyalty-card.png">
+		</div>
+		<!-- Tabs navs -->
+		<ul class="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#annually" role="tab"
+					aria-controls="annually" aria-selected="true"><?php echo cl_translate("Annually"); ?> <div
+						class="css-1dbjc4n"></div></a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="monthe-tab" data-toggle="tab" href="#month" role="tab" aria-controls="month"
+					aria-selected="false"><?php echo cl_translate("Monthly"); ?> <div class="css-1dbjc4n"></div></a>
+			</li>
+		</ul>
+		<!-- Tabs navs -->
+		<div class="tab-content" id="myTabContent">
+			<!-- Tabs Annually -->
+			<div class="tab-pane fade show active" id="annually" role="tabpanel" aria-labelledby="annually-tab">
+				<div class="pl-message">
+					<h4>
+						<?php echo cl_translate('Switch to {@site_name@} premium account', array("site_name" => $cl["config"]["name"])); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("Subscribing to a premium account gives you the ability to flexibly customize your account and get access to premium features like the ad free content timeline, and many other features, the list of which will only grow"); ?>
+					</p>
+					<div class="blue_desc">
+						<span>
+							<?php echo cl_icon("disabled_visible"); ?>
+							<?php echo cl_translate("Hide AdSense ads"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("Remove AdSense (Google Ads, etc..) ads from my timeline and sidebars"); ?>
+						</p>
+						<span>
+							<?php echo cl_icon("hide_image"); ?>
+							<?php echo cl_translate("Hide native ads"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("Remove native user ads from my timeline"); ?>
+						</p>
+						<span>
+						<?php echo cl_icon('file_download'); ?>
+						<?php echo cl_translate('Download video, audio'); ?>
+						</span>
+						<p class="help">
+						<?php echo cl_translate("You can download videos, audios"); ?>
+						</p>
+						<span>
+						<?php echo cl_icon('file_download'); ?>
+						<?php echo cl_translate('Download document'); ?>
+						</span>
+						<p class="help">
+						<?php echo cl_translate("You can download document"); ?>
+						</p>
+						
+					</div>
+				</div>
+				<div class="c2action-single">
+					<button class="btn btn-custom main-inline lg" onclick="SMColibri.PS.premium_account_year.buy();">
+						<?php echo cl_translate("Upgrade to premium - {@pricey@}/Year", array("pricey" => cl_money($cl["config"]["premium_account_yprice"]))); ?>
+					</button>
+					<p class="terms">
+						<?php echo cl_translate("By subscribing, you agree to our Purchaser"); ?><a
+							href="<?php echo cl_link('terms_of_use'); ?>" data-spa="true">
+							<?php echo cl_translate("Terms of use"); ?>
+						</a>
+						<?php echo cl_translate("Subscriptions auto-renew until canceled, as described in the Terms. Cancel anytime."); ?>
+					</p>
+				</div>
+			</div>
+			<!-- Tabs Month -->
+			<div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
+			<div class="pl-message">
+					<h4>
+						<?php echo cl_translate('Switch to {@site_name@} premium account', array("site_name" => $cl["config"]["name"])); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("Subscribing to a premium account gives you the ability to flexibly customize your account and get access to premium features like the ad free content timeline, and many other features, the list of which will only grow"); ?>
+					</p>
+					<div class="blue_desc">
+						<span>
+							<?php echo cl_icon("disabled_visible"); ?>
+							<?php echo cl_translate("Hide AdSense ads"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("Remove AdSense (Google Ads, etc..) ads from my timeline and sidebars"); ?>
+						</p>
+						<span>
+							<?php echo cl_icon("hide_image"); ?>
+							<?php echo cl_translate("Hide native ads"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("Remove native user ads from my timeline"); ?>
+						</p>
+						<span>
+						<?php echo cl_icon('file_download'); ?>
+						<?php echo cl_translate('Download video, audio'); ?>
+						</span>
+						<p class="help">
+						<?php echo cl_translate("You can download videos, audios"); ?>
+						</p>
+						<span>
+						<?php echo cl_icon('file_download'); ?>
+						<?php echo cl_translate('Download document'); ?>
+						</span>
+						<p class="help">
+						<?php echo cl_translate("You can download document"); ?>
+						</p>
+					</div>
+				</div>
+				<div class="c2action-single">
+					<button class="btn btn-custom main-inline lg" onclick="SMColibri.PS.premium_account.buy();">
+						<?php echo cl_translate("Upgrade to premium - {@price@}/Per month", array("price" => cl_money($cl["config"]["premium_account_mprice"]))); ?>
+					</button>
+					<p class="terms">
+						<?php echo cl_translate("By subscribing, you agree to our Purchaser"); ?><a
+							href="<?php echo cl_link('terms_of_use'); ?>" data-spa="true">
+							<?php echo cl_translate("Terms of use"); ?>
+						</a>
+						<?php echo cl_translate("Subscriptions auto-renew until canceled, as described in the Terms. Cancel anytime."); ?>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php echo cl_template('premium_account/scripts/app_master_script'); ?>
+</div>
+<!-- MDB -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
+<!-- MDB -->
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-placeholder div.icon2 {
+		line-height: 0px;
+		margin-bottom: 35px;
+		width: 100%;
+		text-align: center;
+	}
+
+	.terms {
+
+		font-size: 12px;
+		margin-top: 20px;
+
+	}
+
+	.blue_desc .help {
+		text-align: left !important;
+		margin-left: 40px !important;
+	}
+
+	.blue_desc span svg {
+		margin-right: 12px;
+		color: var(--cl-primary-text-color);
+		position: relative;
+		max-width: 100%;
+		height: 1.25em;
+		fill: currentcolor;
+		display: inline-block;
+		font-size: 15px;
+	}
+
+	.pl-message {
+		margin-top: 30px;
+	}
+
+	.nav-tabs {
+
+		border-bottom-color: var(--smc-main-border-color);
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+	}
+
+	.nav-fill .nav-item .nav-link,
+	.nav-justified .nav-item .nav-link {
+		width: auto;
+		text-decoration: none;
+		text-transform: none;
+		color: var(--smc-main-text-color-lighten-5);
+		font-weight: 500;
+		font-size: 15px;
+	}
+
+	.nav-tabs .nav-item.show .nav-link,
+	.nav-tabs .nav-link.active {
+		color: var(--smc-main-text-color);
+		border-bottom-color: var(--smc-main-border-color);
+		border-bottom-width: 1px;
+		font-weight: 700;
+		background: transparent;
+	}
+
+	.nav-tabs .nav-item.show .nav-link,
+	.nav-tabs .nav-link.active div.css-1dbjc4n {
+		background-color: rgb(29, 155, 240);
+		height: 4px;
+		width: 56px;
+		border-radius: 9999px;
+		text-align: center;
+		display: block;
+		position: relative;
+		bottom: 0;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 15px;
+		margin-bottom: -15px;
+
+	}
+
+	div.icon2 img {
+		width: 150px;
+		height: auto;
+		margin-bottom: 0px;
+		margin-top: -30px;
+	}
+
+	div.icon2 {
+		text-align: center;
+	}
+</style>

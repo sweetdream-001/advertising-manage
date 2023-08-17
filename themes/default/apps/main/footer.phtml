@@ -1,0 +1,85 @@
+<div class="main-footer">
+	<ul class="footer-nav">
+
+			<li class="footer-nav-item">
+				<a href="<?php echo cl_link('search'); ?>">
+					<?php echo cl_translate("Explore"); ?>
+				</a>
+			</li>
+		
+		<?php if (not_empty($cl['is_logged'])): ?>
+			<?php if ($cl['config']['advertising_system'] == 'on'): ?>
+				<li class="footer-nav-item">
+					<a href="<?php echo cl_link('ads'); ?>">
+						<?php echo cl_translate("Advertising"); ?>
+					</a>
+				</li>
+			<?php endif; ?>
+		<?php endif; ?>
+		<li class="footer-nav-item">
+			<a href="<?php echo cl_link('terms_of_use'); ?>" data-spa="true">
+				<?php echo cl_translate("Terms of use"); ?>
+			</a>
+		</li>
+		<li class="footer-nav-item">
+			<a href="<?php echo cl_link('privacy_policy'); ?>" data-spa="true">
+				<?php echo cl_translate("Privacy policy"); ?>
+			</a>
+		</li>
+		<li class="footer-nav-item">
+			<a href="<?php echo cl_link('cookies_policy'); ?>" data-spa="true">
+				<?php echo cl_translate("Cookies"); ?>
+			</a>
+		</li>
+		<li class="footer-nav-item">
+			<a href="<?php echo cl_link('about_us'); ?>" data-spa="true">
+				<?php echo cl_translate("About us"); ?>
+			</a>
+		</li>
+		
+		<li class="footer-nav-item">
+			<a href="<?php echo cl_link('faqs'); ?>" data-spa="true">
+				<?php echo cl_translate('Help center'); ?>
+			</a>
+		</li>
+
+		<?php if (not_empty($cl["curr_lang"])): ?>
+			<li class="footer-nav-item dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<?php echo cl_translate($cl["curr_lang"]["lang_data"]["name"]); ?>
+				</a>
+				<div class="dropdown-menu dropdown-icons">
+					<?php foreach ($cl["languages"] as $lang): ?>
+						<a class="dropdown-item <?php if($lang["slug"] == $cl["curr_lang"]["lang_data"]["slug"]) {echo('active');} ?>" href="<?php echo cl_link(cl_strf("language/%s", $lang["slug"])); ?>">
+							<?php echo cl_translate($lang["name"]); ?>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			</li>
+		<?php endif; ?>
+
+		<li class="footer-nav-item">
+			<a href="<?php echo cl_link('about_us'); ?>">&copy; {%config name%} - <?php echo date('Y') ?>.</a>
+		</li>
+	</ul>
+
+	<?php if (not_empty($cl["config"]["android_app_url"]) || not_empty($cl["config"]["ios_app_url"])): ?>
+		<div class="footer-nav-get-apps h-mobile" style="margin-bottom:20px;">
+			<?php if (not_empty($cl["config"]["android_app_url"])): ?>
+				<a href="<?php echo($cl["config"]["android_app_url"]); ?>" target="_blank">
+                <span class="icon home">
+						<?php echo cl_ikon('android'); ?>Android App
+					</span>
+				</a>
+			<?php endif; ?>
+
+			<?php if (not_empty($cl["config"]["ios_app_url"])): ?>
+				<a href="<?php echo($cl["config"]["ios_app_url"]); ?>" target="_blank">
+                <span class="icon home">
+						<?php echo cl_ikon('apple2'); ?>iOS App
+					</span>
+				</a>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+</div>

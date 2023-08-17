@@ -1,0 +1,116 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.popover {
+    padding: 0;
+    max-width: 100%;
+    border: none;
+    box-shadow: none;
+    outline: 0;
+    border-radius: 0px;
+    background: transparent;
+    overflow: visible;
+    z-index: 3000;
+    div.user-infobox {
+        width: 340px;
+        background: var(--cl-primary-bg-color);
+        box-shadow: var(--cl-primary-box-shadow);
+        border-radius: var(--cl-tertiary-border-radius);
+        overflow: hidden;
+        position: fixed;
+        top: 40%;
+        left: 40%;
+        div.user-infobox__header {
+            div.cover {
+                background: var(--cl-primary-bg-color);
+                img {
+                    width: 100%;
+                }
+            }
+            div.avatar {
+                width: 80px;
+                height: 80px;
+                overflow: hidden;
+                border-radius: 100%;
+                border: 3px solid var(--cl-primary-bg-color);
+                background: var(--cl-primary-bg-color);
+                margin-left: var(--cl-primary-offset-size);
+                margin-top: -40px;
+                position: relative;
+                z-index: 2;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        div.user-infobox__body {
+            padding: var(--cl-primary-offset-size);
+            div.user-data {
+                div.user-data__name {
+                    margin-bottom: var(--cl-primary-offset-size);
+                    a {
+                        text-decoration: none;
+                        display: flex;
+                        flex-direction: column;
+                        span {
+                            display: inherit;
+                            width: auto;
+                            color: var(--cl-secondary-text-color);
+                            font-size: 16px;
+                            line-height: 1;
+                            &:first-child {
+                                color: var(--cl-primary-text-color);
+                                font-size: 20px;
+                                font-weight: 500;
+                                &::after {
+                                    width: 20px;
+                                    height: 20px;
+                                }
+                            }
+                        }
+                    }
+                }
+                div.user-data__counter {
+                    display: flex;
+                    align-items: center;
+                    div.counter-item {
+                        margin-right: var(--cl-primary-offset-size);
+                        a {
+                            display: block;
+                            text-decoration: none;
+                        }
+                        span {
+                            font-size: 16px;
+                            color: var(--cl-secondary-text-color);
+                            &:first-child {
+                                font-weight: 700;
+                                color: var(--cl-primary-text-color);
+                            }
+                        }
+                    }
+                }
+                div.user-data__bio {
+                    margin-top: 10px;
+                    font-size: 15px;
+                    line-height: 1.6;
+                    color: var(--cl-primary-text-color);
+                }
+            }
+        }
+        div.user-infobox__footer {
+            border-top: 1px solid var(--cl-primary-border-color);
+            padding: var(--cl-primary-offset-size);
+            a {
+                display: block;
+                text-decoration: none;
+            }
+        }
+    }
+}

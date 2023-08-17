@@ -1,0 +1,53 @@
+<tr data-list-item="<?php echo($cl['li']['id']); ?>">
+    <td>
+        <?php echo($cl['li']['id']); ?>
+    </td>
+    <td>
+        <div class="user-info-holder">
+            <div class="avatar-holder">
+                <img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+            </div>
+            <div class="uname-holder">
+                <b>
+                    <?php echo($cl['li']['full_name']); ?>
+                </b>
+                <a href="<?php echo($cl['li']['url']); ?>">
+                    <?php echo($cl['li']['username']); ?>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td>
+        <span>
+            <?php echo cl_money($cl['li']['amount']); ?>
+        </span>
+    </td>
+    <td>
+        <span>
+            <?php echo($cl["site_currencies"][strtolower($cl['li']['currency'])]["name"]); ?>
+        </span>
+    </td>
+    <td>
+        <time>
+            <?php echo($cl['li']['time']); ?>
+        </time>
+    </td>
+    <td>
+        <div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a onclick="CSMBankReceipts.show(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Show details'); ?>
+                </a>
+                <a onclick="CSMBankReceipts.accept(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Mark as paid'); ?>
+                </a>
+                <a onclick="CSMBankReceipts.delete(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Decline'); ?>
+                </a>
+            </ul>
+        </div>
+    </td>
+</tr>

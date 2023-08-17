@@ -1,0 +1,173 @@
+<div class="timeline-container">
+<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("settings/blocked"); ?>" data-spa="true">
+						<?php echo cl_translate("Blocked users"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				
+			</div>
+			<div class="rp">
+				
+			</div>
+		</div>
+	</div>
+	<div class="main-profile-settings-container">
+		<div class="profile-settings-nav">
+			<div class="nav-list-itemset-title">
+			<h4>
+				<?php echo cl_translate("Manage blocked users"); ?>
+			</h4>
+			</div>
+		</div>
+		<div class="profile-settings-content">
+			<?php if (not_empty($cl["blocked_users"])): ?>
+                <div class="timeline-users-container">
+                	<div class="timeline-user-ls">
+	                    <?php foreach ($cl["blocked_users"] as $cl['li']): ?>
+	                        <div class="user-list-item">
+	                            <div class="user-list-item__avatar">
+									<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+										<div class="user-avatar">
+											<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+										</div>
+									</a>
+								</div>
+								<div class="user-list-item__data">
+									<div class="user-data">
+										<div class="user-data__body">
+											<div class="user-data__body-topline">
+												<div class="flex-item-left">
+													<div class="user-data__name">
+														<a href="<?php echo($cl['li']['url']); ?>" data-spa="true" data-uinfo-lbox="<?php echo($cl['li']['id']); ?>" data-toggle="popover" data-placement="bottom">
+															<span class="user-name-holder">
+																<span class="user-name-holder__name">
+																	<?php echo $cl['li']['name']; ?>
+																</span>
+
+																<?php if ($cl['li']['verified'] == '1'): ?>
+																	<span class="user-name-holder__badge">
+																		<?php echo cl_icon("verified_user_badge"); ?>
+																	</span>
+																<?php endif; ?>
+															</span>
+															<span>
+																@<?php echo($cl['li']['username']); ?>
+															</span>
+														</a>
+													</div>
+													<div class="user-data__stats">
+														<div class="stats-item">
+															<span>
+																<?php echo cl_number($cl['li']['posts']); ?>
+															</span>
+															<span><?php echo cl_translate("Posts"); ?></span>	
+														</div>
+														<div class="stats-item">
+															<span>
+																<?php echo cl_number($cl['li']['followers']); ?>
+															</span>
+															<span><?php echo cl_translate("Followers"); ?></span>	
+														</div>
+														<div class="stats-item">
+															<span>
+																<?php echo cl_number($cl['li']['following']); ?>
+															</span>
+															<span><?php echo cl_translate("Following"); ?></span>	
+														</div>
+													</div>
+												</div>
+												<div class="flex-item-right">
+													<div class="user-data__ctrls">
+														<button onclick="SMColibri.block(this);" class="btn btn-block btn-custom main-inline lg" data-action="unblock" data-id="<?php echo($cl["li"]['profile_id']); ?>">
+				                                            <?php echo cl_translate("Unblock"); ?>
+				                                        </button>
+													</div>
+												</div>
+											</div>
+
+											<?php if (not_empty($cl['li']['about'])): ?>
+												<div class="user-data__about">
+													<?php echo $cl['li']['about']; ?>
+
+													<?php if (not_empty($cl['li']['website'])): ?>
+														| <?php echo cl_html_el("a", $cl['li']['website'], array("href" => $cl['li']['website'], "target" => "_blank", "class" => "inline-link")); ?>
+													<?php endif; ?>
+												</div>
+											<?php endif; ?>
+
+											<?php if (not_empty($cl['li']['common_follows'])): ?>
+												<div class="user-data__common">
+													<div class="common-follows">
+														<div class="common-follows__title">
+															<?php if (count($cl['li']['common_follows']) > 1): ?>
+																<?php echo cl_translate("Has {@common_follows@} followers you know", array("common_follows" => count($cl['li']['common_follows']))); ?>
+															<?php else: ?>
+																<?php echo cl_translate("Has {@common_follows@} follower you know", array("common_follows" => count($cl['li']['common_follows']))); ?>
+															<?php endif; ?>
+														</div>
+														<div class="common-follows__list">
+															<?php foreach ($cl['li']['common_follows'] as $index => $udata): ?>
+																<?php if ($index <= 4): ?>
+																	<div class="common-follows__item" title="<?php echo $udata["name"]; ?> | @<?php echo $udata["username"]; ?>">
+																		<a href="<?php echo $udata["url"]; ?>" data-spa="true">
+																			<img src="<?php echo $udata["avatar"]; ?>" alt="IMG">
+																		</a>
+																	</div>
+																	
+																<?php endif;?>
+															<?php endforeach; ?>
+
+															<?php if (count($cl['li']['common_follows']) > 5): ?>
+																<div class="common-follows__item common-follows__item_total">
+																	<span>
+																		+<?php echo (count($cl['li']['common_follows']) - 5); ?>
+																	</span>
+																</div>
+															<?php endif; ?>
+														</div>
+													</div>
+												</div>
+											<?php endif; ?>
+										</div>
+									</div>
+								</div>
+	                        </div>
+	                    <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+		</div>
+	</div>
+</div>
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+		max-width: 970px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.left-sb-container {
+		margin-left: -25px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.right-sb-container {
+		display: none;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+		max-width: 550px;
+	}
+
+	.main-profile-settings-container {
+		margin-left: 16px;
+		margin-right: auto;
+		padding: 16px;
+		max-width: 550px;
+	}
+</style>

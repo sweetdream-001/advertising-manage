@@ -1,0 +1,18 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-data-loader {
+    padding: var(--cl-primary-offset-size);
+    display: flex;
+    justify-content: center;
+    button {
+        display: block;
+        width: 100%;
+    }
+}

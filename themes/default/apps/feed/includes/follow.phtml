@@ -1,0 +1,117 @@
+<div class="feed_follow">
+    <div class="follow_head">
+        <h6> Who to follow</h6>
+    </div>
+    <div class="body_follow">
+        <div id="cardSlider" class="carousel mb-6 max-w-6xl mx-auto bg-gray-50 py-10">
+            <div class="carousel__viewport px-12">
+                <figure class="carousel__slide py-0 px-4 w-1/3">
+                    <img class="mb-4 w-full rounded-lg" src="https://source.unsplash.com/0Zx1bDv5BNY/300x400" />
+                    <figcaption>
+                        <h3 class="text-lg font-semibold">Lara</h3>
+                        <p>CEO</p>
+                    </figcaption>
+                </figure>
+                <figure class="carousel__slide py-0 px-4 w-1/3">
+                    <img class="mb-4 w-full rounded-lg" src="https://source.unsplash.com/NPy59VPyYYg/300x400" />
+                    <figcaption>
+                        <h3 class="text-lg font-semibold">Celina</h3>
+                        <p>CTO</p>
+                    </figcaption>
+                </figure>
+                <figure class="carousel__slide py-0 px-4 w-1/3">
+                    <img class="mb-4 w-full rounded-lg" src="https://source.unsplash.com/7jCYw6a2Wao/300x400" />
+                    <figcaption>
+                        <h3 class="text-lg font-semibold">Gislain</h3>
+                        <p>Lead Developer</p>
+                    </figcaption>
+                </figure>
+                <figure class="carousel__slide py-0 px-4 w-1/3">
+                    <img class="mb-4 w-full rounded-lg" src="https://source.unsplash.com/55JRsxcAiWE/300x400" />
+                    <figcaption>
+                        <h3 class="text-lg font-semibold">Adrien</h3>
+                        <p>Full Stack Developer</p>
+                    </figcaption>
+                </figure>
+                <figure class="carousel__slide py-0 px-4 w-1/3">
+                    <img class="mb-4 w-full rounded-lg" src="https://source.unsplash.com/pQyIutdScOY/300x400" />
+                    <figcaption>
+                        <h3 class="text-lg font-semibold">Ruby</h3>
+                        <p>Full Stack Developer</p>
+                    </figcaption>
+                </figure>
+                <figure class="carousel__slide py-0 px-4 w-1/3">
+                    <img class="mb-4 w-full rounded-lg" src="https://source.unsplash.com/WEDDt-u3q3o/300x400" />
+                    <figcaption>
+                        <h3 class="text-lg font-semibold">Lucas</h3>
+                        <p>Sales Manager</p>
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <div>
+            <?php if (not_empty($cl['follow_suggestion'])) : ?>
+                <div class="follow-suggestion__body">
+                    <?php foreach ($cl['follow_suggestion'] as $row) : ?>
+                        <div class="follow-suggestion__item">
+                            <div class="flex-cr">
+                                <div class="avatar">
+                                    <img src="<?php echo ($row['avatar']); ?>" alt="avatar">
+                                </div>
+                                <div class="user-info-holder">
+                                    <h4>
+                                        <a href="<?php echo ($row['url']); ?>" data-uinfo-lbox="<?php echo ($row['id']); ?>" data-toggle="popover" data-placement="bottom">
+                                            <span class="user-name-holder">
+                                                <?php echo $row['name']; ?>
+                                                <?php if ($row['verified'] == '1') : ?>
+                                                    <span class="user-name-holder__badge">
+                                                        <svg style='vertical-align: middle;' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'>
+                                                            <path fill='dodgerblue' d='M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'></path>
+                                                        </svg>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </span>
+
+                                        </a>
+
+                                    </h4>
+                                    <a href="<?php echo ($row['url']); ?>">
+                                        @<?php echo $row['username']; ?>
+                                    </a>
+
+                                </div>
+                                <?php if ($row['follow_privacy'] == "approved") : ?>
+                                    <?php if (not_empty($row['follow_requested'])) : ?>
+                                        <button onclick="SMColibri.req_follow(this);" class="btn btn-custom main-inline md" data-action="unfollow" data-user-name="<?php echo ($row['name']); ?>" data-id="<?php echo ($row['id']); ?>">
+                                            <?php echo cl_translate("Pending"); ?>
+                                        </button>
+                                    <?php else : ?>
+                                        <button onclick="SMColibri.req_follow(this);" class="btn btn-custom main-outline md" data-action="follow" data-user-name="<?php echo ($row['name']); ?>" data-id="<?php echo ($row['id']); ?>">
+                                            <?php echo cl_translate("Follow"); ?>
+                                        </button>
+                                    <?php endif; ?>
+                                <?php else : ?>
+                                    <button onclick="SMColibri.follow(this);" class="btn btn-custom sm main-outline" data-action="follow" data-user-name="<?php echo ($row['name']); ?>" data-id="<?php echo ($row['id']); ?>">
+                                        <?php echo cl_translate("Follow"); ?>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="follow-suggestion__footer">
+                    <a href="<?php echo cl_link("suggested"); ?>" data-spa="true">
+                        <?php echo cl_translate("Show more"); ?>
+                    </a>
+                </div>
+            <?php else : ?>
+                <div class="follow-suggestion__placeholder">
+                    <?php echo cl_translate("Here will be a list of the most recommended people to follow"); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />

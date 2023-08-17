@@ -1,0 +1,27 @@
+<?php if (empty($_SESSION["lang"])): ?>
+	<script>
+		"use strict";
+
+		jQuery(document).ready(function($) {
+			if (window.navigator) {
+				var user_lang = (navigator.language || navigator.userLanguage);
+				var disp_lang = "<?php echo $cl["langname_shortcuts"][$cl["language"]]; ?>";
+				var languages = <?php echo cl_minify_js(json($cl["langname_shortcuts"], true)); ?>;
+
+				if (user_lang) {
+
+					var user_lang = user_lang.slice(0, 2);
+
+					if (user_lang !== disp_lang && user_lang !== "en") {
+
+						$.each(languages, function(k, v){
+							if (user_lang === v) {
+								cl_redirect("<?php echo cl_link("language/{0}") ?>".format(k));
+							}
+						});
+					}
+				}
+			}
+		});
+	</script>
+<?php endif; ?>

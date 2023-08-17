@@ -1,0 +1,20 @@
+<div class="hashtag-list-item"  data-list-item="<?php echo($cl['li']['id']); ?>">
+	<a class="block-link" href="<?php echo($cl['li']['url']); ?>" data-spa="true">
+		<div class="hashtag-data">
+			<div class="hashtag-data__left-icon">
+				<?php echo cl_icon("tag"); ?>
+			</div>
+			<div class="hashtag-data__body">
+				<span>
+					<?php echo($cl['li']['hashtag']); ?>
+				</span> 
+				<span>
+					<?php echo($cl['li']['total']); ?> <?php echo cl_translate('Posts'); ?>
+				</span>
+			</div>
+			<div class="hashtag-data__right-icon">
+				<?php echo cl_icon('navigate_next'); ?>
+			</div>
+		</div>
+	</a>
+</div>

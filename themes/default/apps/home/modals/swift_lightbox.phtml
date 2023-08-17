@@ -1,0 +1,110 @@
+<div class="swift-player" id="cl-play-swift-vue-app" v-bind:class="{'show': status}">
+    <div class="swift-player__body">
+        <button v-if="has_prev" class="swift-player__nav-ctrl prev" v-on:click="slide_prev">
+            <?php echo cl_icon("arrow_back_ios"); ?>
+        </button>
+        <div class="swift-data">
+            <div class="swift-data__header">
+                <div class="swift-data__header-topline">
+                    <div v-for="(val, index) in swift_data.swift" class="swift-timebar" v-on:click="slide_to(index)">
+                        <span v-if="curr_swift_id == index" v-bind:style="{width: slide_bar_status + '%'}"></span>
+                        <span v-else v-bind:style="{width: val.slide_bar + '%'}"></span>
+                    </div>
+                </div>
+                <div class="swift-data__header-botline">
+                    <div class="swift-publisher">
+                        <div class="swift-publisher__avatar">
+                            <img v-bind:src="swift_data.avatar" alt="Avatar">
+                        </div>
+                        <div class="swift-publisher__username">
+                            <a v-bind:href="swift_data.url">
+                                <span>
+                                    {{swift_data.name}}
+                                </span>
+                                <span>
+                                    <?php echo cl_translate("Today at"); ?> {{curr_swift.time}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="swift-controls">
+                        <button class="swift-controls__item swift-controls__item_pause" v-if="slide_bar_pause" v-on:click="un_pause">
+                            <?php echo cl_icon("play_arrow"); ?>
+                        </button>
+                        <button class="swift-controls__item swift-controls__item_pause" v-else v-on:click="do_pause">
+                            <?php echo cl_icon("pause"); ?>
+                        </button>
+                        <button v-if="swift_data.is_user" class="swift-controls__item swift-controls__item_delete" v-on:click="delete_swift">
+                            <?php echo cl_icon("delete_inline"); ?>
+                        </button>
+                        <button class="swift-controls__item swift-controls__item_dismiss" v-on:click="close">
+                            <?php echo cl_icon("close"); ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="swift-data__body">
+                <div class="swift-media">
+                    <div class="swift-media__image" v-if="curr_swift.type == 'image'">
+                        <img v-bind:src="curr_swift.media.src" alt="swift-img" v-on:load="swift_loaded = true" v-on:error="swift_loaded = true">
+                    </div>
+                    <div class="swift-media__video" v-else-if="curr_swift.type == 'video'">
+                        <video ref="video" v-on:loadeddata="swift_loaded = true" v-on:error="swift_loaded = true">
+                            <source type="video/mp4" v-bind:src="curr_swift.media.source"/>
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="swift-data__views" v-if="show_swift_views">
+                <div class="swift-views">
+                    <div class="swift-views__header">
+                        <span class="flex-item-left">
+                            <?php echo cl_translate("People who viewed"); ?> ({{curr_swift_views}})
+                        </span>
+                        <span class="flex-item-right" v-on:click="toggle_views_list">
+                            <?php echo cl_icon('close'); ?>
+                        </span>
+                    </div> 
+                    <div class="swift-views__list">
+                        <a v-for="user in curr_swift.views" class="block-link" v-bind:href="user.url">
+                            <div class="swift-views__list-item">
+                                <div class="avatar">
+                                    <img v-bind:src="user.avatar" alt="Img">
+                                </div>
+                                <div class="userdata">
+                                    <div class="username__name">
+                                        <span>{{user.name}}</span>
+                                        <span>@{{user.username}}</span>
+                                    </div>
+                                    <div class="username__time">
+                                        {{user.time}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="swift-data__footer" v-if="curr_swift.text || (swift_data.is_user && curr_swift_views > 0)">
+                <div class="swift-data__desc" v-if="curr_swift.text">
+                    {{curr_swift.text}}
+                </div>
+                <div class="swift-data__views-total" v-if="swift_data.is_user && curr_swift_views > 0" v-on:click="toggle_views_list">
+                    <span class="icon">
+                        <?php echo cl_icon('up'); ?>
+                    </span>
+                    <span class="text">
+                        <?php echo cl_translate("Show views"); ?> ({{curr_swift_views}})
+                    </span>
+                </div>
+            </div>
+        </div>
+        <button v-if="has_next" class="swift-player__nav-ctrl next" v-on:click="slide_next">
+            <?php echo cl_icon("arrow_forward_ios"); ?>
+        </button>
+    </div>
+            
+    <button class="swift-player__close" onclick="SMColibri.PS.play_swift.close();">
+        <?php echo cl_icon("close"); ?>
+    </button>
+</div>

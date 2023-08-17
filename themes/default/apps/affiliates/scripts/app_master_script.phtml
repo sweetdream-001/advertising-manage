@@ -1,0 +1,167 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		Vue.use(window.vuelidate.default);
+
+		var _app          = $('div[data-app="affiliates"]');
+		var SMCAffiliates = new Vue({
+			el: "#aff_payout_request_form",
+			data: {
+				submitting: false,
+				unsuccessful_attempt: false,
+				paypal: "<?php echo $me['email']; ?>",
+				amount: "",
+				balance: "<?php echo cl_calc_affiliate_bonuses(); ?>",
+				invalid_amount_feedback: ""
+			},
+			computed: {
+				is_invalid_amount: function() {
+					if (this.$v.amount.required == true && this.$v.amount.$invalid) {
+						this.invalid_amount_feedback = "<?php echo cl_translate("The payout amount you entered is not valid"); ?>";
+						return true;
+					}
+
+					else if(this.$v.amount.$model && Number(this.amount) > Number(this.balance)) {
+						this.invalid_amount_feedback = "<?php echo cl_translate("The payout amount you entered exceeds your available funds"); ?>";
+						return true;
+					}
+
+					else if(this.$v.amount.$model && Number(this.amount) < <?php echo intval($cl["config"]["aff_payout_min"]); ?>) {
+						this.invalid_amount_feedback = "<?php echo cl_translate("The payout amount you entered is less than {@min_amount@}. The minimum withdrawal amount is {@min_amount@}.", array('min_amount' => cl_money($cl["config"]["aff_payout_min"]))); ?>";
+						return true;
+					}
+				},
+				is_invalid_paypal: function() {
+					if (this.$v.paypal.required == true && this.$v.paypal.$invalid) {
+						return true;
+					}
+
+					else {
+						return false;
+					}
+				},
+				is_invalid_form: function() {
+					if (this.$v.$invalid == true) {
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+			},
+			validations: {
+				amount: {
+					required: window.validators.required,
+					decimal: window.validators.decimal
+				},
+				paypal: {
+					required: window.validators.required,
+					email: window.validators.email,
+					min_length: window.validators.minLength(8),
+					max_length: window.validators.maxLength(55),
+				}
+			},
+			methods: {
+				new_req: function() {
+					$('#aff-payout-request').modal('show');
+				},
+				cancel_req: function() {
+					$('#aff-payout-request').modal('hide');
+				},
+				submit_new_req: function(_self = null) {
+					_self.preventDefault();
+
+					var _app_ = this;
+
+					$(_self.target).ajaxSubmit({
+						url: "<?php echo cl_link("native_api/settings/affiliate_payout_req"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						beforeSend: function() {
+							_app_.submitting  = true;
+						},
+						success: function(data) {
+							if (data.status == 200) {
+								_app_.cancel_req();
+
+								cl_bs_notify("<?php echo cl_translate('Your withdrawal request has been successfully sent!'); ?>", 1000);
+
+								setTimeout(function() {
+									SMColibri.spa_reload();
+								}, 1500);
+							}
+
+							else {
+								_app_.unsuccessful_attempt = true;
+							}
+						},
+						complete: function() {
+							_app_.submitting = false;
+						}
+					});
+				},
+				how_it_works: function() {
+					$('#affiliates-workflow').modal('show');
+				},
+				cancel_pending_req: function(_self = null) {
+					_self = $(_self);
+
+					$.ajax({
+						url: "<?php echo cl_link("native_api/settings/cancel_affiliate_payout_req"); ?>",
+						type: "POST",
+						dataType: "json",
+						beforeSend: function() {
+							_self.attr("disabled", "true").text("<?php echo cl_translate('Please wait'); ?> ...");
+						}
+					}).done(function(data) {
+						cl_bs_notify("<?php echo cl_translate('Your withdrawal request has been successfully canceled!'); ?>", 1000);
+
+						setTimeout(function() {
+							SMColibri.spa_reload();
+						}, 2000);
+					}).always(function() {
+						$("div.confirm-actions-modal").modal("hide");
+					});
+				},
+				transfer2wallet: function(_self = null) {
+					_self = $(_self);
+
+					var promise = SMColibri.confirm_action({
+						btn_1: "<?php echo cl_translate("Cancel"); ?>",
+						btn_2: "<?php echo cl_translate("Transfer"); ?>",
+						title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+						message: "<?php echo cl_translate("Please note that if you transfer funds from an affiliate program to your wallet, you will not be able to undo this action"); ?>",
+					});
+
+					promise.done(function() {
+						$.ajax({
+							url: "<?php echo cl_link("native_api/settings/trans_aff_wallet"); ?>",
+							type: "POST",
+							dataType: "json",
+							beforeSend: function() {
+								_self.attr("disabled", "true").text("<?php echo cl_translate('Please wait'); ?> ...");
+							}
+						}).done(function(data) {
+							cl_bs_notify("<?php echo cl_translate('Your withdrawal request has been successfully canceled!'); ?>", 1000);
+
+							setTimeout(function() {
+								cl_redirect("<?php echo cl_link("wallet"); ?>");
+							}, 2000);
+						}).always(function() {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+			        });
+
+					promise.fail(function() {
+			            $("div.confirm-actions-modal").modal("hide");
+			        });
+				}
+			}
+		});
+
+		if (window.SMCAffiliates == undefined) {
+			window.SMCAffiliates = SMCAffiliates;
+		}
+	});
+</script>

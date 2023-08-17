@@ -1,0 +1,76 @@
+<div class="cp-app-container" data-app="push-notifications">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Push notifications'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Push notifications'); ?></li>
+
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('Manage push notifications API settings'); ?>
+                        </h5>
+                    </div>
+
+
+                    <form class="form mega-inline" data-an="form">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group" data-an="firebase_api_key-input">
+                                        <label>
+                                            <?php echo cl_translate('Firebase API key'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="icofont icofont-key"></i></span>
+                                            <input value="{%config firebase_api_key%}" name="firebase_api_key" type="text" class="form-control" placeholder="<?php echo cl_translate('Firebase API key'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group" data-an="push_notifs-input">
+                                        <label>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="icofont icofont-toggle-on"></i></span>
+                                            <select name="push_notifs" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['push_notifs'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['push_notifs'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php echo cl_template('cpanel/assets/push_notifications/scripts/app_master_script'); ?>

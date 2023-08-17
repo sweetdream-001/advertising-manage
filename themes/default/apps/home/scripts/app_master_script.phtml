@@ -1,0 +1,672 @@
+<script>
+	"use strict";
+	
+	$(document).ready(function($) {
+
+		<?php echo cl_js_template('apps/timeline/scripts/js/pubbox_mixin'); ?>
+
+		var _app     = $('[data-app="homepage"]');
+		SMColibri.PS = Object({
+			init_app: function() {
+				var _self_ = this;
+
+				if ($("form#vue-pubbox-app-1").length) {
+					new Vue({
+						el:"#vue-pubbox-app-1",
+						mixins: [pubbox_form_app_mixin]
+					});
+				}
+				
+				$(window).on('scroll', function() {
+					if (SMColibri.curr_pn == "home") {
+					    if(($(window).scrollTop() + $(window).height()) > ($(document).height() - 100)) {
+					    	if (cl_empty(_self_.timeline.loading) && _self_.timeline.loadmore) {
+					            _self_.timeline.load_old();
+				       		}
+					    }
+					}
+				});
+
+				setInterval(function() {
+					if (SMColibri.curr_pn == "home") {
+						_self_.timeline.update();
+					}
+				}, (60 * 1000));
+			},
+			timeline: {
+				loading: false,
+				loadmore: true,
+				load_offset: 30,
+				load_old: function() {
+					var post_ls = _app.find('[data-an="entry-list"]');
+		            var offset  = 30;
+		            var _self_  = this;
+
+		            if ($.isNumeric(offset) && offset) {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/home/load_more"); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: {
+								offset: _self_.load_offset
+							},
+							beforeSend: function() {
+								_self_.loading = true;
+							}
+						}).done(function(data) {
+							if (data.status == 200) {
+								post_ls.append($(data.html));
+
+								_self_.load_offset += 30;
+							}
+							else{
+								_self_.loadmore = false;
+							}
+						}).always(function() {
+							_self_.loading = false;
+						});
+					}
+				},
+				update: function() {
+					var post_ls = _app.find('[data-an="entry-list"]');
+					var onset   = 0;
+
+		            if (post_ls.find('div[data-post-offset]').length) {
+		            	onset  = post_ls.find('div[data-post-offset]').first().data('post-offset');
+		            }
+
+		            if ($.isNumeric(onset) && onset) {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/home/update_timeline"); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: {
+								onset: onset
+							}
+						}).done(function(data) {
+							if (data.status == 200) {
+								post_ls.prepend($(data.html));
+							}
+						});
+					}
+				}
+			}
+		});
+
+		<?php if ($cl["config"]["swift_system_status"] == "on"): ?>
+
+			new Swiper("div#homepage-swifts-slider", {
+		        slidesPerView: "auto",
+		        speed: 500,
+		        spaceBetween: 15,
+		        loop: false,
+		        autoplay: false,
+		        scrollbar: {
+				    el: 'div#homepage-swifts-scrollbar',
+				    draggable: true,
+				    hide: false
+				}
+		    });
+
+			SMColibri.PS.new_swift = new Vue({
+				el: "#cl-new-swift-vue-app",
+				data: {
+					text: "",
+					image: {},
+					video: {},
+					image_ctrl: true,
+					video_ctrl: true,
+					submitting: false,
+					active_media: null,
+					emoticons_picker: {
+						icons: window.cl_emoticons,
+						status: false,
+						active_group: "people"
+					},
+				},
+				computed: {
+					valid_form: function() {
+						if (this.active_media != null && cl_empty(this.submitting)) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
+				},
+				methods: {
+					add_swift: function() {
+						_app.find('[data-an="swift-pubbox"]').modal("show");
+					},
+					emoticon_picker: function() {
+
+						var _app_ = this;
+
+						_app_.emoticons_picker.status = !_app_.emoticons_picker.status;
+
+					},
+					emoticon_insert: function(em = "") {
+						var _app_    = this;
+						var curs_pos = _app_.$refs.swift_text.selectionStart;
+
+						if ($.isNumeric(curs_pos) != true) {
+							curs_pos = 0;
+						}
+						
+						_app_.text = _app_.text.insert_at(curs_pos, em);
+					},
+					textarea_resize: function(_self = null) {
+						autosize($(_self.target));
+					},
+					publish: function(_self = null) {
+						_self.preventDefault();
+
+						var form  = $(_self.$el);
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/swift/publish_new_swift"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function() {
+								_app_.submitting = true;
+							},
+							success: function(data) {
+								if (data.status != 200) {
+									_app_.submitting = false;
+									SMColibri.errorMSG();
+								}
+
+								else {
+									SMColibri.spa_reload();
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+								_app_.reset_data();
+
+								_app.find('[data-an="swift-pubbox"]').modal("hide");
+							}
+						});
+					},
+					select_images: function() {
+						var _app_ = this;
+
+						if (_app_.active_media == 'image' || cl_empty(_app_.active_media)) {
+							if (_app_.image_ctrl) {
+								var app_el = $(_app_.$el);
+								app_el.find('input[data-an="images-input"]').trigger('click');
+							}
+						}
+					},
+					select_video: function() {
+						var _app_ = this;
+
+						if (cl_empty(_app_.active_media)) {
+							if (_app_.video_ctrl) {
+								var app_el = $(_app_.$el);
+								app_el.find('input[data-an="video-input"]').trigger('click');
+							}
+						}
+					},
+					upload_images: function(event = null) {
+						var _app_  = this;
+						var app_el = $(_app_.$el);
+
+						if (cl_empty(_app_.active_media) || _app_.active_media == 'image') {
+							if (SMColibri.max_upload(event.target.files[0].size)) {
+								SMColibri.progress_bar("show");
+
+								var form_data = new FormData();
+
+								form_data.append('delay', 1);
+								form_data.append('image', event.target.files[0]);
+								form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+								
+								$.ajax({
+									url: '<?php echo cl_link("native_api/swift/upload_swift_image"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									enctype: 'multipart/form-data',
+									data: form_data,
+									cache: false,
+							        contentType: false,
+							        processData: false,
+							        timeout: 600000,
+							        beforeSend: function() {
+							        	_app_.submitting = true;
+							        },
+									success: function(data) {
+										if (data.status == 200) {
+											_app_.image = data.img;
+										}
+										else {
+											SMColibri.errorMSG();
+										}
+									},
+									complete: function() {
+										if (cl_empty(_app_.active_media)) {
+											_app_.active_media = "image";
+										}
+
+										_app_.disable_ctrls();
+
+										_app_.submitting = false;
+									}
+								});
+
+								setTimeout(function() {
+									SMColibri.progress_bar("end");
+								}, 1500);
+							}
+
+							app_el.find('input[data-an="images-input"]').val('');
+						}
+					},
+					upload_video: function(event = null) {
+						var _app_  = this;
+						var app_el = $(_app_.$el);
+
+						if (cl_empty(_app_.active_media)) {
+							var video  = event.target.files[0];
+							if (video && SMColibri.max_upload(video.size)) {
+
+								var form_data = new FormData();
+								form_data.append('video', video);
+								form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+
+								$.ajax({
+									url: '<?php echo cl_link("native_api/swift/upload_swift_video"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									enctype: 'multipart/form-data',
+									data: form_data,
+									cache: false,
+							        contentType: false,
+							        processData: false,
+							        timeout: 600000,
+							        beforeSend: function() {
+							        	SMColibri.progress_bar("show");
+							        },
+									success: function(data) {
+										if (data.status == 200) {
+											_app_.video = data.video;
+										}
+										else {
+											SMColibri.errorMSG();
+										}
+									},
+									complete: function() {
+										if ($.isEmptyObject(_app_.video) != true && cl_empty(_app_.active_media)) {
+											_app_.active_media = "video";
+										}
+
+										_app_.disable_ctrls();
+										app_el.find('input[data-an="video-input"]').val('');
+
+										setTimeout(function() {
+											SMColibri.progress_bar("end");
+										}, 1500);
+									}
+								});
+							}
+						}
+					},
+					delete_image: function() {
+						var _app_ = this;
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/swift/delete_swift_image"); ?>',
+							type: 'POST',
+							dataType: 'json',
+						}).done(function(data) {
+							if (data.status != 200) {
+								SMColibri.errorMSG();
+							}
+							else {
+								_app_.video = Object({});
+							}
+						}).always(function() {
+							_app_.active_media = null;
+
+							_app_.disable_ctrls();
+						});
+					},
+					delete_video: function() {
+						var _app_ = this;
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/swift/delete_swift_video"); ?>',
+							type: 'POST',
+							dataType: 'json',
+						}).done(function(data) {
+							if (data.status != 200) {
+								SMColibri.errorMSG();
+							}
+							else {
+								_app_.video = Object({});
+							}
+						}).always(function() {
+							if ($.isEmptyObject(_app_.video)) {
+								_app_.active_media = null;
+							}
+
+							_app_.disable_ctrls();
+						});
+					},
+					disable_ctrls: function() {
+						var _app_ = this;
+
+						if(_app_.active_media != null) {
+							_app_.image_ctrl = false;
+							_app_.video_ctrl = false;
+						}
+						else {
+							_app_.image_ctrl = true;
+							_app_.video_ctrl = true;
+						}
+					},
+					reset_data: function() {
+						var _app_          = this;
+						_app_.image_ctrl   = true;
+						_app_.video_ctrl   = true;
+						_app_.text         = "";
+						_app_.images       = Object({});
+						_app_.video        = Object({});
+						_app_.active_media = null;
+					}
+				},
+				mounted: function() {
+					var _app_ = this;
+				}
+			});
+
+			SMColibri.PS.play_swift =new Vue({
+				el: "#cl-play-swift-vue-app",
+				data:{
+					swifts: <?php echo cl_minify_js(json($cl["tl_swifts"], true)); ?>,
+					swift_data: Object({}),
+					status: false,
+					curr_swift: Object({}),
+					curr_swift_id: false,
+					next_slide_id: false,
+					prev_slide_id: false,
+					slide_bar_int: false,
+					slide_bar_status: 0,
+					slide_bar_time: 10000,
+					slide_bar_pause: false,
+					curr_swift_views: 0,
+					show_swift_views: false,
+					swift_loaded: false
+				},
+				computed: {
+					has_next: function() {
+						var _app_     = this;
+						var next_swid = (_app_.curr_swift_id + 1);
+
+						if ($.isEmptyObject(_app_.swift_data) != true) {
+							if (_app_.swift_data.swift.hasIndex(next_swid) == true) {
+								_app_.next_slide_id = next_swid;
+
+								return true;
+							}
+							else {
+								_app_.next_slide_id = false;
+								return false;
+							}
+						}
+					},
+					has_prev: function() {
+						var _app_     = this;
+						var prev_swid = (_app_.curr_swift_id - 1);
+
+						if ($.isEmptyObject(_app_.swift_data) != true) {
+							if (_app_.swift_data.swift.hasIndex(prev_swid) == true) {
+								_app_.prev_slide_id = prev_swid;
+
+								return true;
+							}
+							else {
+								_app_.prev_slide_id = false;
+
+								return false;
+							}
+						}
+					}
+				},
+				methods: {
+					show: function(id = false) {
+						var _app_           = this;
+						_app_.swift_data    = _app_.swifts[id];
+						_app_.curr_swift_id = _app_.init_slide_id();
+						_app_.status        = _app_.slide_to(_app_.curr_swift_id);
+
+						$("body").addClass("ov-h");
+					},
+					init_slide_id: function() {
+						var _app_ = this;
+
+						if ($.isEmptyObject(_app_.swift_data) != true) {
+
+							var curr_swift_id = 0;
+
+							for (var i = 0; i < _app_.swift_data.swift.length; i++) {
+								if (_app_.swift_data.swift[i].seen == 0) {
+									curr_swift_id = i; break;	
+								}
+							}
+
+							return curr_swift_id;
+						}
+						else {
+							return false;
+						}
+					},
+					slide_to: function(id = false) {
+						var _app_        = this;
+						_app_.curr_swift = Object({});
+
+						if (_app_.swift_data.swift.hasIndex(id) == true) {
+							_app_.curr_swift       = _app_.swift_data.swift[id];
+							_app_.curr_swift       = _app_.init_swift_data(_app_.curr_swift);
+							_app_.curr_swift_id    = id;
+							_app_.slide_bar_pause  = false;
+							_app_.swift_loaded     = false;
+							_app_.curr_swift_views = Object.keys(_app_.curr_swift.views).length;
+							_app_.show_swift_views = false;
+
+							for (var i = 0; i < _app_.swift_data.swift.length; i++) {
+								if (i < id) {
+									_app_.swift_data.swift[i].slide_bar = 100;
+								}
+
+								else {
+									_app_.swift_data.swift[i].slide_bar = 0;
+								}
+							}
+
+							if (_app_.swift_data.swift[id].seen == 0) {
+								_app_.swift_data.swift[id].seen = 1;
+
+								if (_app_.swift_data.is_user != true) {
+									_app_.register_swift_view();
+								}
+							}
+
+							_app_.start_swift_slidebar();
+							_app_.off_swift_indicator();
+
+							return true;
+						}
+						
+						else {
+							return false;
+						}
+					},
+					start_swift_slidebar: function() {
+						var _app_ = this;
+
+						if (_app_.slide_bar_int !== false) {
+							clearInterval(_app_.slide_bar_int);
+						}
+
+						_app_.slide_bar_status = 0;
+						_app_.slide_bar_int    = setInterval(function() {
+							if (_app_.slide_bar_pause != true && _app_.swift_loaded == true) {
+								if (_app_.slide_bar_status == 100) {
+									if (_app_.has_next == true) {
+										_app_.slide_to(_app_.next_slide_id);
+									}
+									else {
+										_app_.close();
+									}
+								}
+								else {
+									_app_.slide_bar_status = (_app_.slide_bar_status + 1);
+								}
+							}
+						}, (_app_.slide_bar_time / 100));
+					},
+					init_swift_data: function(swift_data = false) {
+						var _app_ = this;
+
+						if (swift_data.type == "image") {
+							_app_.slide_bar_time = 10000;
+						}
+
+						else if (swift_data.type == "video") {
+
+							_app_.slide_bar_time = (swift_data.media.duration * 1000);
+
+							setTimeout(function() {
+								_app_.$refs.video.load();
+								_app_.$refs.video.play();
+							}, 500);
+						}
+
+						return swift_data;
+					},
+					slide_prev: function() {
+						var _app_ = this;
+
+						_app_.slide_to(_app_.prev_slide_id);
+					},
+					slide_next: function() {
+						var _app_ = this;
+
+						_app_.slide_to(_app_.next_slide_id);
+					},
+					close: function() {
+						var _app_              = this;
+						_app_.swift_data       = Object({});
+						_app_.curr_swift       = Object({});
+						_app_.status           = false;
+					    _app_.curr_swift_id    = false;
+					    _app_.next_slide_id    = false;
+					    _app_.prev_slide_id    = false;
+					    _app_.slide_bar_status = 0;
+					    _app_.slide_bar_time   = 10000;
+					    _app_.curr_swift_views = 0;
+
+						if (_app_.slide_bar_int != false) {
+							clearInterval(_app_.slide_bar_int);
+
+							_app_.slide_bar_int = false;
+						}
+
+						$("body").removeClass("ov-h");
+					},
+					delete_swift: function() {
+						var _app_ = this;
+
+						$.ajax({
+							url: "<?php echo cl_link('native_api/swift/delete_swift'); ?>",
+							type: "POST",
+							dataType: "json",
+							data: {swid: _app_.curr_swift.swid},
+						}).done(function(data) {
+							if (data.status != 200) {
+								SMColibri.errorMSG();
+							}
+
+							else {
+								for (var i = 0; i < _app_.swift_data.swift.length; i++) {
+									if (_app_.swift_data.swift[i].swid == _app_.curr_swift.swid) {
+										_app_.swift_data.swift.splice(i, 1);
+										break;
+									}
+								}
+
+								if (_app_.swift_data.swift.length) {
+									_app_.slide_to(0);
+									
+								}
+
+								else {
+									SMColibri.spa_reload();
+									_app_.close();
+								}
+							}
+						});
+					},
+					do_pause: function() {
+						var _app_ = this;
+						_app_.slide_bar_pause = true;
+
+						if(_app_.curr_swift.type == "video") {
+							_app_.$refs.video.pause();
+						}
+					},
+					un_pause: function() {
+						var _app_ = this;
+
+						_app_.slide_bar_pause = false;
+
+						if(_app_.curr_swift.type == "video") {
+							_app_.$refs.video.play();
+						}
+					},
+					off_swift_indicator: function() {
+						var _app_    = this;
+						var all_seen = true;
+
+						for (var i = 0; i < _app_.swift_data.swift.length; i++) {
+							if (_app_.swift_data.swift[i].seen == 0) {
+								all_seen = false; break;
+							}
+						}
+
+						if (all_seen === true) {
+							_app.find("div#homepage-swifts-slider").find('[data-an="swift-item-{0}"]'.format(_app_.swift_data.id)).removeClass('active');
+						}
+					},
+					register_swift_view: function() {
+						var _app_ = this;
+
+						$.ajax({
+							url: "<?php echo cl_link('native_api/swift/swift_view'); ?>",
+							type: "POST",
+							dataType: "json",
+							data: {
+								user_id: _app_.swift_data.id,
+								swid: _app_.curr_swift.swid
+							}
+						});
+					},
+					toggle_views_list: function() {
+						var _app_ = this;
+
+						if (_app_.show_swift_views == true) {
+							_app_.show_swift_views = false;
+						}
+						else{
+							_app_.show_swift_views = true;
+						}
+					}
+				}
+			});
+		<?php endif; ?>
+
+		SMColibri.PS.init_app();
+	});
+</script>

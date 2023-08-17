@@ -1,0 +1,40 @@
+<div class="htags-posts">
+			<div class="htags-posts__header">
+				<h4>
+					<?php echo cl_translate("hot_topics_for_you"); ?>
+				</h4>
+			</div>
+			<?php $cl['hot_topics']        = cl_get_hot_topics(5);?>
+			<?php if (not_empty($cl['hot_topics'])) : ?>
+				<div class="htags-posts__body">
+					<?php foreach ($cl['hot_topics'] as $row) : ?>
+						<div class="htags-posts__item">
+							<a class="htag" href="<?php echo ($row['url']); ?>" data-spa="true">
+							<div class="hash">	
+								<strong>
+									#<?php echo ($row['tag']); ?>
+								</strong>
+					</div>
+					<div class="post">
+								<span><?php echo ($row['total']); ?> <?php echo cl_translate("Posts"); ?></span>
+					</div>
+							</a>
+							<span> <a href="<?php echo ($row['url']); ?>" class="icon" data-spa="true">
+									<?php echo cl_ikon('pub-more'); ?>
+								</a></span>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<div class="htags-posts__footer">
+					<a href="<?php echo cl_link("trending"); ?>" data-spa="true">
+						<?php echo cl_translate("Show more"); ?>
+					</a>
+				</div>
+			<?php else : ?>
+				<div class="htags-posts__placeholder">
+					<?php echo cl_translate("Here will be a (#hashtag) list of the most relevant topics and events"); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		

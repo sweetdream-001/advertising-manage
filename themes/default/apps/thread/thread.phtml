@@ -1,0 +1,159 @@
+<div class="publication-data">
+					<?php if (not_empty($cl['thread_data']['post']['me_blocked'])): ?>
+						<div class="post-placeholder">
+							<div class="d-flex flex-wn align-items-center">
+								<div class="flex-item">
+									<div class="icon">
+										<?php echo cl_ikon("not-allowed"); ?>
+									</div>
+								</div>
+								<div class="felx-item">
+									<p>
+										<?php echo cl_translate("This user ({@uname@}) has blocked you from accessing their posts", array(
+											"uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+										)); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+					<?php elseif(empty($cl['thread_data']['post']['can_see'])): ?>
+						<div class="post-placeholder">
+							<div class="d-flex flex-wn align-items-center">
+								<div class="flex-item">
+									<div class="icon">
+										<?php echo cl_ikon("eye-crossed"); ?>
+									</div>
+								</div>
+								<div class="felx-item">
+									<p>
+										<?php echo cl_translate("Only followers of this user ({@uname@}) can see their posts", array(
+											"uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+										)); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+					<?php else: ?>
+						<?php if (not_empty($cl['thread_data']['post']['is_blocked'])): ?>
+							<div class="soft-hidden-post" data-softhidden-post="<?php echo($cl['thread_data']['post']['id']); ?>">
+								<div class="d-flex align-items-center flex-wn">
+									<div class="flex-item flex-grow-1">
+										<p><?php echo cl_translate('This is a message from the user you blocked'); ?></p>
+									</div>
+									<div class="flex-item">
+										<button class="btn btn-custom main-outline sm" onclick="SMColibri.show_post(<?php echo($cl['thread_data']['post']['id']); ?>, 'blocked');">
+											<?php echo cl_translate('View'); ?>
+										</button>
+									</div>	
+								</div>
+							</div>
+						<?php elseif($cl['thread_data']['post']['is_reported']): ?>
+							<div class="soft-hidden-post" data-softhidden-post="<?php echo($cl['thread_data']['post']['id']); ?>">
+								<div class="d-flex align-items-center flex-wn">
+									<div class="flex-item flex-grow-1">
+										<p>
+											<?php echo cl_translate('This post is currently under review'); ?>
+										</p>
+									</div>
+									<div class="flex-item">
+										<button class="btn btn-custom main-outline sm" onclick="SMColibri.show_post(<?php echo($cl['thread_data']['post']['id']); ?>, 'reported');">
+											<?php echo cl_translate('View'); ?>
+										</button>
+									</div>	
+								</div>
+							</div>
+						<?php endif; ?>
+					
+						<div class="publication-data-inner">
+							<div class="publication-footer-ctrls">
+								<?php if (not_empty($cl['thread_data']['can_reply'])): ?>
+									<button class="ctrls-item chat" onclick="SMColibri.pub_reply('<?php echo $cl['thread_data']['post']['id']; ?>');">
+										<span class="icon">
+											<?php echo cl_ikon('chat-post'); ?>
+										</span>
+										
+									</button>
+								<?php else: ?>
+									<button class="ctrls-item chat" disabled="true">
+										<span class="icon">
+											<?php echo cl_ikon('chat-post'); ?>
+										</span>
+										
+									</button>
+								<?php endif; ?>
+
+								<?php if (empty($cl['thread_data']['post']['has_liked'])): ?>
+									<button class="ctrls-item likes" onclick="SMColibri.like_post('<?php echo $cl['thread_data']['post']['id']; ?>', this);">
+										<span class="icon">
+											<?php echo cl_ikon('likes'); ?>
+										</span>
+										
+									</button>
+								<?php else: ?>
+									<button class="ctrls-item liked" onclick="SMColibri.like_post('<?php echo $cl['thread_data']['post']['id']; ?>', this);">
+										<span class="icon">
+											<?php echo cl_ikon('liked'); ?>
+										</span>
+										
+									</button>
+								<?php endif; ?>
+								<button onclick="SMColibri.repost('<?php echo $cl['thread_data']['post']['id']; ?>', this);" class="ctrls-item repost" data-an="repost-ctrl">
+									<span class="icon">
+										<?php echo cl_ikon('repost'); ?>
+									</span>
+									
+								</button>
+								<button class="ctrls-item chat" onclick="SMColibri.share_post('<?php echo $cl['thread_data']['post']['url']; ?>','<?php echo urlencode($cl['thread_data']['post']['url']); ?>');">
+									<span class="icon">
+										<?php echo cl_ikon('share'); ?>
+									</span>
+								</button>
+							</div>
+						</div>
+					<?php endif; ?>
+				</div>
+				
+				
+<style>
+	
+	.h-laptop {
+		display: none;
+	}						
+	div.publication--thread-container-inner div.publication--thread-data-holder{
+		
+border-bottom: 1px solid var(--smc-main-border-color)!important;
+	}
+	body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls {
+		margin-top: 0px;
+	}
+	body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item span.icon svg{
+		width: 22.5px!important;
+		height: 22.5px!important;
+	}
+	body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item.liked span.icon:hover {
+  background: rgb(249, 24, 128, 0.1);
+  border-radius: 50px;
+  vertical-align: middle;
+}
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item.chat span.icon:hover {
+	background: rgba(51, 113, 249, 0.2);
+  border-radius: 50px;
+  vertical-align: middle;
+}
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item.chat span.icon svg:hover {
+fill: rgba(51, 113, 249) !important;
+}
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item.repost span.icon:hover {
+	background: rgb(0, 186, 124, 0.2);
+  border-radius: 50px;
+  vertical-align: middle;
+}
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item.repost span.icon svg:hover {
+	fill: rgb(0, 186, 124) !important;
+}
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-footer-ctrls button.ctrls-item.likes span.icon:hover{
+	background: rgb(249, 24, 128, 0.1);
+  border-radius: 50px;
+  vertical-align: middle;
+}
+</style>				

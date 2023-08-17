@@ -1,0 +1,332 @@
+/* ===================================================== */
+body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-header {
+  padding-left: 0px;
+  padding-right: 50px; }
+body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data {
+  padding-left: 0px;
+  padding-right: 15px; }
+  body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.soft-hidden-post p {
+    margin-right: 0px;
+    margin-left: 15px; }
+body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-placeholder div.icon {
+  margin-right: 0px;
+  margin-left: 15px; }
+body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-placeholder p {
+  margin-right: 0px;
+  margin-left: 15px; }
+body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner {
+  padding: 15px 0px 10px 20px; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.main-footer div.footer-nav-get-apps .icon svg{
+      margin-left: 5px;
+  }
+  body span.user-name-holder.verified-badge {
+    
+    margin-right: 15px !important;
+}
+.profile-toggle svg {
+    float: left;
+}
+body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__body{
+    justify-content: right;
+}
+body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__body div.auth-form div.auth-form-holder form.form div.form-title h2{
+    text-align: right;
+}
+body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__body div.auth-form div.auth-form-holder form.form div.form-title p{
+    text-align: right;
+}
+  body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.account-stats div.stat-holder:first-child {
+    margin-right: 0px; }
+  body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.account-stats div.stat-holder b {
+    margin-right: 0px;
+    margin-left: 5px; }
+  body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.sidebar-v-nav-wrapper ul.sidebar-v-nav li.sidebar-v-nav-item span.nav-item-holder {
+    margin-left: 0px;
+    margin-right: 17px; }
+  body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.publish-post-btn button span.btn-icon {
+    margin-right: 0px;
+    margin-left: 10px; }
+  @media (max-width: 1199.98px) {
+    body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner {
+      padding: 15px 20px 10px 0px; } }
+  body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.mobile-sb-footer {
+    padding-left: 20px; }
+    body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.mobile-sb-footer div.main-footer ul.footer-nav li.footer-nav-item {
+      margin-right: 0px !important;
+      margin-left: 10px !important; }
+    body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.mobile-sb-footer div.main-footer div.footer-nav-get-apps {
+      justify-content: space-between; }
+      body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.mobile-sb-footer div.main-footer div.footer-nav-get-apps a {
+        width: calc(50% - 7.5px);
+        flex-basis: calc(50% - 7.5px);
+        margin-right: 0px;
+        margin-left: 0px; }
+body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner {
+  padding: 15px 20px 10px 0px; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.main-search-bar-container form div.input-holder input {
+    padding: 0 50px 0 0; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.main-search-bar-container form div.search-result-holder div.search-result-body ul.result-list li.htag-list-item.user a div.user-info {
+    padding: 0 10px 0 0; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.follow-suggestion div.follow-suggestion__body div.follow-suggestion__item div.flex-cr div.user-info-holder {
+    padding: 0 15px 0 0; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.topical-posts div.topical-posts__body {
+    width: 100%;
+    display: block;
+    margin: 20px 0; }
+    body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.topical-posts div.topical-posts__body div.topical-posts__item a.htag span {
+      margin-left: 0px;
+      margin-right: 10px; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.main-footer ul.footer-nav li.footer-nav-item {
+    margin-right: 0px !important;
+    margin-left: 10px !important; }
+  body main.main-content-container div.main-content-container-inner div.right-sb-container div.sidebar__inner div.main-footer div.footer-nav-get-apps a {
+    width: calc(50% - 7.5px);
+    min-width: calc(50% - 7.5px);
+    flex-basis: calc(50% - 7.5px);
+    margin-right: 0px;
+    margin-left: 15px; }
+body form div.form-group div.password-ctrl button.password-ctrl {
+  left: 15px;
+  right: unset; }
+body span.user-name-holder.verified-badge {
+  margin-left: 15px !important;
+  margin-right: 0px !important; }
+  body span.user-name-holder.verified-badge:before {
+    color: var(--smc-main-uiel-color);
+    content: url("data:image/svg+xml; utf8, <svg style='vertical-align: middle;'  xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24'><path fill='dodgerblue' d='M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'></path></svg>");
+    position: absolute;
+    top: calc(50% - 7px);
+    left: -17px;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    line-height: 0px; }
+  body span.user-name-holder.verified-badge:after {
+    display: none; }
+body div.modal div.post-likes-container div.post-likes-ls div.post-likes-list-item div.user-info-holder {
+  padding: 0 10px 0 0; }
+  body div.modal div.post-likes-container div.post-likes-ls div.post-likes-list-item div.user-info-holder button {
+    position: absolute;
+    left: 0;
+    right: unset;
+    top: 0; }
+body div.modal div.modal-content div.modal-header div.main---mh--block span.dismiss-modal {
+  margin-left: 0px;
+  margin-right: auto; }
+body div.modal.share-post-modal div.raw-link div.link-input button.clip-board-copy {
+  left: 0;
+  right: unset; }
+body .dropdown div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item, body .dropleft div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item, body .dropright div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item, body .dropup div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item {
+  text-align: right; }
+  body .dropdown div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item.dropdown-item-icon, body .dropleft div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item.dropdown-item-icon, body .dropright div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item.dropdown-item-icon, body .dropup div.dropdown-menu.dropdown-icons a.dropdown-item span.flex-item.dropdown-item-icon {
+    margin-left: 12px;
+    margin-right: 0px; }
+body div.timeline-pubbox-container > div.rp {
+  padding-left: 0px;
+  padding-right: 20px; }
+  body div.timeline-pubbox-container > div.rp form {
+    width: 100%;
+    max-width: 100%; }
+    body div.timeline-pubbox-container > div.rp form div.input-holder {
+      width: 100%;
+      margin-bottom: 10px;
+      max-width: 100%; }
+      body div.timeline-pubbox-container > div.rp form div.input-holder textarea {
+        display: block;
+        width: 100%;
+        min-height: 40px;
+        max-height: 400px;
+        resize: none;
+        font-size: 16px;
+        color: var(--smc-main-text-color);
+        line-height: 20px;
+        border: none;
+        border-radius: 0px;
+        outline: 0;
+        background: transparent; }
+        body div.timeline-pubbox-container > div.rp form div.input-holder textarea::placeholder {
+          color: var(--smc-main-iph-color);
+          font-size: 17px;
+          font-weight: normal; }
+    body div.timeline-pubbox-container > div.rp form div.cl-emoticons div.emoticons-group-nav span.emoticons-group-nav-item.ml-auto {
+      margin-left: 0px;
+      margin-right: auto; }
+    body div.timeline-pubbox-container > div.rp form div.input-autocomplete div.input-autocomplete__usernames div.input-autocomplete__username-list div.username-list-item div.username {
+      padding-left: 0px;
+      padding-right: 10px; }
+    body div.timeline-pubbox-container > div.rp form div.post-ctrls-holder button.ctrl-item {
+      margin: 0 0 0 3px; }
+    body div.timeline-pubbox-container > div.rp form div.post-privacy-holder button.privacy-settings a.dropdown-toggle span.d-inline-flex span.flex-item.label {
+      margin-left: 0px;
+      margin-right: 8px; }
+    body div.timeline-pubbox-container > div.rp form div.post-privacy-holder div.flex-item.ml-auto {
+      margin-left: 0px;
+      margin-right: auto; }
+body div.popover div.popover-body div.user-info-lbox div.user-info-lbox__inner div.user-info-lbox__user-data div.user-info-lbox__info div.stats div.stat-holder b {
+  margin-right: 0px;
+  margin-left: 5px; }
+body div.popover div.popover-body div.user-info-lbox div.user-info-lbox__inner div.user-info-lbox__user-data div.user-info-lbox__info div.stats div.stat-holder:first-child {
+  margin-right: 0px;
+  margin-left: 15px; }
+
+/* ===================================================== */
+body.cl-app-conversation main.main-content-container div.main-content-container-inner div.timeline-container-inner div.timeline-container div.conversation-app-body div.vue-app-body div.vue-app-body-inner div.conversation--search-form-wrapper form {
+  flex-direction: row-reverse; }
+  body.cl-app-conversation main.main-content-container div.main-content-container-inner div.timeline-container-inner div.timeline-container div.conversation-app-body div.vue-app-body div.vue-app-body-inner div.conversation--search-form-wrapper form div.keyword-input input {
+    padding: 0 40px 3px 0; }
+body.cl-app-conversation main.main-content-container div.main-content-container-inner div.timeline-container-inner div.timeline-container div.conversation-app-body div.vue-app-body div.vue-app-body-inner div.conversation--messages-form-wrapper div.conversation--messages-search-results div.fc-row div.lp span {
+  margin: 0 10px 0 0; }
+
+/* ===================================================== */
+body.cl-app-connections main.main-content-container div.main-content-container-inner div.timeline-container div.profile-connectivity-list-container div.connectivity-list div.connectivity-list-item div.user-info-holder {
+  padding: 0 10px 0 0; }
+  body.cl-app-connections main.main-content-container div.main-content-container-inner div.timeline-container div.profile-connectivity-list-container div.connectivity-list div.connectivity-list-item div.user-info-holder div.user-data p {
+    padding-right: 0px; }
+
+/* ===================================================== */
+body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__lp div.welcome-page__lp-inner div.welcome-page__lp-body {
+  display: block;
+  margin-bottom: 120px; }
+  body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__lp div.welcome-page__lp-inner div.welcome-page__lp-body div.welcome-page-features div.welcome-page-features__li div.text {
+    margin-left: 0px;
+    margin-right: 25px; }
+body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__footer div.welcome-footer div.main-footer ul.footer-nav li.footer-nav-item {
+  margin-left: 20px;
+  margin-right: 0px;
+  margin-bottom: 10px; }
+  body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__footer div.welcome-footer div.main-footer ul.footer-nav li.footer-nav-item.dropdown a.dropdown-item {
+    text-decoration: none; }
+body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__footer div.welcome-footer div.main-footer div.footer-nav-get-apps a {
+  margin-right: 0px;
+  margin-left: 15px; }
+  body.cl-app-guest main.main-content-container div.main-content-container-inner div.welcome-page-container div.welcome-page__inner div.welcome-page__content div.welcome-page__rp div.welcome-page__rp-inner div.welcome-page-form div.welcome-page-form__footer div.welcome-footer div.main-footer div.footer-nav-get-apps a:last-child {
+    margin-left: 0px; }
+
+/* ===================================================== */
+body.cl-app-home main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-swifts-holder div.timeline-swifts-cr.owl-carousel div.owl-stage-outer div.owl-stage div.owl-item div.swift-item {
+  margin-right: 0px;
+  margin-left: 15px; }
+body.cl-app-home div.swift-app-container.show div.swift-data-cont div.swift-data div.swift-data-header div.swift-data-ctrls div.swift-user-info div.uname {
+  padding-right: 15px;
+  padding-left: 0px; }
+body.cl-app-home div.swift-app-container.show div.swift-data-cont div.swift-data div.swift-data-header div.swift-data-ctrls div.ctrl-group div.swift-data-ctrl-item button {
+  margin-left: 0px;
+  margin-right: 15px; }
+body.cl-app-home div.modal.modal-swift-pubbox div.modal-body form div.cl-emoticons div.emoticons-group-nav span.emoticons-group-nav-item.ml-auto {
+  margin-left: unset;
+  margin-right: auto; }
+body.cl-app-home div.modal.modal-swift-pubbox div.modal-body form div.swift-ctrls-holder button.ctrl-item {
+  margin: 0 0 0 15px; }
+
+/* ===================================================== */
+body.cl-app-chat main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-container-inner div.vue-app-body div.vue-app-body-inner div.chat-search-form-wrapper form div.keyword-input input {
+  padding: 0 50px 3px 0; }
+body.cl-app-chat main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-container-inner div.vue-app-body div.vue-app-body-inner div.chat-contacts-list-wrapper div.chat-contacts-list div.chat-contacts-list-item a div.chat-contacts-list-item-inner div.rp div.rp-inner-content-header, body.cl-app-chat main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-container-inner div.vue-app-body div.vue-app-body-inner div.chat-contacts-list-wrapper div.chat-contacts-list div.chat-contacts-list-item a div.chat-contacts-list-item-inner div.rp div.rp-inner-content-body {
+  padding-left: 0px;
+  padding-right: 15px; }
+
+/* ===================================================== */
+body.cl-app-notifications main.main-content-container div.main-content-container-inner div.timeline-container-inner div.timeline-container div.notifications-app-body div.vue-app-body div.vue-app-body-inner div.profile-notifs-list-container div.profile-notifs-list div.profile-notifs-list-item div.main-flex-cr div.notifier-info-holder {
+  padding-right: 15px;
+  padding-left: 0px; }
+
+/* ===================================================== */
+body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-info-header div.profile-avatar-holder {
+  left: unset;
+  right: 0px;
+  bottom: -60px; }
+body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-page-ctrls button.ctrl-item {
+  margin-left: 0px;
+  margin-right: 20px; }
+body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-page-ctrls button.btn.btn-custom {
+  margin-left: 0px;
+  margin-right: 20px; }
+body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-user-info-block-set div.block-item {
+  margin-left: 15px;
+  margin-right: 0px;
+  margin-bottom: 15px; }
+body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-activity-stats-info div.stat-holder {
+  margin-right: 0px;
+  margin-left: 25px; }
+  body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-activity-stats-info div.stat-holder:last-child {
+    margin-left: 0px; }
+  body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-activity-stats-info div.stat-holder span.stat-holder-inner span, body.cl-app-profile main.main-content-container div.main-content-container-inner div.timeline-container div.timeline-prof-info-area div.profile-main-info-holder div.profile-activity-stats-info div.stat-holder a.stat-holder-inner span {
+    margin-right: 3px;
+    margin-left: 0px; }
+
+/* ===================================================== */
+body.cl-app-search main.main-content-container div.main-content-container-inner div.timeline-container div.vue-app-body div.main--search-form-wrapper form div.keyword-input input {
+  padding: 0 50px 3px 0; }
+body.cl-app-search main.main-content-container div.main-content-container-inner div.timeline-container div.vue-app-body div.main--search-area-content div.search-result-container div.people-list div.people-list-item div.user-info-holder {
+  padding: 0 10px 0 0; }
+  body.cl-app-search main.main-content-container div.main-content-container-inner div.timeline-container div.vue-app-body div.main--search-area-content div.search-result-container div.people-list div.people-list-item div.user-info-holder button {
+    position: absolute;
+    right: unset;
+    left: 0;
+    top: 0; }
+body.cl-app-search main.main-content-container div.main-content-container-inner div.timeline-container div.vue-app-body div.main--search-area-content div.search-result-container div.people-list div.people-list-item:hover, body.cl-app-search main.main-content-container div.main-content-container-inner div.timeline-container div.vue-app-body div.main--search-area-content div.search-result-container div.people-list div.people-list-item:active {
+  background: var(--smc-main-ehbg-color); }
+
+/* ===================================================== */
+body.cl-app-settings main.main-content-container div.main-content-container-inner div.timeline-container div.main--profile-settings-container div.profile-settings-nav div.nav-list-item div.rp {
+  margin-left: 0px;
+  margin-right: auto; }
+body.cl-app-settings div.modal div.accoun-blocks-ls div.accoun-blocks-list-item div.user-info-holder {
+  padding: 0 10px 0 0; }
+
+/* ===================================================== */
+body.cl-app-start_up main.main-content-container div.main-content-container-inner div.timeline-container div.main-profile-startup-container div.startup div.startup-body div.startup-body-content div.startup-suggested div.suggested-list div.suggested-list-item div.user-info-holder {
+  padding: 0  10px 0 0; }
+  body.cl-app-start_up main.main-content-container div.main-content-container-inner div.timeline-container div.main-profile-startup-container div.startup div.startup-body div.startup-body-content div.startup-suggested div.suggested-list div.suggested-list-item div.user-info-holder p {
+    padding-right: 0px;
+    padding-left: 40px; }
+
+/* ===================================================== */
+body.cl-app-suggested main.main-content-container div.main-content-container-inner div.timeline-container div.suggested--people-list-container div.suggested-list div.suggested-list-item div.user-info-holder {
+  padding: 0 10px 0 0; }
+  body.cl-app-suggested main.main-content-container div.main-content-container-inner div.timeline-container div.suggested--people-list-container div.suggested-list div.suggested-list-item div.user-info-holder p {
+    padding-right: 0px;
+    padding-left: 40px; }
+  body.cl-app-suggested main.main-content-container div.main-content-container-inner div.timeline-container div.suggested--people-list-container div.suggested-list div.suggested-list-item div.user-info-holder button {
+    right: unset;
+    left: 0; }
+
+/* ===================================================== */
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publisher-info div.rp {
+  padding-left: 0px;
+  padding-right: 15px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-meta-info div.publication-target {
+  margin-left: 0px;
+  margin-right: 15px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-meta-info div.post-privacy {
+  margin-left: 0;
+  margin-right: auto; }
+  body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.publication-data-inner div.publication-meta-info div.post-privacy button.privacy-settings a.dropdown-toggle span.d-inline-flex span.flex-item.label {
+    margin-right: 5px;
+    margin-left: 0; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.soft-hidden-post p {
+  margin-left: 15px;
+  margin-right: 0px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.post-placeholder div.icon {
+  margin-left: 15px;
+  margin-right: 0px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-data-holder div.publication-data div.post-placeholder p {
+  margin-left: 15px;
+  margin-right: 0px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-reply-privacy div.info-message p {
+  margin-right: 15px;
+  margin-left: 0px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-replys-holder div.timeline-posts-container div.timeline-posts-ls div.timeline-posts-ls-group div.timeline-posts-ls-group-inner div.post-list-item:after {
+  right: 65px;
+  left: 15px; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-replys-holder div.timeline-posts-container div.timeline-posts-ls div.timeline-posts-ls-group a.show-thread {
+  flex-direction: row-reverse; }
+body.cl-app-thread main.main-content-container div.main-content-container-inner div.timeline-container div.publication--thread-container div.publication--thread-container-inner div.publication--thread-chain-holder div.post-list-item:after {
+  right: 65px;
+  left: 15px; }
+
+/* ===================================================== */
+
+/*# sourceMappingURL=master.styles.rtl.css.map */

@@ -1,0 +1,108 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-placeholder {
+    padding: 60px 30px;
+    div.icon {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        div.icon__bg {
+            background: var(--cl-secondary-bg-color);
+            width: 100px;
+            height: 100px;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg {
+                width: 50px;
+                height: 50px;
+                fill: var(--cl-primary-color);
+            }
+            @include media-breakpoint-down(xl) {
+                width: 70px;
+                height: 70px;
+                svg {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            &.icon__bg_success {
+                background: var(--cl-success-color);
+                svg {
+                    fill: #ffffff;
+                }
+            }
+            &.icon__bg_warning {
+                background: var(--cl-warning-color);
+                svg {
+                    fill: #ffffff;
+                }
+            }
+            &.icon__bg_danger {
+                background: var(--cl-danger-color);
+                svg {
+                    fill: #ffffff;
+                }
+            }
+        }
+    }
+    div.pl-message {
+        margin-bottom: 50px;
+        h4 {
+            font-size: 20px;
+            padding: 0;
+            margin: 0 0 15px 0;
+            line-height: 20px;
+            color: var(--cl-primary-text-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            color: var(--cl-secondary-text-color);
+            text-align: center;
+            overflow-wrap: break-word;
+            a {
+                font-weight: 500;
+                color: var(--cl-primary-link-color);
+                text-decoration: underline;
+            }
+            span.inline-icon {
+                display: inline-block;
+                line-height: 0;
+                vertical-align: middle;
+                svg {
+                    width: 15px;
+                    height: 15px;
+                    fill: var(--cl-primary-color);
+                }
+            }
+        }
+        @include media-breakpoint-down(xl) {
+            h4 {
+                font-size: 18px;
+            }
+            p {
+                font-size: 14px;
+            }
+        }
+    }
+    div.c2action-single {
+        text-align: center;
+        button {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+    }
+}

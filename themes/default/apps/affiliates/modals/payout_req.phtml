@@ -1,0 +1,59 @@
+<div class="modal fade" id="aff-payout-request" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" id="aff_payout_request_form" v-on:submit="submit_new_req($event)">
+                <div class="modal-header">
+                    <div class="modal-header__inner">
+                        <h5 class="modal-title">
+                            <?php echo cl_translate('Withdrawal request'); ?>
+                        </h5>
+                        <span class="dismiss-modal" data-dismiss="modal">
+                            <?php echo cl_icon('close'); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="popup-modal-form">
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Amount"); ?> (Min. <b><?php echo cl_money($cl["config"]["aff_payout_min"]); ?></b>)
+                            </label>
+                            <input v-model.trim="$v.amount.$model" name="amount" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter payout amount."); ?>">
+                            <div class="invalid-main-feedback" v-if="is_invalid_amount">
+                                {{invalid_amount_feedback}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("PayPal E-mail"); ?>
+                            </label>
+                            <input v-model.trim="$v.paypal.$model" name="paypal" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter your PayPal email address"); ?>">
+                            <div class="invalid-main-feedback" v-if="is_invalid_paypal">
+                                <?php echo cl_translate("The email address you entered does not match the valid format."); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-if="unsuccessful_attempt">
+                            <div class="invalid-main-feedback">
+                                <?php echo cl_translate("An error occurred while processing your request. Please try again later."); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-else>
+                            <div class="form-info-label">
+                                <?php echo cl_translate("Please enter the amount you want to withdraw, as well as your email from your Paypal account. After reviewing your request, you will receive an email to the email address of your current account. However, this process may take several business days."); ?>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button v-if="submitting != true" v-bind:disabled="is_invalid_form" type="submit" class="btn btn-custom btn-block main-inline lg">
+                        <?php echo cl_translate("Submit request"); ?>
+                    </button>
+                    <button v-else disabled="true" type="button" class="btn btn-custom btn-block main-inline lg">
+                        <?php echo cl_translate("Please wait"); ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

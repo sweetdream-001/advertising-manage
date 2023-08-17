@@ -1,0 +1,351 @@
+<script>
+	"use strict";
+	
+	$(document).ready(function($) {
+
+		var _app     = $('[data-app="conversation"]');
+		SMColibri.PS = Object({
+			chat: new Vue({
+				el: "#vue-conversation-app",
+				data: {
+					loading_new: false,
+					loading_old: false,
+					sending: false,
+					message: "",
+					update_interval: "<?php echo fetch_or_get($cl['config']['chat_update_interval'], 5); ?>",
+					pause_interval: false,
+					loadmore_old: true,
+					scroll_sr_up: true,
+					scroll_sr_down: true,
+					interval_id: false
+				},
+				computed: {
+					is_invalid_form: function() {
+						if (this.message.length < 1) {
+							return true;
+						}
+
+						else {
+							return false;
+						}
+					}
+				},
+				methods: {
+					text_input_trigger: function(e) {
+						autosize($(e.target));
+					},
+					delete_message: function(e) {
+						var event   = $(e);
+						var message = event.parents('div[data-list-item]');
+
+						if (message.length) {
+							var promise = SMColibri.confirm_action({
+								btn_1: "<?php echo cl_translate("Cancel"); ?>",
+								btn_2: "<?php echo cl_translate("Delete"); ?>",
+								title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+								message: "<?php echo cl_translate("Do you want to delete this message from {@interloc_name@}? Please note that this action cannot be undone!", array("interloc_name" => $cl['interlocutor']['name'])); ?>",
+							});
+
+							promise.done(function() {
+					            $.ajax({
+					            	url: '<?php echo cl_link("native_api/conversation/delete_message"); ?>',
+					            	type: 'POST',
+					            	dataType: 'json',
+					            	data: {id: message.data('list-item')},
+					            }).done(function(data) {
+					            	if (data.status != 200) {
+					            		SMColibri.errorMSG();
+					            	}
+					            }).always(function() {
+					            	$("div.confirm-actions-modal").modal("hide");
+
+					            	message.remove();
+					            });
+					        });
+
+							promise.fail(function() {
+					            $("div.confirm-actions-modal").modal("hide");
+					        });
+						}
+					},
+					delete_chat: function() {
+						var _app_   = this;
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Delete"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Do you want to delete this chat with {@interloc_name@}? Please note that this action cannot be undone!", array("interloc_name" => $cl['interlocutor']['name'])); ?>",
+						});
+
+						promise.done(function() {
+				            $.ajax({
+				            	url: '<?php echo cl_link("native_api/conversation/delete_chat"); ?>',
+				            	type: 'POST',
+				            	dataType: 'json',
+				            	beforeSend: function() {
+				            		$("div.confirm-actions-modal").modal("hide");
+				            		_app_.pause_interval = true;
+				            	}
+				            }).done(function(data) {
+				            	if (data.status != 200) {
+				            		SMColibri.errorMSG();
+				            	}
+
+				            	else {
+				            		delay(function() {
+				            			cl_redirect('<?php echo cl_link("chats"); ?>');
+				            		}, 1000);
+				            	}
+				            });
+				        });
+
+						promise.fail(function() {
+				            $("div.confirm-actions-modal").modal("hide");
+				        });
+					},
+					clear_chat: function() {
+						var _app_   = this;
+						var msg_ls  = $(_app_.$el).find('div[data-an="messages-list"]'); 
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Clear"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Are you sure you want to delete all messages in the chat with {@interloc_name@}? Please note that this action cannot be undone!", array("interloc_name" => $cl['interlocutor']['name'])); ?>",
+						});
+
+						promise.done(function() {
+				            $.ajax({
+				            	url: '<?php echo cl_link("native_api/conversation/clear_chat"); ?>',
+				            	type: 'POST',
+				            	dataType: 'json',
+				            	beforeSend: function() {
+				            		$("div.confirm-actions-modal").modal("hide");
+				            	}
+				            }).done(function(data) {
+				            	if (data.status != 200) {
+				            		SMColibri.errorMSG();
+				            	}
+				            	else {
+				            		msg_ls.empty();
+				            		cl_bs_notify("<?php echo cl_translate("Your conversation has been deleted successfully"); ?>",1500);
+				            	}
+				            });
+				        });
+
+						promise.fail(function() {
+				            $("div.confirm-actions-modal").modal("hide");
+				        });
+					},
+					send_message: function(e) {
+						e.preventDefault();
+
+						var _app_ = this;
+
+						if (_app_.sending != true) {
+							$(e.target).ajaxSubmit({
+								url: '<?php echo cl_link("native_api/conversation/send_message"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								beforeSend: function() {
+									_app_.pause_interval = true;
+									_app_.sending        = true;
+								},
+								data: {
+									message: _app_.message,
+									hash: "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>",
+								},
+								success: function(data) {
+									if (data.status == 200) {
+										_app_.reset_form();
+										_app_.get_new_messages();
+									}
+									else {
+										SMColibri.errorMSG();
+									}
+								},
+								complete: function() {
+									_app_.sending = false;
+
+									$(_app_.$refs.text_input).removeAttr("style");
+								}
+							});
+						}
+
+						else {
+							return false;
+						}
+					},
+					reset_form: function() {
+						this.message = "";
+
+						$(this.$el).find('[data-an="media-input"]').val('');
+					},
+					select_image: function() {
+						var _app_ = this;
+						
+						$(_app_.$el).find('input[data-an="media-input"]').trigger('click');
+					},
+					send_image: function(event = false) {
+						var _app_ = this;
+
+						if (SMColibri.max_upload(event.target.files[0].size)) {
+							if (_app_.sending != true) {
+								if (event) {
+									_app_.sending = true;
+									var form_data = new FormData();
+									form_data.append('image', event.target.files[0]);
+									form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+									
+									$.ajax({
+										url: '<?php echo cl_link("native_api/conversation/send_message"); ?>',
+										type: 'POST',
+										dataType: 'json',
+										enctype: 'multipart/form-data',
+										data: form_data,
+										cache: false,
+								        contentType: false,
+								        processData: false,
+								        timeout: 600000,
+										success: function(data) {
+											if (data.status == 200) {
+												_app_.reset_form();
+												_app_.get_new_messages();
+											}
+											else {
+												SMColibri.errorMSG();
+											}
+										},
+										complete: function() {
+											_app_.sending = false;
+										}
+									});
+								}
+							}
+							else {
+								return false;
+							}
+						}
+					},
+					scroll_down: function(speed = 0) {
+						$(this.$el).find('div[data-an="messages-list"]').animate({
+							scrollTop: ($(this.$el).find('div[data-an="messages-list"]').get(0).scrollHeight)
+						}, speed);
+					},
+					get_new_messages: function() {
+						var _app_    = this;
+						var msg_ls   = $(_app_.$el).find('div[data-an="messages-list"]'); 
+						var last_msg = msg_ls.find('div[data-list-item]').last();
+						var offset   = last_msg.data('list-item');
+
+						if (_app_.loading_new != true) {
+							_app_.loading_new = true;
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/conversation/get_new_messages"); ?>',
+								type: 'GET',
+								dataType: 'json',
+								data: {
+									offset: (($.isNumeric(offset)) ? offset : 0),
+									hash: "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>"
+								},
+							}).done(function(data) {
+								if (data.status == 200) {
+									var messages  = $(data.html);
+
+									messages.each(function(index, el) {
+										msg_ls.append($(el).addClass('animated fadeIn'));
+									});
+
+									_app_.scroll_down();
+								}
+							}).always(function(data) {
+								if (_app_.pause_interval) {
+									_app_.pause_interval = false;
+								}
+
+								_app_.loading_new = false;
+
+								if (data.lastseen.time_num > (data.lastseen.time_now - 60)) {
+									_app.find('[data-an="last-seen"]').addClass('online').attr("title", "<?php echo cl_translate('Online'); ?>");
+								}
+
+								else {
+									_app.find('[data-an="last-seen"]').removeClass('online').attr("title", "<?php echo cl_translate("Last seen"); ?> {0}".format(data.lastseen.time_str));
+								}
+							});
+						}
+					},
+					get_old_messages: function(e = false) {
+						var event = $(e.target);
+						var _app_ = this;
+
+						if (_app_.loading_old != true) {
+							if (_app_.loadmore_old) {
+								var scroll_top = $(event).scrollTop();
+								if (scroll_top <= 0) {
+									var msg_ls   = event; 
+									var last_msg = msg_ls.find('div[data-list-item]').first();
+									var offset   = last_msg.data('list-item');
+
+									if ($.isNumeric(offset) && offset) {
+										$.ajax({
+											url: '<?php echo cl_link("native_api/conversation/get_old_messages"); ?>',
+											type: 'GET',
+											dataType: 'json',
+											data: {
+												offset: offset,
+												hash: "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>"
+											},
+											beforeSend: function() {
+												_app_.loadmore_old = false;
+												_app_.loading_old  = true;
+											}
+										}).done(function(data) {
+											if (data.status == 200) {
+												var messages = $(data.html);
+												messages.each(function(index, el) {
+													msg_ls.prepend($(el).addClass('animated fadeIn'));
+												});
+
+												_app_.loadmore_old = true;
+
+												msg_ls.scroll2inner(last_msg, 0);
+											}
+										}).always(function() {
+											_app_.loading_old = false;
+										});
+									}
+								} 
+							}
+						}
+						else {
+							return false;
+						}
+					},
+					stop_interval: function() {
+						var _app_ = this;
+
+						if (_app_.interval_id !== false) {
+							clearInterval(_app_.interval_id);
+						}
+					}
+				},
+				mounted: function() {
+					var _app_ = this;
+					_app_.scroll_down();
+
+					_app_.interval_id = setInterval(function() {
+						if (SMColibri.curr_pn == 'conversation') {
+							if (_app_.pause_interval != true) {
+								_app_.get_new_messages();
+							}
+						}
+						else {
+							_app_.stop_interval();
+						}
+					}, (Number(_app_.update_interval) * 1000));
+				}
+			})
+		});
+	});
+</script>

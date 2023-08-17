@@ -1,0 +1,507 @@
+<div class="cp-app-container" data-app="payment-gateways">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Payment gateways'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Payment gateways'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <!--  PayPal gateway -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                PayPal gateway API settings
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form class="form p-15" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="paypal_api_key-input">
+                                            <label>
+                                                PayPal API Public key
+                                            </label>
+                                            <div class="input-group">
+                                                <input value="{%config paypal_api_key%}" name="paypal_api_key" type="text" class="form-control" placeholder="Enter paypal API public key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="paypal_api_pass-input">
+                                            <label>
+                                                PayPal API Secret key
+                                            </label>
+                                            <div class="input-group">
+                                                <input value="{%config paypal_api_pass%}" name="paypal_api_pass" type="text" class="form-control" placeholder="Enter paypal API secret key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-mb" data-an="paypal_mode-input">
+                                            <label>
+                                                PayPal Payment Mode
+                                            </label>
+                                            <div class="input-group b-15">
+                                                <select name="paypal_mode" class="form-select form-control-primary">
+                                                    <option value="sandbox" <?php if ($cl['config']['paypal_mode'] == 'sandbox') {
+                                                        echo ('selected');
+                                                    } ?>>Sandbox</option>
+                                                    <option value="live" <?php if ($cl['config']['paypal_mode'] == 'live') {
+                                                        echo ('selected');
+                                                    } ?>>Live</option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate("paypal_mode_help"); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-mb" data-an="paypal_method_status-input">
+                                            <label>
+                                                PayPal Payment Status
+                                            </label>
+                                            <div class="input-group">
+                                                <select name="paypal_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['paypal_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['paypal_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>><?php echo cl_translate('disabled'); ?></option>
+
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p> <?php echo cl_translate("paypal_status_help"); ?></p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- PayStack gateway -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                PayStack gateway API settings
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="inline-alertbox-wrapper">
+
+                                <div class="alert alert-danger outline" role="alert">
+                                    <p>
+                                        <?php echo cl_translate("paystack_api"); ?> <code><?php echo cl_link("native_api/wallet/pgw2_wallet_tup_verification"); ?></code>
+                                    </p>
+                                </div>
+
+                            </div>
+                            <form class="form p-15" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="paystack_api_key-input">
+                                            <label>
+                                                PayStack API Public key
+                                            </label>
+                                            <div class="input-group">
+                                                <input value="{%config paystack_api_key%}" name="paystack_api_key" type="text" class="form-control" placeholder="Enter PayStack API public key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="paystack_api_pass-input">
+                                            <label>
+                                                Paystack API Secret key
+                                            </label>
+                                            <div class="input-group">
+                                                <input value="{%config paystack_api_pass%}" name="paystack_api_pass" type="text" class="form-control" placeholder="Enter Paystack API secret key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group no-mb" data-an="paystack_method_status-input">
+                                            <label>
+                                                Paystack Payment Status
+                                            </label>
+                                            <div class="input-group">
+                                                <select name="paystack_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['paystack_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>><?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['paystack_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>><?php echo cl_translate('disabled'); ?></option>
+
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate("paystack_status"); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  Stripe gateway -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                Stripe gateway API settings
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <form class="form" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="stripe_api_key-input">
+                                            <label>
+                                                Stripe API Public key
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config stripe_api_key%}" name="stripe_api_key" type="text" class="form-control" placeholder="Enter Stripe API public key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="stripe_api_pass-input">
+                                            <label>
+                                                Stripe API Secret key
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config stripe_api_pass%}" name="stripe_api_pass" type="text" class="form-control" placeholder="Enter Stripe API secret key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group no-mb" data-an="stripe_method_status-input">
+                                            <label>
+                                                Stripe Payment Status
+                                            </label>
+                                            <div class="form-line">
+                                                <select name="stripe_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['stripe_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['stripe_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate('stripe_status'); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  AliPay gateway  -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                AliPay gateway (Stripe gateway dependent)
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="alert alert-danger outline" role="alert">
+                                <p>
+                                    <?php echo cl_translate('alipay_help'); ?>
+                                </p>
+                                <p>
+                                    <?php echo cl_translate('alipay_help_2'); ?> <a href="https://dashboard.stripe.com/settings/payment_methods">https://dashboard.stripe.com/settings/payment_methods</a>
+                                </p>
+                            </div>
+                            <form class="form p-15" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group no-mb" data-an="alipay_method_status-input">
+                                            <label>
+                                                AliPay Payment Status
+                                            </label>
+                                            <div class="form-line">
+                                                <select name="alipay_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['alipay_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['alipay_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate('alipay_status'); ?>
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--   Bank transfer gateway  -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                Bank transfer gateway
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form class="form p-15" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="bt_bank_account_name-input">
+                                            <label>
+                                                Bank account name
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config bt_bank_account_name%}" name="bt_bank_account_name" type="text" class="form-control" placeholder="Enter your bank account name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group" data-an="bt_bank_name-input">
+                                            <label>
+                                                Bank name
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config bt_bank_name%}" name="bt_bank_name" type="text" class="form-control" placeholder="Enter your bank name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" data-an="bt_bank_account_number-input">
+                                            <label>
+                                                Bank account number/IBAN
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config bt_bank_account_number%}" name="bt_bank_account_number" type="text" class="form-control" placeholder="Enter your bank account number/IBAN">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group no-mb" data-an="bank_method_status-input">
+                                            <label>
+                                                Bank Transfer payment method status
+                                            </label>
+                                            <div class="form-line">
+                                                <select name="bank_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['bank_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['bank_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate('bank_transfer_help'); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group" data-an="bt_bank_routing_code-input">
+                                            <label>
+                                                Routing code
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config bt_bank_routing_code%}" name="bt_bank_routing_code" type="text" class="form-control" placeholder="Enter your outing code">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" data-an="bt_bank_address-input">
+                                            <label>
+                                                Bank full address
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config bt_bank_address%}" name="bt_bank_address" type="text" class="form-control" placeholder="Enter your bank full address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" data-an="bt_bank_country_name-input">
+                                            <label>
+                                                Bank country name
+                                            </label>
+                                            <div class="form-line">
+                                                <select data-size="5" name="bt_bank_country_name" class="form-select form-control-primary">
+                                                    <?php foreach ($cl['countries'] as $k => $v): ?>
+                                                            <option value="<?php echo ($k); ?>" <?php if ($k == $cl['config']['bt_bank_country_name']) {
+                                                                   echo ('selected');
+                                                               } ?>>
+                                                                <?php echo ($v); ?>
+                                                            </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  RazorPay payment -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                RazorPay payment method status
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form class="form p-15" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="rzp_api_key-input">
+                                            <label>
+                                                RazorPay API Public key
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config rzp_api_key%}" name="rzp_api_key" type="text" class="form-control" placeholder="Enter RazorPay API public key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="rzp_api_secret-input">
+                                            <label>
+                                                RazorPay API Secret key
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config rzp_api_secret%}" name="rzp_api_secret" type="text" class="form-control" placeholder="Enter RazorPay API secret key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group no-mb" data-an="rzp_method_status-input">
+                                            <label>
+                                                RazorPay payment method status
+                                            </label>
+                                            <div class="form-line">
+                                                <select name="rzp_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['rzp_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>><?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['rzp_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate('razorpay_help'); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <?php echo cl_template('cpanel/assets/payment_gateways/scripts/app_master_script'); ?>

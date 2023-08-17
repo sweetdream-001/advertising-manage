@@ -1,0 +1,217 @@
+<div class="cp-app-container" data-app="invite-users">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('invite_users'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('invite_users'); ?></li>
+
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('create_invite_users'); ?>
+                        </h5>
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="alert alert-light dark" role="alert" style="margin-top: -15px;">
+                            <p>
+                                <?php echo cl_translate('create_invite_users_help'); ?>
+
+                            </p>
+                        </div>
+
+
+                        <form class="form" data-an="form">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <?php echo cl_translate('invite_users_expire'); ?>
+                                        </label>
+                                        <div class="form-line">
+                                            <select name="expires_at" class="form-select form-control-primary">
+                                                <option value="1">
+                                                    1 day
+                                                </option>
+                                                <option value="2">
+                                                    3 days
+                                                </option>
+                                                <option value="7">
+                                                    7 days
+                                                </option>
+                                                <option value="15">
+                                                    15 days
+                                                </option>
+                                                <option value="30">
+                                                    30 days
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <?php echo cl_translate('user_role'); ?>
+
+                                        </label>
+                                        <div class="form-line">
+                                            <select name="role" class="form-select form-control-primary">
+                                                <option value="user">
+                                                    <?php echo cl_translate('regular_user'); ?>
+                                                </option>
+                                                <option value="admin">
+                                                    <?php echo cl_translate('user_admin'); ?>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <?php echo cl_translate('max_number_use'); ?>
+                                        </label>
+                                        <div class="form-line">
+                                            <input value="1" name="mnu" type="number" class="form-control" placeholder="E. g. 5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group no-mb">
+                                    <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                        <?php echo cl_translate('create'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('manage_invite_users'); ?>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="vue-cpanel-user-invites">
+                            <thead>
+                                <th>
+                                    <?php echo cl_translate('link'); ?>
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('clipboard'); ?>
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('user_role'); ?>
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('max_number_use'); ?>
+
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('registered_users'); ?>
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('created_at'); ?>
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('expires_at'); ?>
+                                </th>
+                                <th>
+                                    <?php echo cl_translate('action'); ?>
+
+                                </th>
+                            </thead>
+                            <tbody v-if="links.length">
+                                <tr v-for="item_data in links">
+                                    <td>
+                                        <a v-bind:href="item_data.link">
+                                            {{item_data.link_short}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span v-bind:data-clipboard-text="item_data.link" class="icon pointer clip-board-copy">
+                                            <?php echo cl_ikon("copy"); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span v-if="item_data.role == 'admin'" class="badge">
+                                            <?php echo cl_translate('admin'); ?>
+                                        </span>
+                                        <span v-else>
+                                            <?php echo cl_translate('user'); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <b>{{item_data.mnu}}</b>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-primary">
+                                            <b>{{item_data.registered_users}}</b> <?php echo cl_translate('users'); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{item_data.time}}
+                                    </td>
+                                    <td>
+                                        {{item_data.expire_time}}
+                                    </td>
+                                    <td>
+                                        <span class="icon pointer" v-on:click="delete_link(item_data.id)">
+                                            <?php echo cl_ikon("bin"); ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-table">
+                                            <span class="icon">
+                                                <?php echo cl_ikon("person-add"); ?>
+                                            </span>
+                                            <h4>
+                                                <?php echo cl_translate('no_link'); ?>
+                                            </h4>
+                                            <p>
+                                                <?php echo cl_translate('no_link_help'); ?>
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php echo cl_template('cpanel/assets/invite_users/scripts/app_master_script'); ?>

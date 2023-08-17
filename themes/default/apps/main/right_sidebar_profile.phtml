@@ -1,0 +1,507 @@
+<?php
+if (empty($_GET["uname"])) {
+	cl_redirect("404");
+}
+
+$uname = fetch_or_get($_GET["uname"], false);
+$uname = cl_text_secure($uname);
+$cl['prof_user'] = cl_get_user_by_name($uname);
+$cl['page_tab'] = fetch_or_get($_GET["tab"], 'posts');
+
+
+
+if (empty($cl['prof_user'])) {
+	cl_redirect("404");
+}
+
+require_once(cl_full_path("core/apps/profile/app_ctrl.php"));
+
+
+$cl["page_desc"] = $cl['prof_user']['about'];
+$cl["page_img"] = $cl['prof_user']['avatar'];
+$cl["page_kw"] = $cl["config"]["keywords"];
+$cl["pn"] = "profile";
+$cl["page_xdata"] = array();
+$cl["sbr"] = true;
+$cl["sbl"] = true;
+$cl["user_posts"] = array();
+$cl["user_likes"] = array();
+$cl["can_view"] = cl_can_view_profile($cl['prof_user']['id']);
+$cl["app_statics"] = array(
+	"scripts" => array()
+);
+
+if (not_empty($cl["is_logged"])) {
+	$cl['prof_user']['is_blocked'] = false;
+	$cl['prof_user']['me_blocked'] = false;
+
+	if (($cl['prof_user']['id'] != $me['id'])) {
+		$cl['prof_user']['is_blocked'] = cl_is_blocked($me['id'], $cl['prof_user']['id']);
+		$cl['prof_user']['me_blocked'] = cl_is_blocked($cl['prof_user']['id'], $me['id']);
+	}
+
+	$cl['prof_user']['owner'] = ($cl['prof_user']['id'] == $me['id']);
+	$cl['prof_user']['is_following'] = cl_is_following($me['id'], $cl['prof_user']['id']);
+	$cl['prof_user']['follow_requested'] = false;
+	$cl['prof_user']['common_follows'] = cl_get_common_follows($cl['prof_user']['id']);
+	$cl['prof_user']['is_myfollower'] = cl_is_following($cl['prof_user']['id'], $me["id"]);
+
+	if (empty($cl['prof_user']['is_following'])) {
+		$cl['prof_user']['follow_requested'] = cl_follow_requested($me['id'], $cl['prof_user']['id']);
+	}
+
+	if (not_empty($cl['prof_user']['owner'])) {
+
+		$cl["page_xdata"]["is_me"] = true;
+
+		$cl["app_statics"]["scripts"] = array(
+			cl_js_template("statics/js/libs/jquery-ui")
+		);
+	}
+
+	if ($me["id"] != $cl['prof_user']['id']) {
+		cl_notify_user(
+			array(
+				'subject' => 'visit',
+				'user_id' => $cl['prof_user']['id'],
+				'entry_id' => $me["id"]
+			)
+		);
+	}
+}
+
+if (empty($cl['prof_user']['is_blocked']) && empty($cl['prof_user']['me_blocked'])) {
+	if (in_array($cl['page_tab'], array('posts', 'media'))) {
+		if (not_empty($cl["can_view"])) {
+			$media_type = (($cl['page_tab'] == 'media') ? true : true);
+			$cl["user_posts"] = cl_get_profile_posts($cl['prof_user']['id'], 6, $media_type);
+		}
+	} else {
+		if (not_empty($cl["can_view"])) {
+			$cl["user_likes"] = cl_get_profile_likes($cl['prof_user']['id'], 4);
+		}
+	}
+}
+
+?>
+<div class="right-sb-container sidebar" data-app="right-sidebar">
+	<div class="sidebar__inner">
+		<div class="main-search-bar-container">
+			<form class="form" id="vue-main-search-app" v-on:submit="search_onsubmit" autocomplete="off">
+				<div class="input-holder">
+					<input v-model="search_query" v-on:input="search" type="text" class="form-control"
+						placeholder="<?php echo cl_translate("Search for people, hashtags..", array('name' => $cl['config']['name'])); ?>">
+					<a href="#">
+						<?php echo cl_ikon('search'); ?>
+					</a>
+					<span class="spinner-icon" v-if="searching">
+						<?php echo cl_ikon('spinner-icon'); ?>
+					</span>
+					<span v-on:click="cancel" class="clear-result" v-else-if="search_result">
+						<?php echo cl_ikon('close'); ?>
+					</span>
+				</div>
+				<div class="search-result-holder" v-show="search_result">
+					<div class="search-result-body">
+						<ul class="result-list" data-an="result"></ul>
+					</div>
+					<div class="search-result-footer" v-bind:class="{'disabled': (advanced_search != true) }">
+						<a v-bind:href="search_page_url" data-spa="true">
+							<?php echo cl_translate('Advanced search'); ?>
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- User Media -->
+
+		<?php if (not_empty($cl["is_logged"])): ?>
+
+
+			<?php if (not_empty($cl["can_view"])): ?>
+				<style>
+	.grid-media {
+		display: flex;
+		max-height: 200px;
+		background-color: var(--smc-main-bg-color-2);
+		border-radius: 16px;
+		margin-bottom: 16px;
+	}
+
+	.media_sidebar {
+		margin-bottom: 0px !important;
+	}
+</style>
+				<?php if (in_array($cl['page_tab'], array('posts', 'media'))): ?>
+					<div class="grid-media">
+						<div class="media_sidebar">
+							<?php if (not_empty($cl["user_posts"])): ?>
+
+								<?php foreach ($cl["user_posts"] as $cl['li']): ?>
+									<?php echo cl_template('timeline/post_sidebar'); ?>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php else: ?>
+
+						<span style="height: 0;">&nbsp;</span>
+
+					<?php endif; ?>
+				<?php endif; ?>
+			<?php endif; ?>
+
+		<?php else: ?>
+
+			<div class="social_login">
+				<h2>
+					<?php echo cl_translate(
+						"New to {@name@}?",
+						array(
+							"name" => $cl["config"]["name"]
+						)
+					); ?>
+				</h2>
+				<p>
+					<?php echo cl_translate("new_to_desc"); ?>
+				</p>
+				<div class="social_button">
+					<?php if (in_array("on", array($cl["config"]["instagram_status"], $cl["config"]["vkontakte_status"], $cl["config"]["discord_status"], $cl["config"]["facebook_oauth"], $cl["config"]["linkedin_oauth"], $cl["config"]["google_oauth"], $cl["config"]["twitter_oauth"]))): ?>
+
+						<div class="form-group oauth-login-providers">
+							<?php if ($cl["config"]["google_oauth"] == "on"): ?>
+								<a href="<?php echo cl_link('oauth/google'); ?>" class="social-login-btn google">
+									<button class="btn btn-custom main-inline lg btn-block" type="button"
+										style="background-color: #f7faff !important;border-color: #d2e3fc!important;">
+										<span class="d-inline-flex flex-wn align-items-center">
+											<span class="flex-item btn-icon">
+												<?php echo cl_icon('logos/google-logo-2'); ?>
+											</span>
+											<span class="flex-item">
+												<?php echo cl_translate("SignIn with Google"); ?>
+											</span>
+										</span>
+									</button>
+								</a>
+							<?php endif; ?>
+							<?php if ($cl["config"]["facebook_oauth"] == "on"): ?>
+								<a href="<?php echo cl_link('oauth/facebook'); ?>" class="social-login-btn facebook">
+									<button class="btn btn-custom main-inline lg btn-block" type="button">
+										<span class="d-inline-flex flex-wn align-items-center">
+											<span class="flex-item btn-icon">
+												<?php echo cl_icon('logos/logo-facebook'); ?>
+											</span>
+											<span class="flex-item">
+												<?php echo cl_translate("SignIn with Facebook"); ?>
+											</span>
+										</span>
+									</button>
+								</a>
+							<?php endif; ?>
+							<?php if ($cl["config"]["twitter_oauth"] == "on"): ?>
+								<a href="<?php echo cl_link('oauth/twitter'); ?>" class="social-login-btn twitter">
+									<button class="btn btn-custom main-inline lg btn-block" type="button">
+										<span class="d-inline-flex flex-wn align-items-center">
+											<span class="flex-item btn-icon">
+												<?php echo cl_icon('logos/logo-twitter'); ?>
+											</span>
+											<span class="flex-item">
+												<?php echo cl_translate("SignIn with Twitter"); ?>
+											</span>
+										</span>
+									</button>
+								</a>
+							<?php endif; ?>
+							<div class="form-cta-link forgot">
+								<a data-toggle="collapse" data-target="#collapseLogin" aria-expanded="false"
+									aria-controls="collapseLogin">
+									<span class="btn-outline">
+										<?php echo cl_icon('more_horiz'); ?>
+										<?php echo cl_translate("More Social Login"); ?>
+									</span>
+								</a>
+							</div>
+							<div class="collapse" id="collapseLogin">
+								<?php if ($cl["config"]["linkedin_oauth"] == "on"): ?>
+									<a href="<?php echo cl_link('oauth/linkedin'); ?>" class="social-login-btn linkedin">
+										<button class="btn btn-custom main-inline lg btn-block" type="button">
+											<span class="d-inline-flex flex-wn align-items-center">
+												<span class="flex-item btn-icon">
+													<?php echo cl_icon('logos/logo-linkedin'); ?>
+												</span>
+												<span class="flex-item">
+													<?php echo cl_translate("SignIn with LinkedIn"); ?>
+												</span>
+											</span>
+										</button>
+									</a>
+								<?php endif; ?>
+								<?php if ($cl["config"]["discord_status"] == "on"): ?>
+									<a href="<?php echo cl_link('oauth/discord'); ?>" class="social-login-btn discord">
+										<button class="btn btn-custom main-inline lg btn-block" type="button">
+											<span class="d-inline-flex flex-wn align-items-center">
+												<span class="flex-item btn-icon">
+													<?php echo cl_icon('logos/logo-discord'); ?>
+												</span>
+												<span class="flex-item">
+													<?php echo cl_translate("SignIn with Discord"); ?>
+												</span>
+											</span>
+										</button>
+									</a>
+								<?php endif; ?>
+								<?php if ($cl["config"]["vkontakte_status"] == "on"): ?>
+									<a href="<?php echo cl_link('oauth/vkontakte'); ?>" class="social-login-btn vkontakte">
+										<button class="btn btn-custom main-inline lg btn-block" type="button">
+											<span class="d-inline-flex flex-wn align-items-center">
+												<span class="flex-item btn-icon">
+													<?php echo cl_icon('logos/logo-vk'); ?>
+												</span>
+												<span class="flex-item">
+													<?php echo cl_translate("SignIn with Vkontakte"); ?>
+												</span>
+											</span>
+										</button>
+									</a>
+								<?php endif; ?>
+								<?php if ($cl["config"]["instagram_status"] == "on"): ?>
+									<a href="<?php echo cl_link('oauth/instagram'); ?>" class="social-login-btn instagram">
+										<button class="btn btn-custom main-inline lg btn-block" type="button">
+											<span class="d-inline-flex flex-wn align-items-center">
+												<span class="flex-item btn-icon">
+													<?php echo cl_icon('logos/logo-instagram'); ?>
+												</span>
+												<span class="flex-item">
+													<?php echo cl_translate("SignIn with Instagram"); ?>
+												</span>
+											</span>
+										</button>
+									</a>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php else: ?>
+						<button type="button" class="btn btn-custom main-inline lg btn-block" data-toggle="modal"
+							data-target="#loginModal">
+							<?php echo cl_translate("Log in"); ?>
+						</button>
+
+					<?php endif; ?>
+				</div>
+				<p>
+					<?php echo cl_translate("by_signing"); ?> <a href="<?php echo cl_link('terms_of_use'); ?>"> <?php echo cl_translate("Terms of Use"); ?> </a>
+					<?php echo cl_translate("And"); ?> <a href="<?php echo cl_link('privacy_policy'); ?>"><?php echo cl_translate("Privacy policy"); ?></a>,
+					<?php echo cl_translate("including"); ?> <a href="<?php echo cl_link('cookies_policy'); ?>"><?php echo cl_translate("cookies_policy"); ?> </a>.
+				</p>
+			</div>
+		<?php endif; ?>
+		<!-- End Media -->
+		<div class="follow-suggestion">
+			<div class="follow-suggestion__header">
+				<h4>
+					<?php echo cl_translate("You might like"); ?>
+				</h4>
+			</div>
+			<?php if (not_empty($cl['follow_suggestion'])): ?>
+				<div class="follow-suggestion__body">
+					<?php foreach ($cl['follow_suggestion'] as $row): ?>
+						<div class="follow-suggestion__item">
+							<div class="flex-cr">
+								<div class="avatar">
+									<img src="<?php echo ($row['avatar']); ?>" alt="avatar">
+								</div>
+								<div class="user-info-holder">
+									<h4>
+										<a href="<?php echo ($row['url']); ?>" data-uinfo-lbox="<?php echo ($row['id']); ?>"
+											data-toggle="popover" data-placement="bottom">
+											<span class="user-name-holder">
+												<?php echo $row['name']; ?>
+												<?php if ($row['verified'] == '1'): ?>
+													<span class="user-name-holder__badge">
+														<svg style='vertical-align: middle;' xmlns='http://www.w3.org/2000/svg'
+															width='20' height='20' viewBox='0 0 24 24'>
+															<path fill='dodgerblue'
+																d='M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'>
+															</path>
+														</svg>
+													</span>
+												<?php endif; ?>
+											</span>
+
+										</a>
+
+									</h4>
+									<a href="<?php echo ($row['url']); ?>">
+										@<?php echo $row['username']; ?>
+									</a>
+
+								</div>
+								<?php if ($row['follow_privacy'] == "approved"): ?>
+									<?php if (not_empty($row['follow_requested'])): ?>
+										<button onclick="SMColibri.req_follow(this);" class="btn btn-custom main-inline md"
+											data-action="unfollow" data-user-name="<?php echo ($row['name']); ?>"
+											data-id="<?php echo ($row['id']); ?>">
+											<?php echo cl_translate("Pending"); ?>
+										</button>
+									<?php else: ?>
+										<button onclick="SMColibri.req_follow(this);" class="btn btn-custom main-outline md"
+											data-action="follow" data-user-name="<?php echo ($row['name']); ?>"
+											data-id="<?php echo ($row['id']); ?>">
+											<?php echo cl_translate("Follow"); ?>
+										</button>
+									<?php endif; ?>
+								<?php else: ?>
+									<button onclick="SMColibri.follow(this);" class="btn btn-custom sm main-outline"
+										data-action="follow" data-user-name="<?php echo ($row['name']); ?>"
+										data-id="<?php echo ($row['id']); ?>">
+										<?php echo cl_translate("Follow"); ?>
+									</button>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<div class="follow-suggestion__footer">
+					<a href="<?php echo cl_link("suggested"); ?>" data-spa="true">
+						<?php echo cl_translate("Show more"); ?>
+					</a>
+				</div>
+			<?php else: ?>
+				<div class="follow-suggestion__placeholder">
+					<?php echo cl_translate("Here will be a list of the most recommended people to follow"); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+		<div class="topical-posts">
+			<div class="topical-posts__header">
+				<h4>
+					<?php echo cl_translate("hot_topics_for_you"); ?>
+				</h4>
+			</div>
+			<?php if (not_empty($cl['hot_topics'])): ?>
+				<div class="topical-posts__body">
+					<?php foreach ($cl['hot_topics'] as $row): ?>
+						<div class="topical-posts__item">
+							<a class="htag" href="<?php echo ($row['url']); ?>" data-spa="true">
+								<b>#</b>
+
+								<strong>
+									<?php echo ($row['tag']); ?>
+								</strong>
+
+								<span>
+									<?php echo ($row['total']); ?>
+									<?php echo cl_translate("Posts"); ?>
+								</span>
+
+							</a>
+							<span> <a href="<?php echo ($row['url']); ?>" class="icon" data-spa="true">
+									<?php echo cl_ikon('pub-more'); ?>
+								</a></span>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<div class="topical-posts__footer">
+					<a href="<?php echo cl_link("trending"); ?>" data-spa="true">
+						<?php echo cl_translate("Show more"); ?>
+					</a>
+				</div>
+			<?php else: ?>
+				<div class="topical-posts__placeholder">
+					<?php echo cl_translate("Here will be a (#hashtag) list of the most relevant topics and events"); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+		<?php echo cl_template('main/footer'); ?>
+		<?php if (not_empty($cl["gads_vert"])): ?>
+			<div class="cl-google-ads">
+				<?php echo $cl["gads_vert"]; ?>
+			</div>
+		<?php endif; ?>
+	</div>
+
+</div>
+</div>
+<!-- Search -->
+<script>
+	new Vue({
+		el: "#vue-main-search-app",
+		data: {
+			searching: false,
+			search_query: "",
+			advanced_search: false,
+			search_result: false
+		},
+		computed: {
+			search_page_url: function () {
+				if (this.search_query.length > 2) {
+					var search_htags_url = "<?php echo cl_link("search/htags?q={0}"); ?>";
+					var search_users_url = "<?php echo cl_link("search/people?q={0}"); ?>";
+					this.advanced_search = true;
+
+					if (this.search_query.charAt(0) == '#') {
+						return search_htags_url.format(this.search_query.replace('#', ''));
+					} else {
+						return search_users_url.format(this.search_query);
+					}
+				} else {
+
+					this.advanced_search = false;
+
+					return "javascript:void(0);";
+				}
+			},
+			query_type: function () {
+				if (this.search_query.charAt(0) == '#') {
+					return 'htags';
+				} else {
+					return 'users';
+				}
+			}
+		},
+		methods: {
+			search_onsubmit: function (e = false) {
+				e.preventDefault();
+
+				this.search();
+			},
+			search: function () {
+				if (this.search_query.length > 2) {
+					var _app_ = this;
+					delay(function () {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/main/search"); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: {
+								query: _app_.search_query.replace('#', ''),
+								type: _app_.query_type
+							},
+							beforeSend: function () {
+								_app_.searching = true;
+							}
+						}).done(function (data) {
+							if (data.status == 200) {
+								_app_.search_result = true;
+								$(_app_.$el).find('[data-an="result"]').html($(data.html));
+							} else {
+								$(_app_.$el).find('[data-an="result"]').empty('');
+								_app_.search_result = false;
+							}
+						}).always(function () {
+							_app_.searching = false;
+						});
+					}, 800);
+				}
+			},
+			cancel: function () {
+				var _app_ = this;
+				_app_.searching = false;
+				_app_.search_query = "";
+				_app_.advanced_search = false;
+				_app_.search_result = false;
+
+				$(_app_.$el).find('[data-an="result"]').empty('');
+			}
+		}
+	});
+</script>

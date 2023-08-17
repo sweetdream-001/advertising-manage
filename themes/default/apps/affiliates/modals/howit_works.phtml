@@ -1,0 +1,72 @@
+<div class="modal fade affiliates-workflow" id="affiliates-workflow" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header__inner">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate('How it works?'); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_icon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="affiliates-workflow-list">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="list-item list-item_1">
+                                <div class="list-item__lp">
+                                    <div class="icon">
+                                        <?php echo cl_icon('looks_one'); ?>
+                                    </div>
+                                </div>
+                                <div class="list-item__mp">
+                                    <?php echo cl_translate('You share your affiliate URL link. This attracts potential users to our site!'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="list-item list-item_2">
+                                <div class="list-item__lp">
+                                    <div class="icon">
+                                        <?php echo cl_icon('looks_two'); ?>
+                                    </div>
+                                </div>
+                                <div class="list-item__mp">
+                                    <?php echo cl_translate('The user registers on our website by clicking on your affiliate link'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="list-item list-item_3">
+                                <div class="list-item__lp">
+                                    <div class="icon">
+                                        <?php echo cl_icon('looks_3'); ?>
+                                    </div>
+                                </div>
+                                <div class="list-item__mp">
+                                    <?php echo cl_translate('After completing each registration of a user using your affiliate link, you earn {@aff_bonus_rate@}', array(
+                                        'aff_bonus_rate' => cl_html_el("b", cl_money($cl['config']['aff_bonus_rate']))
+                                    )); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="list-item no-mb list-item_4">
+                                <div class="list-item__lp">
+                                    <div class="icon">
+                                        <?php echo cl_icon('looks_4'); ?>
+                                    </div>
+                                </div>
+                                <div class="list-item__mp">
+                                    <?php echo cl_translate('And at the end, you withdraw your earnings by requesting via PayPal'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

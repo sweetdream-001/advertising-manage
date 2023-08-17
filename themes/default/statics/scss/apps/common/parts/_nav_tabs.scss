@@ -1,0 +1,109 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-navbar {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    background: var(--cl-primary-bg-color);
+    z-index: 10;
+    div.timeline-navbar__item {
+        flex: 1;
+        overflow: hidden;
+        a {
+            display: block;
+            text-decoration: none;
+            outline: 0;
+            button.timeline-navbar__item-btn {
+                background: transparent;
+                color: var(--cl-secondary-text-color);
+                box-shadow: none;
+                border: none;
+                padding: 17px var(--cl-primary-offset-size) 20px var(--cl-primary-offset-size);
+                margin: 0px;
+                cursor: pointer;
+                display: block;
+                width: 100%;
+                outline: 0;
+                position: relative;
+                @include media-breakpoint-down(xl) {
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                }
+                span.btn-flex-inner {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    line-height: 1;
+                    span.text {
+                        text-transform: uppercase;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        font-size: 13px;
+                        font-weight: 500;
+                        margin-left: 5px;
+                        @include media-breakpoint-down(xl) {
+                            font-size: 11px;
+                        }
+                    }
+                    span.icon {
+                        width: 18px;
+                        height: 18px;
+                        flex-shrink: 0;
+                        line-height: 0px;
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                            fill: var(--cl-secondary-text-color);
+                        }
+                        @include media-breakpoint-down(xl) {
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+                }
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0px;
+                    left: 0px;
+                    right: 0px;
+                    height: 3px;
+                    background: var(--cl-primary-border-color);
+                }
+                &.active {
+                    background: var(--cl-event-hover-bg);
+                    &::after {
+                        background: var(--cl-primary-color);
+                    }
+                    span.btn-flex-inner {
+                        span.text {
+                            color: var(--cl-primary-color);
+                        }
+                        span.icon {
+                            svg {
+                                fill: var(--cl-primary-color);
+                            }
+                        }
+                    }
+                }
+                &:hover,
+                &:active,
+                &:focus {
+                    background: var(--cl-event-hover-bg);
+                }
+            }
+        }
+    }
+}

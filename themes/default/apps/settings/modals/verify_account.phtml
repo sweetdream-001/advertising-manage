@@ -1,0 +1,104 @@
+<div class="modal fade" data-app="cl-verif-settings" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" id="cl-verif-settings-vue-app" v-on:submit="submit_form($event)">
+                <div class="modal-header">
+                    <div class="main---mh--block">
+                        <h5 class="modal-title">
+                            <?php echo cl_translate("Verify my account"); ?>
+                        </h5>
+                        <span class="dismiss-modal" data-dismiss="modal">
+                            <?php echo cl_ikon('close'); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body" v-if="verification_status == '0'">
+                    <div class="popup-modal-form"> 
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Full name"); ?>
+                            </label>
+                            <input v-model.trim="$v.full_name.$model" name="full_name" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter your full name"); ?>">
+                            <div class="invalid-main-feedback" v-if="is_valid_full_name">
+                                {{invalid_feedback_full_name}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Message to reviewer"); ?>
+                                <small v-if="text_message.length" v-bind:class="{'col-red': (text_message.length > 1200)}">({{text_message.length}})</small>
+                            </label>
+
+                            <textarea v-model.trim="$v.text_message.$model" name="text_message" rows="2" class="form-control" placeholder="<?php echo cl_translate("Enter message to reviewer"); ?>"></textarea>
+                            <div class="invalid-main-feedback" v-if="is_valid_text_message">
+                                {{invalid_feedback_text_message}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Video message"); ?>
+                            </label>
+                            
+                            <div class="file-select-zone-wrapper">
+                                <div class="file-select-zone">
+                                    <button v-on:click="select_video" type="button" class="file-selector">
+                                        {{selected_file_name}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-if="unsuccessful_attempt">
+                            <div class="invalid-main-feedback">
+                                <?php echo cl_translate("An error occurred while processing your request. Please try again later."); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-else>
+                            <p class="form-info-label">
+                                <?php echo cl_translate("Please note that this material will not be published or shared with third parties. We request this information solely to verify the authenticity of your identity in order to further verify your account! To do this, we need you to record a video of no more than 1 minute in length, holding your Passport / ID in your right hand in a clear vision of your face and the data of your document, besides giving your full name and also the user nickname that you use on our website"); ?>
+                            </p>
+                        </div>
+                        <input v-on:change="display_filename($event)" type="file" name="video" class="d-none" accept="video/*" data-an="video-message-input">
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </div>
+                </div>
+                <div class="modal-footer" v-if="verification_status == '0'">
+                    <button v-if="submitting != true" v-bind:disabled="is_valid_form != true" type="submit" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Submit request"); ?>
+                    </button>
+                    <button v-else disabled="true" type="button" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Please wait"); ?>
+                    </button>
+                </div>
+                <div class="modal-body" v-else-if="verification_status == '1'">
+                    <div class="popup-modal-form">
+                        <div class="form-group">
+                            <p class="form-info-label text-center">
+                                <?php echo cl_translate("Your account has been verified, now a blue checkmark will always be displayed next to your name! However, keep in mind that if you change your username, you will lose this icon and you will have to contact us again with a request! Thank you for verifying your account!"); ?>
+                            </p>
+                        </div>
+                        <div class="form-group no-mb">
+                            <button data-dismiss="modal" class="btn btn-custom main-inline lg btn-block">
+                                <?php echo cl_translate('Okey!'); ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" v-else-if="verification_status == '2'">
+                    <div class="popup-modal-form">
+                        <div class="form-group">
+                            <p class="form-info-label text-center">
+                                <?php echo cl_translate("Your request for verification of your account has been successfully received and is under consideration, you will receive a notification as soon as the administration considers your request! Please note that this may take several business days!"); ?>
+                            </p>
+                        </div>
+
+                        <div class="form-group no-mb">
+                            <button data-dismiss="modal" class="btn btn-custom main-inline lg btn-block">
+                                <?php echo cl_translate('Okey!'); ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

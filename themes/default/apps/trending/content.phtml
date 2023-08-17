@@ -1,0 +1,63 @@
+<div class="timeline-container" data-app="trending">
+<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link('trending'); ?>" data-spa="true">
+						<?php echo cl_translate("Hot topics"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+			</div>
+			<div class="rp">
+			</div>
+		</div>
+	</div>
+
+	<?php if (not_empty($cl["htags"])): ?>
+		<div class="timeline-hashtags-container">
+			<div class="timeline-hashtags-ls" data-an="hashtags-list">
+				<?php foreach ($cl["htags"] as $cl['li']): ?>
+					<?php echo cl_template('trending/includes/list_item'); ?>
+				<?php endforeach; ?>
+			</div>
+		</div>
+		<?php if (count($cl["htags"]) >= 29): ?>
+			<div class="timeline-data-loader">
+				<button class="btn btn-custom main-outline lg" data-an="load-more">
+					<?php echo cl_translate("Show more"); ?>
+				</button>
+			</div>
+			<?php echo cl_template('trending/scripts/app_master_script'); ?>
+		<?php endif; ?>
+	<?php else: ?>
+		<div class="timeline-placeholder">
+			<div class="icon">
+				<div class="icon__bg">
+					<?php echo cl_icon('whatshot'); ?>
+				</div>
+			</div>
+			<div class="pl-message">
+				<h4>
+					<?php echo cl_translate("No topics to display"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("Here will be (#hashtag) a list with navigation on the most relevant topics and events, which will allow you to quickly find media content on the topics you need!"); ?>
+				</p>
+			</div>
+			<div class="c2action-single">
+				<a href="<?php echo cl_link('/'); ?>" data-spa="true">
+					<button class="btn btn-custom main-outline lg">
+						<?php echo cl_translate("Go to the homepage"); ?>
+					</button>
+				</a>
+			</div>
+		</div>
+	<?php endif; ?>
+	
+</div>
+

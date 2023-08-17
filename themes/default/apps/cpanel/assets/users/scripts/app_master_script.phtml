@@ -1,0 +1,346 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app      = $('[data-app="users"]');
+        SMC_CPanel.PS = new Vue({
+            el: "#vue-cpanel-users-app",
+            data: {
+                total_users: <?php echo fetch_or_get($cl['total_users'], 0); ?>,
+                loading: false,
+                prev_ctrl: true,
+                next_ctrl: true,
+                init_data: "",
+                search_404: false,
+                sorting: {
+                    status: {
+                        title: "All",
+                        value: "all"
+                    },
+                    type: {
+                        title: "All",
+                        value: "all"
+                    },
+                    username: {
+                        title: "Any",
+                        value: ""
+                    },
+                    email: {
+                        title: "Any",
+                        value: ""
+                    },
+                    ip: {
+                        title: "Any",
+                        value: ""
+                    },
+                    country: {
+                        title: "Any",
+                        value: "any"
+                    }
+                }
+            },
+            computed: {
+                allow2reset: function() {
+                    if (this.sorting.status.value != "all" || this.sorting.country.value != "any") {
+                        return true;
+                    }
+
+                    else if (this.sorting.type.value != "all") {
+                        return true;
+                    }
+
+                    else if(this.sorting.username.value.length > 0 || this.sorting.email.value.length > 0) {
+                        return true;
+                    }
+
+                    else if(this.sorting.ip.value.length > 0) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                },
+                dis_prev_ctrl: function() {
+                    if (this.loading || this.prev_ctrl != true) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                },
+                dis_next_ctrl: function() {
+                    if (this.loading || this.next_ctrl != true) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                },
+                show_ctrls: function() {
+                    if (this.total_users > 0 && this.search_404 != true) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                },
+                is_valid_username: function() {
+                    if (this.sorting.username.value.length >= 3) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            },
+            methods: {
+                apply_status: function(e = false) {
+                    var _self = $(e.target);
+                    var _app_ = this;
+                    _app_.sorting.status.title = $(_self).text();
+                    _app_.sorting.status.value = $(_self).data('value');
+                    _app_.filter_table();
+                },
+                apply_type: function(e = false) {
+                    var _self = $(e.target);
+                    var _app_ = this;
+                    _app_.sorting.type.title = $(_self).text();
+                    _app_.sorting.type.value = $(_self).data('value');
+                    _app_.filter_table();
+                },
+                apply_country: function(e = false) {
+                    var _self = $(e.target);
+                    var _app_ = this;
+                    _app_.sorting.country.title = $(_self).text();
+                    _app_.sorting.country.value = $(_self).data('value');
+                    _app_.filter_table();
+                },
+                apply_username: function(e = false) {
+                    var _app_ = this;
+                    
+                    if (_app_.sorting.username.value.length < 1) {
+                        _app_.sorting.username.title = "Any";
+                    }
+
+                    else {
+                        _app_.sorting.username.title = _app_.sorting.username.value;
+                    }
+
+                    _app_.filter_table();
+                },
+                apply_email: function(e = false) {
+                    var _app_ = this;
+                    
+                    if (_app_.sorting.email.value.length < 1) {
+                        _app_.sorting.email.title = "Any";
+                    }
+                    
+                    else {
+                        _app_.sorting.email.title = _app_.sorting.email.value;
+                    }
+
+                    _app_.filter_table();
+                },
+                apply_ip: function(e = false) {
+                    var _app_ = this;
+                    
+                    if (_app_.sorting.ip.value.length < 1) {
+                        _app_.sorting.ip.title = "Any";
+                    }
+                    
+                    else {
+                        _app_.sorting.ip.title = _app_.sorting.ip.value;
+                    }
+
+                    _app_.filter_table();
+                },
+                paginate: function(dir = false) {
+                    var _app_       = this;
+                    var users_list  = _app.find('[data-an="users-list"]');
+                    var offset_lt   = users_list.find('[data-list-item]').first().data('list-item');
+                    var offset_gt   = users_list.find('[data-list-item]').last().data('list-item');
+                    var filter_data = _app_.get_filter_data();
+
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/cpanel/get_users"); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            dir: dir,
+                            offset_lt: offset_lt, 
+                            offset_gt: offset_gt,
+                            filter: filter_data
+                        },
+                        beforeSend: function() {
+                            _app_.loading   = true;
+                            _app_.prev_ctrl = true;
+                            _app_.next_ctrl = true;
+
+                            SMC_CPanel.waitme("show");
+                        }
+                    }).done(function(data) {
+                        if (data.status == 200) {
+                            users_list.html(data.html);
+                        }
+                        else{
+                            if (dir == 'up') {
+                                _app_.prev_ctrl = false;
+                            }
+                            else{
+                                _app_.next_ctrl = false;
+                            }
+                        }
+                    }).always(function() {
+                        delay(function() {
+                            _app_.loading = false;
+
+                            SMC_CPanel.waitme();
+                        },500);
+                    });
+                },
+                filter_table: function() {
+                    var _app_       = this;
+                    var users_list  = _app.find('[data-an="users-list"]');
+                    var filter_data = _app_.get_filter_data();
+
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/cpanel/search_users"); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            filter: filter_data
+                        },
+                        beforeSend: function() {
+                            _app_.loading   = true;
+                            _app_.prev_ctrl = true;
+                            _app_.next_ctrl = true;
+
+                            SMC_CPanel.waitme("show");
+                        }
+                    }).done(function(data) {
+                        if (data.status != 200) {
+                            _app_.search_404 = true;
+                        }
+
+                        else{
+                           _app_.search_404 = false; 
+                        }
+
+                        if (data.html) {
+                            users_list.html(data.html);
+                        }
+                    }).always(function() {
+                        delay(function() {
+                            _app_.loading = false;
+
+                            SMC_CPanel.waitme();
+                        },500);
+                    });
+                },
+                get_filter_data: function() {
+                    var _app_       = this;
+                    var filter_data = Object({
+                        status: _app_.sorting.status.value,
+                        type: _app_.sorting.type.value,
+                        username: _app_.sorting.username.value,
+                        email: _app_.sorting.email.value,
+                        ip: _app_.sorting.ip.value,
+                        country: _app_.sorting.country.value 
+                    });
+
+                    return filter_data;
+                },
+                reset_form: function() {
+                    var _app_        = this;
+                    var users_list   = _app.find('[data-an="users-list"]');
+                    _app_.search_404 = false;
+                    _app_.loading    = false;
+                    _app_.prev_ctrl  = true;
+                    _app_.next_ctrl  = true;
+
+                    if (_app_.init_data) {
+                        users_list.html(_app_.init_data);
+                    }
+
+                    _app_.sorting = Object({
+                        type: {
+                            title: "All",
+                            value: "all"
+                        },
+                        status: {
+                            title: "All",
+                            value: "all"
+                        },
+                        username: {
+                            title: "Any",
+                            value: ""
+                        },
+                        email: {
+                            title: "Any",
+                            value: ""
+                        },
+                        ip: {
+                            title: "Any",
+                            value: ""
+                        },
+                        country: {
+                            title: "Any",
+                            value: "any"
+                        }
+                    });
+                },
+                toggle_status: function(id = false) {
+                    if ($.isNumeric(id) && id) {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/toggle_user_status"); ?>',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {id: id},
+                        }).done(function(data) {
+                            if (data.message) {
+                                cl_bs_notify(data.message);
+                            }
+                        });
+                    }
+                },
+                toggle_type: function(id = false) {
+                    if ($.isNumeric(id) && id) {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/toggle_user_type"); ?>',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {id: id},
+                        }).done(function(data) {
+                            if (data.message) {
+                                cl_bs_notify(data.message);
+                            }
+                        });
+                    }
+                },
+                verify_user: function(id = false) {
+                    if ($.isNumeric(id) && id) {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/verify_user"); ?>',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {id: id},
+                        }).done(function(data) {
+                            if (data.message) {
+                                cl_bs_notify(data.message);
+                            }
+                        });
+                    }
+                }
+            },
+            mounted: function() {
+                var _app_       = this;
+                var users_list  = _app.find('[data-an="users-list"]');
+                _app_.init_data = users_list.html();
+            }
+        });
+	});
+</script>

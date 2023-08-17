@@ -1,0 +1,191 @@
+<div class="cp-app-container" data-app="email-settings">
+<div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>  <?php echo cl_translate('E-mail settings'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><?php echo cl_translate('E-mail settings'); ?></li>
+                   
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+    <div class="container-fluid">
+            <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                       <?php echo cl_translate('Manage mailing system settings'); ?>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form class="form" data-an="form1">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="smtp_username-input">
+                                    <label>
+                                    <?php echo cl_translate('SMTP username'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-user-alt-3"></i></span>
+                                        <input value="{%config smtp_username%}" name="smtp_username" type="text" class="form-control" placeholder="Enter the username of your SMTP server">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="smtp_host-input">
+                                    <label>
+                                    <?php echo cl_translate('SMTP host'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-server"></i></span>
+                                        <input value="{%config smtp_host%}" name="smtp_host" type="text" class="form-control" placeholder="Enter the host name of your SMTP server">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="smtp_password-input">
+                                    <label>
+                                    <?php echo cl_translate('SMTP password'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-key"></i></span>
+                                        <input value="{%config smtp_password%}" name="smtp_password" type="passwords" class="form-control" placeholder="Enter the password of your SMTP server">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="smtp_encryption-input">
+                                    <label>
+                                    <?php echo cl_translate('SMTP encryption'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-lock"></i></span>
+                                        <select name="smtp_encryption" class="form-select form-control-primary">
+                                            <option value="ssl" <?php if($cl['config']['smtp_encryption'] == 'ssl') { echo('selected'); } ?>>SSL</option>
+                                            <option value="tls" <?php if($cl['config']['smtp_encryption'] == 'tls') { echo('selected'); } ?>>TLS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="smtp_or_mail-input">
+                                    <label>
+                                    <?php echo cl_translate('SMTP server'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-server"></i></span>
+                                        <select name="smtp_or_mail" class="form-select form-control-primary">
+                                            <option value="smtp" <?php if($cl['config']['smtp_or_mail'] == 'smtp') { echo('selected'); } ?>>SMTP</option>
+                                            <option value="mail" <?php if($cl['config']['smtp_or_mail'] == 'mail') { echo('selected'); } ?>>MAIL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="smtp_port-input">
+                                    <label>
+                                    <?php echo cl_translate('SMTP port'); ?>
+                                    </label>
+                                    <div class="form-line">
+                                        <input value="{%config smtp_port%}" name="smtp_port" type="number" class="form-control" placeholder="Enter the port of your SMTP server">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                <div class="form-group no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                    <?php echo cl_translate("Save changes"); ?>
+                                    </button>
+
+                                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      
+                      
+                                        <p>
+                                        <?php echo cl_translate('with_port_help'); ?>
+                                           
+                                        </p>
+                                        <ul>
+                                            <li>
+                                            <?php echo cl_translate('SMTP encryption'); ?> <b>SSL</b> <?php echo cl_translate('with_port'); ?>: <b>465</b>
+                                            </li>
+                                            <li>
+                                            <?php echo cl_translate('SMTP encryption'); ?> <b>TLS</b> <?php echo cl_translate('with_port'); ?> <b>587</b>
+                                            </li>
+                                        </ul>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+      
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="card">
+            <div class="card-header">
+                    <h5>
+                    <?php echo cl_translate('smtp_check'); ?>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="inline-alertbox-wrapper">
+                    <div class="alert alert-dark dark" role="alert">
+                      
+                      
+                      <p>
+                      <?php echo cl_translate('smtp_check_help'); ?>
+                         
+                      </p>
+</div>
+                      
+                    </div>
+                    <form class="form p-25" data-an="form2">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="test_email-input">
+                                    <label>
+                                    <?php echo cl_translate('e_mail_address'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-ui-email"></i></span>
+                                        <input name="test_email" type="text" class="form-control" placeholder="Enter a email address">
+                                    </div>
+                                    <small class="info-feedback">
+                                        <p>
+                                        <?php echo cl_translate('smtp_check_enter'); ?>
+                                        </p>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                <div class="form-group no-mb">
+                                    <button data-an="submit-ctrl" type="submit" class="btn btn-danger">
+                                    <?php echo cl_translate('smtp_check_send'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+   
+    </div>
+</div>
+
+<?php echo cl_template('cpanel/assets/email_settings/scripts/app_master_script'); ?>

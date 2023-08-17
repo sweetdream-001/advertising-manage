@@ -1,0 +1,102 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		var _app        = $('div[data-app="connections"]');
+		var CLFollowers = Object({
+			load_more: function(event = false) {
+				var people_ls = _app.find('div[data-an="connectivity-list"]');
+				var last_li   = people_ls.find('div[data-list-item]').last();
+				var _self     = $(event);
+
+				if (last_li.length) {
+					$.ajax({
+						url: "<?php echo cl_link("native_api/connections/load_more"); ?>",
+						type: 'GET',
+						dataType: 'json',
+						data: {
+							offset: last_li.data('list-item'),
+							type: "<?php echo($cl['page_tab']); ?>",
+							prof_id: "<?php echo($cl['prof_user']['id']); ?>",
+						},
+						beforeSend: function(){
+							_self.attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+						}
+					}).done(function(data) {
+						if (data.status == 200) {
+							people_ls.append(data.html);
+
+							_self.removeAttr('disabled').text("<?php echo cl_translate("Show more"); ?>");
+						}
+
+						else {
+							_self.text("<?php echo cl_translate("That is all for now!"); ?>");
+						}
+					});
+				}
+			},
+			accept_request: function(id = false) {
+				var people_ls = _app.find('div[data-an="connectivity-list"]');
+
+				if ($.isNumeric(id)) {
+					$.ajax({
+						url: "<?php echo cl_link("native_api/connections/accept_request"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							req_id: id
+						},
+						beforeSend: function(){
+							people_ls.find('[data-list-item="{0}"]'.format(id)).fadeOut(150, function() {
+								$(this).remove();
+							});
+						}
+					}).done(function(data) {
+						if (data.status != 200) {
+							SMColibri.errorMSG();
+						}
+						else {
+							if (data.total < 1) {
+								SMColibri.spa_reload();
+							}
+							else {
+								_app.find('[data-an="total-requests"]').text(data.total);
+							}
+						}
+					});
+				}
+			},
+			delete_request: function(id = false) {
+				var people_ls = _app.find('div[data-an="connectivity-list"]');
+
+				if ($.isNumeric(id)) {
+					$.ajax({
+						url: "<?php echo cl_link("native_api/connections/delete_request"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							req_id: id
+						},
+						beforeSend: function(){
+							people_ls.find('[data-list-item="{0}"]'.format(id)).fadeOut(150, function() {
+								$(this).remove();
+							});
+						}
+					}).done(function(data) {
+						if (data.status != 200) {
+							SMColibri.errorMSG();
+						}
+						else {
+							if (data.total < 1) {
+								SMColibri.spa_reload();
+							}
+							else {
+								_app.find('[data-an="total-requests"]').text(data.total);
+							}
+						}
+					});
+				}
+			}
+		}); window.CLFollowers = CLFollowers;
+	});
+</script>

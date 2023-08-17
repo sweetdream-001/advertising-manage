@@ -1,0 +1,86 @@
+<div class="cp-app-container" data-app="affiliates-settings">
+<div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>   <?php echo cl_translate('Affiliates settings'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item">   <?php echo cl_translate('Affiliates settings'); ?></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+   <div class="d-block" id="vue-cpanel-users-app">
+     <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card"  style="padding: 15px;">
+                  <div class="card-header">
+                    <h5>
+                     <?php echo cl_translate('Manage affiliates system settings'); ?>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form class="form" data-an="form">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="aff_bonus_rate-input">
+                                    <label>
+                                    <?php echo cl_translate('Affiliate bonus rate'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-pencil-alt-5"></i></span>
+                                        <input value="{%config aff_bonus_rate%}" name="aff_bonus_rate" type="text" class="form-control" placeholder="E. g. 0.50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="aff_payout_min-input">
+                                    <label>
+                                    <?php echo cl_translate('affiliate_payout'); ?> ( <?php echo cl_money('50'); ?>)
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-credit-card"></i></span>
+                                        <input value="{%config aff_payout_min%}" name="aff_payout_min" type="text" class="form-control" placeholder="E. g. <?php echo cl_money('50'); ?>">
+                                    </div>
+                                    <small class="info-feedback">
+                                    <?php echo cl_translate('affiliate_payout_help'); ?>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="affiliates_system-input">
+                                    <label>
+                                    <?php echo cl_translate('Affiliates System'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-toggle-on"></i></span>
+                                        <select name="affiliates_system" class="form-select form-control-primary">
+                                            <option value="on" <?php if($cl['config']['affiliates_system'] == 'on') { echo('selected'); } ?>>
+                                            <?php echo cl_translate('Enabled'); ?>
+                                            </option>
+                                            <option value="off" <?php if($cl['config']['affiliates_system'] == 'off') { echo('selected'); } ?>>
+                                            <?php echo cl_translate('Disabled'); ?>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary" >
+                                <?php echo cl_translate("Save changes"); ?>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php echo cl_template('cpanel/assets/affiliate_settings/scripts/app_master_script'); ?>

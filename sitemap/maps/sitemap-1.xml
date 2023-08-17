@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://p-tweets.com/talk/thread/1</loc>
+        <priority>0.5</priority>
+        <changefreq>daily</changefreq>
+        <lastmod>2023-07-31</lastmod>
+    </url>
+    <url>
+        <loc>https://p-tweets.com/talk/thread/2</loc>
+        <priority>0.5</priority>
+        <changefreq>daily</changefreq>
+        <lastmod>2023-07-31</lastmod>
+    </url>
+    <url>
+        <loc>https://p-tweets.com/talk/thread/3</loc>
+        <priority>0.5</priority>
+        <changefreq>daily</changefreq>
+        <lastmod>2023-07-31</lastmod>
+    </url>
+    <url>
+        <loc>https://p-tweets.com/talk/thread/4</loc>
+        <priority>0.5</priority>
+        <changefreq>daily</changefreq>
+        <lastmod>2023-07-31</lastmod>
+    </url>
+    <url>
+        <loc>https://p-tweets.com/talk/thread/6</loc>
+        <priority>0.5</priority>
+        <changefreq>daily</changefreq>
+        <lastmod>2023-07-31</lastmod>
+    </url>
+</urlset>

@@ -1,0 +1,128 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+button.btn-custom,
+div.btn-custom {
+    text-transform: uppercase;
+    border-radius: var(--cl-tertiary-border-radius);
+    font-weight: 700;
+    line-height: 1;
+    &.main-inline {
+        color: #fff;
+        background: var(--cl-primary-color);
+        border: 1px solid var(--cl-primary-color);
+        outline: 0;
+        &:not([disabled]) {
+            &:hover,
+            &:active,
+            &:focus {
+                background: var(--cl-primary-color-darken-5);
+            }
+        }
+    }
+    &.main-outline {
+        color: var(--cl-primary-color);
+        background: transparent;
+        box-shadow: none;
+        border: 1px solid var(--cl-primary-color);
+        outline: 0;
+        &:not([disabled]) {
+            &:hover,
+            &:active,
+            &:focus {
+                background: var(--cl-primary-color-darken-5);
+                color: #fff;
+            }
+        }
+    }
+    &.lg {
+        padding: 15px 15px;
+        font-size: 13px;
+        line-height: 1;
+    }
+    &.md {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    &.sm {
+        padding: 8px 15px;
+        font-size: 11px;
+    }
+    &.main-red {
+        color: #ffffff;
+        background: var(--cl-danger-color);
+        border: 1px solid var(--cl-danger-color);
+        outline: 0;
+    }
+    &.main-grey {
+        color: var(--cl-secondary-text-color);
+        background-color: var(--cl-secondary-bg-color);
+        box-shadow: none;
+        border: 1px solid var(--cl-secondary-bg-color);
+        outline: 0;
+    }
+    &.btn-block {
+        width: 100%;
+    }
+    &:hover,
+    &:active,
+    &:focus {
+        box-shadow: none;
+    }
+    @include media-breakpoint-down(xl) {
+        &.md,
+        &.lg {
+            padding: 8px 12px;
+            font-size: 11px;
+        }
+        &.sm {
+            padding: 6px 10px;
+            font-size: 10px;
+        }
+    }
+}
+
+button.btn-custom-icon,
+div.btn-custom-icon {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: 0;
+    cursor: pointer;
+    line-height: 1;
+    svg {
+        width: 22px;
+        height: 22px;
+        fill: var(--cl-secondary-text-color);
+    }
+    &:hover,
+    &:active,
+    &:focus {
+        background: var(--cl-secondary-bg-color);
+        svg {
+            fill: var(--cl-secondary-text-color);
+        }
+    }
+    &.col-red {
+        &:hover,
+        &:active,
+        &:focus {
+            svg {
+                fill: var(--cl-danger-color);
+            }
+        }
+    }
+}

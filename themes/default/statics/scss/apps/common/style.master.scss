@@ -1,0 +1,194 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                        @
+// @ Author_url 2: http://jooj.us/twitter-clone                       @
+// @ Author E-mail: sales@jooj.us                                    @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2022 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+html {
+    scroll-behavior: smooth;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    font-family: inherit !important;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    &.ov-h {
+        overflow: hidden;
+    }
+    &.modal-open {
+        overflow-y: scroll;
+        padding: 0px !important;
+        @import "../../snippets/_hide_scrollbar.scss";
+    }
+    main.main-content-container {
+        background: var(--cl-primary-bg-color);
+        min-width: 320px;
+        div.main-content-container-inner {
+            width: 100%;
+            max-width: 1220px !important;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            div.timeline-container-wrapper {
+                flex: 2;
+                max-width: 600px;
+                min-width: 600px;
+                border-left: 1px solid var(--cl-primary-border-color);
+                border-right: 1px solid var(--cl-primary-border-color);
+                min-height: 100vh;
+                position: relative;
+                div.timeline-bs-notifs {
+                    position: sticky;
+                    top: 0px;
+                    div.timeline-bs-notifs__item {
+                        display: block;
+                        width: 100%;
+                        padding: var(--cl-primary-offset-size);
+                        line-height: 1;
+                        color: #ffffff;
+                        font-size: 16px;
+                        text-align: center;
+                        animation-duration: 0.5s;
+                        &.primary {
+                            background-color: var(--cl-primary-color);
+                        }
+                        &.danger {
+                            background-color: var(--cl-danger-color);
+                        }
+                    }
+                }
+                div.timeline-container-inner {
+                    div.timeline-container {
+                        @import "parts/_header";
+                        @import "parts/_searchbar";
+                        @import "parts/_publication";
+                        @import "parts/_placeholder";
+                        @import "parts/_nav_tabs";
+                        @import "parts/_users";
+                        @import "parts/_hashtags";
+                        @import "parts/_loadmore";
+                        @import "parts/_alert";
+                    }
+                }
+                div.spa-preloader {
+                    position: absolute;
+                    display: block;
+                    left: 0;
+                    top: 65px;
+                    bottom: 0;
+                    right: 0;
+                    width: 100%;
+                    background: var(--cl-primary-bg-color);
+                    z-index: 5000;
+                    &.d-none {
+                        display: none;
+                    }
+                    div.spa-preloader-inner {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        justify-content: center;
+                        padding: 100px 50px;
+                        span.spinner-icon {
+                            width: 50px;
+                            height: 50px;
+                            overflow: hidden;
+                            svg {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+                @include media-breakpoint-down(xl) {
+                    width: 100%;
+                    min-width: 100%;
+                    max-width: 100%;
+                    border-right: none;
+                    border-left: none;
+                }
+            }
+            @import "navbars/_left";
+            @import "navbars/_right";
+            @include media-breakpoint-down(xl) {
+                padding-bottom: 54px;
+                max-width: 100% !important;
+                overflow: hidden;
+            }
+        }
+        &.guest-mode div.main-content-container-inner {
+            div.left-sb-container {
+                width: 320px;
+                min-width: 320px;
+            }
+        }
+    }
+    @import "navbars/_bottom";
+    @import "parts/_forms";
+    @import "parts/_preloader";
+    @import "parts/_keyframes";
+    @import "parts/_helpers";
+    @import "parts/_modals";
+    @import "parts/_dropdowns";
+    @import "parts/_buttons";
+    @import "parts/_pubbox";
+    @import "parts/_uname_popover";
+    @import "parts/_waitme";
+    @include media-breakpoint-down(xl) {
+        div.mobile-bottom-navbar {
+            display: block;
+        }
+        &.mobile-sb-open {
+            overflow: hidden;
+            div.sb-open-overlay {
+                cursor: pointer;
+                -moz-transition: right 0.5s;
+                -o-transition: right 0.5s;
+                -webkit-transition: right 0.5s;
+                transition: right 0.5s;
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100vw;
+                height: 100vh;
+                bottom: 0;
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.4);
+                z-index: 4950;
+            }
+        }
+    }
+    &[data-bg="default"] {
+        button.btn-custom,
+        div.btn-custom {
+            &.main-grey {
+                &:hover,
+                &:active,
+                &:focus {
+                    background-color: darken(#f0f2f5, 3);
+                }
+            }
+        }
+    }
+    &[data-bg="dark"] {
+        button.btn-custom,
+        div.btn-custom {
+            &.main-grey {
+                &:hover,
+                &:active,
+                &:focus {
+                    background-color: lighten(#1a2e3b, 3);
+                }
+            }
+        }
+    }
+}

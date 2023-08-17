@@ -1,0 +1,228 @@
+<div class="cp-app-container" data-app="ui-languages">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('languages'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"><?php echo cl_translate('languages'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <?php echo cl_translate('add_languages'); ?>
+                    </h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-light dark" role="alert">
+
+                        <p>
+                            <?php echo cl_translate('add_languages_help'); ?> <b><code>core/langs</code></b>
+                        </p>
+
+                    </div>
+                    <form class="form" data-an="form">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>
+                                        <?php echo cl_translate('select_languages'); ?>
+                                    </label>
+                                    <div class="form-line">
+                                        <select name="language" data-size="5" class="form-select form-control-primary">
+                                            <?php foreach ($cl['language_codes'] as $lang_name => $lang_data) : ?>
+                                                <option value="<?php echo ($lang_name); ?>">
+                                                    <?php echo $lang_data["name"]; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>
+                                        <?php echo cl_translate('status'); ?>
+                                    </label>
+                                    <div class="form-line">
+                                        <select name="status" class="form-select form-control-primary">
+                                            <option value="active">
+                                                <?php echo cl_translate('enabled'); ?>
+                                            </option>
+                                            <option value="inactive">
+                                                <?php echo cl_translate('disabled'); ?>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>
+                                        <?php echo cl_translate('direction'); ?> <b class="txt-secondary"> <?php echo cl_translate('important'); ?></label>
+                                    </b>
+                                    <div class="form-line">
+                                        <select name="direction" class="form-select form-control-primary">
+                                            <option value="ltr">
+                                                <?php echo cl_translate('left_to'); ?>
+                                            </option>
+                                            <option value="rtl">
+                                                <?php echo cl_translate('right_to'); ?>
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <small class="info-feedback">
+                                        <?php echo cl_translate('right_to_help'); ?>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="form-group no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                    <?php echo cl_translate('add_new_languages'); ?>
+                                </button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('manage_languages'); ?>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table class="table checkbox-td-width">
+                                        <thead>
+                                            <th>
+                                                <?php echo cl_translate('lang_name'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('usage'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('status'); ?>
+
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('default'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('direction'); ?>
+
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('action'); ?>
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($cl["ui_langs"] as $lang) : ?>
+                                                <tr>
+                                                    <td>
+                                                        <b>
+                                                            <?php echo ($lang["name"]); ?>
+                                                        </b>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge badge-primary">
+                                                            <?php echo ($lang["usage"]); ?> <?php echo cl_translate('users'); ?>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <?php if ($lang["slug"] != $cl["config"]["language"]) : ?>
+
+                                                            <select class="form-select" onchange="SMC_CPanel.PS.toggle_status(this, <?php echo ($lang["id"]); ?>);">
+                                                                <option value="active" <?php if ($lang["status"] == '1') {
+                                                                                            echo ('selected');
+                                                                                        } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                                <option value="inactive" <?php if ($lang["status"] == '0') {
+                                                                                                echo ('selected');
+                                                                                            } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                            </select>
+
+                                                        <?php else : ?>
+
+                                                            <select disabled class="form-select">
+                                                                <option value="active"> <?php echo cl_translate('enabled'); ?></option>
+                                                                <option value="inactive"> <?php echo cl_translate('disabled'); ?></option>
+                                                            </select>
+
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php if ($lang["slug"] == $cl["config"]["language"]) : ?>
+                                                            <span class="icon">
+                                                                <?php echo cl_ikon("ok-circle"); ?>
+                                                            </span>
+                                                        <?php else : ?>
+                                                            <?php if ($lang["status"] == '1') : ?>
+                                                                <span class="icon pointer" onclick="SMC_CPanel.PS.set_default(<?php echo ($lang["id"]); ?>);">
+                                                                    <?php echo cl_ikon("circle"); ?>
+                                                                </span>
+                                                            <?php else : ?>
+                                                                <span class="icon not-allowed">
+                                                                    <?php echo cl_ikon("not-allowed"); ?>
+                                                                </span>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php if ($lang["is_rtl"] == "Y") : ?>
+                                                            <span class="badge badge-info">
+                                                                <b>RTL</b>
+                                                            </span>
+                                                        <?php else : ?>
+                                                            <span class="badge badge-primary">
+                                                                <b>LTR</b>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php if ($lang["is_native"] == "1") : ?>
+                                                            <span class="icon not-allowed" onclick="SMC_CPanel.PS.delete_lang_restriction();">
+                                                                <?php echo cl_ikon("info"); ?>
+                                                            </span>
+                                                        <?php else : ?>
+                                                            <?php if ($lang["slug"] == $cl["config"]["language"]) : ?>
+                                                                <span class="icon not-allowed">
+                                                                    <?php echo cl_ikon("bin"); ?>
+                                                                </span>
+                                                            <?php else : ?>
+                                                                <span class="icon pointer" onclick="SMC_CPanel.PS.delete_lang(<?php echo ($lang["id"]); ?>);">
+                                                                    <?php echo cl_ikon("bin"); ?>
+                                                                </span>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <?php echo cl_template('cpanel/assets/languages/scripts/app_master_script'); ?>

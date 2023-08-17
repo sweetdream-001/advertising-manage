@@ -1,0 +1,11 @@
+{%xml_version%}
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<?php for ($i = 1; $i <= $cl['map_indexes']; $i++): ?>
+		<sitemap>
+			<loc>
+				<?php echo cl_link(cl_strf("sitemap/maps/sitemap-%d.xml", $i)); ?>
+			</loc>
+			<lastmod><?php echo date("Y-m-d"); ?></lastmod>
+		</sitemap>
+	<?php endfor; ?>
+</sitemapindex>

@@ -1,0 +1,33 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app  = $('[data-app="backups"]');
+		var _data = _app.find('form[data-an="form"]');
+
+		_data.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/create_backup"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				SMC_CPanel.waitme("show");
+
+				_data.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("A new backup of your site has been created successfully!", 3000);
+					_data.find('[data-an="last-backup-date"]').text(data.last_backup);
+				}
+				else {
+					SMC_CPanel.errorMSG();
+				}
+			},
+			complete: function() {
+				SMC_CPanel.waitme();
+
+				_data.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Create backup");
+			}
+		});
+	});
+</script>

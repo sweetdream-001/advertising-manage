@@ -1,0 +1,160 @@
+<script>
+	
+
+	"use strict";
+
+	(function(window) {
+		function _SMC_CPanel() {
+			var _evh = {};
+			var data = {
+				url: "{%config url%}"
+			};
+
+			var _smc = {
+				curr_pn: "<?php echo fetch_or_get($cl["pn"],"none"); ?>",
+				vue: {}
+			};
+
+			_smc.errorMSG = function() {
+				cl_bs_notify("An error occurred while processing your request. Please try again later.", 3000, "danger");
+			}
+
+			_smc.confirm_action = function(data = {}) {
+				var modal    = '<div class="modal fadeIn confirm-actions-modal" tabindex="-1" data-onclose="remove" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static"><div class="modal-dialog modal-md" role="document"><div class="modal-content"><div class="modal-body"><h4>{0}</h4><p>{1}</p></div><div class="modal-footer"><button id="confirm-actions-cancel" type="button" class="btn btn-primary-outline ttup btn-lg">{2}</button><button id="confirm-actions-confirm" type="button" class="btn btn-primary ttup btn-lg">{3}</button></div></div></div></div>';
+				var title    = data['title'];
+				var message  = data['message'];
+				var btn_1    = data['btn_1'];
+				var btn_2    = data['btn_2'];
+				var modal    = modal.format(title,message,btn_1,btn_2);
+				var deferred = new $.Deferred();
+
+				$(document).on('click', '#confirm-actions-confirm', function(event) {
+					deferred.resolve();
+				});
+
+				$(document).on('click', '#confirm-actions-cancel', function(event) {
+					deferred.reject();
+				});
+
+				$('div[data-app="black-hole"]').append($(modal)).find('div.confirm-actions-modal').modal('show');
+
+				return deferred.promise();
+			}
+
+			_smc.delete_user = function(id = false) {
+				if ($.isNumeric(id) && id) {
+		        	var promise = SMC_CPanel.confirm_action({
+						btn_1: "Cancel",
+						btn_2: "Delete",
+						title: "Please confirm your actions!",
+						message: "Please note that if you delete this user, then all posts, replies, and all other data associated with this user will also be deleted!",
+					});
+
+					promise.done(function() {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/cpanel/delete_user"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: {id: id},
+						}).done(function(data) {
+							if (data.status != 200) {
+								_smc.errorMSG();
+							}
+							else {
+								$('[data-user-id="{0}"]'.format(id)).slideUp(300, function() {
+									$(this).remove();
+
+									if ($('[data-user-id]').length < 1) {
+										$(window).reloadPage(500);
+									}
+								});
+							}
+						}).always(function() {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+			        });
+
+					promise.fail(function() {
+			            $("div.confirm-actions-modal").modal("hide");
+			        });
+				}
+			}
+
+			_smc.delete_post = function(id = false) {
+				if ($.isNumeric(id) && id) {
+		        	var promise = SMC_CPanel.confirm_action({
+						btn_1: "Cancel",
+						btn_2: "Delete",
+						title: "Please confirm your actions!",
+						message: "Please note that if you delete this post, then with the removal of this post all posts related to this thread will also be permanently deleted!"
+					});
+
+					promise.done(function() {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/cpanel/delete_post"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: {id: id},
+						}).done(function(data) {
+							if (data.status != 200) {
+								_smc.errorMSG();
+							}
+							else {
+								$('[data-list-item="{0}"]'.format(id)).slideUp(300, function() {
+									$(this).remove();
+
+									if ($('[data-list-item]').length < 1) {
+										$(window).reloadPage(500);
+									}
+								});
+							}
+						}).always(function() {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+			        });
+
+					promise.fail(function() {
+			            $("div.confirm-actions-modal").modal("hide");
+			        });
+				}
+			}
+
+			_smc.extend_vue = function(app_name = "", vue_instance = {}) {
+				_smc.vue[app_name] = vue_instance;
+			}
+
+			_smc.waitme = function(a = false) {
+				if (a == "show") {
+					window.waitMe.start();
+				}
+
+				else {
+					window.waitMe.end();
+				}
+			}
+
+			_smc.menu_toggle = function() {
+				$("body").toggleClass("mobile-menu-open");
+			}
+
+			return _smc;
+		} 
+
+		if (window.SMC_CPanel === undefined) {
+			window.SMC_CPanel = _SMC_CPanel();
+		}
+	})(window);
+
+
+	jQuery(document).ready(function($) {
+		var clipboard = new ClipboardJS('.clip-board-copy');
+
+	    clipboard.on('success', function(event) {
+	    	cl_bs_notify("Copied to your clipboard!", 1500);
+	    });
+
+	    clipboard.on('error', function(event) {
+	    	cl_bs_notify("Failed to copy to clipboard!", 3000, "danger");
+	    });
+	});
+</script>

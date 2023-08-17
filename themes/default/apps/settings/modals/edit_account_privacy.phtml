@@ -1,0 +1,96 @@
+<div class="modal fade" data-app="cl-privacy-settings" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" id="cl-privacy-settings-vue-app" v-on:submit="submit_form($event)">
+                <div class="modal-header">
+                    <div class="main---mh--block">
+                        <h5 class="modal-title">
+                            <?php echo cl_translate("Account privacy settings"); ?>
+                        </h5>
+                        <span class="dismiss-modal" data-dismiss="modal">
+                            <?php echo cl_ikon('close'); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="popup-modal-form">
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Who can see my profile & posts?"); ?>   
+                            </label>
+                            <div class="dropdown vue-dropdown-select">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{sdds.profile_privacy[profile_privacy]}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a v-for="(v,k) in sdds.profile_privacy" v-on:click="profile_privacy = k" class="dropdown-item" href="javascript:void(0);">
+                                        {{v}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Who can follow me?"); ?>   
+                            </label>
+                            <div class="dropdown vue-dropdown-select">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{sdds.follow_privacy[follow_privacy]}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a v-for="(v,k) in sdds.follow_privacy" v-on:click="follow_privacy = k" class="dropdown-item" href="javascript:void(0);">
+                                        {{v}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("Who can direct message me?"); ?>   
+                            </label>
+                            <div class="dropdown vue-dropdown-select">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{sdds.contact_privacy[contact_privacy]}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a v-for="(v,k) in sdds.contact_privacy" v-on:click="contact_privacy = k" class="dropdown-item" href="javascript:void(0);">
+                                        {{v}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb">
+                            <label>
+                                <?php echo cl_translate("Show your profile in search engines?"); ?>   
+                            </label>
+                            <div class="dropdown vue-dropdown-select">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{sdds.index_privacy[index_privacy]}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a v-for="(v,k) in sdds.index_privacy" v-on:click="index_privacy = k" class="dropdown-item" href="javascript:void(0);">
+                                        {{v}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-if="unsuccessful_attempt">
+                            <div class="invalid-main-feedback">
+                                <?php echo cl_translate("Something went wrong while trying to save your changes, please try again later"); ?>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button v-if="submitting != true" v-bind:disabled="$v.$invalid == true" type="submit" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Save changes"); ?>
+                    </button>
+                    <button v-else disabled="true" type="button" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Please wait"); ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

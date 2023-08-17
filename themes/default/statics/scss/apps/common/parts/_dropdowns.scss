@@ -1,0 +1,93 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+.dropdown,
+.dropleft,
+.dropright,
+.dropup {
+    div.dropdown-menu {
+        border: none;
+        box-shadow: var(--cl-primary-box-shadow);
+        padding: 5px 0px;
+        z-index: 1600;
+        position: absolute;
+        min-width: 290px;
+        max-width: 290px;
+        border-radius: var(--cl-secondary-border-radius);
+        background: var(--cl-primary-bg-color);
+        a.dropdown-item {
+            font-size: 15px;
+            line-height: 15px;
+            color: var(--cl-primary-text-color);
+            padding: 10px 20px;
+            overflow: hidden;
+            font-weight: 400;
+            &:hover,
+            &:active,
+            &.active {
+                background: var(--cl-event-hover-bg) !important;
+            }
+        }
+        div.dropdown-divider {
+            padding: 0;
+            margin: 2px 0;
+            border-color: var(--cl-primary-border-color);
+        }
+        &.dropdown-icons {
+            a.dropdown-item {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                span.flex-item {
+                    &:not(.dropdown-item-icon) {
+                        flex: 1;
+                        max-width: calc(100% - 60px);
+                        overflow: hidden;
+                        line-height: 1;
+                        white-space: normal;
+                    }
+                    &.dropdown-item-icon {
+                        width: 24px;
+                        height: 24px;
+                        flex-shrink: 0;
+                        margin-right: 12px;
+                        line-height: 1.2;
+                        svg {
+                            fill: var(--cl-secondary-text-color);
+                            width: 24px;
+                            height: 24px;
+                        }
+                        &.dropdown-item-icon_adinfo {
+                            margin-right: 0px;
+                            margin-left: 12px;
+                            width: 20px;
+                            height: 20px;
+                            svg {
+                                fill: var(--cl-secondary-text-color);
+                                width: 20px;
+                                height: 20px;
+                            }
+                        }
+                    }
+                }
+                &.col-red {
+                    span.flex-item {
+                        color: var(--cl-danger-color);
+                        &.dropdown-item-icon {
+                            svg {
+                                fill: var(--cl-danger-color);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

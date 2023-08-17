@@ -1,0 +1,89 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                      @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                    @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+body.cl-app-bookmarks {
+    main.main-content-container {
+        div.main-content-container-inner {
+            div.timeline-container {
+                div.timeline-posts-container {
+                    div.empty-bookmarks-list {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: nowrap;
+                        align-items: center;
+                        line-height: 0px;
+                        padding: 100px 50px;
+                        height: calc(100vh - 120px);
+                        overflow: hidden;
+                        div.icon {
+                            line-height: 0px;
+                            margin-bottom: 15px;
+                            width: 100%;
+                            text-align: center;
+                            svg {
+                                width: 80px;
+                                height: 80px;
+                                stroke: var(--smc-main-uiel-color);
+                            }
+                        }
+                        div.pl-message {
+                            line-height: 0px;
+                            width: 100%;
+                            margin-bottom: 50px;
+                            h4 {
+                                font-size: 20px;
+                                padding: 0;
+                                margin: 0 0 15px 0;
+                                line-height: 20px;
+                                color: var(--smc-main-text-color);
+                                font-weight: 500;
+                                text-align: center;
+                            }
+                            p {
+                                font-size: 13px;
+                                line-height: 20px;
+                                padding: 0;
+                                margin: 0;
+                                color: var(--smc-main-text-color-2);
+                                text-align: center;
+                                overflow-wrap: break-word;
+                            }
+                        }
+                        div.c2action-single {
+                            width: 100%;
+                            line-height: 0px;
+                            text-align: center;
+                            a {
+                                display: inline-block;
+                                line-height: 0px;
+                                text-decoration: none;
+                                button {
+                                    padding-left: 40px;
+                                    padding-right: 40px;
+                                }
+                            }
+                        }
+                    }
+                    div.load-more {
+                        width: 100%;
+                        display: block;
+                        line-height: 0;
+                        padding: 20px;
+                        text-align: center;
+                        button {
+                            padding-left: 30px;
+                            padding-right: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

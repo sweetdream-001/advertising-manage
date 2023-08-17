@@ -1,0 +1,137 @@
+# @*************************************************************************@
+# @ Software author: JOOJ Team (JOOJ.us)                                    @
+# @ Author_url 1: https://jooj.us                                           @
+# @ Author_url 2: http://jooj.us/twitter-clone                              @
+# @ Author E-mail: sales@jooj.us                                            @
+# @*************************************************************************@
+# @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+# @ Copyright (c) 2020 - 2023 JOOJ Talk. All rights reserved.               @
+# @*************************************************************************@
+
+RewriteEngine On
+
+# Uncomment the following 3 lines to bring your site to the HTTPS version. 
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+                                            
+
+RewriteRule ^/$ index.php?app=home [QSA]
+RewriteRule ^language/(\w{2,25})(\/|)$ index.php?app=home&language=$1 [QSA]
+RewriteRule ^guest(\/|)$ index.php?app=guest [QSA]
+RewriteRule ^confirm_registration(\/|)$ index.php?app=confirm_reg [QSA]
+RewriteRule ^confirm_email(\/|)$ index.php?app=confirm_email [QSA]
+RewriteRule ^admin_panel(\/|)$ index.php?app=cpanel [QSA]
+RewriteRule ^admin_panel/(\w{3,25})(\/|)$ index.php?app=cpanel&section=$1 [QSA]
+RewriteRule ^trending(\/|)$ index.php?app=trending [QSA]
+RewriteRule ^bookmarks(\/|)$ index.php?app=bookmarks [QSA]
+RewriteRule ^notifications(\/|)$ index.php?app=notifications&page=notifs [QSA]
+RewriteRule ^mentions(\/|)$ index.php?app=notifications&page=mentions [QSA]
+RewriteRule ^search(\/|)$ index.php?app=explore [QSA]
+RewriteRule ^explore(\/|)$ index.php?app=explore [QSA]
+RewriteRule ^search/(htags|people|posts)(\/|)$ index.php?app=explore&tab=$1 [QSA]
+RewriteRule ^explore/(htags|people|posts)(\/|)$ index.php?app=explore&tab=$1 [QSA]
+RewriteRule ^thread/(\d+)(\/|)$ index.php?app=thread&thread_id=$1 [QSA]
+RewriteRule ^tmedia/(\d+)(\/|)$ index.php?app=tmedia&thread_id=$1 [QSA]
+RewriteRule ^reset_password(\/|)$ index.php?app=guest [QSA]
+RewriteRule ^home(\/|)$ index.php?app=home [QSA]
+RewriteRule ^logout(\/|)$ index.php?app=logout [QSA]
+RewriteRule ^settings(\/|)$ index.php?app=settings [QSA]
+RewriteRule ^settings/(\w{3,25})(\/|)$ index.php?app=settings&sapp=$1 [QSA]
+RewriteRule ^terms_of_use(\/|)$ index.php?app=stat_pages&page=terms [QSA]
+RewriteRule ^privacy_policy(\/|)$ index.php?app=stat_pages&page=privacy_policy [QSA]
+RewriteRule ^cookies_policy(\/|)$ index.php?app=stat_pages&page=cookies_policy [QSA]
+RewriteRule ^about_us(\/|)$ index.php?app=stat_pages&page=about_us [QSA]
+RewriteRule ^faqs(\/|)$ index.php?app=stat_pages&page=faqs [QSA]
+RewriteRule ^suggested(\/|)$ index.php?app=suggested [QSA]
+RewriteRule ^chats(\/|)$ index.php?app=chats [QSA]
+RewriteRule ^affiliates(\/|)$ index.php?app=affiliates [QSA]
+RewriteRule ^ads(\/|)$ index.php?app=ads [QSA]
+RewriteRule ^ads/new(\/|)$ index.php?app=ads&page=upsert [QSA]
+RewriteRule ^ads/edit/(\d+)(\/|)$ index.php?app=ads&page=upsert&ad_id=$1 [QSA]
+RewriteRule ^ads/archive(\/|)$ index.php?app=ads&page=archive [QSA]
+RewriteRule ^ads/pending(\/|)$ index.php?app=ads&page=pending [QSA]
+RewriteRule ^ads/(\d+)(\/|)$ index.php?app=ad_item&ad_id=$1 [QSA]
+RewriteRule ^oauth(\/|)$ index.php?app=oauth [QSA]
+RewriteRule ^wallet(\/|)$ index.php?app=wallet [QSA]
+RewriteRule ^conversation/(\w{3,25})(\/|)$ index.php?app=conversation&uname=$1 [QSA]
+RewriteRule ^wallet_bank_transfer/(\w{36})(\/|)$ index.php?app=wallet_banktrans&sid=$1 [QSA]
+RewriteRule ^404(\/|)$ index.php?app=err404 [QSA]
+RewriteRule ^500(\/|)$ index.php?app=err500 [QSA]
+RewriteRule ^download_info(\/|)$ index.php?app=download_info [QSA]
+RewriteRule ^start_up(\/|)$ index.php?app=start_up [QSA]
+RewriteRule ^feed(\/|)$ index.php?app=feed [QSA]
+RewriteRule ^wallet_add(\/|)$ index.php?app=wallet_add [QSA]
+RewriteRule ^wallet_send(\/|)$ index.php?app=wallet_send [QSA]
+RewriteRule ^premium_account(\/|)$ index.php?app=premium_account [QSA]
+RewriteRule ^premium_features(\/|)$ index.php?app=premium_features [QSA]
+RewriteRule ^blue_account(\/|)$ index.php?app=blue_account [QSA]
+RewriteRule ^blue_features(\/|)$ index.php?app=blue_features [QSA]
+
+RewriteRule ^oauth/twitter(\/|)$ index.php?app=oauth&provider=twitter [QSA]
+RewriteRule ^oauth/google(\/|)$ index.php?app=oauth&provider=google [QSA]
+RewriteRule ^oauth/facebook(\/|)$ index.php?app=oauth&provider=facebook [QSA]
+RewriteRule ^oauth/linkedin(\/|)$ index.php?app=oauth&provider=linkedin [QSA]
+RewriteRule ^oauth/discord(\/|)$ index.php?app=oauth&provider=discord [QSA]
+RewriteRule ^oauth/vkontakte(\/|)$ index.php?app=oauth&provider=vkontakte [QSA]
+RewriteRule ^oauth/instagram(\/|)$ index.php?app=oauth&provider=instagram [QSA]
+
+RewriteRule ^native_api/(\w{3,32})/(\w{3,32})$ api.php?api=native&app=$1&action=$2 [QSA]
+RewriteRule ^mobile_api/(\w{3,32})$ api.php?api=mobile&app=$1 [QSA]
+
+RewriteRule ^app_(\w{3,25})(\/|)$ index.php?app=custom_apps&custom_app_name=$1 [QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(\w{3,25})(\/|)$ index.php?app=profile&uname=$1 [QSA]
+RewriteRule ^(\w{3,25})/(following|followers|follow_requests)(\/|)$ index.php?app=connections&uname=$1&tab=$2 [QSA]
+RewriteRule ^(\w{3,25})/(posts|media|likes)(\/|)$ index.php?app=profile&uname=$1&tab=$2 [QSA]
+
+ErrorDocument 404 /index.php?app=err404
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/opentype
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+<IfModule mod_security.c>
+    SecFilterScanPOST Off
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/x-javascript "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresDefault "access plus 190 days"
+</IfModule>
+

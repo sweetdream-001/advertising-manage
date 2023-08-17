@@ -1,0 +1,114 @@
+<div class="post-list-advert" data-ad="<?php echo $cl['li']['id']; ?>">
+	<div class="post-list-advert__header">
+	<div class="publisher-avatar">
+			<div class="avatar-holder">
+				<img class="lozad" data-src="<?php echo($cl['li']['owner']['avatar']); ?>">
+			</div> 
+		</div>
+		<div class="post-list-advert__sponsor">
+			<?php echo cl_translate("Sponsored by"); ?> 
+			<a href="<?php echo($cl['li']['owner']['url']); ?>" data-spa="true">
+				<span class="user-name-holder">
+					<span class="user-name-holder__name">
+						<?php echo($cl['li']['owner']['name']); ?>
+					</span>
+
+					<?php if ($cl['li']['owner']['verified'] == '1'): ?>
+						<span class="user-name-holder__badge">
+							<?php echo cl_icon("verified_user_badge"); ?>
+						</span>
+					<?php endif; ?>
+				</span>
+			</a>
+		</div>
+		
+		<div class="post-list-advert__time">
+			<?php echo $cl['li']['time']; ?>
+		</div>
+	</div>
+	<div class="post-list-advert__body">
+		<div class="post-list-advert__text">
+			<h4>
+				<?php echo $cl['li']['company']; ?>
+			</h4>
+			<p>
+				<?php echo $cl['li']['description']; ?>
+			</p>
+		</div>
+		<div class="post-list-advert__image">
+			<div class="lozad-media">
+				<a href="<?php echo $cl['li']['cover']; ?>" class="fbox-media">
+					<img class="lozad" data-src="<?php echo $cl['li']['cover']; ?>" alt="Picture">
+				</a>
+			</div>
+		</div>
+		<div class="post-list-advert__ctrl">
+			<?php if (not_empty($cl['li']['is_owner']) || not_empty($cl['li']['is_conversed'])): ?>
+				<a target="_blank" href="<?php echo $cl['li']['target_url']; ?>" class="block-link">
+					<button class="btn target-url-btn btn-custom main-outline lg btn-block">
+						<?php echo $cl['li']['cta']; ?>
+					</button>
+				</a>
+			<?php else: ?>
+				<button onclick="SMColibri.ad_conversion(this);" data-ad-id="<?php echo $cl['li']['id']; ?>" data-ad-url="<?php echo $cl['li']['target_url']; ?>" class="btn target-url-btn btn-custom main-outline lg btn-block">
+					<?php echo $cl['li']['cta']; ?>
+				</button>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php if (not_empty($cl['li']['show_stats'])): ?>
+		<div class="post-list-advert__footer">
+			<button class="ctrls-item">
+				<span class="icon ctrls-item__icon">
+					<?php echo cl_icon('ads_click'); ?>
+				</span>
+				<span class="num">
+					<?php echo $cl['li']['clicks']; ?>
+				</span>
+			</button>
+			<button class="ctrls-item">
+				<span class="icon ctrls-item__icon">
+					<?php echo cl_icon('preview'); ?>
+				</span>
+				<span class="num">
+					<?php echo $cl['li']['views']; ?>
+				</span>
+			</button>
+			<button class="ctrls-item">
+				<span class="icon ctrls-item__icon">
+					<?php echo cl_icon('money'); ?>
+				</span>
+				<span class="num">
+					<?php echo $cl['li']['budget']; ?>
+				</span>
+			</button>
+			<button class="ctrls-item dropleft">
+				<div class="dropdown-toggle icon ctrls-item__icon" data-toggle="dropdown">
+					<?php echo cl_icon('more_horiz'); ?>
+				</div>
+				<div class="dropdown-menu dropdown-icons">
+					<a class="dropdown-item" href="<?php echo $cl['li']['edit']; ?>" data-spa="true">
+						<span class="flex-item dropdown-item-icon">
+							<?php echo cl_icon("edit_note"); ?>
+						</span>
+						<span class="flex-item">
+							<?php echo cl_translate('Edit ad'); ?>
+						</span>
+						<span class="flex-item dropdown-item-icon dropdown-item-icon_adinfo">
+							<?php echo cl_icon('navigate_next'); ?>
+						</span>
+					</a>
+					<div class="dropdown-divider"></div>
+					<a onclick="SMCAccountAds.delete(<?php echo $cl['li']['id']; ?>);" class="dropdown-item col-red" href="javascript:void(0);">
+						<span class="flex-item dropdown-item-icon">
+							<?php echo cl_icon("delete"); ?>
+						</span>
+						<span class="flex-item">
+							<?php echo cl_translate('Delete'); ?>
+						</span>
+					</a>
+				</div>
+			</button>
+		</div>
+	<?php endif; ?>
+</div>

@@ -1,0 +1,106 @@
+<div class="cp-app-container" data-app="recaptcha">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate("Google AdSense"); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> Google reCAPTCHA</li>
+
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate(" Manage Google reCAPTCHA system"); ?>
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="alert alert-light dark" role="alert">
+                            <p>
+                                <?php echo cl_translate("your_website_at_help"); ?>
+                                <br>
+                                <br>
+                                <b>
+                                    <?php echo cl_translate("your_website_at"); ?> - <a href="https://www.google.com/recaptcha/admin" target="_blank">https://www.google.com/recaptcha/admin</a>
+                                </b>
+                            </p>
+                        </div>
+
+                        <form class="form" data-an="form">
+                            <div class="row">
+                                <div class="col-sm-12 input-group-solid">
+                                    <div class="form-group" data-an="google_recaptcha-input">
+                                        <label>
+                                            reCAPTCHA
+                                        </label>
+                                        <div class="input-group">
+                                            <select name="google_recaptcha" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['google_recaptcha'] == "on") {
+                                                                        echo ('selected');
+                                                                    } ?>>
+                                                     <?php echo cl_translate("enabled"); ?>
+                                                </option>
+                                                <option value="off" <?php if ($cl['config']['google_recaptcha'] == "off") {
+                                                                        echo ('selected');
+                                                                    } ?>>
+                                                    <?php echo cl_translate("Disabled"); ?>
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <small class="info-feedback">
+                                        <?php echo cl_translate("enable_google_re"); ?>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 input-group-solid">
+                                    <div class="form-group" data-an="google_recap_key1-input">
+                                        <label>
+                                            Sitekey
+                                        </label>
+                                        <div class="input-group">
+
+                                            <input value="{%config google_recap_key1%}" name="google_recap_key1" type="text" class="form-control" placeholder="Google reCAPTCHA Site key">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 input-group-solid">
+                                    <div class="form-group" data-an="google_recap_key2-input">
+                                        <label>
+                                            Secret key
+                                        </label>
+                                        <div class="input-group">
+
+                                            <input value="{%config google_recap_key2%}" name="google_recap_key2" type="text" class="form-control" placeholder="Google reCAPTCHA Secret key">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group no-mb">
+                                    <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                        <?php echo cl_translate("Save changes"); ?>
+                                    </button>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/recaptcha/scripts/app_master_script'); ?>

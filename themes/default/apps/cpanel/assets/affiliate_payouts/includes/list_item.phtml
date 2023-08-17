@@ -1,0 +1,60 @@
+<tr data-list-item="<?php echo($cl['li']['id']); ?>">
+    <td>
+        <?php echo($cl['li']['id']); ?>
+    </td>
+    <td>
+        <div class="user-info-holder">
+            <div class="avatar-holder">
+                <img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+            </div>
+            <div class="uname-holder">
+                <b>
+                    <span class="user-name-holder <?php if ($cl['li']['verified'] == '1') {echo('verified-badge');} ?>">
+                        <?php echo($cl['li']['name']); ?>
+                    </span>
+                </b>
+                <a href="<?php echo($cl['li']['url']); ?>">
+                    <?php echo($cl['li']['username']); ?>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td>
+        <span>
+            <?php echo($cl['li']['email']); ?>
+        </span>
+    </td>
+    <td>
+        <span>
+            <?php echo($cl['li']['paypal']); ?>
+        </span>
+    </td>
+    <td>
+        <b class="col-green"><?php echo($cl['li']['amount']); ?></b>
+    </td>
+    <td>
+        <span class="badge bg-orange">
+        <?php echo cl_translate('Pending'); ?>
+        </span>
+    </td>
+    <td>
+        <time>
+            <?php echo($cl['li']['time']); ?>
+        </time>
+    </td>
+    <td>
+        <div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a onclick="CSMAffiliatePayouts.update(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Mark as paid'); ?>
+                </a>
+                <a onclick="CSMAffiliatePayouts.delete(<?php echo($cl['li']['id']); ?>);" href="javascript:void(0);" class="dropdown-item">
+                <?php echo cl_translate('Decline'); ?>
+                </a>
+            </ul>
+        </div>
+    </td>
+</tr>

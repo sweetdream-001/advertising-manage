@@ -1,0 +1,24 @@
+<div class="list-item">
+	<div class="avatar">
+		<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+	</div>
+	<div class="user-info-holder">
+		<div class="d-flex">
+			<div class="flex-item flex-grow-1 flex-wn">
+				<div class="user-data">
+					<h4>
+						<span class="user-name-holder <?php if ($cl['li']['verified'] == '1') {echo('verified-badge');} ?>">
+							<?php echo cl_croptxt($cl['li']['name'], 15, '..'); ?>
+						</span>
+					</h4>
+					<a href="<?php echo($cl['li']['url']); ?>" data-spa="true">
+						<?php echo($cl['li']['username']); ?>
+					</a>
+					<p>
+						<?php echo cl_croptxt($cl['li']['about'], 120, '...'); ?>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

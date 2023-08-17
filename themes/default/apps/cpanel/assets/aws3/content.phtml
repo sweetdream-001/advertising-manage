@@ -1,0 +1,166 @@
+<div class="cp-app-container" data-app="aws3-storage">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> Amazon S3 Storage</h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> AWS3</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" id="vue-cpanel-affiliate-payouts-app" data-an="info-content">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('amazon_S3'); ?>
+                            </h5>
+                        </div>
+
+
+
+                        <form class="form mega-inline" data-an="form1">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="as3_storage-input">
+                                            <label>
+                                                Amazon S3 storage
+                                            </label>
+                                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-toggle-on"></i></span>
+                                                <select name="as3_storage" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['as3_storage'] == 'on') {
+                                                                            echo ('selected');
+                                                                        } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['as3_storage'] == 'off') {
+                                                                            echo ('selected');
+                                                                        } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="as3_bucket_name-input">
+                                            <label>
+                                                AS3 bucket name
+                                            </label>
+                                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-pencil-alt-5"></i></span>
+                                                <input value="{%config as3_bucket_name%}" name="as3_bucket_name" type="text" class="form-control" placeholder="Enter AS3 bucket name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="as3_api_key-input">
+                                            <label>
+                                                Amazon S3 API key
+                                            </label>
+                                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-key"></i></span>
+                                                <input value="{%config as3_api_key%}" name="as3_api_key" type="text" class="form-control" placeholder="Enter Amazon S3 API key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="as3_api_secret_key-input">
+                                            <label>
+                                                Amazon S3 API secret key
+                                            </label>
+                                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-key"></i></span>
+                                                <input value="{%config as3_api_secret_key%}" name="as3_api_secret_key" type="text" class="form-control" placeholder="Enter Amazon S3 API secret key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="as3_bucket_region-input">
+                                            <label>
+                                                AS3 bucket region
+                                            </label>
+                                            <div class="form-line">
+                                                <select name="as3_bucket_region" data-size="5" class="form-select form-control-primary">>
+                                                    <option value="us-east-1" <?php echo (($cl['config']['as3_bucket_region'] == 'us-east-1') ? 'selected' : ''); ?>>US East (N. Virginia)</option>
+                                                    <option value="us-east-2" <?php echo (($cl['config']['as3_bucket_region'] == 'us-east-2') ? 'selected' : ''); ?>>US East (Ohio)</option>
+                                                    <option value="us-west-1" <?php echo (($cl['config']['as3_bucket_region'] == 'us-west-1') ? 'selected' : ''); ?>>US West (N. California)</option>
+                                                    <option value="us-west-2" <?php echo (($cl['config']['as3_bucket_region'] == 'us-west-2') ? 'selected' : ''); ?>>US West (Oregon)</option>
+                                                    <option value="ap-northeast-2" <?php echo (($cl['config']['as3_bucket_region'] == 'ap-northeast-2') ? 'selected' : ''); ?>>Asia Pacific (Seoul)</option>
+                                                    <option value="ap-south-1" <?php echo (($cl['config']['as3_bucket_region'] == 'ap-south-1') ? 'selected' : ''); ?>>Asia Pacific (Mumbai)</option>
+                                                    <option value="ap-southeast-1" <?php echo (($cl['config']['as3_bucket_region'] == 'ap-southeast-1') ? 'selected' : ''); ?>>Asia Pacific (Singapore)</option>
+                                                    <option value="ap-southeast-2" <?php echo (($cl['config']['as3_bucket_region'] == 'ap-southeast-2') ? 'selected' : ''); ?>>Asia Pacific (Sydney)</option>
+                                                    <option value="ap-northeast-1" <?php echo (($cl['config']['as3_bucket_region'] == 'ap-northeast-1') ? 'selected' : ''); ?>>Asia Pacific (Tokyo)</option>
+                                                    <option value="ca-central-1" <?php echo (($cl['config']['as3_bucket_region'] == 'ca-central-1') ? 'selected' : ''); ?>>Canada (Central)</option>
+                                                    <option value="eu-central-1" <?php echo (($cl['config']['as3_bucket_region'] == 'eu-central-1') ? 'selected' : ''); ?>>EU (Frankfurt)</option>
+                                                    <option value="eu-west-1" <?php echo (($cl['config']['as3_bucket_region'] == 'eu-west-1') ? 'selected' : ''); ?>>EU (Ireland)</option>
+                                                    <option value="eu-west-2" <?php echo (($cl['config']['as3_bucket_region'] == 'eu-west-2') ? 'selected' : ''); ?>>EU (London)</option>
+                                                    <option value="sa-east-1" <?php echo (($cl['config']['as3_bucket_region'] == 'sa-east-1') ? 'selected' : ''); ?>>South America (São Paulo)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group no-mb">
+                                    <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                        <?php echo cl_translate("Save changes"); ?>
+                                    </button>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('amazon_S3_test'); ?>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+                                <p>
+                                    <i class="icon-info-alt"></i> <?php echo cl_translate('amazon_S3_test_help'); ?>
+                                </p>
+
+                            </div>
+
+                            <h4 class="txt-danger">
+                                Important!
+                            </h4>
+                            <br>
+                            <p>
+                                <?php echo cl_translate('amazon_S3_help'); ?>
+                            </p>
+                            <p>
+                                <?php echo cl_translate('amazon_S3_help2'); ?>
+                            </p>
+                            <p>
+                                <?php echo cl_translate('amazon_S3_help3'); ?>
+                            </p>
+                            <form class="form" data-an="form2">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                    <?php echo cl_translate('amazon_S3_test'); ?>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/aws3/scripts/app_master_script'); ?>

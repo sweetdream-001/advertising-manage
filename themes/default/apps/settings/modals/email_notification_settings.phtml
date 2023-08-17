@@ -1,0 +1,162 @@
+<div class="modal fade" data-app="cl-email-notifs-settings" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" id="cl-email-notifs-settings-vue-app" v-on:submit="submit_form($event)">
+                <div class="modal-header">
+                    <div class="main---mh--block">
+                        <h5 class="modal-title">
+                            <?php echo cl_translate("Email notification settings"); ?>
+                        </h5>
+                        <span class="dismiss-modal" data-dismiss="modal">
+                            <?php echo cl_ikon('close'); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="popup-modal-form">
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-liked-my-post" name="like" type="checkbox" class="form-check-input" <?php if(not_empty($me["settings"]["notifs"]["like"])) {echo("checked");} ?>>
+                                    <label for="notify-liked-my-post" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Liked my post"); ?>
+                                        </span>
+
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone like my post"); ?>
+                                        </p>
+                                    </label>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-followed-me" name="subscribe" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["subscribe"])) {echo("checked");} ?>>
+                                    <label for="notify-followed-me" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Followed me"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone followed me"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-follow-req" name="subscribe_request" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["subscribe_request"])) {echo("checked");} ?>>
+                                    <label for="notify-follow-req" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Follow request"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone sends a follow request"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-subscription-acc" name="subscribe_accept" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["subscribe_accept"])) {echo("checked");} ?>>
+                                    <label for="notify-subscription-acc" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Subscription acceptance"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when my subscription request is accepted"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-replied-me" name="reply" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["reply"])) {echo("checked");} ?>>
+                                    <label for="notify-replied-me" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Replied me"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone replied me"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-pub-repost" name="repost" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["repost"])) {echo("checked");} ?>>
+                                    <label for="notify-pub-repost" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Publication repost"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone re-posts my publication"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-mentioned-me" name="mention" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["mention"])) {echo("checked");} ?>>
+                                    <label for="notify-mentioned-me" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Mentioned me"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone mentioned me"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="chekbox-block-item">
+                                <div class="form-check">
+                                    <input id="notify-visited-me" name="visit" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["notifs"]["visit"])) {echo("checked");} ?>>
+                                    <label for="notify-visited-me" class="form-check-label">
+                                        <span>
+                                            <?php echo cl_translate("Visited me"); ?>
+                                        </span>
+                                        <p class="form-info-label">
+                                            <?php echo cl_translate("Notify me when someone visited my profile"); ?>
+                                        </p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-if="unsuccessful_attempt">
+                            <div class="invalid-main-feedback">
+                                <?php echo cl_translate("Something went wrong while trying to save your changes, please try again later"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-else>
+                            <p class="form-info-label">
+                                <?php echo cl_translate("Choose which notifications about your (actions, events) related to your account you want to receive"); ?>
+                            </p>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button v-if="submitting != true" v-bind:disabled="$v.$invalid == true" type="submit" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Save changes"); ?>
+                    </button>
+                    <button v-else disabled="true" type="button" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Please wait"); ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="cp-app-container" data-app="themes">
+<div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>  <?php echo cl_translate('UI Themes'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><?php echo cl_translate('UI Themes'); ?></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+    <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                      <?php echo cl_translate('Manage UI Themes'); ?>
+                    </h5>
+                </div>
+               <div class="card-body">
+                      <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+                                <p>
+                                   <i class="icon-alert"></i>  <?php echo('Please note that for correct operation and functionality, the theme must fully comply with the current script update. This is not the case for the default theme.'); ?>
+                                </p>
+                    </div>
+                    <div >
+                    <table class="table table-xl">
+                        <thead>
+                            <th>
+                                <?php echo cl_translate('Theme name'); ?>
+                            </th>
+                            <th>
+                                <?php echo cl_translate('Theme author'); ?>
+                            </th>
+                            <th>
+                                <?php echo cl_translate('Version'); ?>
+                            </th>
+                            <th>
+                                <?php echo cl_translate('Source'); ?>
+                            </th>
+                            <th>
+                                <?php echo cl_translate('Actions'); ?>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($cl["themes"] as $theme): ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $theme["name"]; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $theme["author"]; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $theme["version"]; ?>
+                                    </td>
+                                    <td>
+                                        <code>
+                                            <?php echo cl_strf("themes/%s", $theme["src"]); ?>
+                                        </code>
+                                    </td>
+                                    <td>
+                                        <?php if ($theme["src"] == $cl["config"]["theme"]): ?>
+                                            <label class="badge badge-danger">
+                                                <?php echo cl_translate('Current theme'); ?>
+                                            </label>
+                                        <?php else: ?>
+                                            <button class="btn ttup btn-md bg-blue" onclick="SMC_CPanel.PS.activate_theme('<?php echo $theme["src"] ?>', this);">
+                                                <?php echo cl_translate('Activate'); ?>
+                                            </button>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/themes/scripts/app_master_script'); ?>

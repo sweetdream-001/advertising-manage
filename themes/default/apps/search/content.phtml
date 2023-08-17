@@ -1,0 +1,85 @@
+<div class="timeline-container" data-app="search">
+<div class="timeline-header__topline">
+			<div data-el="timeline-bs-notifs" class="timeline-bs-notifs"></div>
+		</div>
+<div class="timeline-header" data-el="tl-header">
+				<div class="lp">
+			<div class="nav-link-holder">
+				<a href="<?php echo cl_link("search"); ?>" data-spa="true">
+					<?php echo cl_translate("Search"); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+		
+		</div>
+		<div class="rp">
+			<div class="nav-link-holder">
+				<span class="go-back" onclick="SMColibri.go_back();">
+					<?php echo cl_ikon('arrow-left'); ?>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="vue-app-body" id="vue-search-app">
+		<div class="main--search-form-wrapper">
+			<form data-an="search-form" class="form" v-on:submit="search_entries($event)" autocomplete="off">
+				<div class="keyword-input">
+					<input v-on:input="search_entries" v-model="search_query" v-bind:disabled="(empty_list == '1')" type="text" placeholder="<?php echo cl_translate("type_a_query_and_press_enter_e_g_hashtag_username_etc"); ?>" autofocus="true">
+					<span class="search-icon">
+						<?php echo cl_ikon('search'); ?>
+					</span>
+					<span class="spinner-icon" v-if="searching">
+						<?php echo cl_ikon('spinner-icon'); ?>
+					</span>
+				</div>
+			</form>
+		</div>
+
+		<div class="main--search-area-navbar">
+			<a v-bind:href="search_htags_url" data-spa="true">
+				<button class="navbar-item-btn <?php if($cl["page_tab"] == "htags") { echo("active");} ?>">
+					<?php echo cl_translate("Hashtags"); ?>
+				</button>
+                <div class="css-1dbjc4n <?php if($cl['page_tab'] == 'htags') {echo('active');} ?>"></div>
+			</a>
+			<a v-bind:href="search_people_url" data-spa="true">
+				<button class="navbar-item-btn <?php if($cl["page_tab"] == "people") { echo("active");} ?>">
+					<?php echo cl_translate("People"); ?>
+				</button>
+                <div class="css-1dbjc4n <?php if($cl['page_tab'] == 'people') {echo('active');} ?>"></div>
+			</a>
+			<a v-bind:href="search_posts_url" data-spa="true">
+				<button class="navbar-item-btn <?php if($cl["page_tab"] == "posts") { echo("active");} ?>">
+					<?php echo cl_translate("Posts"); ?>
+				</button>
+                <div class="css-1dbjc4n <?php if($cl['page_tab'] == 'posts') {echo('active');} ?>"></div>
+			</a>
+		</div>
+
+		<div class="main--search-area-content">
+			<div class="search-result-container">
+				<?php if (empty($cl["query_result"]) && empty($cl["search_query"])): ?>
+					<?php echo cl_template('search/includes/empty_list'); ?>
+				<?php else: ?>
+					<?php echo cl_template(cl_strf('search/includes/%s',$cl["page_tab"])); ?>
+					<?php echo cl_template('search/includes/empty_result'); ?>
+				<?php endif; ?>
+			</div>
+			<div class="load-more" v-if="show_loader">
+				<button v-if="loading_more" class="btn btn-custom main-inline lg" disabled="true">
+					<?php echo cl_translate("Please wait"); ?>
+				</button>
+				<button v-else-if="load_more" class="btn btn-custom main-inline lg" v-on:click="load_entries($event)">
+					<?php echo cl_translate("Show more"); ?>
+				</button>
+				<button v-else class="btn btn-custom main-inline lg" disabled="true">
+					<?php echo cl_translate("That is all for now!"); ?>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<?php echo cl_template('search/scripts/app_master_script'); ?>
+</div>

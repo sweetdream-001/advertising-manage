@@ -1,0 +1,169 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		var _app = $('[data-app="post-reports"]');
+
+        SMC_CPanel.PS = Object({
+            table: new Vue({
+                el: "#vue-cpanel-post-reports-app",
+                data: {
+                    total_reports: <?php echo fetch_or_get($cl['total_reports'], 0); ?>,
+                    loading: false,
+                    prev_ctrl: true,
+                    next_ctrl: true
+                },
+                computed: {
+                    dis_prev_ctrl: function() {
+                        if (this.loading || this.prev_ctrl != true) {
+                            return true;
+                        }
+
+                        else {
+                            return false;
+                        }
+                    },
+                    dis_next_ctrl: function() {
+                        if (this.loading || this.next_ctrl != true) {
+                            return true;
+                        }
+
+                        else {
+                            return false;
+                        }
+                    },
+                    show_ctrls: function() {
+                        if (this.total_reports > 0) {
+                            return true;
+                        }
+
+                        else {
+                            return false;
+                        }
+                    }
+                },
+                methods: {
+                    paginate: function(dir = false) {
+                        var _app_        = this;
+                        var reports_list = _app.find('[data-an="reports-list"]');
+                        var offset_lt    = reports_list.find('tr[data-list-item]').first().data('list-item');
+                        var offset_gt    = reports_list.find('tr[data-list-item]').last().data('list-item');
+
+                        $.ajax({
+                            url: "<?php echo cl_link('native_api/cpanel/get_post_reports'); ?>",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                dir: dir,
+                                offset_lt: offset_lt, 
+                                offset_gt: offset_gt
+                            },
+                            beforeSend: function() {
+                                _app_.loading   = true;
+                                _app_.prev_ctrl = true;
+                                _app_.next_ctrl = true;
+
+                                SMC_CPanel.waitme("show");
+                            }
+                        }).done(function(data) {
+                            if (data.status == 200) {
+                                reports_list.html(data.html);
+                            }
+                            else{
+                                if (dir == 'up') {
+                                    _app_.prev_ctrl = false;
+                                }
+                                else{
+                                    _app_.next_ctrl = false;
+                                }
+                            }
+                        }).always(function() {
+                            delay(function() {
+                                _app_.loading = false;
+
+                                SMC_CPanel.waitme();
+                            },500);
+                        });
+                    },
+                    show: function(id = false) {
+                        if ($.isNumeric(id) && id) {
+                            $.ajax({
+                                url: "<?php echo cl_link('native_api/cpanel/get_post_report_data'); ?>",
+                                type: "GET",
+                                dataType: "json",
+                                data: {id: id},
+                                beforeSend: function() {
+                                    SMC_CPanel.waitme("show");
+                                }
+                            }).done(function(data) {
+                                if (data.status == 200) {
+                                    $('[data-app="black-hole"]').html(data.html).find('div.modal').modal('show');
+
+                                    if (data.is_seen == '0') {
+                                        _app.find("[data-list-item='{0}']".format(id)).find('[data-an="report-status"]').replaceClass('bg-red', 'bg-orange');
+                                        _app.find("[data-list-item='{0}']".format(id)).find('[data-an="report-status"]').text("Viewed");
+                                    }
+                                }
+
+                                if (data.message) {
+                                    cl_bs_notify(data.message, 3000);
+                                }
+                            }).always(function() {
+                                SMC_CPanel.waitme();
+                            });
+                        }
+                    },
+                    ignore: function(id = false) {
+                        if ($.isNumeric(id) && id) {
+                            var _app_   = this;
+                            var promise = SMC_CPanel.confirm_action({
+                                btn_1: "Cancel",
+                                btn_2: "Delete",
+                                title: "Please confirm your actions!",
+                                message: "Please note that all information on this report will also be completely deleted!"
+                            });
+
+                            promise.done(function() {
+                                $.ajax({
+                                    url: '<?php echo cl_link("native_api/cpanel/delete_post_report_data"); ?>',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    data: {id: id},
+                                    beforeSend: function() {
+                                        SMC_CPanel.waitme("show");
+                                        $("div.confirm-actions-modal").modal("hide");
+                                    }
+                                }).done(function(data) {
+                                    if (data.status == 200) {
+                                        var reports_list    = _app.find('[data-an="reports-list"]');
+                                        _app_.total_reports = data.total;
+
+                                        if (reports_list.find('[data-list-item]').length > 1) {
+                                            reports_list.find('[data-list-item="{0}"]'.format(id)).slideUp(300, function() {
+                                                $(this).remove();
+                                            });
+                                        }
+
+                                        else {
+                                            $(window).reloadPage(100);
+                                        }
+                                    } 
+
+                                    if (data.message) {
+                                        cl_bs_notify(data.message, 3000);
+                                    }
+                                }).always(function() {
+                                    SMC_CPanel.waitme();
+                                });
+                            });
+
+                            promise.fail(function() {
+                                $("div.confirm-actions-modal").modal("hide");
+                            });
+                        }
+                    }
+                }
+            })
+        });
+	});
+</script>

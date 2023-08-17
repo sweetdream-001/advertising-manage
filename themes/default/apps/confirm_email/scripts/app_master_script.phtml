@@ -1,0 +1,94 @@
+<script>
+	"use strict";
+	
+	$(document).ready(function($) {
+		Vue.use(window.vuelidate.default);
+
+		var _app = $('[data-app="confirm_email"]');
+		new Vue({
+			el: "#vue-confirm-email-app",
+			data: {
+				done: false,
+				code: "",
+				submitting: false,
+				unsuccessful_attempt: false,
+				invalid_feedback_code: "",
+				invalid_code: false
+			},
+			computed: {
+				is_invalid_code: function() {
+					if (this.$v.code.required == true && this.$v.code.$error) {
+						this.invalid_feedback_code = "<?php echo cl_translate("The email confirmation code you enter must be 6 digits long!"); ?>";
+						return true;
+					}
+
+					else if(this.invalid_code == true) {
+						this.invalid_feedback_code = "<?php echo cl_translate("The code that you entered was not found, please make sure that you entered it correctly and try again"); ?>";
+						return true;
+					}
+
+					else {
+						this.invalid_feedback_code = "";
+						return false;
+					}
+				},
+				is_invalid_form: function() {
+					if (this.$v.$invalid == true) {
+						return true;
+					}
+
+					else {
+						return false;
+					}
+				}
+			},
+			validations: {
+				code: {
+					required: window.validators.required,
+					min_length: window.validators.minLength(6),
+					max_length: window.validators.maxLength(6)
+				}
+			},
+			methods: {
+				submit_form: function(_self = false) {
+					_self.preventDefault();
+
+					var _app_ = this;
+
+					$(_self.target).ajaxSubmit({
+						url: "<?php echo cl_link("native_api/settings/confirm_email"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						beforeSend: function() {
+							_app_.submitting           = true;
+							_app_.invalid_code         = false;
+							_app_.unsuccessful_attempt = false;
+						},
+						success: function(data) {
+							if (data.status == 200) {
+								_app_.done = true;
+
+								cl_bs_notify("<?php echo cl_translate("Your new email address has been successfully confirmed"); ?>", 1500);
+
+								delay(function() {
+									cl_redirect("<?php echo cl_link("settings"); ?>");
+								}, 1800);
+							}
+
+							else if(data.status == 401) {
+								_app_.invalid_code = true;
+							}
+
+							else {
+								_app_.unsuccessful_attempt = true;
+							}
+						},
+						complete: function() {
+							_app_.submitting = false;
+						}
+					});
+				}
+			}
+		});
+	});
+</script>

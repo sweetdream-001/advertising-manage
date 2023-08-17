@@ -1,0 +1,48 @@
+<div class="modal fade" data-app="cl-blocks-settings" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="main---mh--block">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate("Blocked users"); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_ikon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <?php if (not_empty($cl["blocked_users"])): ?>
+                    <div class="accoun-blocks-ls">
+                        <?php foreach ($cl["blocked_users"] as $li): ?>
+                            <div class="accoun-blocks-list-item">
+                                <div class="avatar">
+                                    <img src="<?php echo($li['avatar']); ?>" alt="Avatar">
+                                </div>
+                                <div class="user-info-holder">
+                                    <div class="user-info-holder-inner">
+                                        <div class="lp">
+                                            <h4>
+                                                <span class="user-name-holder <?php if ($li['verified'] == '1') {echo('verified-badge');} ?>">
+                                                    <?php echo cl_croptxt($li['name'], 10, '..'); ?>
+                                                </span>
+                                            </h4>
+                                            <a href="<?php echo($li['url']); ?>">
+                                                <?php echo($li['username']); ?>
+                                            </a>
+                                        </div>
+                                        <div class="rp">
+                                            <button onclick="SMColibri.block(this);" class="btn btn-custom md main-outline" data-action="unblock" data-id="<?php echo($li['profile_id']); ?>">
+                                                <?php echo cl_translate("Unblock"); ?>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

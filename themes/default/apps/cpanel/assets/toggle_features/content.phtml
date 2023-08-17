@@ -1,0 +1,247 @@
+<div class="cp-app-container" data-app="toggle-features">
+  <div class="container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-6">
+          <h3> <?php echo cl_translate('toggle_functions'); ?></h3>
+        </div>
+        <div class="col-6">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+            <li class="breadcrumb-item"><?php echo cl_translate('toggle_functions'); ?></li>
+
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>
+              <?php echo cl_translate('toggle_functions'); ?> <b><?php echo cl_translate('toggle_functions_enable'); ?></b>
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-dark dark alert-dismissible fade show" role="alert"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12" y2="16"></line>
+              </svg>
+              <p> <?php echo cl_translate('toggle_functions_help'); ?>
+              </p>
+
+            </div>
+            <form class="form" data-an="form">
+              <div class="row p-25">
+                <div class="col-xl-6">
+                  <div class="form-group" data-an="user_signup-input">
+                    <label>
+                      <h6> <?php echo cl_translate('user_system'); ?></h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="user_signup" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl['config']['user_signup'] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl['config']['user_signup'] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                        <?php echo cl_translate('user_system_help'); ?>: <a href="<?php echo cl_link('admin_panel/invite_users'); ?>"><b>Invite users to <?php echo ($cl['config']['name']); ?></b></a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="form-group" data-an="cookie_warning_popup-input">
+                    <label>
+                      <h6> <?php echo cl_translate('cookie_popup'); ?> </h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="cookie_warning_popup" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl['config']['cookie_warning_popup'] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl['config']['cookie_warning_popup'] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                        <?php echo cl_translate('cookie_popup_help'); ?>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row p-15">
+                <div class="col-xl-6 ">
+                  <div class="form-group" data-an="email_notifications-input">
+                    <label>
+                      <h6> <?php echo cl_translate('e_notifications'); ?> </h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="email_notifications" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl["config"]["email_notifications"] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl["config"]["email_notifications"] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                        <b class="col-red"> <?php echo cl_translate('important'); ?></b>
+                        <span class="d-block">
+                          <?php echo cl_translate('e_notifications_help'); ?>
+                        </span>
+                        <span class="d-block">
+                          <?php echo cl_translate('setup_smtp'); ?> <a href="<?php cl_link('admin_panel/email_settings'); ?>"><?php echo cl_translate('smtp_settings'); ?> </a>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="form-group" data-an="swift_system_status-input">
+                    <label>
+                      <h6> <?php echo cl_translate('swifts_system'); ?> </h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="swift_system_status" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl["config"]["swift_system_status"] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl["config"]["swift_system_status"] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                        <?php echo cl_translate('swifts_system_help'); ?>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row p-15">
+                <div class="col-xl-6">
+                  <div class="form-group" data-an="system_api_status-input">
+                    <label>
+                      <h6>  <?php echo cl_translate('system_api_status'); ?> </h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="system_api_status" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl["config"]["system_api_status"] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                           <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl["config"]["system_api_status"] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                         <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                        <b class="col-red"> <?php echo cl_translate('important'); ?></b>
+                        <span class="d-block">
+                        <?php echo cl_translate('system_api_status_note'); ?>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="form-group" data-an="post_video_download_system-input">
+                    <label>
+                      <h6>  <?php echo cl_translate('video_download'); ?></h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="post_video_download_system" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl["config"]["post_video_download_system"] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl["config"]["post_video_download_system"] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                           <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                      <?php echo cl_translate('video_download_note'); ?>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+              <div class="row p-15">
+              <div class="col-xl-6">
+                  <div class="form-group" data-an="guest_page_status-input">
+                    <label>
+                      <h6>   <?php echo cl_translate('guest_status'); ?> </h6>
+                    </label>
+                    <div class="input-group">
+                      <select name="guest_page_status" class="form-select form-control-primary">
+                        <option value="on" <?php if ($cl["config"]["guest_page_status"] == "on") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('enabled'); ?>
+                        </option>
+                        <option value="off" <?php if ($cl["config"]["guest_page_status"] == "off") {
+                                              echo ('selected');
+                                            } ?>>
+                          <?php echo cl_translate('disabled'); ?>
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="p-15">
+                <div class="form-group no-mb">
+                  <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                    <?php echo cl_translate("Save changes"); ?>
+                  </button>
+                </div>
+              </div>
+              <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php echo cl_template('cpanel/assets/toggle_features/scripts/app_master_script'); ?>

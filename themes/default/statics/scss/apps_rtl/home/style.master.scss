@@ -1,0 +1,85 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+body.cl-app-home{
+	main.main-content-container{
+		div.main-content-container-inner{
+			div.timeline-container{
+				div.timeline-swifts-holder{
+					div.timeline-swifts-cr{
+						&.owl-carousel{
+							div.owl-stage-outer{
+								div.owl-stage{
+									div.owl-item{
+										div.swift-item{
+											margin-right: 0px;
+											margin-left: 15px;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	div.swift-app-container{
+	    &.show{
+	    	div.swift-data-cont{
+		    	div.swift-data{
+		    		div.swift-data-header{
+		    			div.swift-data-ctrls{
+		    				div.swift-user-info{
+		    					div.uname{
+		    						padding-right: 15px;
+		    						padding-left: 0px;
+		    					}
+		    				}
+
+		    				div.ctrl-group{
+		    					div.swift-data-ctrl-item{
+		    						button{
+			    						margin-left: 0px;
+			    						margin-right: 15px;
+		    						}
+		    					}
+		    				}
+		    			}
+		    		}
+		    	}
+	    	}
+	    }    
+	}
+
+	div.modal.modal-swift-pubbox{
+		div.modal-body{
+			form{
+				div.cl-emoticons{
+					div.emoticons-group-nav{
+						span.emoticons-group-nav-item{
+							&.ml-auto{
+								margin-left: unset;
+								margin-right: auto;
+							}
+						}
+					}
+				}
+
+				div.swift-ctrls-holder{
+					button.ctrl-item{
+						margin: 0 0 0 15px;
+					}
+				}
+			}
+		}
+	}
+}

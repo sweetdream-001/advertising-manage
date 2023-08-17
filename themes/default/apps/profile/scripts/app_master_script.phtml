@@ -1,0 +1,333 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+
+		SMColibri.PS = Object({
+			app: $('[data-app="profile"]'),
+			page_tab: "<?php echo($cl['page_tab']); ?>",
+			prof_user: "<?php echo($cl['prof_user']['id']); ?>"
+		});
+
+		<?php if (empty($cl['prof_user']['is_blocked']) && not_empty($cl["can_view"])): ?>
+			SMColibri.PS.timeline = Object({
+				loading: false,
+				loadmore: true,
+				load: function() {
+					var post_ls = SMColibri.PS.app.find('[data-an="entry-list"]');
+		            var offset  = 0;
+		            var _self_  = this;
+		 
+		            if (post_ls.find('div[data-post-offset]').length) {
+		            	offset = post_ls.find('div[data-post-offset]').last().data('post-offset');
+		            }
+
+		            if ($.isNumeric(offset) && offset) {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/profile/load_more"); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: {
+								offset: offset, 
+								type: SMColibri.PS.page_tab,
+								prof_id: SMColibri.PS.prof_user
+							},
+							beforeSend: function() {
+								_self_.loading = true;
+							}
+						}).done(function(data) {
+							if (data.status == 200) {
+								post_ls.append($(data.html));
+							}
+							else{
+								_self_.loadmore = false;
+							}
+						}).always(function() {
+							_self_.loading = false;
+
+							delay(function() {
+								SMColibri.fix_sidebars();
+							}, 50);
+						});
+					}
+				}
+			});
+
+			$(window).on('scroll', function() {
+				if (SMColibri.curr_pn == "profile") {
+					if(($(window).scrollTop() + $(window).height()) > ($(document).height() - 100)) {
+				    	if (cl_empty(SMColibri.PS.timeline.loading) && SMColibri.PS.timeline.loadmore) {
+			                SMColibri.PS.timeline.load();
+			       		}
+				    }
+				}
+			});
+		<?php endif; ?>
+
+		<?php if (not_empty($cl['prof_user']['owner'])): ?>
+			new Vue({
+				el: "#vue-profile-cover-app",
+				data: {
+					rep_position: 0,
+					submitting: false,
+					rep_opened: false,
+					avatar: "",
+					cover: ""
+				},
+				methods: {
+					rep_start: function() {
+						var _self        = this;
+						var rep_area     = $(_self.$el).find('div#rep-area');
+						_self.rep_opened = true;
+
+					    rep_area.find('img').draggable({
+				        	scroll: false,
+					        axis: "y",
+					        drag: function (event, ui) {
+					            var y1 = rep_area.height();
+					            var y2 = rep_area.find('img').height();
+					            if (ui.position.top >= 0) {
+					                ui.position.top = 0;
+					            }
+
+					            else {
+					            	if (ui.position.top <= (y1 - y2)) {
+					                    ui.position.top = (y1- y2);
+					                }
+					            } 
+				            },
+				            stop: function(event, ui) {
+				                _self.rep_position = ui.position.top;
+				            }
+				        });
+					},
+					rep_end: function() {
+						var _self        = this;
+						_self.rep_opened = false;
+
+						$(_self.$el).find('img.original-cover').draggable('destroy');
+					},
+					select_cover: function() {
+						$(this.$el).find("input#f1").trigger("click");
+					},
+					select_avatar: function() {
+						$(this.$el).find("input#f2").trigger("click");
+					},
+					upload_cover: function(_self = null) {
+						var app   = this;
+						var event = _self;
+
+						if (SMColibri.max_upload(event.target.files[0].size)) {
+							var form_data  = new FormData();
+							app.submitting = true;
+							form_data.append('cover', event.target.files[0]);
+							form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+							
+							SMColibri.progress_bar("show");
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/settings/upload_profile_cover"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								enctype: 'multipart/form-data',
+								data: form_data,
+								cache: false,
+						        contentType: false,
+						        processData: false,
+						        timeout: 600000,
+								success: function(data) {
+									if (data.status == 200) {
+										cl_bs_notify("<?php echo cl_translate("Your new profile cover has been successfully saved!"); ?>");
+
+										setTimeout(function() {
+											SMColibri.spa_reload();
+										}, 1200);
+									}
+									else {
+										app.submitting = false;
+
+										SMColibri.errorMSG();
+									}
+								},
+								complete: function() {
+									SMColibri.progress_bar("end");
+								}
+							});
+						}
+					},
+					upload_avatar: function(_self = null) {
+						var app   = this;
+						var event = _self;
+
+						if (SMColibri.max_upload(event.target.files[0].size)) {
+							var form_data  = new FormData();
+							app.submitting = true;
+							form_data.append('avatar', event.target.files[0]);
+							form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+							_self.submitting = true;
+
+							SMColibri.progress_bar("show");
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/settings/upload_profile_avatar"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								enctype: 'multipart/form-data',
+								data: form_data,
+								cache: false,
+						        contentType: false,
+						        processData: false,
+						        timeout: 600000,
+								success: function(data) {
+									if (data.status == 200) {
+										cl_bs_notify("<?php echo cl_translate("Your new avatar has been successfully saved!"); ?>");
+
+										setTimeout(function() {
+											SMColibri.spa_reload();
+										}, 1200);
+									}
+									else {
+										app.submitting = false;
+
+										SMColibri.errorMSG();
+									}
+								},
+								complete: function() {
+									setTimeout(function() {
+										SMColibri.progress_bar("end");
+									}, 1500);
+								}
+							});
+						}
+					},
+					rep_save: function() {
+						var _self = this;
+
+						if ($.isNumeric(_self.rep_position)) {
+
+							_self.submitting = true;
+							
+							$(_self.$el).find('img.original-cover').draggable('destroy');
+
+							$.ajax({
+								url: "<?php echo cl_link("native_api/settings/save_profcover_rep"); ?>",
+								type: 'POST',
+								dataType: 'json',
+								data: {position: _self.rep_position},
+							}).done(function(data) {
+								if (data.status == 200) {
+									cl_bs_notify("<?php echo cl_translate("Your changes has been successfully saved!"); ?>");
+
+									setTimeout(function() {
+										SMColibri.spa_reload();
+									}, 1200);
+								}
+								else {
+									_self.submitting = false;
+
+									SMColibri.errorMSG();
+								}
+							});
+						}
+					}
+				},
+				mounted: function() {
+
+					$('[data-app="profile"]').find("img#c600x200").on('load', function(event) {
+						event.preventDefault();
+						$('[data-app="profile"]').find("div#rep-area").css('height', "{0}px".format($(this).height()));
+					});
+
+					$('[data-app="profile"]').find("img#c600x200").on('error', function(event) {
+						event.preventDefault();
+						$('[data-app="profile"]').find("div#rep-area").css('height', "150px");
+					});
+				}
+			});
+		<?php else: ?>
+			SMColibri.PS.profile = Object({
+				privacy_alert: function() {
+					SMColibri.info("<?php echo cl_translate("This account is private"); ?>", "<?php echo cl_translate("Only approved followers can see the posts and content of this profile, click the (Follow) button to see their posts!"); ?>");
+				}
+			});
+		<?php endif; ?>
+
+		<?php if (empty($cl['prof_user']['owner'])): ?>
+			SMColibri.PS.profile_report = new Vue({
+	            el: "#cl-report-profile-vue-app",
+	            data: {
+	                profile_id: <?php echo ($cl['prof_user']['id']); ?>,
+	                fe_state: {
+	                    submitting: false,
+	                    done: false,
+	                    fail: false
+	                },
+	                reason: 0,
+	                comment: ""
+	            },
+	            computed: {
+	                is_invalid_form: function() {
+	                    if (this.reason == 0) {
+	                        return true;
+	                    }
+
+	                    else if(this.comment.length > 2900) {
+	                        return true;
+	                    }
+
+	                    else {
+	                        return false;
+	                    }
+	                }
+	            },
+	            methods: {
+	                open: function(id = 0) {
+	                    if (SMColibri.is_logged()) {
+	                        $('div[data-app="report-profile-app"]').modal('show');
+	                    }
+	                    else {
+	                        SMColibri.req_auth();
+	                    }
+	                },
+	                close: function() {
+	                    let _app_      = this;
+	                    _app_.reason   = 0;
+	                    _app_.comment  = "";
+
+	                    $('div[data-app="report-profile-app"]').modal('hide');
+	                },
+	                send_report: function(id = false) {
+	                    let _app_ = this;
+	                    let data  = Object({
+	                        reason: _app_.reason,
+	                        profile_id: _app_.profile_id,
+	                        comment: _app_.comment
+	                    });
+
+	                    if (_app_.fe_state.submitting != true) {
+	                        $.ajax({
+	                            url: '<?php echo cl_link("native_api/main/report_profile"); ?>',
+	                            type: 'POST',
+	                            dataType: 'json',
+	                            data: data,
+	                            beforeSend: function() {
+	                                _app_.fe_state.submitting = true;
+	                            }
+	                        }).done(function(data) {
+	                            if (data.status == 200) {
+	                                cl_bs_notify("<?php echo cl_translate('Thank you for letting us know! Your feedback is greatly appreciated.'); ?>", 3000);
+	                            }
+	                            else {
+	                                SMColibri.errorMSG();
+	                            }
+	                        }).always(function() {
+	                            _app_.close();
+	                            _app_.fe_state.submitting = false;
+	                        });
+	                    } 
+	                }
+	            }
+	        });
+		<?php endif; ?>
+	});
+</script>

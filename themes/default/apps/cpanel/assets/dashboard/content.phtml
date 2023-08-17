@@ -1,0 +1,336 @@
+<div class="cp-app-container" data-app="dashboard">
+  <div class="container-fluid">
+    <div class="page-title">
+      <div class="row">
+        <div class="col-6">
+          <h3> <?php echo cl_translate('Dashboard'); ?></h3>
+        </div>
+        <div class="col-6">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+            <li class="breadcrumb-item"><?php echo cl_translate('Dashboard'); ?></li>
+
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Container-fluid starts-->
+  <div class="container-fluid">
+    <div class="row second-chart-list third-news-update">
+
+
+      <div class="col-xl-9 xl-100 chart_data_left box-col-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <div class="row m-0 chart-main">
+              <div class="col-xl-3 col-md-6 col-sm-6 p-0 box-col-6">
+                <div class="media align-items-center">
+                  <div class="hospital-small-chart">
+                    <div class="small-bar">
+                      <div class="small-chart flot-chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="right-chart-content">
+                      <h4><?php echo ($cl['total_users']); ?></h4><span> <?php echo cl_translate('Users'); ?></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-6 col-sm-6 p-0 box-col-6">
+                <div class="media align-items-center">
+                  <div class="hospital-small-chart">
+                    <div class="small-bar">
+                      <div class="small-chart1 flot-chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="right-chart-content">
+                      <h4><?php echo ($cl['total_posts']); ?></h4><span><?php echo cl_translate('Posts'); ?></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-6 col-sm-6 p-0 box-col-6">
+                <div class="media align-items-center">
+                  <div class="hospital-small-chart">
+                    <div class="small-bar">
+                      <div class="small-chart2 flot-chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="right-chart-content">
+                      <h4><?php echo ($cl['total_images']); ?></h4><span><?php echo cl_translate('Images'); ?></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-6 col-sm-6 p-0 box-col-6">
+                <div class="media border-none align-items-center">
+                  <div class="hospital-small-chart">
+                    <div class="small-bar">
+                      <div class="small-chart3 flot-chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <div class="right-chart-content">
+                      <h4><?php echo ($cl['total_videos']); ?></h4><span><?php echo cl_translate('Videos'); ?></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cod Box Copy begin -->
+      <div class="col-xl-6 box-col-6 col-md-6">
+        <div class="card o-hidden" style="max-height: 265px;">
+          <div class="card-header card-no-border">
+
+            <div class="media">
+              <div class="media-body">
+                <p><span class="f-w-500 font-roboto"> <?php echo cl_translate('affiliate_payouts'); ?></span><span class="counter" style="float: right;">
+
+                    <a href="<?php echo cl_link('admin_panel/affiliate_payouts'); ?>" class="btn btn-pill btn-outline-info-2x">
+                      <?php echo cl_translate("Learn More"); ?>
+                    </a>
+                  </span></p>
+                <h4 class="f-w-500 mb-0 f-20"><span class="counter"><?php echo ($cl['total_requests']); ?></span></h4>
+
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-0">
+
+            <div class="media">
+              <div class="media-body">
+                <div class="profit-card">
+                  <div id="spaline-chart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Cod Box Copy begin -->
+      <div class="col-xl-6 box-col-6 col-md-6">
+        <div class="card o-hidden">
+          <div class="card-header card-no-border">
+            <div class="card-header-right">
+              <a href="<?php echo cl_link('admin_panel/account_verification'); ?>" class="btn btn-pill btn-outline-primary-2x">
+                <?php echo cl_translate("Learn More"); ?>
+              </a>
+            </div>
+            <div class="media">
+              <div class="media-body">
+                <p><span class="f-w-500 font-roboto"> <?php echo cl_translate('Account Verification requests'); ?> </span><span class="f-w-700 font-primary ml-2" style="float: right;">
+                  </span></p>
+                <h4 class="f-w-500 mb-0 f-20"><span class="counter"><?php echo ($cl['requests_total']); ?></span></h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <div class="monthly-visit">
+              <div id="column-chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cod Box Copy end -->
+      <!-- Cod Box Copy end -->
+      <div class="col-xl-6 box-col-6 col-md-6 chart_data_right ">
+        <div class="card">
+          <div class="card-body">
+
+            <div class="media align-items-center">
+              <div class="media-body right-chart-content">
+                <h4><?php echo ($cl['active_ads']); ?><span class="new-box">Hot</span></h4><span><?php echo cl_translate("total_a_ads"); ?></span>
+              </div>
+              <div class="knob-block text-center">
+                <input class="knob1" data-width="10" data-height="70" data-thickness=".3" data-angleoffset="0" data-linecap="round" data-fgcolor="#7366ff" data-bgcolor="#eef5fb" value="<?php echo ($cl['active_ads']); ?>">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 box-col-6 col-md-6 chart_data_right ">
+        <div class="card">
+          <div class="card-body">
+            <div class="media align-items-center">
+              <div class="media-body right-chart-content">
+                <h4><?php echo ($cl['inactive_ads']); ?><span class="new-box">New</span></h4><span><?php echo cl_translate("total_in_ads"); ?></span>
+              </div>
+              <div class="knob-block text-center">
+                <input class="knob1" data-width="50" data-height="70" data-thickness=".3" data-fgcolor="#7366ff" data-linecap="round" data-angleoffset="0" value="<?php echo ($cl['inactive_ads']); ?>">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 box-col-6 col-md-6 news ">
+        <div class="card">
+          <div class="card-header">
+            <div class="header-top">
+              <h5 class="m-0"><?php echo cl_translate('news_update'); ?></h5>
+              <div class="card-header-right-icon">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo cl_translate('Changelogs'); ?></button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="news-update">
+            <h6>   v1.3.3 (<time>19 August 2022</time>)</h6>
+            <span>
+            <p>- [Fixed] Bug on swift description with large text</p>
+                    <p>- [Fixed] Bug on modal windows scrollbar</p>
+                    <p>- [Fixed] Bug on affiliate page placeholder</p>
+                    <p>- [Fixed] Bug on advertising page placeholder</p>
+                    <p>- [Fixed] Bug on post likes display modal window placeholder text</p>
+                    <p>- [Fixed] Bug with a verification icon on posts in the mobile browser</p>
+                    <p>- [Fixed] Bug with links in messages</p>
+                    <p>- [Fixed] Other white minor bugs</p>
+
+</span>
+              <h6> v1.3.1 (<time>25 March 2022</time>)</h6>
+              <span>
+               
+                <p>- [Added] additional payment gateways (Stripe, Paystack, AliPay)</p>
+                <p>- [Added] ability to add your city in profile settings</p>
+                <p>- [Added] ability to see is or your follower</p>
+                <p>- [Added] ability see shared followers between two users</p>
+                <p>- [Added] new options to user gender</p>
+                <p>- [Added] ability to disable the swift system from the admin panel</p>
+                <p>- [Added] ability to disable email notifications from the admin panel</p>
+                <p>- [Fixed] bug with storing the selected language</p>
+                <p>- [Fixed] bug with the generation of extra sitemaps</p>
+                <p>- [Fixed] bug with a negative number of followers</p>
+              </span>
+              <h6> v1.3.0 (<time>25 Nov 2021</time>)</h6>
+              <span>
+                <p>- [Fixed] Previous minor bugs</p>
+              </span>
+              <h6> v1.2.9 (<time>23 Nov 2021</time>).</h6>
+              <span>
+                <p>- [Fixed] Previous minor bugs</p>
+              </span>
+              <h6> v1.2.8.</h6>
+              <span>
+                <p>- [Added] E-mail notifications system</p>
+                <p>- [Added] Google recaptcha</p>
+                <p>- [Added] User verification option for Admin</p>
+                <p>- [Added] User wallet editing option for Admin</p>
+                <p>- [Added] Share to whatsapp option</p>
+                <p>- [Added] Share to telegram option</p>
+                <p>- [Improved] Admin panel</p>
+                <p>- [Improved] Removed unnecessary libraries</p>
+                <p class="bug">- [Fixed] Previous minor bugs</p>
+              </span>
+              <h6> v1.2.7.</h6>
+              <span>
+                <p>- [Added] Cookies alert
+                <p> - [Added] Amazon S3 storage (Admin panel)</p>
+
+                <p>- [Added] Media upload limit (Admin panel)</p>
+
+                <p>- [Added] Ability to add multiple admins (Admin panel)</p>
+
+                <p>- [Added] Header top fix on page scroll</p>
+
+                <p>- [Added] E-mail verification system</p>
+
+                <p>- [Added] Username hover popoever</p>
+
+                <p>- [Added] Voice recorder in the posts section</p>
+
+                <p>- [Added] Auto detect user language (Guest page)</p>
+
+                <p>- [Added] API endpoints</p>
+
+                <p>- [Added] Many improvements in the core of the system </p>
+                <p>- [Improved] Emoji system</p>
+                <p>- [Added] UI display color manager</p>
+
+                <p>- [Added] Ability to change the position of the currency symbol</p>
+
+                <p>- [Added] Ability to change the minimum deposit amount</p>
+
+                <p>- [Added] Mobile app download links in footer</p>
+
+                <p>- [Added] Possibility to change the minimum amount of the withdrawal request</p>
+
+                <p>- [Added] New sidebar design</p>
+
+                <p>- [Fixed] Removed @ from username</p>
+
+                <p>- [Fixed] Previous minor bugs</p>
+
+                <p>- [Fixed] Mobile Google Chrome images loading issue</p>
+
+                <p>- [Improved] Mobile Google Chrome images loading issue</p>
+
+              </span>
+            </div>
+
+
+          </div>
+          <div class="card-footer">
+            <div class="bottom-btn"><a href="<?php echo cl_link('admin_panel/changelogs'); ?>"><?php echo cl_translate('more'); ?>...</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 box-col-6 col-md-6 appointment-sec ">
+        <div class="row">
+          <div class="col-xl-12 appointment">
+            <div class="card">
+              <div class="card-header card-no-border">
+                <div class="header-top">
+                  <h5 class="m-0"> <?php echo cl_translate('Users'); ?></h5>
+                  <div class="card-header-right-icon">
+                    <div class="dropdown">
+                      <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo cl_translate('latest'); ?></button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body pt-0">
+                <div class="regular-table">
+                  <table class="table table-hover no-mb">
+                    <tbody data-an="users-list">
+                      <?php if (not_empty($cl['site_users'])) : ?>
+                        <?php foreach ($cl['site_users'] as $cl['li']) : ?>
+                          <?php echo cl_template('cpanel/assets/users/includes/list_item'); ?>
+                        <?php endforeach; ?>
+                      <?php else : ?>
+                        <?php echo cl_template('cpanel/assets/users/includes/empty_table'); ?>
+                      <?php endif; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+
+
+
+
+</div>
+
+<?php echo cl_template('cpanel/assets/dashboard/scripts/app_master_script'); ?>

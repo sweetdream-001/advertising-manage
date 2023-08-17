@@ -1,0 +1,11 @@
+{%xml_version%}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?php foreach($cl['sitemap_entries'] as $url): ?>
+    <url>
+        <loc><?php echo($url); ?></loc>
+        <priority>0.5</priority>
+        <changefreq>daily</changefreq>
+        <lastmod><?php echo date("Y-m-d"); ?></lastmod>
+    </url>
+<?php endforeach; ?>
+</urlset>

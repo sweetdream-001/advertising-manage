@@ -1,0 +1,81 @@
+<div class="cp-app-container" data-app="display-settings">
+<div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>  <?php echo cl_translate('display_settings'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><?php echo cl_translate('ui_display_settings'); ?></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+    <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                    <?php echo cl_translate('manage_display_settings'); ?>
+                    </h5>
+                </div>
+               <div class="card-body">
+             
+                                
+                    <form class="form" data-an="form">
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group" data-an="default_color_scheme-input">
+                            <label>
+                                Default color scheme
+                            </label>
+                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-color-bucket"></i></span>
+                                <select name="default_color_scheme" class="form-select form-control-primary">
+                                    <?php foreach ($cl["color_schemes"] as $i => $val): ?>
+                                        <option value="<?php echo($i); ?>" <?php if($cl['config']['default_color_scheme'] == $i) { echo('selected'); } ?>>
+                                            <?php echo($val["name"]); ?> <?php if ($i == "default"): ?>(Blue color)<?php endif; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group" data-an="default_bg_color-input">
+                            <label>
+                                Default BG color
+                            </label>
+                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-ui-brightness"></i></span>
+                                <select name="default_bg_color" class="form-select form-control-primary">
+                                    <?php foreach ($cl["bg_colors"] as $i => $val): ?>
+                                        <option value="<?php echo($i); ?>" <?php if($cl['config']['default_bg_color'] == $i) { echo('selected'); } ?>>
+                                            <?php echo($val["name"]); ?> <?php if ($i == "default"): ?>(White color)<?php endif; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                       <div class="form-group no-mb">
+                       		<button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                               <?php echo cl_translate("Save changes"); ?>
+                            </button>
+                       </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                                  <?php echo cl_translate('display_settings_help'); ?>
+                                </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/display_settings/scripts/app_master_script'); ?>

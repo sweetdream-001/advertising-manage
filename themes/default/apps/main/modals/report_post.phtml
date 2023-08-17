@@ -1,0 +1,127 @@
+<div class="modal report-modal" tabindex="-1" role="dialog" data-app="report-post-app">
+    <div class="modal-dialog" role="document" id="cl-report-post-vue-app">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header__inner">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate("Report this post"); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_icon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form">
+                    <div class="form-group mb-10">
+                        <label>
+                            <?php echo cl_translate("What is the problem?"); ?>
+                        </label>
+                        <div class="report-reasons">
+                            <?php foreach ($cl['post_report_types'] as $i => $t): ?>
+                                <button type="button" class="btn btn-custom lg" v-bind:class="{'main-inline': reason == <?php echo($i); ?>, 'main-outline': reason != <?php echo($i); ?>}" v-on:click="reason = <?php echo($i); ?>">
+                                    <?php echo cl_translate($t); ?>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                        <label class="d-flex justify-content-between flex-wn">
+                            <span><?php echo cl_translate("Message to the reviewer"); ?></span><span class="fw-400" v-bind:class="{'col-red': (comment.length > 2900)}">({{comment.length}}/2900)</span>
+                        </label>
+                        <div class="comment-input-holder">
+                            <textarea v-model.trim="comment" rows="4" class="form-control" placeholder="<?php echo cl_translate("Please write briefly about the problem with this post"); ?>"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button v-if="fe_state.submitting" disabled="true" type="buttom" class="btn btn-custom main-inline lg btn-block">
+                    <?php echo cl_translate("Please wait"); ?>
+                </button>
+                <button v-else v-bind:disabled="is_invalid_form" v-on:click="send_report" type="buttom" class="btn btn-custom main-inline lg btn-block">
+                    <?php echo cl_translate("Send report!"); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    "use strict";
+
+    jQuery(document).ready(function($) {
+        SMColibri.extend_vue("report_post", new Vue({
+            el: "#cl-report-post-vue-app",
+            data: {
+                post_id: 0,
+                fe_state: {
+                    submitting: false,
+                    done: false,
+                    fail: false
+                },
+                reason: 0,
+                comment: "",
+                hide_post: false
+            },
+            computed: {
+                is_invalid_form: function() {
+                    if (this.reason == 0) {
+                        return true;
+                    }
+
+                    else if(this.comment.length > 2900) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                }
+            },
+            methods: {
+                open: function(id = 0) {
+                    var _app_     = this;
+                    _app_.post_id = id;
+
+                    $('div[data-app="report-post-app"]').modal('show');
+                },
+                close: function() {
+                    let _app_     = this;
+                    _app_.reason  = 0;
+                    _app_.comment = "";
+                    _app_.post_id = 0;
+
+                    $('div[data-app="report-post-app"]').modal('hide');
+                },
+                send_report: function(id = false) {
+                    let _app_ = this;
+                    let data  = Object({
+                        reason: _app_.reason,
+                        post_id: _app_.post_id,
+                        comment: _app_.comment
+                    });
+
+                    if (_app_.fe_state.submitting != true) {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/main/report_post"); ?>',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: data,
+                            beforeSend: function() {
+                                _app_.fe_state.submitting = true;
+                            }
+                        }).done(function(data) {
+                            if (data.status == 200) {
+                                cl_bs_notify("<?php echo cl_translate('Thank you for letting us know! Your feedback is greatly appreciated.'); ?>", 1500);
+                            }
+                            else {
+                                SMColibri.errorMSG();
+                            }
+                        }).always(function() {
+                            _app_.close();
+                            _app_.fe_state.submitting = false;
+                        });
+                    } 
+                }
+            }
+        }));
+    });
+</script>

@@ -1,0 +1,96 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+div.timeline-pubbox-container{
+	& > div.rp{
+		padding-left: 0px;
+		padding-right: 20px;
+
+		form{
+			width: 100%;
+			max-width:  100%;
+
+			div.input-holder{
+				width: 100%;
+				margin-bottom: 10px;
+				max-width: 100%;
+
+				textarea{
+					display: block;
+					width: 100%;
+					min-height: 40px;
+					max-height: 400px;
+					resize: none;
+					font-size: 16px;
+					color: var(--smc-main-text-color);
+					line-height: 20px;
+					border: none;
+					border-radius: 0px;
+					outline: 0;
+					background: transparent;
+
+					&::placeholder{
+						color: var(--smc-main-iph-color);
+						font-size: 17px;
+						font-weight: normal;
+					}
+				}
+			}
+
+			div.cl-emoticons{
+				div.emoticons-group-nav{
+					span.emoticons-group-nav-item{
+						&.ml-auto{
+							margin-left: 0px;
+							margin-right: auto;
+						}
+					}
+				}
+			}
+
+			div.input-autocomplete{
+				div.input-autocomplete__usernames{
+					div.input-autocomplete__username-list{
+						div.username-list-item{
+							div.username{
+								padding-left: 0px;
+								padding-right: 10px;
+							}
+						}
+					}
+				}
+			}
+
+			div.post-ctrls-holder{
+				button.ctrl-item{
+					margin: 0 0 0 3px;
+				}
+			}
+
+			div.post-privacy-holder{
+				button.privacy-settings{
+					a.dropdown-toggle{
+						span.d-inline-flex{
+							span.flex-item.label{
+								margin-left: 0px;
+								margin-right: 8px;
+							}
+						}
+					}
+				}
+
+				div.flex-item.ml-auto{
+					margin-left: 0px;
+					margin-right: auto;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="en" <?php if ($cl["curr_lang"]["lang_data"]["is_rtl"] == "Y") {
+                  echo ('dir="rtl"');
+                } else {
+                  echo ('dir="ltr"');
+                } ?>>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <title> <?php echo cl_translate('control_panel'); ?></title>
+  <link rel="icon" href="{%config site_fav%}" type="image/png">
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/font-awesome.css">
+  <!-- ico-font-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/icofont.css">
+  <!-- Themify icon-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/themify.css">
+  <!-- Flag icon-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/flag-icon.css">
+  <!-- Feather icon-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/feather-icon.css">
+  <!-- Plugins css start-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/scrollbar.css">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/animate.css">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/chartist.css">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/date-picker.css">
+  <!-- Plugins css Ends-->
+  <!-- Original css-->
+  <link rel="stylesheet" href="{%config theme_url%}/apps/cpanel/statics-o/css/libs/bootstrap-v4.0.0.min.css?v={%config version%}">
+  <link href="{%config theme_url%}/statics/css/libs/animate.min.css?v={%config version%}" rel="stylesheet" />
+  <link href="{%config theme_url%}/apps/cpanel/statics-o/css/libs/waitME.css?v={%config version%}" rel="stylesheet">
+  <!-- End Original css-->
+  <!-- App css-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/vendors/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/style.css">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css-admin/style.css">
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/styles.css">
+  <link id="color" rel="stylesheet" href="{%config theme_url%}/apps/cpanel/statics/css/color-1.css" media="screen">
+  <!-- Responsive css-->
+  <link rel="stylesheet" type="text/css" href="{%config theme_url%}/apps/cpanel/statics/css/responsive.css">
+
+  <link href="{%config theme_url%}/apps/cpanel/statics/css-admin/md-icons/material_icon.css" rel="stylesheet" type="text/css">
+
+  <?php if (not_empty($cl["app_statics"])) : ?>
+    <?php if (not_empty($cl["app_statics"]["styles"])) : ?>
+      <?php foreach ($cl["app_statics"]["styles"] as $file_path) : ?>
+        <link rel="stylesheet" href="<?php echo ($file_path); ?>">
+      <?php endforeach; ?>
+    <?php endif; ?>
+  <?php endif; ?>
+  <!-- Original css-->
+  <script src="{%config theme_url%}/statics/js/libs/jquery-3.5.1.min.js"></script>
+  <script src="{%config theme_url%}/statics/js/libs/popper.1.12.9.min.js"></script>
+  <script src="{%config theme_url%}/statics/js/libs/bootstrap.v4.0.0.min.js"></script>
+  <script src="{%config theme_url%}/statics/js/libs/waitme/waitMe.min.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics-o/js/admin.js"></script>
+  <script src="{%config theme_url%}/statics/js/libs/clipboard.min.js"></script>
+
+  <?php if ($cl["server_mode"] == 'dev') : ?>
+    <script src="{%config theme_url%}/statics/js/libs/vuejs/vue-v2.6.11.dev.min.js?v={%config version%}"></script>
+  <?php else : ?>
+    <script src="{%config theme_url%}/statics/js/libs/vuejs/vue-v2.6.11.min.js?v={%config version%}"></script>
+  <?php endif; ?>
+  <!-- End Original css-->
+  <?php if (not_empty($cl["app_statics"])) : ?>
+    <?php if (not_empty($cl["app_statics"]["scripts"])) : ?>
+      <?php foreach ($cl["app_statics"]["scripts"] as $file_path) : ?>
+        <script src="<?php echo ($file_path); ?>"></script>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  <?php endif; ?>
+</head>
+
+<body onload="startTime()" <?php if ($cl["curr_lang"]["lang_data"]["is_rtl"] == "Y") {
+                              echo ('class="rtl"');
+                            } else {
+                              echo ('class="ltr"');
+                            } ?>>
+  <div class="loader-wrapper">
+    <div class="loader-index"><span></span></div>
+    <svg>
+      <defs></defs>
+      <filter id="goo">
+        <fegaussianblur in="SourceGraphic" stddeviation="11" result="blur"></fegaussianblur>
+        <fecolormatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"> </fecolormatrix>
+      </filter>
+    </svg>
+  </div>
+
+  <!-- tap on top starts-->
+  <div class="tap-top"><i data-feather="chevrons-up"></i></div>
+  <!-- tap on tap ends-->
+  <!-- page-wrapper Start-->
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Page Header Start-->
+    <?php echo cl_template('cpanel/assets/main/header'); ?>
+    <!-- Page Header Ends-->
+    <!-- Page Body Start-->
+    <?php echo cl_template('cpanel/assets/main/sidebar'); ?>
+    <!-- Page Sidebar Ends-->
+
+    <div class="page-body">
+      <section class="content">
+        <div class="main-content-block-body">
+          <?php echo ($cl['http_res']); ?>
+        </div>
+      </section>
+
+      <!-- Container-fluid Ends-->
+    </div>
+
+    <!-- footer start-->
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 footer-copyright text-center">
+            <p class="mb-0">Copyright 2022 © <a href="<?php echo cl_link('/'); ?>">{%config name%}</a> <b>(v<?php echo $cl["config"]["version"]; ?>)</b></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  </div>
+  <!-- latest jquery-->
+
+  <!-- Bootstrap js-->
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/bootstrap/bootstrap.bundle.min.js"></script>
+  <!-- feather icon js-->
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/icons/feather-icon/feather.min.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/icons/feather-icon/feather-icon.js"></script>
+  <!-- scrollbar js-->
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/scrollbar/simplebar.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/scrollbar/custom.js"></script>
+  <!-- Sidebar jquery-->
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/config.js"></script>
+  <!-- Plugins JS start-->
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/sidebar-menu.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/chart/chartist/chartist.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/chart/chartist/chartist-plugin-tooltip.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/chart/knob/knob.min.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/chart/knob/knob-chart.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/chart/apex-chart/apex-chart.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/chart/apex-chart/stock-prices.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/notify/bootstrap-notify.min.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/dashboard/default.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/notify/index.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/datepicker/date-picker/datepicker.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/datepicker/date-picker/datepicker.en.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/datepicker/date-picker/datepicker.custom.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/typeahead/handlebars.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/typeahead/typeahead.bundle.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/typeahead/typeahead.custom.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/typeahead-search/handlebars.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/typeahead-search/typeahead-custom.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/dashboard/dashboard_2.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/editor/ckeditor/ckeditor.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/editor/ckeditor/adapters/jquery.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/editor/ckeditor/styles.js"></script>
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/editor/ckeditor/ckeditor.custom.js"></script>
+
+  <!-- Plugins JS Ends-->
+  <!-- Theme js-->
+  <script src="{%config theme_url%}/apps/cpanel/statics/js/script.js"></script>
+
+  <input id="csrf-token" type="hidden" class="hidden d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>">
+
+  <?php echo cl_template('cpanel/assets/main/scripts/app_master_script'); ?>
+
+  <div data-app="black-hole"></div>
+</body>
+
+</html>

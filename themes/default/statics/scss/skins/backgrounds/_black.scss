@@ -1,0 +1,77 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+$smc-main-bg-color: #000000;
+$smc-main-bg-color-2: #111111;
+$smc-main-border-color: #3c3c3c;
+$smc-main-text-color: #d9d9d9;
+$smc-main-text-color-2: #6e767d;
+$smc-main-ibg-color: #202327;
+$smc-main-iph-color: #5b7083;
+$smc-main-ehbg-color: #202327;
+$smc-main-icon-color: #676767;
+
+body[data-bg="black"]{
+
+	/*SVG-IKON-COLORS*/
+
+	--smc-main-icon-color: #{$smc-main-icon-color};
+
+	/*==================================================*/
+
+	/*BG-COLORS*/
+
+	--smc-main-bg-color: #{$smc-main-bg-color};
+	--smc-main-bg-color-2: #{$smc-main-bg-color-2};
+
+	/*==================================================*/
+
+	/*BORDER-COLORS*/
+
+	--smc-main-border-color: #{$smc-main-border-color};
+	--smc-main-border-color-darken-5: #{darken($smc-main-border-color, 5)};
+
+	/*==================================================*/
+
+	/*TEXT-COLORs*/
+
+	--smc-main-text-color: #{$smc-main-text-color};
+	--smc-main-text-color-2: #{$smc-main-text-color-2};
+	--smc-main-text-color-lighten-5: #{lighten($smc-main-text-color, 5)};
+
+	/*==================================================*/
+
+
+	/*INPUT-COLORS*/
+
+	--smc-main-iph-color: #{$smc-main-iph-color};
+	--smc-main-ibg-color: #{$smc-main-ibg-color};
+
+	/*==================================================*/
+
+	/*BOX-SHAD-EFF*/
+
+	--smc-main-box-shadow-eff: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+
+	/*==================================================*/
+
+
+	/*MODAL-BACKDROP-COLOR*/
+
+	--smc-main-mbd-color: #{rgba($smc-main-text-color-2, 0.4)};
+
+	/*==================================================*/
+
+	/*ELHOV-BG-COLOR*/
+
+	--smc-main-ehbg-color: #{$smc-main-ehbg-color};
+
+	/*==================================================*/
+}

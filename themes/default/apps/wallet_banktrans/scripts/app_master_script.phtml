@@ -1,0 +1,95 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		Vue.use(window.vuelidate.default);
+
+		var _app     = $('[data-app="wallet_banktrans"]');
+		SMColibri.PS = new Vue({
+			el: "#vue-wallet_banktrans-app",
+			data: {
+				submitting: false,
+				unsuccessful_attempt: false,
+				invalid_feedback_text_message: "",
+				text_message: "",
+				is_file_selected: false,
+				selected_file_name: ""
+			},
+			computed: {
+				is_valid_text_message: function() {
+					if (this.$v.text_message.required == true && this.$v.text_message.$error) {
+						this.invalid_feedback_text_message = "<?php echo cl_translate("Please enter a message for the reviewer, no more than 1200 characters in length!"); ?>";
+						return true;
+					}
+
+					else {
+						return false;
+					}
+				},
+				is_valid_form: function() {
+					if(this.$v.$invalid == true || this.is_file_selected != true) {
+						return false;
+					}
+
+					else {
+						return true;
+					}
+				}
+			},
+			validations: {
+				text_message: {
+					max_length: window.validators.maxLength(1200)
+				}
+			},
+			methods: {
+				submit_form: function(_self = null) {
+					_self.preventDefault();
+
+					var _app_ = this;
+
+					$(_self.target).ajaxSubmit({
+						url: "<?php echo cl_link("native_api/wallet/banktrans_receipt_submit"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						beforeSend: function() {
+
+							_app_.submitting = true;
+
+							_app_.unsuccessful_attempt = false;
+
+						},
+						success: function(data) {
+							if (data.status == 200) {
+								cl_bs_notify("Thanks for the payment. Your receipt has been successfully received and is under review, which will take no more than 3 business days", 5000, "primary");
+
+								setTimeout(function() {
+									SMColibri.spa_load("<?php echo cl_link("wallet"); ?>", false);
+								}, 6000);
+							}
+
+							else {
+								_app_.unsuccessful_attempt = true;
+								_app_.submitting = false;
+							}
+						}
+					});
+				},
+				select_image: function() {
+					var _app = $(this.$el);
+					_app.find('[data-an="image-message-input"]').trigger('click');
+				},
+				display_filename: function(e = false) {
+					var _app_ = this;
+
+					if (SMColibri.max_upload(e.target.files[0].size)) {
+						_app_.selected_file_name = e.target.files[0].name;
+						_app_.is_file_selected   = true;
+					}
+					else {
+						$(_app_.$el).find('[data-an="image-message-input"]').val('');
+					}
+				}
+			}
+		});
+	});
+</script>

@@ -1,0 +1,757 @@
+<div class="timeline-container" data-app="thread">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="lp" style="display: inline-flex;">
+			<span class="go-back" onclick="SMColibri.go_back();">
+				<?php echo cl_ikon('arrow-left'); ?>
+			</span>
+			<div class="nav-link-holder">
+				<a href="<?php echo $cl['thread_data']['post']['url']; ?>" data-spa="true">
+					<?php echo cl_translate("Publication"); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+		</div>
+		<div class="rp">
+		</div>
+	</div>
+	<div class="publication--thread-container">
+		<div class="publication--thread-container-inner">
+			<?php if (not_empty($cl['thread_data']['parent'])): ?>
+				<div class="publication--thread-chain-holder">
+					<div class="timeline-posts-container">
+						<div class="timeline-posts-ls" data-an="chain-list">
+							<?php foreach ($cl['thread_data']['parent'] as $cl["li"]): ?>
+								<?php echo cl_template('timeline/post'); ?>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+			<?php endif; ?>
+			<div class="publication--thread-data-holder" data-an="thread-data">
+				<div class="publication-data">
+					<?php if (not_empty($cl['thread_data']['post']['me_blocked'])): ?>
+						<div class="post-placeholder">
+							<div class="d-flex flex-wn align-items-center">
+								<div class="flex-item">
+									<div class="icon">
+										<?php echo cl_ikon("not-allowed"); ?>
+									</div>
+								</div>
+								<div class="felx-item">
+									<p>
+										<?php echo cl_translate("This user ({@uname@}) has blocked you from accessing their posts", array(
+											"uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+										)
+										); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+					<?php elseif (empty($cl['thread_data']['post']['can_see'])): ?>
+						<div class="post-placeholder">
+							<div class="d-flex flex-wn align-items-center">
+								<div class="flex-item">
+									<div class="icon">
+										<?php echo cl_ikon("eye-crossed"); ?>
+									</div>
+								</div>
+								<div class="felx-item">
+									<p>
+										<?php echo cl_translate("Only followers of this user ({@uname@}) can see their posts", array(
+											"uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+										)
+										); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+					<?php else: ?>
+						<?php if (not_empty($cl['thread_data']['post']['is_blocked'])): ?>
+							<div class="soft-hidden-post"
+								data-softhidden-post="<?php echo ($cl['thread_data']['post']['id']); ?>">
+								<div class="d-flex align-items-center flex-wn">
+									<div class="flex-item flex-grow-1">
+										<p>
+											<?php echo cl_translate('This is a message from the user you blocked'); ?>
+										</p>
+									</div>
+									<div class="flex-item">
+										<button class="btn btn-custom main-outline sm"
+											onclick="SMColibri.show_post(<?php echo ($cl['thread_data']['post']['id']); ?>, 'blocked');">
+											<?php echo cl_translate('View'); ?>
+										</button>
+									</div>
+								</div>
+							</div>
+						<?php elseif ($cl['thread_data']['post']['is_reported']): ?>
+							<div class="soft-hidden-post"
+								data-softhidden-post="<?php echo ($cl['thread_data']['post']['id']); ?>">
+								<div class="d-flex align-items-center flex-wn">
+									<div class="flex-item flex-grow-1">
+										<p>
+											<?php echo cl_translate('This post is currently under review'); ?>
+										</p>
+									</div>
+									<div class="flex-item">
+										<button class="btn btn-custom main-outline sm"
+											onclick="SMColibri.show_post(<?php echo ($cl['thread_data']['post']['id']); ?>, 'reported');">
+											<?php echo cl_translate('View'); ?>
+										</button>
+									</div>
+								</div>
+							</div>
+						<?php endif; ?>
+						<div class="publication-data-inner">
+							<div class="publisher-info">
+								<div class="lp">
+									<div class="avatar-holder">
+										<img src="<?php echo ($cl['thread_data']['post']['owner']['avatar']); ?>"
+											alt="Avatar">
+									</div>
+								</div>
+								<div class="rp">
+									<div class="flex-row">
+										<a class="uname" href="<?php echo ($cl['thread_data']['post']['owner']['url']); ?>"
+											data-uinfo-lbox="<?php echo ($cl['thread_data']['post']['user_id']); ?>"
+											data-toggle="popover" data-placement="bottom">
+											<b>
+												<span class="user-name-holder">
+													<?php echo ($cl['thread_data']['post']['owner']['name']); ?>
+												</span>
+												<p class="<?php if ($cl['thread_data']['post']['owner']['verified'] == '1') {
+													echo ('verified-badge');
+												} ?>" style="display:inline-block; margin-left:10px;"></p>
+											</b>
+											<span>@
+												<?php echo ($cl['thread_data']['post']['owner']['username']); ?>
+											</span>
+										</a>
+										<button class="dropleft">
+											<a href="#" class="dropdown-toggle icon" data-toggle="dropdown">
+												<?php echo cl_ikon('pub-more'); ?>
+											</a>
+											<div class="dropdown-menu dropdown-icons">
+												<a class="dropdown-item"
+													href="<?php echo ($cl['thread_data']['post']['owner']['url']); ?>"
+													data-spa="true">
+													<span class="flex-item dropdown-item-icon">
+														<?php echo cl_ikon('person'); ?>
+													</span>
+													<span class="flex-item">
+														<?php echo ($cl['thread_data']['post']['owner']['name']); ?>
+													</span>
+												</a>
+												<?php if (not_empty($cl['thread_data']['post']['can_delete'])): ?>
+													<a class="dropdown-item col-red" href="javascript:void(0);">
+														<span class="flex-item dropdown-item-icon">
+															<svg viewBox="0 0 24 24" aria-hidden="true"
+																class="r-9l7dzd r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+																<g>
+																	<path
+																		d="M16 6V4.5C16 3.12 14.88 2 13.5 2h-3C9.11 2 8 3.12 8 4.5V6H3v2h1.06l.81 11.21C4.98 20.78 6.28 22 7.86 22h8.27c1.58 0 2.88-1.22 3-2.79L19.93 8H21V6h-5zm-6-1.5c0-.28.22-.5.5-.5h3c.27 0 .5.22.5.5V6h-4V4.5zm7.13 14.57c-.04.52-.47.93-1 .93H7.86c-.53 0-.96-.41-1-.93L6.07 8h11.85l-.79 11.07zM9 17v-6h2v6H9zm4 0v-6h2v6h-2z">
+																	</path>
+																</g>
+															</svg>
+														</span>
+														<span class="flex-item"
+															onclick="SMColibri.delete_post('<?php echo $cl['thread_data']['post']['id']; ?>');">
+															<?php echo cl_translate('Delete'); ?>
+														</span>
+													</a>
+												<?php endif; ?>
+												<a onclick="SMColibri.show_likes('<?php echo $cl['thread_data']['post']['id']; ?>');"
+													class="dropdown-item" href="javascript:void(0);">
+													<span class="flex-item dropdown-item-icon">
+														<?php echo cl_ikon('favourite'); ?>
+													</span>
+													<span class="flex-item">
+														<?php echo cl_translate('Show likes'); ?>
+													</span>
+												</a>
+												<a class="dropdown-item" href="javascript:void(0);">
+													<span class="flex-item dropdown-item-icon">
+														<?php echo cl_ikon('bookmark'); ?>
+													</span>
+													<span class="flex-item"
+														onclick="SMColibri.bookmark_post('<?php echo $cl['thread_data']['post']['id']; ?>', this);">
+														<?php echo ((empty($cl['thread_data']['post']['has_saved'])) ? cl_translate('Bookmark') : cl_translate('Unbookmark')); ?>
+													</span>
+												</a>
+												<a data-clipboard-text="<?php echo ($cl['thread_data']['post']['url']); ?>"
+													class="dropdown-item clip-board-copy" href="javascript:void(0);">
+													<span class="flex-item dropdown-item-icon">
+														<?php echo cl_ikon('copy'); ?>
+													</span>
+													<span class="flex-item">
+														<?php echo cl_translate('Copy link'); ?>
+													</span>
+												</a>
+												<div class="dropdown-divider"></div>
+												<a onclick="SMColibri.share_post('<?php echo ($cl['thread_data']['post']['url']); ?>','<?php echo urlencode($cl['thread_data']['post']['url']); ?>');"
+													class="dropdown-item" href="javascript:void(0);">
+													<span class="flex-item dropdown-item-icon">
+														<?php echo cl_ikon('share'); ?>
+													</span>
+													<span class="flex-item">
+														<?php echo cl_translate('Share'); ?>
+													</span>
+												</a>
+											</div>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="publication-content">
+								<?php if (not_empty($cl['thread_data']['post']['text'])): ?>
+									<div class="publication-text">
+										<p>
+											<?php
+											$cl['thread_data']['post']['text'] = cl_rn2br($cl['thread_data']['post']['text']);
+											$cl['thread_data']['post']['text'] = cl_strip_brs($cl['thread_data']['post']['text']);
+											?>
+											<?php echo ($cl['thread_data']['post']['text']); ?>
+										</p>
+									</div>
+								<?php endif; ?>
+
+								<?php if ($cl['thread_data']['post']['type'] == 'image' && not_empty($cl['thread_data']['post']['media'])): ?>
+									<?php if (count($cl['thread_data']['post']['media']) == 1): ?>
+										<div class="lozad-media">
+											<div class="publication-image">
+												<a href="<?php echo cl_get_media(fetch_or_get($cl['thread_data']['post']['media'][0]['src'], '')); ?>"
+													class="fbox-media">
+													<img class="lozad"
+														data-src="<?php echo cl_get_media(fetch_or_get($cl['thread_data']['post']['media'][0]['src'], '')); ?>"
+														alt="Picture">
+												</a>
+											</div>
+										</div>
+									<?php else: ?>
+										<div class="publication-images-collage">
+											<?php foreach ($cl['thread_data']['post']['media'] as $i => $row): ?>
+												<a href="<?php echo cl_get_media($row['src']); ?>" class="fbox-media"
+													data-fancybox="fbox-media-<?php echo ($cl['thread_data']['post']['id']); ?>">
+													<div class="image-collage-item">
+														<div class="lozad-media">
+															<div class="publication-image">
+																<img class="d-block w-100 lozad"
+																	data-src="<?php echo cl_get_media($row['x']['image_thumb']); ?>"
+																	alt="Image">
+															</div>
+														</div>
+													</div>
+												</a>
+											<?php endforeach; ?>
+										</div>
+									<?php endif; ?>
+								<?php elseif ($cl['thread_data']['post']['type'] == 'video' && not_empty($cl['thread_data']['post']['media'])): ?>
+									<div class="lozad-media">
+										<div class="publication-image">
+											<a href="<?php echo cl_get_media(fetch_or_get($cl['thread_data']['post']['media'][0]['src'], '')); ?>"
+												class="fbox-media">
+												<img class="lozad"
+													src="<?php echo cl_get_media(fetch_or_get($cl['thread_data']['post']['media'][0]['x']['poster_thumb'], '')); ?>"
+													alt="Video">
+												<div class="video-icon">
+													<span>
+														<?php echo cl_ikon("play"); ?>
+													</span>
+												</div>
+											</a>
+										</div>
+									</div>
+								<?php elseif ($cl['thread_data']['post']['type'] == 'audio' && not_empty($cl['thread_data']['post']['media'])): ?>
+									<div class="publication-audio">
+										<audio controls preload="metadata">
+											<source
+												src="<?php echo cl_get_media(fetch_or_get($cl['thread_data']['post']['media'][0]['src'], '')); ?>"
+												type="audio/mpeg">
+											<source
+												src="<?php echo cl_get_media(fetch_or_get($cl['thread_data']['post']['media'][0]['src'], '')); ?>"
+												type="audio/wav">
+										</audio>
+									</div>
+								<?php elseif ($cl['thread_data']['post']['type'] == 'gif' && not_empty($cl['thread_data']['post']['media'])): ?>
+									<div class="lozad-media">
+										<div class="publication-image">
+											<a href="<?php echo fetch_or_get($cl['thread_data']['post']['media'][0]['src'], ''); ?>"
+												class="fbox-media">
+												<img src="<?php echo fetch_or_get($cl['thread_data']['post']['media'][0]['src'], ''); ?>"
+													alt="GIF-Image">
+											</a>
+										</div>
+									</div>
+								<?php elseif ($cl['thread_data']['post']['type'] == 'poll' && not_empty($cl['thread_data']['post']['poll'])): ?>
+									<div class="publication-poll-data"
+										data-post-poll="<?php echo $cl['thread_data']['post']['id']; ?>"
+										data-status="<?php echo ($cl['thread_data']['post']['poll']['has_voted']); ?>">
+										<div class="publication-poll-data-inner">
+											<?php foreach ($cl['thread_data']['post']['poll']['options'] as $i => $poll_data): ?>
+												<div class="poll-option-bar"
+													onclick="SMColibri.vote_poll(<?php echo ($cl['thread_data']['post']['id']); ?>, <?php echo ($i); ?>);"
+													data-poll-option="<?php echo ($i); ?>">
+													<div class="bar-icon">
+														<?php echo cl_ikon("ok-circle"); ?>
+													</div>
+													<div class="bar-text">
+														<p>
+															<?php echo $poll_data["option"]; ?>
+														</p>
+													</div>
+													<div class="bar-num">
+														<b>
+															<?php if (not_empty($cl['thread_data']['post']['poll']['has_voted'])): ?>
+																<?php echo $poll_data["percentage"]; ?>%
+															<?php endif; ?>
+														</b>
+													</div>
+													<?php if (not_empty($cl['thread_data']['post']['poll']['has_voted'])): ?>
+														<span class="bar-slider"
+															style="width: <?php echo $poll_data["percentage"]; ?>%;"></span>
+													<?php else: ?>
+														<span class="bar-slider"></span>
+													<?php endif; ?>
+												</div>
+											<?php endforeach; ?>
+										</div>
+									</div>
+								<?php elseif (not_empty($cl['thread_data']['post']['og_data'])): ?>
+									<?php if (not_empty($cl['thread_data']['post']['og_data']['video_embed'])): ?>
+										<div class="publication-og-data">
+											<div class="publication-og-data-inner embeded-iframe">
+												<div class="og-image">
+													<div class="lozad-media">
+														<a href="<?php echo ($cl['thread_data']['post']['og_data']['video_embed']); ?>"
+															class="fbox-media">
+															<img class="lozad"
+																data-src="<?php echo ($cl['thread_data']['post']['og_data']['image']); ?>"
+																alt="Video">
+															<div class="og-icon">
+																<span>
+																	<?php echo cl_ikon("play"); ?>
+																</span>
+															</div>
+														</a>
+													</div>
+												</div>
+												<div class="og-url-data">
+													<h5>
+														<?php echo ($cl['thread_data']['post']['og_data']['title']); ?>
+													</h5>
+													<p>
+														<?php echo ($cl['thread_data']['post']['og_data']['description']); ?>
+													</p>
+												</div>
+											</div>
+										</div>
+									<?php elseif (not_empty($cl['thread_data']['post']['og_data']['google_maps_embed'])): ?>
+										<div class="publication-og-data">
+											<div class="publication-og-data-inner embeded-iframe">
+												<div class="og-image">
+													<div class="lozad-media">
+														<a href="<?php echo ($cl['thread_data']['post']['og_data']['url']); ?>"
+															class="fbox-media">
+															<img class="lozad"
+																data-src="<?php echo ($cl['thread_data']['post']['og_data']['image']); ?>"
+																alt="Video">
+															<div class="og-icon no-ml">
+																<span>
+																	<?php echo cl_ikon("location"); ?>
+																</span>
+															</div>
+														</a>
+													</div>
+												</div>
+												<div class="og-url-data">
+													<h5>
+														<?php echo ($cl['thread_data']['post']['og_data']['title']); ?>
+													</h5>
+
+													<?php if (not_empty($cl['thread_data']['post']['og_data']['description'])): ?>
+														<p>
+															<?php echo ($cl['thread_data']['post']['og_data']['description']); ?>
+														</p>
+													<?php endif; ?>
+												</div>
+											</div>
+										</div>
+									<?php else: ?>
+										<div class="publication-og-data">
+											<div class="publication-og-data-inner link">
+												<?php if (not_empty($cl['thread_data']['post']['og_data']['image'])): ?>
+													<div class="og-image">
+														<a href="<?php echo ($cl['thread_data']['post']['og_data']['image']); ?>"
+															class="fbox-media">
+															<img class="lozad"
+																data-src="<?php echo ($cl['thread_data']['post']['og_data']['image']); ?>"
+																alt="IMG">
+														</a>
+													</div>
+												<?php endif; ?>
+
+												<div class="og-url-data">
+													<h5>
+														<?php echo ($cl['thread_data']['post']['og_data']['title']); ?>
+													</h5>
+													<p>
+														<?php echo ($cl['thread_data']['post']['og_data']['description']); ?>
+													</p>
+													<a href="<?php echo ($cl['thread_data']['post']['og_data']['url']); ?>"
+														target="_blank">
+														<?php echo ($cl['thread_data']['post']['og_data']['url']); ?>
+													</a>
+												</div>
+											</div>
+										</div>
+									<?php endif; ?>
+								<?php endif; ?>
+							</div>
+
+							<div class="publication-meta-info">
+								<div class="posted-time">
+									<?php echo cl_ikon('calendar'); ?>
+									<time>
+										<?php echo cl_date("h:i A - M d, Y", $cl['thread_data']['post']['time_raw'], true); ?>
+									</time>
+								</div>
+								<?php if ($cl['thread_data']['post']['target'] == 'pub_reply' && not_empty($cl['thread_data']['post']['reply_to'])): ?>
+									<div class="publication-target">
+										<?php if (not_empty($cl['thread_data']['post']['reply_to']['is_owner'])): ?>
+											<div class="post-reply">
+												<span>
+													<?php echo cl_translate('In response to your {@post_url@}', array(
+														'post_url' => cl_html_el('a', cl_translate('post'), array(
+															'href' => $cl['thread_data']['post']['reply_to']['thread_url'],
+															'data-spa' => 'true'
+														)
+														)
+													)
+													); ?>
+												</span>
+											</div>
+										<?php else: ?>
+											<div class="post-reply">
+												<span>
+													<?php
+													$text_temp = 'In response {@uname@} to his {@post_url@}';
+
+													if ($cl['thread_data']['post']['reply_to']['gender'] == 'F') {
+														$text_temp = 'In response {@uname@} to her {@post_url@}';
+													}
+
+													echo cl_translate($text_temp, array(
+														'uname' => cl_html_el('a', $cl['thread_data']['post']['reply_to']['name'], array(
+															'href' => $cl['thread_data']['post']['reply_to']['url'],
+															'data-spa' => 'true'
+														)
+														),
+														'post_url' => cl_html_el('a', cl_translate('publication'), array(
+															'href' => $cl['thread_data']['post']['reply_to']['thread_url'],
+															'data-spa' => 'true'
+														)
+														)
+													)
+													);
+													?>
+												</span>
+											</div>
+										<?php endif; ?>
+									</div>
+								<?php else: ?>
+									<?php if (not_empty($cl['thread_data']['post']['is_owner']) && $cl['thread_data']['post']['target'] == 'publication'): ?>
+										<div class="post-privacy">
+											<button class="privacy-settings dropleft" type="button">
+												<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+													<?php if ($cl['thread_data']['post']['priv_wcr'] == "everyone"): ?>
+														<span class="d-inline-flex align-items-center flex-wn">
+															<span class="flex-item icon">
+																<?php echo cl_ikon('language'); ?>
+															</span>
+															<span class="flex-item flex-grow-1 label">
+																<?php echo cl_translate('Everyone can reply'); ?>
+															</span>
+														</span>
+													<?php elseif ($cl['thread_data']['post']['priv_wcr'] == "mentioned"): ?>
+														<span class="d-inline-flex align-items-center flex-wn">
+															<span class="flex-item icon">
+																<?php echo cl_ikon('ear'); ?>
+															</span>
+															<span class="flex-item flex-grow-1 label">
+																<?php echo cl_translate('Only mentioned people'); ?>
+															</span>
+														</span>
+													<?php else: ?>
+														<span class="d-inline-flex align-items-center flex-wn">
+															<span class="flex-item icon">
+																<?php echo cl_ikon('people'); ?>
+															</span>
+															<span class="flex-item flex-grow-1 label">
+																<?php echo cl_translate('Only my followers'); ?>
+															</span>
+														</span>
+													<?php endif; ?>
+												</a>
+												<div class="dropdown-menu dropdown-icons">
+													<a class="dropdown-item" href="javascript:void(0);"
+														onclick="SMColibri.post_privacy('everyone', <?php echo $cl['thread_data']['post']['id']; ?>);">
+														<span class="flex-item dropdown-item-icon">
+															<?php echo cl_ikon('language'); ?>
+														</span>
+														<span class="flex-item ">
+															<?php echo cl_translate('Everyone can reply'); ?>
+														</span>
+													</a>
+													<a class="dropdown-item" href="javascript:void(0);"
+														onclick="SMColibri.post_privacy('mentioned', <?php echo $cl['thread_data']['post']['id']; ?>);">
+														<span class="flex-item dropdown-item-icon">
+															<?php echo cl_ikon('ear'); ?>
+														</span>
+														<span class="flex-item ">
+															<?php echo cl_translate('Only mentioned people'); ?>
+														</span>
+													</a>
+													<a class="dropdown-item" href="javascript:void(0);"
+														onclick="SMColibri.post_privacy('followers', <?php echo $cl['thread_data']['post']['id']; ?>);">
+														<span class="flex-item dropdown-item-icon">
+															<?php echo cl_ikon('people'); ?>
+														</span>
+														<span class="flex-item ">
+															<?php echo cl_translate('Only my followers'); ?>
+														</span>
+													</a>
+												</div>
+											</button>
+										</div>
+									<?php endif; ?>
+								<?php endif; ?>
+							</div>
+
+							<div class="publication-footer-ctrls">
+								<?php if (not_empty($cl['thread_data']['can_reply'])): ?>
+									<button class="ctrls-item"
+										onclick="SMColibri.pub_reply('<?php echo $cl['thread_data']['post']['id']; ?>');">
+										<span class="icon">
+											<?php echo cl_ikon('chat-post'); ?>
+										</span>
+										<span class="num" data-an="pub-replys-total">
+											<?php echo $cl['thread_data']['post']['replys_count']; ?>
+										</span>
+									</button>
+								<?php else: ?>
+									<button class="ctrls-item" disabled="true">
+										<span class="icon">
+											<?php echo cl_ikon('chat-post'); ?>
+										</span>
+										<span class="num" data-an="pub-replys-total">
+											<?php echo $cl['thread_data']['post']['replys_count']; ?>
+										</span>
+									</button>
+								<?php endif; ?>
+
+								<?php if (empty($cl['thread_data']['post']['has_liked'])): ?>
+									<button class="ctrls-item"
+										onclick="SMColibri.like_post('<?php echo $cl['thread_data']['post']['id']; ?>', this);">
+										<span class="icon">
+											<?php echo cl_ikon('likes'); ?>
+										</span>
+										<span class="num" data-an="likes-count">
+											<?php echo $cl['thread_data']['post']['likes_count']; ?>
+										</span>
+									</button>
+								<?php else: ?>
+									<button class="ctrls-item liked"
+										onclick="SMColibri.like_post('<?php echo $cl['thread_data']['post']['id']; ?>', this);">
+										<span class="icon">
+											<?php echo cl_ikon('likes'); ?>
+										</span>
+										<span class="num" data-an="likes-count">
+											<?php echo $cl['thread_data']['post']['likes_count']; ?>
+										</span>
+									</button>
+								<?php endif; ?>
+								<button onclick="SMColibri.repost('<?php echo $cl['thread_data']['post']['id']; ?>', this);"
+									class="ctrls-item" data-an="repost-ctrl">
+									<span class="icon">
+										<?php echo cl_ikon('repost'); ?>
+									</span>
+									<span class="num" data-an="reposts-count">
+										<?php echo $cl['thread_data']['post']['reposts_count']; ?>
+									</span>
+								</button>
+								<button class="ctrls-item"
+									onclick="SMColibri.share_post('<?php echo $cl['thread_data']['post']['url']; ?>','<?php echo urlencode($cl['thread_data']['post']['url']); ?>');">
+									<span class="icon">
+										<?php echo cl_ikon('share'); ?>
+									</span>
+								</button>
+
+								<div class="reply_button">
+									<button
+										onclick="SMColibri.pub_reply('<?php echo $cl['thread_data']['post']['id']; ?>');"
+										class="btn-custom reply main-inline md post-pub-btn">
+										<?php echo cl_translate("Tweet Your Reply"); ?> </button>
+								</div>
+							</div>
+						</div>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php if (not_empty($cl["gads_horiz"])): ?>
+				<div class="cl-google-ads centered">
+					<?php echo $cl["gads_horiz"]; ?>
+				</div>
+			<?php endif; ?>
+			<?php if (empty($cl['thread_data']['can_reply']) && not_empty($cl['thread_data']['post']['can_see'])): ?>
+				<?php if ($cl['thread_data']["post"]["priv_wcr"] == "followers"): ?>
+					<div class="publication--thread-reply-privacy">
+						<div class="info-message">
+							<div class="d-flex align-items-center flex-wn">
+								<div class="flex-item">
+									<div class="icon">
+										<?php echo cl_ikon("people"); ?>
+									</div>
+								</div>
+								<div class="flex-item">
+									<p>
+										<?php echo cl_translate("Only followers of ({@uname@}) can respond to this publication", array(
+											"uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+										)
+										); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php else: ?>
+					<div class="publication--thread-reply-privacy">
+						<div class="info-message">
+							<div class="d-flex align-items-center flex-wn">
+								<div class="flex-item">
+									<div class="icon">
+										<?php echo cl_ikon("ear"); ?>
+									</div>
+								</div>
+								<div class="flex-item">
+									<p>
+										<?php echo cl_translate("Only people mentioned by {@uname@} in this post can reply", array(
+											"uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+										)
+										); ?>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+			<?php endif; ?>
+			<div class="publication--thread-replys-holder">
+				<?php if (not_empty($cl['thread_data']['next'])): ?>
+					<div class="timeline-posts-container">
+						<div class="timeline-posts-ls" data-an="replys-list">
+							<?php foreach ($cl['thread_data']['next'] as $cl["li"]): ?>
+								<?php if (empty($cl["li"]["replys"])): ?>
+									<?php echo cl_template('timeline/post'); ?>
+								<?php else: ?>
+									<div class="timeline-posts-ls-group">
+										<div class="timeline-posts-ls-group-inner">
+											<?php echo cl_template('timeline/post'); ?>
+
+											<?php
+											$parent_thread = $cl['li'];
+											$post_replys = $parent_thread['replys'];
+											$post_replys = array_reverse($post_replys);
+
+											foreach ($post_replys as $cl['li']) {
+												echo cl_template('timeline/post');
+											}
+											?>
+										</div>
+
+										<a class="show-thread" href="<?php echo ($parent_thread["url"]); ?>" data-spa="true">
+											<span class="txt-label">
+												(
+												<?php echo ($parent_thread["replys_count"]); ?>)
+												<?php echo cl_translate("Show this thread"); ?>
+											</span>
+											<span class="icon">
+												<?php echo cl_ikon('arrow-right'); ?>
+											</span>
+										</a>
+									</div>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<?php if (count($cl['thread_data']['next']) == 30): ?>
+						<div class="load-more">
+							<button class="btn btn-custom main-outline lg" data-an="load-more">
+								<?php echo cl_translate("Show more"); ?>
+							</button>
+						</div>
+					<?php else: ?>
+						<div class="load-more">
+							<button disabled="true" class="btn btn-custom main-outline lg" data-an="load-more">
+								<?php echo cl_translate("That is all for now!"); ?>
+							</button>
+						</div>
+					<?php endif; ?>
+				<?php else: ?>
+					<div class="no-thread-replys">
+						<div class="icon">
+							<?php echo cl_ikon('chat-post'); ?>
+						</div>
+						<div class="pl-message">
+							<h4>
+								<?php echo cl_translate("No replys yet!"); ?>
+							</h4>
+							<p>
+								<?php echo cl_translate("It seems that this publication does not yet have any comments. In order to respond to this publication from {@publisher_name@}, click on at the button above", array(
+									"svg_icon" => cl_html_el("span", cl_ikon('chat-post')),
+									"publisher_name" => cl_html_el('a', $cl['thread_data']['post']['owner']['name'], array(
+										"href" => $cl['thread_data']['post']['owner']['url'],
+										"data-spa" => "true"
+									)
+									)
+								)
+								); ?>
+							</p>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+	<?php echo cl_template('thread/scripts/app_master_script'); ?>
+</div>
+
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-header div.lp div.nav-link-holder {
+		line-height: 20px;
+		display: inline-flex;
+		margin: ;
+		vertical-align: middle;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.reply_button button.btn-custom.reply {
+		max-height: 36px !important;
+		min-height: 36px !important;
+		color: rgb(255, 255, 255);
+		font-weight: 700;
+		-moz-box-align: center;
+		align-items: center;
+		-moz-box-pack: center;
+		justify-content: center;
+		font-size: 15px !important;
+		display: flex;
+		background-color: rgb(29, 155, 240) !important;
+		transition-property: background-color, box-shadow !important;
+		border-color: rgba(0, 0, 0, 0) !important;
+		padding-left: 16px !important;
+		padding-right: 16px !important;
+		border-width: 1px;
+		border-style: solid;
+	}
+</style>

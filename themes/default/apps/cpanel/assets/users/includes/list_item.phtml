@@ -1,0 +1,96 @@
+<tr data-list-item="<?php echo ($cl['li']['id']); ?>" data-user-id="<?php echo ($cl['li']['id']); ?>">
+    <td>
+        <a href="<?php echo ($cl['li']['url']); ?>">
+            #<?php echo ($cl['li']['id']); ?>
+        </a>
+    </td>
+    <td>
+        <div class="user-info-holder">
+            <div class="avatar-holder">
+                <img src="<?php echo ($cl['li']['avatar']); ?>" alt="Avatar">
+            </div>
+            <div class="uname-holder">
+                <b>
+                    <span class="user-name-holder <?php if ($cl['li']['verified'] == '1') {
+                                                        echo ('verified-badge');
+                                                    } ?>">
+                        <?php echo ($cl['li']['name']); ?>
+                    </span>
+                </b>
+                <a href="<?php echo ($cl['li']['url']); ?>">
+                    <?php echo ($cl['li']['username']); ?>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td style="display: block; max-width: 160px;padding: 25px;">
+        <a href="mailto:<?php echo ($cl['li']['email']); ?>">
+            <span>
+                <?php echo ($cl['li']['email']); ?>
+            </span>
+        </a>
+    </td>
+    <td>
+        <div class="banner-flag">
+            <?php echo ($cl['li']['banner']); ?>
+        </div>
+    </td>
+    <td>
+        <?php echo ($cl['li']['ip_address']); ?>
+    </td>
+    <td>
+        <div class="select-box">
+            <select onchange="SMC_CPanel.PS.toggle_type(<?php echo ($cl['li']['id']); ?>);">
+                <option value="admin" <?php if ($cl['li']['admin'] == '1') {
+                                            echo ('selected');
+                                        } ?>>Admin</option>
+                <option value="user" <?php if ($cl['li']['admin'] == '0') {
+                                            echo ('selected');
+                                        } ?>>User</option>
+            </select>
+        </div>
+    </td>
+    <td>
+        <div class="select-box">
+            <select onchange="SMC_CPanel.PS.verify_user(<?php echo ($cl['li']['id']); ?>);">
+                <option value="Y" <?php if ($cl['li']['verified'] == '1') {
+                                        echo ('selected');
+                                    } ?>>Yes</option>
+                <option value="N" <?php if ($cl['li']['verified'] == '0') {
+                                        echo ('selected');
+                                    } ?>>No</option>
+            </select>
+        </div>
+    </td>
+    <td class="switch" style="margin-top: 30px;">
+        <label>
+            <input onchange="SMC_CPanel.PS.toggle_status(<?php echo ($cl['li']['id']); ?>);" type="checkbox" <?php if ($cl['li']['active'] == '1') {
+                                                                                                                echo ('checked');
+                                                                                                            } ?>>
+            <span class="lever switch-col-blue"></span>
+        </label>
+    </td>
+    <td>
+        <time>
+            <?php echo ($cl['li']['last_active']); ?>
+        </time>
+    </td>
+    <td>
+        <div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="<?php echo ($cl['li']['url']); ?>" class="dropdown-item">
+                    <?php echo cl_translate('Profile'); ?>
+                </a>
+                <a href="<?php echo cl_link(cl_strf('admin_panel/wallet_balance?id=%d', $cl['li']['id'])); ?>" class="dropdown-item">
+                    <?php echo cl_translate('wallet_balance'); ?>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item" onclick="SMC_CPanel.delete_user('<?php echo ($cl['li']['id']); ?>');">
+                    <?php echo cl_translate('Delete'); ?>
+                </a>
+                </ul>
+            </div>
+    </td>
+</tr>

@@ -1,0 +1,9 @@
+<div v-show="(query_result == '1')" class="timeline-posts-container">
+	<div class="timeline-posts-ls" data-an="entry-list">
+		<?php if (not_empty($cl["query_result"])): ?>
+			<?php foreach ($cl["query_result"] as $cl['li']): ?>
+				<?php echo cl_template('timeline/post'); ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</div>
+</div>

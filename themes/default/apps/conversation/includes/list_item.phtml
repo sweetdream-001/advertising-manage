@@ -1,0 +1,59 @@
+<div class="conversation-messages__item <?php echo($cl['li']['side']); ?>" data-list-item="<?php echo($cl['li']['id']); ?>" <?php if(not_empty($cl['li']['html_attrs'])) { echo($cl['li']['html_attrs']); }; ?>>
+	<div class="message-data">
+		<div class="message-data__body">
+			<?php if (empty($cl['li']['media_file'])): ?>
+				<div class="message-text">
+					<?php echo($cl['li']['message']); ?>
+				</div>
+			<?php else: ?>
+				<div class="message-media">
+					<a class="image-wrapper fbox-media" data-fancybox="images" href="<?php echo($cl['li']['media_file']); ?>">
+						<img src="<?php echo($cl['li']['media_file']); ?>" alt="Image">
+					</a>
+				</div>
+			<?php endif; ?>
+		</div>
+		<div class="message-data__ctrls">
+			<button class="dropdown" type="button">
+				<div class="dropdown-toggle icon" data-toggle="dropdown">
+					<?php echo cl_icon('more_horiz'); ?>
+				</div>
+				<div class="dropdown-menu dropdown-icons">
+					<a href="javascript:void(0);" class="dropdown-item col-red" onclick="SMColibri.PS.chat.delete_message(this);">
+						<span class="flex-item dropdown-item-icon">
+							<?php echo cl_icon("delete"); ?>
+						</span>
+						<span class="flex-item">
+							<?php echo cl_translate("Delete message"); ?>
+						</span>
+					</a>
+					<?php if (empty($cl['li']['media_file'])): ?>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item clip-board-copy" data-clipboard-text="<?php echo($cl['li']['msg_raw']); ?>" href="javascript:void(0);">
+							<span class="flex-item dropdown-item-icon">
+								<?php echo cl_icon("content_copy"); ?>
+							</span>
+							<span class="flex-item">
+								<?php echo cl_translate("Copy message"); ?>
+							</span>
+						</a>
+					<?php endif; ?>
+					<?php if (not_empty($cl['li']['media_file'])): ?>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" download="<?php echo($cl['li']['media_name']); ?>" href="<?php echo($cl['li']['media_file']); ?>">
+							<span class="flex-item dropdown-item-icon">
+								<?php echo cl_icon("file_download"); ?>
+							</span>
+							<span class="flex-item">
+								<?php echo cl_translate("Download"); ?>
+							</span>
+						</a>
+					<?php endif; ?>
+				</div>
+			</button>
+		</div>
+	</div>
+	<div class="message-time">
+		<?php echo($cl['li']['time']); ?>
+	</div>	
+</div>

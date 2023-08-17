@@ -1,0 +1,28 @@
+<div class="timeline-container" data-app="advertisements">
+	<div class="timeline-header" data-el="tl-header">
+		
+		<div class="lp">
+		<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+				<span class="go-back" onclick="SMColibri.go_back();">
+				<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+				<a href="<?php echo cl_link('ads'); ?>">
+					<?php echo cl_translate('Advertisement'); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+			
+		</div>
+		<div class="rp">
+			
+		</div>
+	</div>
+	<div class="timeline-posts-container">
+		<div class="timeline-posts-ls">
+		<?php foreach ($cl["ads_ls"] as $cl['li']): ?>
+				<?php echo cl_template("timeline/ad"); ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</div>

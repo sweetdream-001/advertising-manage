@@ -1,0 +1,54 @@
+<div class="timeline-container" data-app="affiliates">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__topline">
+			<div data-el="timeline-bs-notifs" class="timeline-bs-notifs"></div>
+		</div>
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder">
+					<a href="<?php echo cl_link('affiliates'); ?>">
+						<?php echo cl_translate('Affiliates'); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				<a href="<?php echo cl_link('/'); ?>">
+					<img src="{%config site_logo%}" alt="Logo">
+				</a>
+			</div>
+			<div class="rp">
+				<div class="nav-link-holder">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_icon('arrow_back'); ?>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="timeline-placeholder">
+		<div class="icon">
+			<div class="icon__bg">
+				<?php echo cl_icon("group_work"); ?>
+			</div>
+		</div>
+		<div class="pl-message">
+			<h4>
+				<?php echo cl_translate('This feature is not available!'); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate('Sorry, it looks like the site owner has disabled the affiliate program feature. If you have questions or complaints, please contact our email address {@site_email@}', array(
+					'site_email' => cl_html_el('a', $cl['config']['email'], array('href' => cl_strf("mailto:%s", $cl['config']['email'])))
+				)); ?>
+			</p>
+		</div>
+		<div class="c2action-single">
+			<a href="<?php echo cl_link('/'); ?>">
+				<button class="btn btn-custom main-outline lg">
+					<?php echo cl_translate("Go to the homepage"); ?>
+				</button>
+			</a>
+		</div>
+	</div>
+
+	<?php echo cl_template("main/includes/inline_statics/app_statics"); ?>
+</div>

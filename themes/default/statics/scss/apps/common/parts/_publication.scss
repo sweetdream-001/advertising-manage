@@ -1,0 +1,717 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-posts-container {
+    div.timeline-posts-ls {
+        div.post-list-item {
+            border-bottom: 1px solid var(--cl-primary-border-color);
+            transition: all 0.27s ease-in-out;
+            padding: var(--cl-primary-offset-size);
+            padding-bottom: 10px;
+            div.post-list-item__header {
+                display: flex;
+                margin-bottom: 5px;
+                padding-left: 67px;
+                div.publication-repost {
+                    padding: 0px;
+                    svg {
+                        width: 18px;
+                        height: 18px;
+                        fill: var(--cl-primary-color);
+                    }
+                    a {
+                        font-size: 11px;
+                        color: var(--cl-primary-color);
+                        display: inline-block;
+                        text-decoration: none;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                    }
+                }
+                @include media-breakpoint-down(xl) {
+                    padding-left: 42px;
+                }
+            }
+            div.post-list-item__content {
+                div.post-data {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    div.post-data__avatar {
+                        flex-basis: var(--cl-primary-avatar-size);
+                        flex-shrink: 0;
+                        div.avatar-holder {
+                            overflow: hidden;
+                            width: var(--cl-primary-avatar-size);
+                            ;
+                            height: var(--cl-primary-avatar-size);
+                            ;
+                            background: var(--cl-primary-border-color);
+                            border-radius: 100%;
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                &:not([data-loaded]) {
+                                    visibility: hidden;
+                                }
+                            }
+                        }
+                        a {
+                            height: 100%;
+                        }
+                        @include media-breakpoint-down(xl) {}
+                    }
+                    div.post-data__content {
+                        flex: 1;
+                        padding-left: var(--cl-primary-offset-size);
+                        overflow: hidden;
+                        div.post-data__content-inner {
+                            div.post-data-layout {
+                                div.post-data-layout__publisher {
+                                    display: flex;
+                                    flex-direction: row;
+                                    flex-wrap: nowrap;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    @include media-breakpoint-down(xl) {
+                                        align-items: flex-start;
+                                    }
+                                    div.post-username {
+                                        flex: 1;
+                                        line-height: 1;
+                                        a {
+                                            text-decoration: none;
+                                            span.user-name-holder {
+                                                font-size: var(--cl-primary-name-size);
+                                                color: var(--cl-primary-text-color);
+                                                font-weight: 500;
+                                                &:hover,
+                                                &:focus,
+                                                &:active {
+                                                    color: var(--cl-primary-link-color);
+                                                }
+                                            }
+                                            span.user-name-slug {
+                                                text-transform: lowercase;
+                                                color: var(--cl-secondary-text-color);
+                                                font-weight: normal;
+                                            }
+                                            @include media-breakpoint-down(xl) {
+                                                span {
+                                                    display: block;
+                                                    width: 100%;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.post-time {
+                                        color: var(--cl-secondary-text-color);
+                                        font-size: 13px;
+                                        line-height: 1;
+                                        span {
+                                            margin-left: 5px;
+                                            cursor: help;
+                                        }
+                                        @include media-breakpoint-down(xl) {
+                                            font-size: 11px;
+                                        }
+                                    }
+                                }
+                                div.post-data-layout__target {
+                                    div.post-reply {
+                                        span {
+                                            font-size: 14px;
+                                            color: var(--cl-secondary-text-color);
+                                            a {
+                                                color: var(--cl-primary-link-color);
+                                            }
+                                        }
+                                    }
+                                }
+                                div.post-data-layout__content {
+                                    margin-top: 10px;
+                                    div.publication-text {
+                                        overflow: hidden;
+                                        margin-bottom: 10px;
+                                        font-size: 16px;
+                                        line-height: 1.4;
+                                        font-weight: 400;
+                                        color: var(--cl-primary-text-color);
+                                        word-break: break-word;
+                                        a.inline-link {
+                                            display: inline;
+                                        }
+                                        @include media-breakpoint-down(xl) {
+                                            font-size: 14px;
+                                        }
+                                    }
+                                    div.lozad-media {
+                                        width: 100%;
+                                        display: block;
+                                    }
+                                    div.publication-image {
+                                        border: 1px solid var(--cl-primary-border-color);
+                                        border-radius: var(--cl-secondary-border-radius);
+                                        overflow: hidden;
+                                        background: #e6ecf0;
+                                        img.lozad {
+                                            width: 100%;
+                                            &:not([data-loaded]) {
+                                                visibility: hidden;
+                                            }
+                                        }
+                                        a.fbox-media {
+                                            position: relative;
+                                            display: block;
+                                            @import "../../../snippets/sm/_video_play.scss";
+                                        }
+                                    }
+                                    div.publication-images-collage {
+                                        display: flex;
+                                        justify-content: flex-start;
+                                        flex-wrap: wrap;
+                                        overflow: hidden;
+                                        a.fbox-media {
+                                            width: calc(20% - 5px);
+                                            min-width: calc(15% - 5px);
+                                            margin-right: 5px;
+                                            margin-bottom: 5px;
+                                            div.image-collage-item {
+                                                display: block;
+                                                div.publication-image {
+                                                    border-radius: var(--cl-secondary-border-radius);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.publication-audio {
+                                        audio {
+                                            width: 100%;
+                                            outline: 0;
+                                        }
+                                    }
+                                    div.publication-og {
+                                        margin-bottom: 10px;
+                                        background: var(--cl-primary-bg-color);
+                                        border-radius: var(--cl-secondary-border-radius);
+                                        border: 2px solid var(--cl-primary-border-color);
+                                        position: relative;
+                                        div.publication-og__inner {
+                                            overflow: hidden;
+                                            &.embeded-iframe {
+                                                display: flex;
+                                                flex-direction: column;
+                                                flex-wrap: nowrap;
+                                                div.publication-og__image {
+                                                    width: 100%;
+                                                    a {
+                                                        display: block;
+                                                        width: 100%;
+                                                        position: relative;
+                                                        text-decoration: none;
+                                                        line-height: 0;
+                                                        min-height: 200px;
+                                                        max-height: 300px;
+                                                        overflow: hidden;
+                                                        img {
+                                                            width: 100%;
+                                                            display: block;
+                                                        }
+                                                        @import "../../../snippets/sm/_video_play.scss";
+                                                    }
+                                                }
+                                                div.publication-og__description {
+                                                    p {
+                                                        margin-bottom: 0px;
+                                                    }
+                                                }
+                                            }
+                                            &.link {
+                                                display: flex;
+                                                flex-direction: column;
+                                                flex-wrap: nowrap;
+                                                overflow: hidden;
+                                                div.publication-og__image {
+                                                    width: 100%;
+                                                    overflow: hidden;
+                                                    border-bottom: 1px solid var(--cl-primary-border-color);
+                                                    background: var(--cl-event-hover-bg);
+                                                    img {
+                                                        width: 100%;
+                                                        display: block;
+                                                    }
+                                                }
+                                            }
+                                            div.publication-og__description {
+                                                padding: var(--cl-primary-offset-size);
+                                                h5,
+                                                p,
+                                                a {
+                                                    width: 100%;
+                                                    display: block;
+                                                }
+                                                h5 {
+                                                    padding: 0;
+                                                    margin: 0 0 5px 0;
+                                                    font-size: 18px;
+                                                    line-height: 1.4;
+                                                    color: var(--cl-primary-text-color);
+                                                    word-wrap: break-word;
+                                                    font-weight: 700;
+                                                }
+                                                p {
+                                                    font-size: 16px;
+                                                    color: var(--cl-secondary-text-color);
+                                                    line-height: 1.4;
+                                                    padding: 0;
+                                                    margin: 0 0 15px 0;
+                                                    word-wrap: break-word;
+                                                }
+                                                a {
+                                                    font-size: 14px;
+                                                    line-height: 18px;
+                                                    color: var(--cl-primary-color);
+                                                    padding: 0;
+                                                    margin: 0;
+                                                    word-wrap: break-word;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.publication-poll {
+                                        div.publication-poll__inner {
+                                            div.publication-poll__option {
+                                                display: flex;
+                                                flex-direction: row;
+                                                flex-wrap: nowrap;
+                                                align-items: center;
+                                                height: 30px;
+                                                padding: 20px 15px;
+                                                background: rgba(29, 161, 242, 0.1);
+                                                margin-bottom: 10px;
+                                                border-radius: 0px;
+                                                cursor: pointer;
+                                                overflow: hidden;
+                                                position: relative;
+                                                z-index: 1;
+                                                div.bar-icon {
+                                                    width: 22px;
+                                                    height: 22px;
+                                                    line-height: 0;
+                                                    min-height: 20px;
+                                                    min-width: 20px;
+                                                    svg {
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        fill: var(--cl-primary-color);
+                                                    }
+                                                }
+                                                div.bar-text {
+                                                    flex-grow: 1;
+                                                    padding-left: 15px;
+                                                    padding-right: 15px;
+                                                    overflow: hidden;
+                                                    p {
+                                                        padding: 0;
+                                                        margin: 0;
+                                                        display: block;
+                                                        width: 100%;
+                                                        max-width: 100%;
+                                                        font-size: 14px;
+                                                        line-height: 14px;
+                                                        color: var(--cl-primary-text-color);
+                                                        white-space: nowrap;
+                                                        overflow: hidden;
+                                                        text-overflow: ellipsis;
+                                                    }
+                                                }
+                                                div.bar-num {
+                                                    b {
+                                                        font-size: 14px;
+                                                        line-height: 14px;
+                                                        color: var(--cl-primary-color);
+                                                    }
+                                                }
+                                                &:last-child {
+                                                    margin-bottom: 0px;
+                                                }
+                                                span.bar-slider {
+                                                    display: block;
+                                                    position: absolute;
+                                                    left: 0;
+                                                    top: 0;
+                                                    bottom: 0;
+                                                    background: rgba(29, 161, 242, 0.2);
+                                                    max-width: 100%;
+                                                    min-width: 10px;
+                                                    border-radius: 0px;
+                                                    z-index: 3;
+                                                }
+                                            }
+                                        }
+                                        &[data-status="1"] {
+                                            div.publication-poll-data-inner {
+                                                div.poll-option-bar {
+                                                    cursor: default;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                div.post-data-layout__controls {
+                                    display: flex;
+                                    flex-direction: row;
+                                    flex-wrap: nowrap;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    margin-top: 15px;
+                                    margin-left: -10px;
+                                    button.ctrls-item {
+                                        background: transparent;
+                                        border: none;
+                                        box-shadow: none;
+                                        outline: none;
+                                        padding: 0;
+                                        margin: 0;
+                                        cursor: pointer;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        a.ctrls-item__inner-link {
+                                            text-decoration: none;
+                                            display: inline-flex;
+                                            align-items: center;
+                                            color: inherit;
+                                        }
+                                        span.ctrls-item__icon,
+                                        div.ctrls-item__icon {
+                                            display: inline-flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            padding: 0;
+                                            margin: 0;
+                                            width: 40px;
+                                            height: 40px;
+                                            flex-shrink: 0;
+                                            border-radius: 100%;
+                                            svg {
+                                                width: 22px;
+                                                height: 22px;
+                                                fill: var(--cl-secondary-text-color);
+                                            }
+                                            @include media-breakpoint-down(xl) {
+                                                width: 35px;
+                                                height: 35px;
+                                                svg {
+                                                    width: 20px;
+                                                    height: 20px;
+                                                }
+                                            }
+                                        }
+                                        span.num {
+                                            font-size: 14px;
+                                            color: var(--cl-secondary-text-color);
+                                            line-height: 1;
+                                            margin-left: 2px;
+                                        }
+                                        &:hover,
+                                        &:active,
+                                        &:focus {
+                                            span.ctrls-item__icon,
+                                            div.ctrls-item__icon {
+                                                background: var(--cl-secondary-bg-color);
+                                                svg {
+                                                    fill: var(--cl-primary-color);
+                                                }
+                                            }
+                                            span.num {
+                                                color: var(--cl-primary-color);
+                                            }
+                                        }
+                                        &.liked {
+                                            span.ctrls-item__icon,
+                                            a.ctrls-item__icon {
+                                                svg {
+                                                    fill: var(--cl-primary-color) !important;
+                                                }
+                                            }
+                                            span.num {
+                                                color: var(--cl-primary-color) !important;
+                                            }
+                                        }
+                                        &.reposted {
+                                            span.ctrls-item__icon,
+                                            a.ctrls-item__icon {
+                                                svg {
+                                                    fill: var(--cl-primary-color) !important;
+                                                }
+                                            }
+                                            span.num {
+                                                color: var(--cl-primary-color) !important;
+                                            }
+                                        }
+                                        &.dropleft {
+                                            div.dropdown-toggle.ctrls-item__icon {
+                                                svg {
+                                                    width: 26px;
+                                                    height: 26px;
+                                                    opacity: 0.7;
+                                                }
+                                                &::before,
+                                                &::after {
+                                                    display: none;
+                                                }
+                                                &:hover,
+                                                &:active,
+                                                &:focus {
+                                                    svg {
+                                                        opacity: 1;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        div.post-data__content-hidden {
+                            div.soft-hidden-post {
+                                border: 2px solid var(--cl-primary-border-color);
+                                padding: 12px 15px;
+                                border-radius: var(--cl-secondary-border-radius);
+                                p {
+                                    color: var(--cl-secondary-text-color);
+                                    padding: 0;
+                                    margin: 0;
+                                    font-size: 14px;
+                                    line-height: 1.4;
+                                    margin-right: var(--cl-primary-offset-size);
+                                }
+                                button.btn-custom {
+                                    font-size: 11px;
+                                }
+                            }
+                            &+div.post-data__content-inner {
+                                display: none;
+                            }
+                            &.show+div.post-data__content-inner {
+                                display: block !important;
+                            }
+                        }
+                    }
+                }
+            }
+            div.post-placeholder {
+                width: 100%;
+                display: block;
+                border: 2px solid var(--cl-primary-border-color);
+                padding: 12px 15px;
+                border-radius: var(--cl-secondary-border-radius);
+                div.icon {
+                    width: 25px;
+                    height: 25px;
+                    flex-shrink: 0;
+                    margin-right: 15px;
+                    svg {
+                        width: 100%;
+                        height: 100%;
+                        fill: var(--cl-secondary-text-color);
+                    }
+                }
+                p {
+                    color: var(--cl-secondary-text-color);
+                    padding: 0;
+                    margin: 0;
+                    font-size: 14px;
+                    line-height: 1.4;
+                    margin-right: 15px;
+                    a {
+                        color: var(--cl-primary-link-color);
+                        font-weight: 500;
+                        &:hover,
+                        &:active {
+                            color: var(--cl-primary-link-color);
+                        }
+                    }
+                }
+            }
+        }
+        div.post-list-advert {
+            border-bottom: 1px solid var(--cl-primary-border-color);
+            div.post-list-advert__header {
+                padding: var(--cl-primary-offset-size);
+                padding-bottom: 0px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                div.post-list-advert__sponsor {
+                    margin-right: var(--cl-primary-offset-size);
+                    font-size: 13px;
+                    line-height: 1;
+                    color: var(--cl-warning-color);
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    a {
+                        text-decoration: none;
+                        font-weight: 600;
+                        color: var(--cl-primary-text-color);
+                    }
+                }
+                div.post-list-advert__time {
+                    color: var(--cl-secondary-text-color);
+                    font-size: 13px;
+                    line-height: 1;
+                    @include media-breakpoint-down(xl) {
+                        font-size: 11px;
+                    }
+                }
+            }
+            div.post-list-advert__body {
+                div.post-list-advert__text {
+                    padding: var(--cl-primary-offset-size);
+                    h4 {
+                        font-size: 18px;
+                        font-weight: 700;
+                        line-height: 22px;
+                        color: var(--cl-primary-text-color);
+                        padding: 0;
+                        margin: 0 0 10px 0;
+                    }
+                    p {
+                        font-size: 16px;
+                        line-height: 1.4;
+                        padding: 0;
+                        margin: 0;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        h4 {
+                            font-size: 16px;
+                        }
+                        p {
+                            font-size: 14px;
+                        }
+                    }
+                }
+                div.post-list-advert__image {
+                    a.fbox-media {
+                        text-decoration: none;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+                div.post-list-advert__ctrl {
+                    padding: var(--cl-primary-offset-size);
+                }
+            }
+            div.post-list-advert__footer {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: center;
+                padding: var(--cl-primary-offset-size);
+                border-top: 1px solid var(--cl-primary-border-color);
+                button.ctrls-item {
+                    background: transparent;
+                    border: none;
+                    box-shadow: none;
+                    outline: none;
+                    padding: 0;
+                    margin: 0;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    a.ctrls-item__inner-link {
+                        text-decoration: none;
+                        display: inline-flex;
+                        align-items: center;
+                        color: inherit;
+                    }
+                    span.ctrls-item__icon,
+                    div.ctrls-item__icon {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 0;
+                        margin: 0;
+                        width: 40px;
+                        height: 40px;
+                        flex-shrink: 0;
+                        border-radius: 100%;
+                        svg {
+                            width: 22px;
+                            height: 22px;
+                            fill: var(--cl-secondary-text-color);
+                        }
+                    }
+                    span.num {
+                        font-size: 14px;
+                        color: var(--cl-secondary-text-color);
+                        line-height: 1;
+                        margin-left: 2px;
+                    }
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        span.ctrls-item__icon,
+                        div.ctrls-item__icon {
+                            background: var(--cl-secondary-bg-color);
+                            svg {
+                                fill: var(--cl-primary-color);
+                            }
+                        }
+                        span.num {
+                            color: var(--cl-primary-color);
+                        }
+                    }
+                    &.liked {
+                        span.ctrls-item__icon,
+                        div.ctrls-item__icon {
+                            svg {
+                                fill: var(--cl-primary-color) !important;
+                            }
+                        }
+                        span.num {
+                            color: var(--cl-primary-color) !important;
+                        }
+                    }
+                    &.reposted {
+                        span.ctrls-item__icon,
+                        div.ctrls-item__icon {
+                            svg {
+                                fill: var(--cl-primary-color) !important;
+                            }
+                        }
+                        span.num {
+                            color: var(--cl-primary-color) !important;
+                        }
+                    }
+                    &.dropleft {
+                        div.dropdown-toggle.ctrls-item__icon {
+                            svg {
+                                width: 26px;
+                                height: 26px;
+                                opacity: 0.7;
+                            }
+                            &::before,
+                            &::after {
+                                display: none;
+                            }
+                            &:hover,
+                            &:active,
+                            &:focus {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

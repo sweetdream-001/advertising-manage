@@ -1,0 +1,144 @@
+div.inline-alertbox-wrapper{
+	width: 100%;
+	display: block;
+
+	div.inline-alertbox{
+		border-radius: 5px;
+		overflow: hidden;
+		line-height: 0px;
+		padding: 0px;
+		margin: 0 0 20px 0;
+		position: relative;
+
+		div.icon{
+			width: 40px;
+			min-width: 40px;
+			max-width: 40px;
+			line-height: 0px;
+			padding: 10px;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			height: 100%;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			
+			svg{
+				width: 20px;
+				height: 20px;
+				stroke: #fff;
+			}
+		}
+
+		div.alert-message{
+			line-height: 0px;
+			width: 100%;
+			padding: 15px 15px 15px 55px;
+
+			p{
+				font-size: 14px;
+				line-height: 1.6;
+				font-weight: 400;
+				font-style: normal;
+				padding: 0;
+				margin: 0;
+				color: #1c1e21;
+				opacity: 0.9;
+
+				&.mb-20{
+					margin-bottom: 20px !important;
+				}
+
+				&.mb-15{
+					margin-bottom: 15px !important;
+				}
+
+				&.mb-10{
+					margin-bottom: 10px !important;
+				}
+			}
+
+			ol,ul{
+				padding: 0 0 0 15px;
+				margin: 15px 0 0 0;
+				border: none;
+
+				li{
+					font-size: 12px;
+					line-height: 18px;
+					font-weight: 400;
+					font-style: normal;
+					padding: 0;
+					margin: 0 0 20px 0;
+					color: #1c1e21;
+					opacity: 0.9;
+
+					&:last-child{
+						margin-bottom: 0px;
+					}
+				}
+			}
+
+			h6{
+				padding: 0;
+				margin: 0;
+				font-size: 16px;
+				font-weight: 700;
+				line-height: 26px;
+				margin-bottom: 5px;
+				color: $black;
+				opacity: 0.8;
+			}
+		}
+		
+		&.info{
+			background: #fff;
+			border: 2px solid #3896f3;
+
+			div.icon{
+				background: #3896f3;
+				i{
+					color: #fff;
+				}
+			}
+		}
+		
+		&.warning{
+			background: #fff;
+			border: 2px solid #f69702;
+
+			div.icon{
+				background: #f69702;
+				i{
+					color: #fff;
+				}
+			}
+		}
+
+		&.success{
+			background: #fff;
+			border: 2px solid #4caf50;
+
+			div.icon{
+				background: #4caf50;
+				i{
+					color: #fff;
+				}
+			}
+		}
+
+		&.error{
+			background: #fff;
+			border: 2px solid $red;
+
+			div.icon{
+				background: $red;
+				i{
+					color: #fff;
+				}
+			}
+		}
+	}
+}

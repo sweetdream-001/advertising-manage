@@ -1,0 +1,36 @@
+<?php if (not_empty($cl["ads_ls"])): ?>
+	<div class="timeline-posts-container">
+		<div class="timeline-posts-ls" data-an="ads-ls">
+			<?php foreach ($cl["ads_ls"] as $cl['li']): ?>
+				<?php echo cl_template("timeline/ad"); ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<?php else: ?>
+	<div class="timeline-placeholder" style="padding:0px!important;">
+		<div class="icon">
+			<div class="icon__bg2">
+			<img src="{%config theme_url%}/statics/img/upsell_header_wide_v2.png">
+			</div>
+		</div>
+		<div class="pl-message">
+			<h4 style="font-size: 26px;">
+				<?php echo cl_translate("no_ads_yet"); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate("It looks like you don't have active ads yet. Click create to launch your ad. Please note that all your active advertising will be shown to the target audience after replenishing your {@wallet@}", array(
+					'wallet' => cl_html_el('a', cl_translate('Wallet'), array(
+						'href' => cl_link('wallet')
+					))
+				)); ?>
+			</p>
+		</div>
+		<div class="c2action-single">
+			<a href="<?php echo cl_link('ads/new'); ?>" data-spa="true">
+				<button class="btn btn-custom main-inline lg">
+					<?php echo cl_translate("Create new ad"); ?>
+				</button>
+			</a>
+		</div>
+	</div>
+<?php endif; ?>

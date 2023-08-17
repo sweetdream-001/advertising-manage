@@ -1,0 +1,256 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                        @
+// @ Author_url 2: http://jooj.us/twitter-clone                       @
+// @ Author E-mail: sales@jooj.us                                    @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2022 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+body.cl-app-conversation {
+    div.conversation {
+        height: calc(100vh - 60px);
+        display: flex;
+        flex-direction: column;
+        div.conversation__body {
+            flex: 1;
+            min-height: 200px;
+            div.conversation-messages {
+                width: 100%;
+                height: 100%;
+                background: var(--cl-primary-bg-color);
+                overflow-x: hidden;
+                overflow-y: auto;
+                padding: var(--cl-primary-offset-size);
+                div.conversation-messages__item {
+                    margin-bottom: var(--cl-primary-offset-size);
+                    div.message-data {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        align-items: center;
+                        margin-bottom: 7px;
+                        div.message-data__body {
+                            flex-basis: auto;
+                            max-width: 55%;
+                            min-width: 0px;
+                            div.message-text {
+                                padding: 12px var(--cl-primary-offset-size);
+                                font-size: 16px;
+                                color: var(--cl-primary-text-color);
+                                border-radius: var(--cl-primary-border-radius);
+                                @include media-breakpoint-down(xl) {
+                                    font-size: 13px;
+                                }
+                            }
+                            div.message-media {
+                                a.image-wrapper {
+                                    display: inline-block;
+                                    width: auto;
+                                    overflow: hidden;
+                                    border-radius: var(--cl-secondary-border-radius);
+                                    border: 3px solid var(--cl-primary-border-color);
+                                    img {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                        }
+                        div.message-data__ctrls {
+                            visibility: hidden;
+                            flex-shrink: 0;
+                            flex-basis: 35px;
+                            button.dropdown {
+                                background: transparent;
+                                border: none;
+                                box-shadow: none;
+                                outline: none;
+                                padding: 0;
+                                margin: 0;
+                                cursor: pointer;
+                                display: inline-flex;
+                                align-items: center;
+                                line-height: 1;
+                                div.dropdown-toggle {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    padding: 0;
+                                    margin: 0;
+                                    width: 35px;
+                                    height: 35px;
+                                    flex-shrink: 0;
+                                    border-radius: 100%;
+                                    background: var(--cl-secondary-bg-color);
+                                    &::before,
+                                    &::after {
+                                        display: none;
+                                    }
+                                    svg {
+                                        width: 26px;
+                                        height: 26px;
+                                        fill: var(--cl-secondary-text-color);
+                                    }
+                                    &:hover,
+                                    &:active,
+                                    &:focus {
+                                        svg {
+                                            fill: var(--cl-primary-color);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        &:hover,
+                        &:active {
+                            div.message-data__ctrls {
+                                visibility: visible;
+                            }
+                        }
+                    }
+                    div.message-time {
+                        font-size: 12px;
+                        color: var(--cl-secondary-text-color);
+                        line-height: 1;
+                        @include media-breakpoint-down(xl) {
+                            font-size: 11px;
+                        }
+                    }
+                    &.right {
+                        div.message-data {
+                            flex-direction: row-reverse;
+                            div.message-data__body {
+                                div.message-text {
+                                    background: var(--cl-secondary-bg-color);
+                                }
+                            }
+                            div.message-data__ctrls {
+                                margin-right: var(--cl-primary-offset-size);
+                            }
+                        }
+                        div.message-time {
+                            text-align: right;
+                        }
+                    }
+                    &.left {
+                        div.message-data {
+                            div.message-data__body {
+                                div.message-text {
+                                    background: var(--cl-primary-color);
+                                    color: #ffffff;
+                                    a.inline-link {
+                                        color: #ffffff !important;
+                                        &:hover,
+                                        &:active {
+                                            text-decoration: underline;
+                                        }
+                                    }
+                                }
+                            }
+                            div.message-data__ctrls {
+                                margin-left: var(--cl-primary-offset-size);
+                            }
+                        }
+                    }
+                    &:last-child {
+                        margin-bottom: 0px;
+                    }
+                }
+            }
+        }
+        div.conversation__footer {
+            form.form {
+                padding: var(--cl-primary-offset-size);
+                border-top: 3px solid var(--cl-primary-border-color);
+                div.message-input {
+                    display: flex;
+                    div.message-input__field {
+                        flex: 1;
+                        margin: 0px var(--cl-primary-offset-size);
+                        input {
+                            border: 2px solid transparent;
+                            background: var(--cl-input-bg-color);
+                            border-radius: var(--cl-tertiary-border-radius);
+                            padding: 0px var(--cl-primary-offset-size);
+                            margin: 0px;
+                            height: 48px;
+                            display: block;
+                            width: 100%;
+                            font-size: 15px;
+                            color: var(--cl-primary-text-color);
+                            &::placeholder {
+                                color: var(--cl-input-placeholder-color);
+                                font-size: 15px;
+                            }
+                            &:active,
+                            &:hover,
+                            &:focus {
+                                box-shadow: none;
+                                outline: none;
+                                border: 2px solid var(--cl-primary-color);
+                                background: var(--cl-primary-bg-color);
+                            }
+                            @include media-breakpoint-down(xl) {
+                                height: 44px;
+                            }
+                        }
+                    }
+                    button.message-input__ctrl {
+                        padding: 0;
+                        background: transparent;
+                        height: 48px;
+                        width: 26px;
+                        border: none;
+                        box-shadow: none;
+                        outline: 0;
+                        position: relative;
+                        cursor: pointer;
+                        line-height: 1;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        &:disabled {
+                            cursor: default;
+                            opacity: 0.5;
+                        }
+                        svg {
+                            width: 24px;
+                            height: 24px;
+                            fill: var(--cl-secondary-text-color);
+                        }
+                        &:hover,
+                        &:active,
+                        &:focus {
+                            svg {
+                                fill: var(--cl-primary-color);
+                            }
+                        }
+                    }
+                }
+            }
+            div.ghost-form {
+                font-size: 14px;
+                color: #ffffff;
+                text-align: center;
+                padding: var(--cl-primary-offset-size);
+                background: var(--cl-danger-color);
+                font-weight: 500;
+            }
+        }
+    }
+    div.right-sb-container,
+    div.left-sb-container {
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        @import "../../snippets/_hide_scrollbar.scss";
+    }
+    div.mobile-bottom-navbar {
+        display: none;
+    }
+    main.main-content-container {
+        div.main-content-container-inner {
+            padding-bottom: 0px;
+        }
+    }
+}

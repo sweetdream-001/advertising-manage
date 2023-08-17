@@ -1,0 +1,88 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+
+		var _app = $('[data-app="dashboard"]');
+
+		_app.find('div.count-to').countTo({
+		    onComplete: function (value) {
+		    	$(this).text(value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+		    }
+		});
+
+		var annual_stats_canvas = document.getElementById('annual_media_content_statistics').getContext('2d');
+        var annual_stats        = new Chart(annual_stats_canvas, {
+            type: 'bar',
+            data: {
+                labels: [
+                    "January", 
+                    "February", 
+                    "March", 
+                    "April", 
+                    "May", 
+                    "June", 
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ],
+                datasets: [{
+                    label: "Users",
+                    borderColor: '#ff9809',
+                    backgroundColor: '#ff9809',
+                    fill: false,
+                    data: <?php echo json($cl['statistics']['users'],1); ?>,
+                    pointRadius: 5,
+                    pointHoverRadius: 5,
+                },{
+                    label: "Posts",
+                    borderColor: '#2196F3',
+                    backgroundColor: '#2196F3',
+                    fill: false,
+                    data: <?php echo json($cl['statistics']['posts'],1); ?>,
+                    pointRadius: 5,
+                    pointHoverRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: { 
+                    mode: 'label',
+                    intersect: false,
+                    callbacks: {
+                        label: function(tooltipItem, data) { 
+                            var fnum = tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            var fval = "{0}: {1}";
+                            return fval.format(data.datasets[tooltipItem.datasetIndex].label, fnum);
+                        },
+                    }
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                legend: {
+                    position: 'bottom',
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        gridLines: {
+                            display: true,
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: {
+                            display: true,
+                        }
+                    }]
+                }
+            }
+        });
+	});
+</script>

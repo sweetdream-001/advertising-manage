@@ -1,0 +1,52 @@
+<div class="modal fade" data-app="cl-bio-settings" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" id="cl-bio-settings-vue-app" v-on:submit="submit_form($event)">
+                <div class="modal-header">
+                    <div class="main---mh--block">
+                        <h5 class="modal-title">
+                            <?php echo cl_translate("About you"); ?>
+                        </h5>
+                        <span class="dismiss-modal" data-dismiss="modal">
+                            <?php echo cl_ikon('close'); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="popup-modal-form">
+                        <div class="form-group">
+                            <label>
+                                <?php echo cl_translate("About you"); ?>
+
+                                <small class="col-grey">({{bio.length}})</small> 
+                            </label>
+                            <textarea v-model.trim="$v.bio.$model" name="bio" class="form-control" placeholder="<?php echo cl_translate("Please enter here about yourself"); ?>" rows="3">{{bio}}</textarea>
+                            <div class="invalid-main-feedback" v-if="is_valid_bio">
+                                {{invalid_feedback_bio}}
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-if="unsuccessful_attempt">
+                            <div class="invalid-main-feedback">
+                                <?php echo cl_translate("Something went wrong while trying to save your changes, please try again later"); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-mb" v-else>
+                            <p class="form-info-label">
+                                <?php echo cl_translate("Please enter a brief description of yourself with a maximum of 140 characters"); ?>
+                            </p>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button v-if="submitting != true" v-bind:disabled="$v.$invalid == true" type="submit" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Save changes"); ?>
+                    </button>
+                    <button v-else disabled="true" type="button" class="btn btn-custom main-inline md">
+                        <?php echo cl_translate("Please wait"); ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

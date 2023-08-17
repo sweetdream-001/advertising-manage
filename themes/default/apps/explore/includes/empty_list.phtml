@@ -1,0 +1,28 @@
+<div class="timeline-placeholder">
+	<div class="icon">
+		<div class="icon__bg">
+			<?php if ($cl["page_tab"] == 'htags'): ?>
+				<?php echo cl_icon('tag'); ?>
+			<?php elseif($cl["page_tab"] == 'people'): ?>
+				<?php echo cl_icon('groups'); ?>
+			<?php else: ?>
+				<?php echo cl_icon('feed'); ?>
+			<?php endif; ?>
+		</div>
+	</div>
+	<div class="pl-message">
+		<h4>
+			<?php echo cl_translate("No data to display"); ?>
+		</h4>
+		<p>
+			<?php echo cl_translate("Oops! It looks like some kind of desert. I can swear that there should have been top content here, it looks like there are no entries in our database for display on this page"); ?>
+		</p>
+	</div>
+	<div class="c2action-single">
+		<a href="<?php echo cl_link('/'); ?>" data-spa="true">
+			<button class="btn btn-custom main-outline lg">
+				<?php echo cl_translate("Go to the homepage"); ?>
+			</button>
+		</a>
+	</div>
+</div>

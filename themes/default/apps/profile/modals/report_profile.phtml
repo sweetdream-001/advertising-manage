@@ -1,0 +1,48 @@
+<div class="modal report-modal" tabindex="-1" role="dialog" data-app="report-profile-app">
+    <div class="modal-dialog" role="document" id="cl-report-profile-vue-app">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header__inner">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate("Report this profile"); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_icon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form">
+                    <div class="form-group mb-10">
+                        <label>
+                            <?php echo cl_translate("What is the problem?"); ?>
+                        </label>
+                        <div class="report-reasons">
+                            <?php foreach ($cl['profile_report_types'] as $i => $t): ?>
+                                <button type="button" class="btn btn-custom lg" v-bind:class="{'main-inline': reason == <?php echo($i); ?>, 'main-outline': reason != <?php echo($i); ?>}" v-on:click="reason = <?php echo($i); ?>">
+                                    <?php echo cl_translate($t); ?>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="form-group no-mb">
+                        <label class="d-flex justify-content-between flex-wn">
+                            <span><?php echo cl_translate("Message to the reviewer"); ?></span><span class="fw-400" v-bind:class="{'col-red': (comment.length > 2900)}">({{comment.length}}/2900)</span>
+                        </label>
+                        <div class="comment-input-holder">
+                            <textarea v-model.trim="comment" rows="4" class="form-control" placeholder="<?php echo cl_translate("Please write briefly about the problem with this account"); ?>"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button v-if="fe_state.submitting" disabled="true" type="buttom" class="btn btn-custom main-inline lg btn-block">
+                    <?php echo cl_translate("Please wait"); ?>
+                </button>
+                <button v-else v-bind:disabled="is_invalid_form" v-on:click="send_report" type="buttom" class="btn btn-custom main-inline lg btn-block">
+                    <?php echo cl_translate("Send report!"); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

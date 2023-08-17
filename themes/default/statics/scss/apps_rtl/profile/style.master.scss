@@ -1,0 +1,67 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+body.cl-app-profile{
+	main.main-content-container{
+		div.main-content-container-inner{
+			div.timeline-container{
+				div.timeline-prof-info-area{
+					div.profile-info-header{
+						div.profile-avatar-holder{
+							left: unset;
+							right: 0px;
+							bottom: -60px;
+						}
+					}
+
+					div.profile-main-info-holder{
+						div.profile-page-ctrls{
+							button.ctrl-item{
+								margin-left: 0px;
+								margin-right: 20px;
+							}
+
+							button.btn.btn-custom{
+								margin-left: 0px;
+								margin-right: 20px;
+							}
+						}
+
+						div.profile-user-info-block-set{
+							div.block-item{
+								margin-left: 15px;
+								margin-right: 0px;
+								margin-bottom: 15px;
+							}
+						}
+
+						div.profile-activity-stats-info{
+							div.stat-holder{
+								margin-right: 0px;
+								margin-left: 25px;
+
+								&:last-child{
+									margin-left: 0px;
+								}
+
+								span.stat-holder-inner,a.stat-holder-inner{
+									span{
+										margin-right: 3px;
+										margin-left: 0px;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

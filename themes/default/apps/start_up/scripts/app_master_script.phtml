@@ -1,0 +1,226 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+
+		Vue.use(window.vuelidate.default);
+
+		var _app      = $('div[data-app="start_up"]');
+		var VueValids = window.validators;
+		SMColibri.PS  = Object({
+			start_up: new Vue({
+				el: "#vue-startup-app",
+				data: {
+					fe_state: {
+						submitting: false
+					},
+					progstat: <?php echo cl_minify_js(json($me["start_up"], true)); ?>,
+					avatar: {
+						default: "<?php echo $me["avatar"]; ?>",
+						src: false
+					},
+					info: {
+						fe_feedback: {
+							invalid_fname: "",
+							invalid_lname: "",
+							invalid_bio: ""
+						},
+						user_data: {
+							fname: "<?php echo($me['fname']); ?>",
+							lname: "<?php echo($me['lname']); ?>",
+							bio: "<?php echo($me['about']); ?>",
+							country: "<?php echo($me['country_id']); ?>",
+							gender: "M"
+						}
+					},
+					sdds: {
+						countries: <?php echo cl_minify_js(json($cl['countries'], true)); ?>,
+						genders: {
+							M: "<?php echo cl_translate("Male"); ?>",
+							T: "<?php echo cl_translate("They"); ?>",
+							O: "<?php echo cl_translate("Other"); ?>",
+							F: "<?php echo cl_translate("Female"); ?>"
+						}
+					}
+				},
+				computed: {
+					is_valid_fname: function() {
+						if (this.$v.info.user_data.fname.required == true && this.$v.info.user_data.fname.$error) {
+							this.info.fe_feedback.invalid_fname = "<?php echo cl_translate("Please enter your first name, which is from 3 to 25 characters"); ?>";
+							return true;
+						}
+						else {
+							this.info.fe_feedback.invalid_fname = "";
+							return false;
+						}
+					},
+					is_valid_lname: function() {
+						if (this.$v.info.user_data.lname.$error) {
+							this.info.fe_feedback.invalid_lname = "<?php echo cl_translate("Please enter your last name, which is from 3 to 25 characters"); ?>";
+							return true;
+						}
+						else {
+							this.info.fe_feedback.invalid_lname = "";
+							return false;
+						}
+					},
+					is_valid_bio: function() {
+						if (this.$v.info.user_data.bio.$error) {
+							this.info.fe_feedback.invalid_bio = "<?php echo cl_translate("The text you entered is too long, the maximum length is 140 characters"); ?>";
+							return true;
+						}
+
+						else {
+							this.info.fe_feedback.invalid_bio = "";
+							return false;
+						}
+					},
+					is_invalid_form: function() {
+						return (this.$v.info.user_data.$invalid == true);
+					}
+				},
+				validations: {
+					info: {
+						user_data: {
+							fname: {
+								required: VueValids.required,
+								min_length: VueValids.minLength(3),
+								max_length: VueValids.maxLength(25)
+							},
+							lname: {
+								min_length: VueValids.minLength(3),
+								max_length: VueValids.maxLength(25)
+							},
+							bio: {
+								max_length: VueValids.maxLength(140)
+							}
+						}
+					}
+				},
+				methods: {
+					select_avatar: function() {
+						var _app_ = this;
+
+						$(_app_.$refs["avatar-input"]).trigger('click');
+					},
+					upload_avatar: function(event = false) {
+
+						if (SMColibri.max_upload(event.target.files[0].size)) {
+							var _app_     = this;
+							var form_data = new FormData();
+							
+							form_data.append('avatar', event.target.files[0]);
+							form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+
+							SMColibri.progress_bar("show");
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/start_up/upload_profile_avatar"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								enctype: 'multipart/form-data',
+								data: form_data,
+								cache: false,
+						        contentType: false,
+						        processData: false,
+						        timeout: 600000,
+						        beforeSend: function() {
+						        	_app_.fe_state.submitting = true;
+						        },
+								success: function(data) {
+									if (data.status == 200) {
+										_app_.avatar.src = data.url;
+									}
+									else {
+										app.submitting = false;
+
+										SMColibri.errorMSG();
+									}
+								},
+								complete: function() {
+									setTimeout(function() {
+										SMColibri.progress_bar("end");
+									}, 500);
+
+									_app_.fe_state.submitting = false;
+								}
+							});
+						}
+					},
+					save_avatar: function() {
+						var _app_ = this;
+
+						SMColibri.progress_bar("show");
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/start_up/save_profile_avatar"); ?>',
+							type: 'POST',
+							dataType: 'json',
+						}).done(function(data) {
+							if (data.status == 200) {
+								_app_.progstat = data.progstat;
+							}
+							else{
+								SMColibri.errorMSG();
+							}
+						}).always(function() {
+							setTimeout(function() {
+								SMColibri.progress_bar("end");
+							}, 500);
+						});
+					},
+					save_info: function() {
+						var _app_  = this;
+						
+						$.ajax({
+							url: '<?php echo cl_link("native_api/start_up/save_profile_info"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: _app_.info.user_data,
+							beforeSend: function() {
+								SMColibri.progress_bar("show");
+							}
+						}).done(function(data) {
+							if (data.status == 200) {
+								_app_.progstat = data.progstat;
+							}
+							else{
+								SMColibri.errorMSG();
+							}
+						}).always(function() {
+							setTimeout(function() {
+								SMColibri.progress_bar("end");
+							}, 500);
+						});
+					},
+					finish_startup: function(flw = false) {
+						var _app_ = this;
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/start_up/finish_startup"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: {
+								flw: ((flw == true) ? "Y" : "N")
+							},
+							beforeSend: function() {
+								SMColibri.progress_bar("show");
+							}
+						}).done(function(data) {
+							if (data.status == 200) {
+								cl_redirect("<?php echo cl_link('home'); ?>");
+							}
+							else{
+								SMColibri.errorMSG();
+							}
+						}).always(function() {
+							setTimeout(function() {
+								SMColibri.progress_bar("end");
+							}, 500);
+						});
+					}
+				}
+			})
+		});
+	});
+</script>

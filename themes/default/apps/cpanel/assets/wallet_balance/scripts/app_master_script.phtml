@@ -1,0 +1,32 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app  = $('[data-app="edit-user"]');
+		var _data = _app.find('form[data-an="form"]');
+
+		_data.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/edit_wallet_balance"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_data.find('small.invalid-feedback').remove();
+				_data.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("Your changes have been saved successfully!", 3000);
+				}
+				else {
+					_data.find('[data-an="{0}-input"]'.format(data.err_field)).append($('<small>', {
+						text: data.message,
+						class: 'invalid-feedback animated flash'
+					})).scroll2();
+				}
+			},
+			complete: function() {
+				_data.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Save changes");
+			}
+		});
+	});
+</script>

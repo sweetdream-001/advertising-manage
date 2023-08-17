@@ -1,0 +1,58 @@
+﻿.breadcrumb {
+    @include border-radius(0);
+    background-color: transparent;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0px;
+
+    li {
+        a {
+            color: $grey;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+        }
+    }
+
+    > li + li:before {
+        content: '/';
+        color: $grey;
+        font-size: 14px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 0;
+    }
+}
+
+@each $key, $val in $colors {
+    .breadcrumb-col-#{$key} {
+        li {
+            a {
+                color: $val !important;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .breadcrumb-bg-#{$key} {
+        background-color: $val !important;
+
+        li {
+            a {
+                color: #fff;
+                font-weight: bold;
+
+                .material-icons {
+                    padding-bottom: 8px;
+                }
+            }
+
+            color: #fff !important;
+        }
+
+        li + li:before {
+            color: #fff;
+        }
+    }
+}

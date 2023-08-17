@@ -1,0 +1,182 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-header {
+    position: sticky;
+    top: 0;
+    z-index: 700;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 2px 5px 0px;
+    background: var(--cl-primary-bg-color);
+    border-bottom: 1px solid var(--cl-primary-border-color);
+    div.timeline-header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        height: 60px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 15px;
+        position: relative;
+        z-index: 50;
+        div.lp {
+            max-width: calc(50% - 30px);
+            overflow: hidden;
+            &.lp__avatar {
+                display: inline-flex;
+                align-items: center;
+                flex-wrap: nowrap;
+                div.nav-link-avatar {
+                    width: 35px;
+                    flex-shrink: 0;
+                    margin-right: 7px;
+                    a {
+                        display: block;
+                        text-decoration: none;
+                        img {
+                            width: 35px;
+                            height: 35px;
+                            border-radius: 100%;
+                        }
+                        &.online {
+                            position: relative;
+                            &:after {
+                                position: absolute;
+                                content: "";
+                                width: 12px;
+                                height: 12px;
+                                border-radius: 10em;
+                                background: var(--cl-success-color);
+                                right: 0px;
+                                top: 0px;
+                                border: 1px solid var(--cl-secondary-bg-color);
+                            }
+                        }
+                    }
+                }
+            }
+            div.nav-link-holder {
+                a {
+                    padding: 0;
+                    margin: 0;
+                    font-size: 16px;
+                    line-height: 16px;
+                    font-weight: 500;
+                    color: var(--cl-primary-text-color);
+                    text-decoration: none;
+                    display: block;
+                    max-width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+        div.cp {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 30px;
+            height: 30px;
+            a {
+                text-decoration: none;
+                img {
+                    height: 30px;
+                }
+            }
+        }
+        div.rp {
+            div.nav-link-holder {
+                a.go-forward {
+                    text-decoration: none;
+                }
+                span.go-back,
+                a.go-forward,
+                button.go-options,
+                div.dropdown-toggle.go-options__icon {
+                    padding: 0;
+                    margin: 0;
+                    width: 35px;
+                    height: 35px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    position: relative;
+                    &::before {
+                        background: var(--cl-secondary-bg-color);
+                        content: "";
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        left: 0px;
+                        top: 0px;
+                        z-index: -1;
+                        border-radius: 100%;
+                        opacity: 0.7;
+                    }
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                        fill: var(--cl-secondary-text-color);
+                    }
+                    &:hover,
+                    &:active {
+                        &::before {
+                            opacity: 1;
+                        }
+                        &>svg {
+                            fill: var(--cl-primary-color);
+                        }
+                    }
+                }
+                button.go-options {
+                    background: transparent;
+                    border: none;
+                    box-shadow: none;
+                    outline: none;
+                    padding: 0;
+                    margin: 0;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    div.dropdown-toggle.go-options__icon {
+                        &::before,
+                        &::after {
+                            display: none;
+                        }
+                        svg {
+                            width: 26px;
+                            height: 26px;
+                            opacity: 0.7;
+                        }
+                        &:hover,
+                        &:active,
+                        &:focus {
+                            svg {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+&.no-affix {
+    padding-top: 0px;
+    div.timeline-header {
+        position: relative;
+        left: unset;
+        top: unset;
+        box-shadow: none;
+    }
+}

@@ -1,0 +1,237 @@
+<div class="timeline-container" data-app="blue_account">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("blue_account"); ?>" data-spa="true">
+						<?php echo cl_translate('Blue account'); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+			</div>
+			<div class="rp">
+			</div>
+		</div>
+	</div>
+	<div class="timeline-placeholder">
+		<div class="icon2">
+			<img src="{%config theme_url%}/statics/img/verified.png">
+		</div>
+		<!-- Tabs navs -->
+		<ul class="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#annually" role="tab"
+					aria-controls="annually" aria-selected="true"><?php echo cl_translate("Annually"); ?> <div
+						class="css-1dbjc4n"></div></a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="monthe-tab" data-toggle="tab" href="#month" role="tab" aria-controls="month"
+					aria-selected="false"><?php echo cl_translate("Monthly"); ?> <div class="css-1dbjc4n"></div></a>
+			</li>
+		</ul>
+		<!-- Tabs navs -->
+		<div class="tab-content" id="myTabContent">
+			<!-- Tabs Annually -->
+			<div class="tab-pane fade show active" id="annually" role="tabpanel" aria-labelledby="annually-tab">
+				<div class="pl-message">
+					<h4>
+						<?php echo cl_translate('Switch to {@site_name@} Blue account', array("site_name" => $cl["config"]["name"])); ?>
+					</h4>
+					<h5 style="text-align:center;">
+						<?php echo cl_translate("Blue subscribers with a verified email will get a blue checkmark once approved."); ?>
+					</h5>
+
+					<div class="blue_desc">
+						<span><svg viewBox="0 0 24 24" aria-hidden="true"
+								class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-1xvli5t r-1b7u577 r-1cvj4g8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+								<g>
+									<path
+										d="M10 5H2V3h8v2zM7 7H2v2h5V7zm12.94 4.946C19.48 15.918 16.1 19 12 19H8.19c-.12.988-.19 1.993-.19 3H6c0-4.669 1.29-9.39 3.95-12.97C12.62 5.421 16.38 2.9 23 3c.17 3.359-.21 7.147-3.06 8.946zM21 5.033c-4.16.276-7.29 2.275-9.45 5.187-1.43 1.929-2.43 4.268-3 6.78H12c2.68 0 4.95-1.76 5.72-4.188-.52.108-1.09.172-1.72.188h-1.5v-2H16c3.9 0 4.95-2.921 5-5.967z">
+									</path>
+								</g>
+							</svg>
+							<?php echo cl_translate("Longer Posts"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("blue_characters_long", array("long" => cl_html_el("strong", cl_text($cl["config"]["max_post_len_blue"])))); ?>
+						</p>
+						<span><svg viewBox="0 0 24 24" aria-hidden="true"
+								class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-1xvli5t r-1b7u577 r-1cvj4g8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+								<g>
+									<path
+										d="M14.23 2.854c.98-.977 2.56-.977 3.54 0l3.38 3.378c.97.977.97 2.559 0 3.536L9.91 21H3v-6.914L14.23 2.854zm2.12 1.414c-.19-.195-.51-.195-.7 0L5 14.914V19h4.09L19.73 8.354c.2-.196.2-.512 0-.708l-3.38-3.378zM14.75 19l-2 2H21v-2h-6.25z">
+									</path>
+								</g>
+							</svg>
+							<?php echo cl_translate("Edit Post"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("edit_post_desc"); ?>
+						</p>
+
+					</div>
+				</div>
+				<div class="c2action-single">
+
+					<button class="btn btn-custom main-inline lg" onclick="SMColibri.PS.blue_account_year.buy();">
+						<?php echo cl_translate("upgrade_to_blue_per_annually", array("pricey" => cl_money($cl["config"]["blue_account_yprice"]))); ?>
+					</button>
+					<p class="terms">
+						<?php echo cl_translate("By subscribing, you agree to our Purchaser"); ?><a
+							href="<?php echo cl_link('terms_of_use'); ?>" data-spa="true">
+							<?php echo cl_translate("Terms of use"); ?>
+						</a>
+						<?php echo cl_translate("Subscriptions auto-renew until canceled, as described in the Terms. Cancel anytime."); ?>
+					</p>
+				</div>
+			</div>
+			<!-- Tabs Month -->
+			<div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
+				<div class="pl-message">
+					<h4>
+						<?php echo cl_translate('Switch to {@site_name@} Blue account', array("site_name" => $cl["config"]["name"])); ?>
+					</h4>
+					<h5 style="text-align:center;">
+						<?php echo cl_translate("Blue subscribers with a verified email will get a blue checkmark once approved."); ?>
+					</h5>
+
+					<div class="blue_desc">
+						<span><svg viewBox="0 0 24 24" aria-hidden="true"
+								class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-1xvli5t r-1b7u577 r-1cvj4g8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+								<g>
+									<path
+										d="M10 5H2V3h8v2zM7 7H2v2h5V7zm12.94 4.946C19.48 15.918 16.1 19 12 19H8.19c-.12.988-.19 1.993-.19 3H6c0-4.669 1.29-9.39 3.95-12.97C12.62 5.421 16.38 2.9 23 3c.17 3.359-.21 7.147-3.06 8.946zM21 5.033c-4.16.276-7.29 2.275-9.45 5.187-1.43 1.929-2.43 4.268-3 6.78H12c2.68 0 4.95-1.76 5.72-4.188-.52.108-1.09.172-1.72.188h-1.5v-2H16c3.9 0 4.95-2.921 5-5.967z">
+									</path>
+								</g>
+							</svg>
+							<?php echo cl_translate("Longer Posts"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("blue_characters_long", array("long" => cl_html_el("strong", cl_text($cl["config"]["max_post_len_blue"])))); ?>
+						</p>
+						<span><svg viewBox="0 0 24 24" aria-hidden="true"
+								class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-1xvli5t r-1b7u577 r-1cvj4g8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+								<g>
+									<path
+										d="M14.23 2.854c.98-.977 2.56-.977 3.54 0l3.38 3.378c.97.977.97 2.559 0 3.536L9.91 21H3v-6.914L14.23 2.854zm2.12 1.414c-.19-.195-.51-.195-.7 0L5 14.914V19h4.09L19.73 8.354c.2-.196.2-.512 0-.708l-3.38-3.378zM14.75 19l-2 2H21v-2h-6.25z">
+									</path>
+								</g>
+							</svg>
+							<?php echo cl_translate("Edit Post"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("edit_post_desc"); ?>
+						</p>
+
+					</div>
+				</div>
+				<div class="c2action-single">
+					<button class="btn btn-custom main-inline lg" onclick="SMColibri.PS.blue_account.buy();">
+						<?php echo cl_translate("Upgrade to blue - {@price@}/Per month", array("price" => cl_money($cl["config"]["blue_account_mprice"]))); ?>
+					</button>
+					<p class="terms">
+						<?php echo cl_translate("By subscribing, you agree to our Purchaser"); ?><a
+							href="<?php echo cl_link('terms_of_use'); ?>" data-spa="true">
+							<?php echo cl_translate("Terms of use"); ?>
+						</a>
+						<?php echo cl_translate("Subscriptions auto-renew until canceled, as described in the Terms. Cancel anytime."); ?>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php echo cl_template('blue_account/scripts/app_master_script'); ?>
+</div>
+<!-- MDB -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
+<!-- MDB -->
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-placeholder {
+		padding: 0px 30px !important;
+	}
+
+	.terms {
+
+		font-size: 12px;
+		margin-top: 20px;
+
+	}
+
+	.blue_desc .help {
+		text-align: left !important;
+		margin-left: 35px !important;
+	}
+
+	.blue_desc span svg {
+		margin-right: 12px;
+		color: var(--cl-primary-text-color);
+		position: relative;
+		max-width: 100%;
+		height: 1.25em;
+		fill: currentcolor;
+		display: inline-block;
+		font-size: 15px;
+	}
+
+	.pl-message {
+		margin-top: 30px;
+	}
+
+	div.icon2 img {
+		width: 250px;
+		height: auto;
+		margin-bottom: 0px;
+		margin-top: -20px;
+	}
+
+	div.icon2 {
+		text-align: center;
+	}
+
+	.nav-tabs {
+
+		border-bottom-color: var(--smc-main-border-color);
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+	}
+
+	.nav-fill .nav-item .nav-link,
+	.nav-justified .nav-item .nav-link {
+		width: auto;
+		text-decoration: none;
+		text-transform: none;
+		color: var(--smc-main-text-color-lighten-5);
+		font-weight: 500;
+		font-size: 15px;
+	}
+
+	.nav-tabs .nav-item.show .nav-link,
+	.nav-tabs .nav-link.active {
+		color: var(--smc-main-text-color);
+		border-bottom-color: var(--smc-main-border-color);
+		border-bottom-width: 1px;
+		font-weight: 700;
+		background: transparent;
+	}
+
+	.nav-tabs .nav-item.show .nav-link,
+	.nav-tabs .nav-link.active div.css-1dbjc4n {
+		background-color: rgb(29, 155, 240);
+		height: 4px;
+		width: 56px;
+		border-radius: 9999px;
+		text-align: center;
+		display: block;
+		position: relative;
+		bottom: 0;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 15px;
+		margin-bottom: -15px;
+
+	}
+</style>

@@ -1,0 +1,47 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                        @
+// @ Author_url 2: http://jooj.us/twitter-clone                       @
+// @ Author E-mail: sales@jooj.us                                    @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2022 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+body[data-bg="default"] {
+    // THEME BG COLORS
+    $cl-primary-bg-color: #ffffff;
+    $cl-secondary-bg-color: #f0f2f5;
+    --cl-primary-bg-color: #{$cl-primary-bg-color};
+    --cl-secondary-bg-color: #{$cl-secondary-bg-color};
+    //@**************************************************************************@
+    // THEME BORDER COLOR
+    $cl-primary-border-color: lighten(#e4eaef, 0);
+    $cl-secondary-border-color: darken($cl-primary-border-color, 5);
+    --cl-primary-border-color: #{$cl-primary-border-color};
+    --cl-secondary-border-color: #{$cl-secondary-border-color};
+    //@**************************************************************************@
+    // THEME TEXT COLOR
+    $cl-primary-text-color: #14171a;
+    $cl-secondary-text-color: #5b7083;
+    $cl-tertiary-text-color: darken($cl-secondary-text-color, 7);
+    --cl-primary-text-color: #{$cl-primary-text-color};
+    --cl-secondary-text-color: #{$cl-secondary-text-color};
+    --cl-tertiary-text-color: #{$cl-tertiary-text-color};
+    //@**************************************************************************@
+    // THEME INPUT COLOR
+    $cl-input-bg-color: #F0F2F5;
+    $cl-input-placeholder-color: #5b7083;
+    --cl-input-placeholder-color: #{$cl-input-placeholder-color};
+    --cl-input-bg-color: #{$cl-input-bg-color};
+    //@**************************************************************************@
+    // THEME BOX SHADOWS
+    --cl-primary-box-shadow: rgba(0, 0, 0, 0.20) 0px 10px 30px 0px;
+    --cl-secondary-box-shadow: rgba(0, 0, 0, 0.12) 0px 10px 30px 0px;
+    //@**************************************************************************@
+    // THEME MODAL BACKDROPS
+    --cl-modal-backdrop: #{rgba(#000000, 0.65)};
+    //@**************************************************************************@
+    // THEME HOVER EVENTS
+    $cl-event-hover-bg: #f5f8fa;
+    --cl-event-hover-bg: #{$cl-event-hover-bg};
+}

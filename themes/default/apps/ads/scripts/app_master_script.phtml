@@ -1,0 +1,319 @@
+<?php if ($cl["page_tab"] == 'upsert'): ?>
+	<script>
+		"use strict";
+
+		jQuery(document).ready(function($) {
+			Vue.use(window.vuelidate.default);
+
+			var _app = $('[data-app="advertisements"]');
+			new Vue({
+				el: "#vue-ads-upsert-app",
+				data: {
+					ad_data: <?php echo cl_minify_js(json($cl['ad_data'], 1)); ?>,
+					tos_agree: false,
+					submitting: false,
+					sdds: {
+						countries: <?php echo cl_minify_js(json($cl['countries_ls'], 1)); ?>,
+						status: {
+							active: "<?php echo cl_translate('Active'); ?>",
+							inactive: "<?php echo cl_translate('Inactive'); ?>"
+						}
+					},
+					fb:{
+						ss: {},
+						cs: {
+							company: "",
+							target_url: "",
+							description: "",
+							cta: ""
+						}
+					}
+				},
+				computed: {
+					is_invalid_company: function() {
+						if (this.$v.ad_data.company.required && this.$v.ad_data.company.$invalid) {
+
+							this.fb.cs.company = "<?php echo cl_translate("The entered company name is too long. Max length 115 characters!"); ?>";
+
+							return true;
+						}
+						else {
+
+							this.fb.cs.company = "";
+
+							return false;
+						}
+					},
+					is_invalid_target_url: function() {
+						if (this.$v.ad_data.target_url.required && this.$v.ad_data.target_url.$invalid) {
+							this.fb.cs.target_url = "<?php echo cl_translate("The target url you entered does not match the format"); ?>";
+
+							return true;
+						}
+						else {
+
+							this.fb.cs.target_url = "";
+
+							return false;
+						}
+					},
+					is_invalid_description: function() {
+						if (this.$v.ad_data.description.required && this.$v.ad_data.description.$invalid) {
+
+							this.fb.cs.description = "<?php echo cl_translate("The entered ad description is too long. Max length 550 characters!"); ?>";
+
+							return true;
+						}
+						else {
+
+							this.fb.cs.description = "";
+
+							return false;
+						}
+					},
+					is_invalid_cta: function() {
+						if (this.$v.ad_data.cta.required && this.$v.ad_data.cta.$invalid) {
+
+							this.fb.cs.cta = "<?php echo cl_translate("Too long cta of the campaign entered. The maximum length is 32 characters!"); ?>";
+
+							return true;
+						}
+						else {
+
+							this.fb.cs.cta = "";
+
+							return false;
+						}
+					},
+					is_invalid_form: function() {
+						if (this.$v.ad_data.$invalid == true) {
+							return true;
+						}
+
+						else if(this.tos_agree != true) {
+							return true;
+						}
+
+						else if(SMColibri.isURL(this.ad_data.cover) != true && 0) {
+							return true;
+						}
+
+						else if(this.ad_data.audience.length < 1) {
+							return true;
+						}
+
+						else if(this.ad_data.status == 'orphan') {
+							return true;
+						}
+
+						else {
+							return false;
+						}
+					},
+					is_audience_all_selected: function() {
+						if (this.ad_data.audience.length == 236) {
+							return true;
+						}
+					}
+				},
+				validations: {
+					ad_data: {
+						company: {
+							required: window.validators.required,
+							min_length: window.validators.minLength(1),
+							max_length: window.validators.maxLength(115)
+						},
+						target_url: {
+							required: window.validators.required,
+							is_url: window.validators.url,
+							max_length: window.validators.maxLength(1100)
+						},
+						description: {
+							required: window.validators.required,
+							min_length: window.validators.minLength(1),
+							max_length: window.validators.maxLength(550)
+						},
+						cta: {
+							required: window.validators.required,
+							min_length: window.validators.minLength(1),
+							max_length: window.validators.maxLength(32)
+						}
+					}
+				},
+				methods: {
+					select_audience: function(country_id = false) {
+						if ($.isNumeric(country_id)) {
+							var _app_ = this;
+
+							if (_app_.ad_data.audience.contains(country_id)) {
+								_app_.ad_data.audience.rmItem(country_id);
+							}
+							else {
+								_app_.ad_data.audience.push(country_id);
+							}
+						}
+					},
+					select_audience_all: function(e = false) {
+						if ($(e.target).prop('checked')) {
+							var _app_              = this;
+							_app_.ad_data.audience = [];
+
+							$.each(_app_.sdds.countries, function(index, val) {
+								_app_.ad_data.audience.push(index);
+							});
+						}
+						else {
+							var _app_              = this;
+							_app_.ad_data.audience = [];
+						}
+					},
+					deselect_audience_all: function() {
+
+					},
+					select_cover: function() {
+						_app.find('input[data-an="cover-input"]').trigger('click');
+					},
+					upload_cover: function(_self = null) {
+						var _app_        = this;
+						var event        = _self;
+						var form_data    = new FormData();
+						_app_.submitting = true;
+						form_data.append('ad_id', _app_.ad_data.id);
+						form_data.append('cover', event.target.files[0]);
+						form_data.append('hash', "<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>");
+						
+						SMColibri.progress_bar('show');
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/ads/upload_ad_cover"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							enctype: 'multipart/form-data',
+							data: form_data,
+							cache: false,
+					        contentType: false,
+					        processData: false,
+					        timeout: 600000,
+							success: function(data) {
+								if (data.status == 200) {
+									_app_.ad_data.cover = data.url;
+								}
+								else {
+									SMColibri.errorMSG();
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+
+								setTimeout(function() {
+									SMColibri.progress_bar('end');
+								}, 1500);
+
+								_app.find('input[data-an="cover-input"]').val('');
+							}
+						});
+					},
+					submit_form: function(_self = false) {
+						_self.preventDefault();
+
+						let _app_     = this;
+						let form_data = _app_.form_data();
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/ads/save_ad_data"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							data: form_data,
+							beforeSend: function() {
+								_app_.submitting = true;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+
+									<?php if ($cl['ad_data']['status'] == 'orphan'): ?>
+										cl_bs_notify("<?php echo cl_translate('Your new ad has been successfully created. Please wait..'); ?>");
+									<?php else: ?>
+										cl_bs_notify("<?php echo cl_translate('Your changes have been saved successfully!'); ?>");
+									<?php endif; ?>
+
+									if (form_data.status == 'active') {
+										SMColibri.spa_load("<?php echo cl_link('ads'); ?>");
+									}
+									else {
+										SMColibri.spa_load("<?php echo cl_link('ads/archive'); ?>");
+									}
+								}
+
+								else {
+									_app_.submitting = false;
+									SMColibri.errorMSG();
+								}
+							}
+						});
+					},
+					form_data: function() {
+						let _app_ = this;
+						let data  = Object({
+							ad_id: "<?php echo fetch_or_get($cl['ad_data']['id'], '0'); ?>",
+							hash: "<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>",
+							company: _app_.ad_data.company,
+							target_url: _app_.ad_data.target_url,
+							status: _app_.ad_data.status,
+							audience: _app_.ad_data.audience,
+							description: _app_.ad_data.description,
+							cta: _app_.ad_data.cta
+						});
+
+						return data;
+					}
+				}
+			});
+		});
+	</script>
+<?php else: ?>
+	<script>
+		"use strict";
+
+		jQuery(document).ready(function($) {
+			var _app = $('[data-app="advertisements"]');
+			window.SMCAccountAds = Object({
+				delete: function(id = false) {
+					if ($.isNumeric(id) && id) {
+			        	var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Delete"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Please note that if you delete this ad? Please note that this action cannot be undone!"); ?>",
+						});
+
+						promise.done(function() {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/ads/delete_ad"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: {id: id},
+							}).done(function(data) {
+								if (data.status != 200) {
+									SMColibri.errorMSG();
+								}
+								else {
+									cl_bs_notify("<?php echo cl_translate("Your ad has been successfully deleted! Please wait..."); ?>", 1500);
+									
+									setTimeout(function() {
+										SMColibri.spa_reload();
+									}, 2000);
+								}
+							}).always(function() {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+				        });
+
+						promise.fail(function() {
+				            $("div.confirm-actions-modal").modal("hide");
+				        });
+					}
+				}
+			});
+		});
+	</script>
+<?php endif; ?>

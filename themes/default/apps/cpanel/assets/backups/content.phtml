@@ -1,0 +1,75 @@
+<div class="cp-app-container" data-app="backups">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Backups'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Backups'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" data-an="info-content">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('Manage site (files & DB) backups'); ?>
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+
+                            <p>
+                                <i class="icon-alert"></i> <?php echo ('Please note: Before you start the process of creating a backup copy of your site, the module of PHP (ZipArchive) must be installed on the server, and also make sure that the root directory of your site is writable by the user of the HTTP web server (www-data), otherwise, the process will fail!'); ?>
+                            </p>
+
+                        </div>
+                        <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+                            <p>
+                                <i class="icon-info-alt"></i> <?php echo cl_translate('Please note: Creating a backup may take some time depending on the amount of content on your site, therefore, after clicking the (Create backup) button, wait for the process to complete without leaving the page!'); ?>
+                            </p>
+
+                        </div>
+                        <hr>
+                        <form class="form" data-an="form">
+                            <div class="form-group">
+                                <?php if (not_empty($cl['config']['last_backup'])) : ?>
+                                    <h5>
+                                        <span>
+                                            <?php echo cl_translate('Last backup'); ?>
+                                        </span>
+                                        <time data-an="last-backup-date">
+                                            (<?php echo date('d F, Y - h:m', $cl['config']['last_backup']); ?>)
+                                        </time>
+                                    </h5>
+                                <?php else : ?>
+                                    <h5>
+                                        <span><?php echo cl_translate('Last backup'); ?></span>
+                                        <time data-an="last-backup-date">(00/00/0000 - 00:00)</time>
+                                    </h5>
+                                <?php endif; ?>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 no-mb">
+                                    <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                        <?php echo cl_translate("Create backup!"); ?>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo cl_template('cpanel/assets/backups/scripts/app_master_script'); ?>

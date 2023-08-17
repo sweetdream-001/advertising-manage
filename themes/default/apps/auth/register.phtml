@@ -1,0 +1,96 @@
+<form class="form" id="cl-signup-vue-app" v-on:submit="submit_form($event)" autocomplete="off">
+	<div class="form-title">
+		<h2>
+		<?php echo cl_translate("__welcome_text__", array('name' => $cl['config']['name'])); ?>
+		</h2>
+		
+	</div>
+	<div class="form-group">
+		
+        <input name="uname" v-model.trim.lazy="$v.uname.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Choose your username"); ?>">
+        <div class="invalid-main-feedback" v-if="is_valid_uname">
+			{{invalid_feedback_uname}}
+		</div>
+    </div>
+	<div class="form-group">
+       
+        <input name="email" v-model.trim.lazy="$v.email.$model" type="email" class="form-control" placeholder="<?php echo cl_translate("Enter your email address"); ?>">
+		<div class="invalid-main-feedback" v-if="is_valid_email">
+			{{invalid_feedback_email}}
+		</div>
+    </div>
+	<div class="form-group">
+      
+        <div class="password-ctrl">
+        	<input name="password" v-model.trim.lazy="$v.password.$model" v-bind:type="password1_display" class="form-control" placeholder="<?php echo cl_translate("Create a password for your account"); ?>">
+        	
+        	<button class="password-ctrl" type="button" v-on:click="password1_display_toggle">
+				<span v-if="password1_display == 'password'">
+					<?php echo cl_icon("visibility"); ?>
+				</span>
+				<span v-else>
+					<?php echo cl_icon("visibility_off"); ?>
+				</span>
+			</button>
+        </div>
+        <div class="invalid-main-feedback" v-if="is_valid_password">
+			{{invalid_feedback_pass}}
+		</div>
+    </div>
+	<div class="form-group">
+		<div class="form-tos">
+			<div class="form-check">
+				<input v-model="tos_agree" class="form-check-input" type="checkbox" value="" id="tos-agree">
+				<label class="form-check-label" for="tos-agree">
+					<span>
+						<?php echo cl_translate("By continuing, you agree to {@site_name@}",array(
+							"site_name" => $cl["config"]["name"]
+						)); ?>
+					</span>
+					<a href="<?php echo cl_link('terms_of_use'); ?>"><?php echo cl_translate("Terms of Use"); ?></a> <?php echo cl_translate("And"); ?>	<a href="<?php echo cl_link('privacy_policy'); ?>"><?php echo cl_translate("Privacy policy"); ?></a>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" v-if="process_failed">
+		<div class="invalid-main-feedback">
+			<?php echo cl_translate("The registration process failed, please check the entered data, and try again!!!"); ?>
+		</div>
+	</div>
+	
+	<?php if ($cl["pn"] == "guest" && $cl["auth_type"] == "signup"): ?>
+		<?php if ($cl["config"]["google_recaptcha"] == "on"): ?>
+			<div class="form-group">
+				<div class="d-flex justify-content-center">
+					<div class="g-recaptcha" data-sitekey="<?php echo($cl["config"]["google_recap_key1"]); ?>"></div>
+				</div>
+				<div v-if="grecaptcha_error" class="invalid-main-feedback text-center">
+					<?php echo cl_translate("Please check reCAPTCHA to proceed with registration."); ?>
+				</div>
+			</div>
+		<?php endif; ?>
+	<?php endif; ?>
+	
+	<div class="form-group">
+		<button v-if="done" disabled="true" class="btn btn-custom main-inline lg btn-block">
+			<?php echo cl_translate("Done! Please wait.."); ?>
+		</button>
+		<button v-else-if="submitting != true" v-bind:disabled="is_valid_form != true" class="btn btn-custom main-inline lg btn-block">
+			<?php echo cl_translate("Sign up"); ?>
+		</button>
+		<button v-else disabled="true" type="button" class="btn btn-custom main-inline lg btn-block">
+			<?php echo cl_translate("Please wait"); ?>
+		</button>
+	</div>
+	<div class="form-group no-mb">
+		<div class="form-cta-link">
+			<span>
+				<?php echo cl_translate("Already have an account?"); ?>
+			</span>
+			<a data-toggle="modal" data-target="#loginModal" data-dismiss="modal"  style="cursor:pointer; color: var(--smc-main-uiel-color);">
+				<?php echo cl_translate("Login"); ?>
+			</a>
+		</div>
+	</div>
+	<input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+</form>

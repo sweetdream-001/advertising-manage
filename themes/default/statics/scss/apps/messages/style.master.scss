@@ -1,0 +1,127 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+body.cl-app-chat {
+    div.chats {
+        div.chat-contacts {
+            div.contacts-list__item {
+                padding: var(--cl-primary-offset-size);
+                border-bottom: 1px solid var(--cl-primary-border-color);
+                cursor: pointer;
+                overflow: hidden;
+                &:hover,
+                &:active {
+                    background: var(--cl-event-hover-bg);
+                }
+                a {
+                    text-decoration: none;
+                    div.contact-data {
+                        overflow: hidden;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        div.contact-data__avatar {
+                            width: var(--cl-primary-avatar-size);
+                            flex-shrink: 0;
+                            img {
+                                width: var(--cl-primary-avatar-size);
+                                height: var(--cl-primary-avatar-size);
+                                border-radius: 100%;
+                            }
+                        }
+                        div.contact-data__body {
+                            flex: 1;
+                            overflow: hidden;
+                            padding-left: var(--cl-primary-offset-size);
+                            div.contact-data__body-topline {
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: nowrap;
+                                align-items: center;
+                                margin-bottom: 3px;
+                                div.flex-item-left {
+                                    flex: 1;
+                                    margin-right: var(--cl-primary-offset-size);
+                                    span {
+                                        font-size: var(--cl-primary-name-size);
+                                        color: var(--cl-primary-text-color);
+                                        font-weight: 500;
+                                        &:last-child {
+                                            text-transform: lowercase;
+                                            color: var(--cl-secondary-text-color);
+                                            font-weight: normal;
+                                        }
+                                        &:hover,
+                                        &:focus,
+                                        &:active {
+                                            color: var(--cl-primary-link-color);
+                                        }
+                                    }
+                                }
+                                div.flex-item-right {
+                                    color: var(--cl-secondary-text-color);
+                                    font-size: 13px;
+                                    @include media-breakpoint-down(xl) {
+                                        font-size: 11px;
+                                    }
+                                }
+                            }
+                            div.contact-data__body-midline {
+                                overflow: hidden;
+                                display: flex;
+                                justify-content: space-between;
+                                div.last-message {
+                                    font-size: 15px;
+                                    line-height: 1.4;
+                                    color: var(--cl-primary-text-color);
+                                    flex: 1;
+                                    margin-right: var(--cl-primary-offset-size);
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 1;
+                                    -webkit-box-orient: vertical;
+                                    &.unseen-message {
+                                        color: var(--cl-primary-text-color);
+                                        font-weight: 500;
+                                    }
+                                    @include media-breakpoint-down(xl) {
+                                        font-size: 13px;
+                                    }
+                                }
+                                div.new-message {
+                                    line-height: 1;
+                                    span.badge {
+                                        display: inline-block;
+                                        background: var(--cl-danger-color);
+                                        color: #ffffff;
+                                        text-align: center;
+                                        padding: 0 5px;
+                                        border-radius: 10px;
+                                        background-clip: padding-box;
+                                        font-size: 11px;
+                                        -webkit-font-smoothing: subpixel-antialiased;
+                                        line-height: 18px;
+                                        vertical-align: middle;
+                                        min-height: 13px;
+                                        min-width: 20px;
+                                        font-weight: 400;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                &.hidden {
+                    display: none !important;
+                }
+            }
+        }
+    }
+}

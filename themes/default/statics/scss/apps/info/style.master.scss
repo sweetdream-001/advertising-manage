@@ -1,0 +1,810 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+html {
+    scroll-behavior: smooth;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+}
+
+body {
+    font-family: inherit !important;
+    overflow-x: hidden;
+}
+
+.ov-h {
+    overflow: hidden;
+}
+
+main.main-content-container {
+    width: 100%;
+    background: #f6f6f7;
+    min-width: 320px;
+    -moz-transition: right 0.5s;
+    -o-transition: right 0.5s;
+    -webkit-transition: right 0.5s;
+    transition: right 0.5s;
+    div.user-data-container {
+        display: block;
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 30px;
+        div.user-data-section {
+            width: 100%;
+            display: block;
+            margin-bottom: 30px;
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #fff;
+            div.user-data-body {
+                display: block;
+                width: 100%;
+                div.user-cover {
+                    width: 100%;
+                    display: block;
+                    position: relative;
+                    img {
+                        width: 100%;
+                        display: block;
+                    }
+                    div.user-avatar {
+                        position: absolute;
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 10em;
+                        bottom: -75px;
+                        left: calc(50% - 75px);
+                        overflow: hidden;
+                        box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+                        border: 2px solid #fff;
+                        img {
+                            width: 100%;
+                            display: block;
+                        }
+                    }
+                }
+                div.user-name {
+                    width: 100%;
+                    display: block;
+                    margin-top: 80px;
+                    margin-bottom: 20px;
+                    h3 {
+                        color: #14171a;
+                        font-size: 26px;
+                        line-height: 32px;
+                        padding: 0;
+                        margin: 0 0 10px 0;
+                        text-align: center;
+                    }
+                    p {
+                        color: #5b7083;
+                        font-size: 14px;
+                        line-height: 18px;
+                        padding: 0;
+                        margin: 0;
+                        text-align: center;
+                    }
+                }
+                div.user-info {
+                    width: 100%;
+                    display: block;
+                    padding: 30px;
+                    span.info-label {
+                        display: block;
+                        width: 100%;
+                        text-align: right;
+                        font-size: 14px;
+                        color: #14171a;
+                        line-height: 20px;
+                        font-weight: 700;
+                    }
+                    span.info-value {
+                        display: block;
+                        width: 100%;
+                        text-align: left;
+                        font-size: 14px;
+                        color: #14171a;
+                        line-height: 20px;
+                    }
+                }
+                div.user-wallet-history {
+                    width: 100%;
+                    display: block;
+                    max-height: 400px;
+                    overflow-y: auto;
+                    padding: 30px;
+                    div.history-record {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        margin-bottom: 15px;
+                        padding-bottom: 15px;
+                        border-bottom: 1px solid #e4eaef;
+                        &:last-child {
+                            margin-bottom: 0px;
+                            border-bottom: none;
+                            padding-bottom: 0px;
+                        }
+                        div.lp {
+                            width: 35px;
+                            height: 35px;
+                            min-width: 35px;
+                            min-height: 35px;
+                            div.icon {
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: center;
+                                align-items: center;
+                                background: #999999;
+                                border-radius: 10em;
+                                svg {
+                                    width: 20px;
+                                    height: 20px;
+                                    fill: #ffffff;
+                                }
+                            }
+                        }
+                        div.mp {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                            flex: 1;
+                            div.amount {
+                                width: 100%;
+                                display: block;
+                                span {
+                                    font-size: 14px;
+                                    line-height: 14px;
+                                    font-weight: 500;
+                                }
+                            }
+                            div.trans-info {
+                                width: 100%;
+                                display: block;
+                                p {
+                                    font-size: 13px;
+                                    color: #14171a;
+                                    line-height: 18px;
+                                    padding: 0;
+                                    margin: 0;
+                                }
+                            }
+                        }
+                        div.rp {
+                            time {
+                                font-size: 13px;
+                                line-height: 18px;
+                                color: #5b7083;
+                            }
+                        }
+                    }
+                }
+                div.user-connections {
+                    width: 100%;
+                    display: block;
+                    max-height: 500px;
+                    overflow-y: auto;
+                    padding: 30px;
+                    div.list-item {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        border-bottom: 1px solid #e4eaef;
+                        padding-bottom: 15px;
+                        margin-bottom: 15px;
+                        &:last-child {
+                            padding-bottom: 0;
+                            margin-bottom: 0;
+                            border-bottom: none;
+                        }
+                        div.avatar {
+                            width: 40px;
+                            height: 40px;
+                            overflow: hidden;
+                            min-width: 40px;
+                            max-width: 40px;
+                            border-radius: 10em;
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+                        div.user-info-holder {
+                            flex: 1;
+                            padding: 0 0 0 10px;
+                            position: relative;
+                            div.user-data {
+                                width: 100%;
+                                display: block;
+                                h4 {
+                                    font-size: 13px;
+                                    padding: 0;
+                                    margin: 0;
+                                    line-height: 13px;
+                                    font-weight: 700;
+                                    color: #14171a;
+                                    white-space: nowrap;
+                                }
+                                a {
+                                    display: block;
+                                    text-decoration: none;
+                                    color: #5b7083;
+                                    font-size: 13px;
+                                    line-height: 20px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                    max-width: 140px;
+                                }
+                                p {
+                                    font-size: 13px;
+                                    line-height: 18px;
+                                    padding: 0;
+                                    margin: 5px 0 0 0;
+                                    padding-right: 40px;
+                                }
+                            }
+                        }
+                        &:hover,
+                        &:active {
+                            background: #f5f8fa;
+                        }
+                    }
+                }
+                div.posts-ls {
+                    width: 100%;
+                    display: block;
+                    max-height: 500px;
+                    overflow-y: auto;
+                    div.post-list-item {
+                        width: 100%;
+                        display: block;
+                        padding: 15px;
+                        border-bottom: 1px solid #e4eaef;
+                        transition: all 0.27s ease-in-out;
+                        &:hover {
+                            background: #f5f8fa9c;
+                        }
+                        div.post-list-item-header {
+                            width: 100%;
+                            display: flex;
+                            margin-bottom: 5px;
+                            padding-left: 50px;
+                            div.publication-repost {
+                                line-height: 0;
+                                border-radius: 5px;
+                                padding: 0px;
+                                svg {
+                                    width: 12px;
+                                    height: 12px;
+                                    vertical-align: middle;
+                                    display: inline-block;
+                                    stroke-width: 2.5;
+                                    fill: var(--cl-secondary-text-color);
+                                }
+                                a {
+                                    font-size: 10px;
+                                    line-height: 10px;
+                                    color: var(--cl-secondary-text-color);
+                                    display: inline-block;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+                        div.post-list-item-content {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: nowrap;
+                            div.publisher-avatar {
+                                width: 40px;
+                                flex-basis: 40px;
+                                max-width: 40px;
+                                min-width: 40px;
+                                div.avatar-holder {
+                                    display: block;
+                                    overflow: hidden;
+                                    width: 40px;
+                                    height: 40px;
+                                    background: #e4eaef;
+                                    border-radius: 10em;
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        border: none;
+                                    }
+                                }
+                            }
+                            div.publication-data {
+                                flex: 1;
+                                padding-left: 15px;
+                                overflow: hidden;
+                                div.publication-data-inner {
+                                    div.publication-target {
+                                        width: 100%;
+                                        display: block;
+                                        line-height: 0;
+                                        margin-top: 5px;
+                                        div.post-reply {
+                                            width: 100%;
+                                            display: block;
+                                            line-height: 0;
+                                            span {
+                                                font-size: 11px;
+                                                line-height: 11px;
+                                                color: #5b7083;
+                                                a {
+                                                    color: #1b95e0;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.publisher-info {
+                                        width: 100%;
+                                        line-height: 0;
+                                        display: flex;
+                                        flex-direction: row;
+                                        flex-wrap: nowrap;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        div.lp {
+                                            flex: 1;
+                                            a {
+                                                line-height: 0;
+                                                padding: 0;
+                                                margin: 0;
+                                                text-decoration: none !important;
+                                                b {
+                                                    font-size: 13px;
+                                                    line-height: 13px;
+                                                    color: #14171a;
+                                                    &:hover,
+                                                    &:focus,
+                                                    &:active {
+                                                        text-decoration: underline;
+                                                    }
+                                                }
+                                                span {
+                                                    font-size: 13px;
+                                                    line-height: 13px;
+                                                    color: #5b7083;
+                                                    text-transform: lowercase;
+                                                    &:hover,
+                                                    &:focus,
+                                                    &:active {
+                                                        text-decoration: underline;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        div.rp {
+                                            span.posted-time {
+                                                display: inline-block;
+                                                padding: 0;
+                                                margin: 0;
+                                                svg {
+                                                    width: 13px;
+                                                    height: 13px;
+                                                    display: inline-block;
+                                                    vertical-align: middle;
+                                                    fill: var(--cl-secondary-text-color);
+                                                }
+                                                time {
+                                                    color: var(--cl-secondary-text-color);
+                                                    opacity: 0.9;
+                                                    font-size: 12px;
+                                                    line-height: 12px;
+                                                    vertical-align: middle;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.publication-content {
+                                        margin-top: 10px;
+                                        div.publication-text {
+                                            width: 100%;
+                                            overflow: hidden;
+                                            margin-bottom: 10px;
+                                            p {
+                                                font-size: 13px;
+                                                line-height: 18px;
+                                                font-weight: 400;
+                                                padding: 0;
+                                                margin: 0;
+                                                color: #14171a;
+                                                word-break: break-word;
+                                            }
+                                        }
+                                        div.publication-media {
+                                            width: 100%;
+                                            display: block;
+                                        }
+                                        div.publication-image {
+                                            width: 100%;
+                                            border: 1px solid #e4eaef;
+                                            display: block;
+                                            border-radius: 20px;
+                                            overflow: hidden;
+                                            background: #e6ecf0;
+                                            position: relative;
+                                            img {
+                                                width: 100%;
+                                                object-fit: cover;
+                                            }
+                                            div.video-icon {
+                                                position: absolute;
+                                                left: 0;
+                                                top: 0;
+                                                bottom: 0;
+                                                right: 0;
+                                                display: flex;
+                                                flex-direction: row;
+                                                align-items: center;
+                                                justify-content: center;
+                                                cursor: pointer;
+                                                span {
+                                                    width: 55px;
+                                                    height: 55px;
+                                                    background: rgba(0, 0, 0, 0.60);
+                                                    border-radius: 10em;
+                                                    padding: 15px;
+                                                    box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+                                                    svg {
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        fill: #fff;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        div.publication-images-slider {
+                                            width: 100%;
+                                            overflow: hidden;
+                                            display: block;
+                                            div.carousel {
+                                                width: 100%;
+                                                display: block;
+                                                overflow: hidden;
+                                                div.carousel-item {
+                                                    -webkit-transition: -webkit-transform 0.2s ease-in-out !important;
+                                                    -o-transition: -o-transform 0.2s ease-in-out !important;
+                                                    transition: transform 0.2s ease-in-out !important;
+                                                }
+                                                a.cr-slide-ctrl {
+                                                    svg {
+                                                        width: 25px;
+                                                        height: 25px;
+                                                        fill: #5b7083;
+                                                    }
+                                                }
+                                                &:hover,
+                                                &:active {
+                                                    a.cr-slide-ctrl {
+                                                        background: #14171a;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        div.publication-og-data {
+                                            width: 100%;
+                                            display: block;
+                                            line-height: 0;
+                                            margin-bottom: 10px;
+                                            overflow: hidden;
+                                            background: #fff;
+                                            border-radius: 10px;
+                                            border: 1px solid #e4eaef;
+                                            position: relative;
+                                            div.publication-og-data-inner {
+                                                width: 100%;
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: space-between;
+                                                flex-wrap: nowrap;
+                                                overflow: hidden;
+                                                div.og-image {
+                                                    width: 100px;
+                                                    min-width: 100px;
+                                                    min-height: 100px;
+                                                    overflow: hidden;
+                                                    border-right: 1px solid #e4eaef;
+                                                    background: #f5f8fa;
+                                                    div.og-image-holder {
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        background-position: center;
+                                                        background-repeat: no-repeat;
+                                                        background-size: cover;
+                                                    }
+                                                    div.og-icon-holder {
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        display: flex;
+                                                        flex-direction: row;
+                                                        flex-wrap: nowrap;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        background: #f5f8fa;
+                                                        svg {
+                                                            width: 40px;
+                                                            height: 40px;
+                                                            fill: #0084f5;
+                                                        }
+                                                    }
+                                                }
+                                                div.og-url-data {
+                                                    flex: 1;
+                                                    padding: 15px;
+                                                    overflow: hidden;
+                                                    h5,
+                                                    p,
+                                                    a {
+                                                        width: 100%;
+                                                        display: block;
+                                                    }
+                                                    h5 {
+                                                        padding: 0;
+                                                        margin: 0 0 5px 0;
+                                                        font-size: 16px;
+                                                        line-height: 20px;
+                                                        color: #14171a;
+                                                        word-wrap: break-word;
+                                                    }
+                                                    p {
+                                                        font-size: 11px;
+                                                        color: #5b7083;
+                                                        line-height: 18px;
+                                                        padding: 0;
+                                                        margin: 0 0 5px 0;
+                                                        word-wrap: break-word;
+                                                    }
+                                                    a {
+                                                        font-size: 13px;
+                                                        line-height: 18px;
+                                                        color: #0084f5;
+                                                        padding: 0;
+                                                        margin: 0;
+                                                        word-wrap: break-word;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        div.publication-poll-data {
+                                            width: 100%;
+                                            display: block;
+                                            line-height: 0;
+                                            overflow: hidden;
+                                            div.publication-poll-data-inner {
+                                                width: 100%;
+                                                display: block;
+                                                line-height: 0;
+                                                overflow: hidden;
+                                                div.poll-option-bar {
+                                                    width: 100%;
+                                                    max-width: 100%;
+                                                    display: flex;
+                                                    flex-direction: row;
+                                                    flex-wrap: nowrap;
+                                                    align-items: center;
+                                                    height: 30px;
+                                                    padding: 20px 15px;
+                                                    background: rgba(29, 161, 242, 0.1);
+                                                    margin-bottom: 10px;
+                                                    border-radius: 2px;
+                                                    cursor: pointer;
+                                                    overflow: hidden;
+                                                    position: relative;
+                                                    z-index: 1;
+                                                    div.bar-icon {
+                                                        width: 22px;
+                                                        height: 22px;
+                                                        line-height: 0;
+                                                        min-height: 20px;
+                                                        min-width: 20px;
+                                                        svg {
+                                                            width: 100%;
+                                                            height: 100%;
+                                                            fill: #0084f5;
+                                                        }
+                                                    }
+                                                    div.bar-text {
+                                                        flex-grow: 1;
+                                                        padding-left: 15px;
+                                                        padding-right: 15px;
+                                                        overflow: hidden;
+                                                        p {
+                                                            padding: 0;
+                                                            margin: 0;
+                                                            display: block;
+                                                            width: 100%;
+                                                            max-width: 100%;
+                                                            font-size: 14px;
+                                                            line-height: 14px;
+                                                            color: #14171a;
+                                                            white-space: nowrap;
+                                                            overflow: hidden;
+                                                            text-overflow: ellipsis;
+                                                        }
+                                                    }
+                                                    div.bar-num {
+                                                        b {
+                                                            font-size: 14px;
+                                                            line-height: 14px;
+                                                            color: #0084f5;
+                                                        }
+                                                    }
+                                                    &:last-child {
+                                                        margin-bottom: 0px;
+                                                    }
+                                                    span.bar-slider {
+                                                        display: block;
+                                                        position: absolute;
+                                                        left: 0;
+                                                        top: 0;
+                                                        bottom: 0;
+                                                        background: rgba(29, 161, 242, 0.2);
+                                                        max-width: 100%;
+                                                        min-width: 10px;
+                                                        border-radius: 0px;
+                                                        z-index: 3;
+                                                    }
+                                                }
+                                            }
+                                            &[data-status="1"] {
+                                                div.publication-poll-data-inner {
+                                                    div.poll-option-bar {
+                                                        cursor: default;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            div.user-data-header {
+                width: 100%;
+                display: block;
+                padding: 15px;
+                background: #0084f5;
+                h3 {
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-size: 16px;
+                    line-height: 22px;
+                    padding: 0;
+                    margin: 0;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
+
+button.btn-custom {
+    text-transform: uppercase;
+    &.main-inline {
+        border-radius: 5em;
+        color: #fff;
+        background: #0084f5;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+        border: 1px solid #0084f5;
+        outline: 0;
+        &:not([disabled]) {
+            &:hover,
+            &:active,
+            &:focus {
+                background: #008de4;
+                border-color: #008de4;
+            }
+        }
+    }
+    &.main-outline {
+        border-radius: 5em;
+        color: #0084f5;
+        background: transparent;
+        font-weight: 500;
+        box-shadow: none;
+        border: 1px solid #0084f5;
+        outline: 0;
+        &:not([disabled]) {
+            &:hover,
+            &:active,
+            &:focus {
+                background: #008de4;
+                border-color: #008de4;
+                color: #fff;
+            }
+        }
+    }
+    &.lg {
+        padding: 10px 15px;
+        font-size: 13px;
+        line-height: 13px;
+        font-weight: 500;
+    }
+    &.md {
+        padding: 7px 15px;
+        font-size: 13px;
+        line-height: 13px;
+        font-weight: 500;
+    }
+    &.sm {
+        padding: 6px 15px;
+        font-size: 13px;
+        line-height: 13px;
+        font-weight: 500;
+    }
+    &.main-red {
+        border-radius: 5em;
+        color: #fff;
+        background: #f6546a;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 10px 0px;
+        border: 1px solid #f6546a;
+        outline: 0;
+    }
+    &.main-grey {
+        border-radius: 5em;
+        color: #14171aab;
+        background-color: #e6ecf0;
+        box-shadow: none;
+        border: 1px solid #e6ecf0;
+        outline: 0;
+    }
+    &.btn-block {
+        width: 100%;
+    }
+}
+
+span.user-name-holder.verified-badge {
+    font-size: inherit !important;
+    color: inherit !important;
+    line-height: inherit !important;
+    display: inline-block !important;
+    position: relative !important;
+    margin-right: 15px !important;
+    width: auto !important;
+    font-weight: inherit !important;
+    &:after {
+        color: #0084f5;
+        content: url("data:image/svg+xml; utf8, <svg style='vertical-align: middle;'  xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24'><path fill='dodgerblue' d='M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'></path></svg>");
+        position: absolute;
+        top: calc(50% - 7px);
+        right: -17px;
+        width: 15px;
+        height: 15px;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        line-height: 0px;
+    }
+}
+
+span.badge {
+    background: #666;
+    color: #fff;
+}
+
+a.block-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    &.mb-20 {
+        margin-bottom: 20px;
+    }
+}

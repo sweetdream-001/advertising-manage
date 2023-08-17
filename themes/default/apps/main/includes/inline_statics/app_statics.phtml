@@ -1,0 +1,19 @@
+<?php if (not_empty($cl["app_statics"])): ?>
+	<?php if (not_empty($cl["app_statics"]["scripts"])): ?>
+		<script>
+			<?php foreach ($cl["app_statics"]["scripts"] as $file_cont): ?>
+				<?php echo $file_cont; ?>
+			<?php endforeach; ?>
+		</script>
+	<?php endif; ?>
+<?php endif; ?>
+
+<?php if (not_empty($cl["app_statics"])): ?>
+	<?php if (not_empty($cl["app_statics"]["styles"])): ?>
+		<style>
+			<?php foreach ($cl["app_statics"]["styles"] as $file_cont): ?>
+				<?php echo $file_cont; ?>
+			<?php endforeach; ?>
+		</style>
+	<?php endif; ?>
+<?php endif; ?>

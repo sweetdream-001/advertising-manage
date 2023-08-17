@@ -1,0 +1,69 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-alert-container {
+    div.timeline-alert {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding: var(--cl-primary-offset-size);
+        border-bottom: 1px solid var(--cl-primary-border-color);
+        position: relative;
+        &.timeline-alert_align-center {
+            align-items: center;
+        }
+        div.timeline-alert__icon {
+            width: var(--cl-primary-avatar-size);
+            height: var(--cl-primary-avatar-size);
+            flex-shrink: 0;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            svg {
+                width: 24px;
+                height: 24px;
+                fill: #ffffff;
+            }
+        }
+        div.timeline-alert__text {
+            flex: 1;
+            overflow: hidden;
+            font-size: 16px;
+            color: var(--cl-secondary-text-color);
+            margin-left: var(--cl-primary-offset-size);
+            position: relative;
+            z-index: 2;
+            a {
+                color: var(--cl-primary-link-color);
+                font-weight: 500;
+            }
+        }
+        &.timeline-alert_info {
+            div.timeline-alert__icon {
+                background: var(--cl-primary-color);
+            }
+            div.timeline-alert__text {
+                color: var(--cl-primary-color);
+            }
+            &::before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                background: var(--cl-primary-color);
+                opacity: 0.07;
+            }
+        }
+    }
+}

@@ -1,0 +1,194 @@
+<form class="form" id="cl-login-vue-app" v-on:submit="submit_form($event)" autocomplete="off">
+	<div class="form-title">
+		<h1 class="login-home">
+			<?php echo cl_translate("welcome_to"); ?>
+		</h1>
+		<h3 class="login-home">
+			<?php echo cl_translate("__welcome_text__", array('name' => $cl['config']['name'])); ?>
+		</h3>
+	</div>
+
+	<div class="form-group">
+
+		<input name="email" v-model.trim.lazy="$v.email.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Email address or username"); ?>">
+		<div class="invalid-main-feedback" v-if="is_valid_email">
+			{{invalid_feedback_email}}
+		</div>
+	</div>
+	<div class="form-group">
+
+		<div class="password-ctrl">
+			<input name="password" v-model.trim="$v.password.$model" v-bind:type="password_display" class="form-control" placeholder="<?php echo cl_translate("Password"); ?>">
+
+			<button class="password-ctrl" type="button" v-on:click="password_display_toggle">
+				<span v-if="password_display == 'password'">
+					<?php echo cl_icon("visibility"); ?>
+				</span>
+				<span v-else>
+					<?php echo cl_icon("visibility_off"); ?>
+				</span>
+			</button>
+		</div>
+		<div class="invalid-main-feedback" v-if="is_valid_password">
+			{{invalid_feedback_pass}}
+		</div>
+		<div v-else-if="unsuccessful_attempt" class="form-group invalid-main-feedback mb-20">
+			<?php echo cl_translate("A user with such credentials is not found. Check the data entered and try again."); ?>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<button v-if="submitting" disabled="true" type="button" class="btn btn-custom main-inline lg btn-block">
+			<?php echo cl_translate("Please wait"); ?>
+		</button>
+		<button v-else-if="done" disabled="true" type="button" class="btn btn-custom main-inline lg btn-block">
+			<?php echo cl_translate("Done! Please wait.."); ?>
+		</button>
+		<button v-else v-bind:disabled="($v.$invalid == true)" class="btn btn-custom main-inline lg btn-block">
+			<?php echo cl_translate("Login"); ?>
+		</button>
+	</div>
+	<div class="form-group">
+		<div class="form-cta-link forgot">
+			<a href="<?php echo cl_link('guest?auth=forgot_pass'); ?>">
+				<span class="btn-outline">
+					<?php echo cl_translate("Forgot your password?"); ?>
+				</span>
+			</a>
+		</div>
+	</div>
+	<?php if (in_array("on", array($cl["config"]["instagram_status"], $cl["config"]["vkontakte_status"], $cl["config"]["discord_status"], $cl["config"]["facebook_oauth"], $cl["config"]["linkedin_oauth"], $cl["config"]["google_oauth"], $cl["config"]["twitter_oauth"]))) : ?>
+		<div class="form-group">
+			<div class="login-or-signup">
+				<span>
+					<?php echo cl_translate("or"); ?>
+				</span>
+			</div>
+		</div>
+		<div class="form-group oauth-login-providers">
+			<?php if ($cl["config"]["google_oauth"] == "on") : ?>
+				<a href="<?php echo cl_link('oauth/google'); ?>" class="social-login-btn google">
+					<button class="btn btn-custom main-inline lg btn-block" type="button">
+						<span class="d-inline-flex flex-wn align-items-center">
+							<span class="flex-item btn-icon">
+								<?php echo cl_ikon('google-logo-2'); ?>
+							</span>
+							<span class="flex-item">
+								<?php echo cl_translate("SignIn with Google"); ?>
+							</span>
+						</span>
+					</button>
+				</a>
+			<?php endif; ?>
+			<div class="form-cta-link forgot">
+				<a data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+					<span class="btn-outline">
+					
+						<?php echo cl_icon('more_horiz'); ?>
+				 <?php echo cl_translate("More Social Login"); ?>
+					</span>
+				</a>
+			</div>
+			<div class="collapse" id="collapseExample">
+
+				<?php if ($cl["config"]["facebook_oauth"] == "on") : ?>
+					<a href="<?php echo cl_link('oauth/facebook'); ?>" class="social-login-btn facebook">
+						<button class="btn btn-custom main-inline lg btn-block" type="button">
+							<span class="d-inline-flex flex-wn align-items-center">
+								<span class="flex-item btn-icon">
+									<?php echo cl_ikon('logos/logo-facebook'); ?>
+								</span>
+								<span class="flex-item">
+									<?php echo cl_translate("SignIn with Facebook"); ?>
+								</span>
+							</span>
+						</button>
+					</a>
+				<?php endif; ?>
+				<?php if ($cl["config"]["twitter_oauth"] == "on") : ?>
+					<a href="<?php echo cl_link('oauth/twitter'); ?>" class="social-login-btn twitter">
+						<button class="btn btn-custom main-inline lg btn-block" type="button">
+							<span class="d-inline-flex flex-wn align-items-center">
+								<span class="flex-item btn-icon">
+									<?php echo cl_ikon('logos/logo-twitter'); ?>
+								</span>
+								<span class="flex-item">
+									<?php echo cl_translate("SignIn with Twitter"); ?>
+								</span>
+							</span>
+						</button>
+					</a>
+				<?php endif; ?>
+
+				<?php if ($cl["config"]["linkedin_oauth"] == "on") : ?>
+					<a href="<?php echo cl_link('oauth/linkedin'); ?>" class="social-login-btn linkedin">
+						<button class="btn btn-custom main-inline lg btn-block" type="button">
+							<span class="d-inline-flex flex-wn align-items-center">
+								<span class="flex-item btn-icon">
+									<?php echo cl_icon('logos/logo-linkedin'); ?>
+								</span>
+								<span class="flex-item">
+									<?php echo cl_translate("SignIn with LinkedIn"); ?>
+								</span>
+							</span>
+						</button>
+					</a>
+				<?php endif; ?>
+				<?php if ($cl["config"]["discord_status"] == "on") : ?>
+					<a href="<?php echo cl_link('oauth/discord'); ?>" class="social-login-btn discord">
+						<button class="btn btn-custom main-inline lg btn-block" type="button">
+							<span class="d-inline-flex flex-wn align-items-center">
+								<span class="flex-item btn-icon">
+									<?php echo cl_icon('logos/logo-discord'); ?>
+								</span>
+								<span class="flex-item">
+									<?php echo cl_translate("SignIn with Discord"); ?>
+								</span>
+							</span>
+						</button>
+					</a>
+				<?php endif; ?>
+				<?php if ($cl["config"]["vkontakte_status"] == "on") : ?>
+					<a href="<?php echo cl_link('oauth/vkontakte'); ?>" class="social-login-btn vkontakte">
+						<button class="btn btn-custom main-inline lg btn-block" type="button">
+							<span class="d-inline-flex flex-wn align-items-center">
+								<span class="flex-item btn-icon">
+									<?php echo cl_icon('logos/logo-vk'); ?>
+								</span>
+								<span class="flex-item">
+									<?php echo cl_translate("SignIn with Vkontakte"); ?>
+								</span>
+							</span>
+						</button>
+					</a>
+				<?php endif; ?>
+				<?php if ($cl["config"]["instagram_status"] == "on") : ?>
+					<a href="<?php echo cl_link('oauth/instagram'); ?>" class="social-login-btn instagram">
+						<button class="btn btn-custom main-inline lg btn-block" type="button">
+							<span class="d-inline-flex flex-wn align-items-center">
+								<span class="flex-item btn-icon">
+									<?php echo cl_icon('logos/logo-instagram'); ?>
+								</span>
+								<span class="flex-item">
+									<?php echo cl_translate("SignIn with Instagram"); ?>
+								</span>
+							</span>
+						</button>
+					</a>
+				<?php endif; ?>
+			</div>
+
+		<?php endif; ?>
+		</div>
+		<div class="form-group no-mb">
+			<div class="form-cta-link">
+				<span>
+					<?php echo cl_translate("Don't have an account?"); ?>
+				</span>
+				<a href="<?php echo cl_link('guest?auth=signup'); ?>">
+					<?php echo cl_translate("Sign up"); ?>
+				</a>
+			</div>
+		</div>
+		<input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+</form>

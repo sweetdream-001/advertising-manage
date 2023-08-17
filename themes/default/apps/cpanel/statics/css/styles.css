@@ -1,0 +1,202 @@
+
+a.navbar-nav-item-link img {
+              width: auto;
+              height: 35px;
+              vertical-align: top;}
+   .logo-wrapper span{
+    font-size: 28px!important;
+    font-weight: 600;
+    
+    
+ } 
+div.regular-table {
+  overflow-x: auto;
+  overflow-y: auto; }
+  div.regular-table div.table-pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end; }
+    div.regular-table div.table-pagination a.pagination-ctrls {
+      background: #1ca1f3;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.27s ease-in-out;
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 10px 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 2px; }
+      div.regular-table div.table-pagination a.pagination-ctrls svg {
+        width: 25px;
+        height: 25px;
+        stroke: #fff; }
+      div.regular-table div.table-pagination a.pagination-ctrls.disabled {
+        opacity: 0.5;
+        cursor: not-allowed; }
+      div.regular-table div.table-pagination a.pagination-ctrls:last-child {
+        margin-left: 15px; }
+ .third-news-update .news-update, .news .news-update, .appointment-sec .news-update {
+    padding: 30px 40px;
+    border-bottom: 1px solid #ecf3fa;
+    max-height: 350px;
+    overflow: auto;
+}
+body.dark-only .alert-light {
+    background: transparent!important;
+    opacity: 0.8;
+}
+ .language-nav a {
+     font-size: 16px;
+     font-weight: 500;
+     color: var(--theme-deafult);
+     font-family: Roboto;
+    }
+ .media.profile-media img {
+    height: 35px;
+    width: 35px;
+ }
+ .card-body .col-sm-6,.col-sm-4 {
+    padding-bottom: 30px;
+}
+.card-body .col-sm-12 {
+    padding-bottom: 30px;
+}
+body.dark-only .modal.confirm-actions-modal div.modal-footer button {
+    color: #fff;
+    opacity: 0.7;
+}
+body.dark-only .modal .modal-content .modal-body h4 {
+    color: #fff;
+    opacity: 0.7;
+}
+body.dark-only .page-wrapper .page-body-wrapper .page-body .dropdown-menu a:hover {
+    color: rgba(255,255,255,0.6);
+background: transparent!important;
+}
+body.dark-only .modal.popup-ticket-modal div.user-info div.uname h5 {
+      color: #fff;
+    opacity: 0.7;
+}
+body.dark-only .modal.popup-ticket-modal div.text-message h5 {
+      color: #fff;
+    opacity: 0.7;
+}
+ span.user-name-holder.verified-badge {
+  font-size: inherit !important;
+  color: inherit !important;
+  line-height: inherit !important;
+  display: inline-block !important;
+  position: relative !important;
+  margin-right: 15px !important;
+  width: auto !important;
+  font-weight: inherit !important; }
+  span.user-name-holder.verified-badge:after {
+    color: #1ca1f3;
+    content: url("data:image/svg+xml; utf8, <svg style='vertical-align: middle;'  xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24'><path fill='dodgerblue' d='M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'></path></svg>");
+    position: absolute;
+    top: calc(50% - 7px);
+    right: -17px;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    line-height: 0px; }
+.page-wrapper .page-header .header-wrapper .nav-right .profile-dropdown {
+    width: 100%;
+    min-width: 190px!important;
+}
+span.badge {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: normal; }
+a.dropdown-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+body.dark-only a.dropdown-item{
+    color: rgba(255,255,255,0.6);
+}
+body.dark-only table.table tbody tr td span.icon.not-allowed{
+    stroke: rgba(255,255,255,0.6);
+    fill: rgba(255,255,255,0.6);
+}
+body.dark-only a.dropdown-item:hover{
+   background: transparent;
+}
+.dropdown-item i {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    line-height: 0;
+    margin-right: 12px;
+}
+.form.filter-data-form div.filter-data-form-option div.dropdown button.dropdown-toggle{
+    height: 34.6px;
+    color: #fff;
+}
+form.filter-data-form div.filter-data-form-option div.dropdown button.dropdown-toggle span:nth-child(1){
+    color: #fff!important;
+}
+body.dark-only form.filter-data-form div.filter-data-form-option div.dropdown div.dropdown-menu-input table tr td.label span{
+    color: #fff!important;
+}
+.info-box.hover-expand-effect:after {
+    background-color: rgba(0, 0, 0, 0.05);
+    content: ".";
+    position: absolute;
+    left: 80px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    color: transparent;
+    -moz-transition: all 0.95s;
+    -o-transition: all 0.95s;
+    -webkit-transition: all 0.95s;
+    transition: all 0.95s; }
+  .info-box.hover-expand-effect:hover:after {
+    width: 100%; }
+    table.table tbody tr td span.icon.pointer svg, table.table tbody tr th span.icon.pointer svg {
+        stroke: #657786;
+    }
+    table.table tbody tr td span.icon svg, table.table tbody tr th span.icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: #1ca1f3;
+    }
+    table.table tbody tr td span.icon, table.table tbody tr th span.icon {
+        vertical-align: middle;
+        line-height: 0;
+        padding: 15px;
+        margin: 0;
+    }
+    table.table tbody tr td span.icon.not-allowed, table.table tbody tr th span.icon.not-allowed {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+div.main-modalnotif-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 999999;
+    width: 100%; }
+    div.main-modalnotif-container span {
+      display: block;
+      width: 100%;
+      padding: 15px 25px;
+      line-height: 22px;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 0px;
+      text-align: center;
+      box-shadow: rgba(0, 0, 0, 0.15) 3px -3px 20px 5px;
+      animation-duration: 0.5s; }
+    div.main-modalnotif-container.primary span {
+      background-color: #1ca1f3; }
+    div.main-modalnotif-container.danger span {
+      background-color: #f6546a; }         

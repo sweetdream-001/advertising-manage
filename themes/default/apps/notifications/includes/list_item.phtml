@@ -1,0 +1,74 @@
+<div class="notifications-list__item" data-list-item="<?php echo($cl['li']['id']); ?>">
+	<div class="notifications-list__item-avatar">
+		<a href="<?php echo($cl['li']['url']); ?>" data-spa="true" class="block-link">
+			<div class="user-avatar">
+				<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+			</div>
+		</a>
+	</div>
+	<div class="notifications-list__item-data">
+		<div class="notifications-data">
+			<div class="notifications-data__body">
+				<div class="notifications-data__topline">
+					<a href="<?php echo($cl['li']['user_url']); ?>" data-spa="true">
+						<span >
+							<span class="user-name-holder__name">
+								<?php echo $cl['li']['name']; ?>
+							</span>
+
+							<?php if ($cl['li']['verified'] == '1'): ?>
+								<span class="user-name-holder__badge">
+									<?php echo cl_icon("verified_user_badge"); ?>
+								</span>
+							<?php endif; ?>
+						</span>
+						<span class="notif-time">
+							<?php echo $cl['li']['time']; ?>
+						</span>
+					</a>
+				</div>
+				<div class="notifications-data__midline">
+					<a href="<?php echo($cl['li']['url']); ?>" class="block-link" data-spa="true">
+						<span class="<?php if($cl['li']['status'] == '0') {echo('unseen');}; ?>">
+							<?php if ($cl['li']['subject'] == 'verified'): ?>
+								<?php echo cl_translate('Your verification request has been accepted'); ?>
+							<?php elseif ($cl['li']['subject'] == 'reply'): ?>
+								<?php echo cl_translate('Replied to your post'); ?>
+							<?php elseif($cl['li']['subject'] == 'subscribe'): ?>
+								<?php echo cl_translate('Started following you'); ?>
+							<?php elseif($cl['li']['subject'] == 'subscribe_request'): ?>
+								<?php echo cl_translate('Wants to follow you'); ?>
+							<?php elseif($cl['li']['subject'] == 'subscribe_accept'): ?>
+								<?php echo cl_translate('Accepted your follow request'); ?>
+							<?php elseif($cl['li']['subject'] == 'mention'): ?>
+								<?php echo cl_translate('Mentioned you in a post'); ?>
+							<?php elseif($cl['li']['subject'] == 'like'): ?>
+								<?php echo cl_translate('Liked your post'); ?>
+							<?php elseif($cl['li']['subject'] == 'repost'): ?>
+								<?php echo cl_translate('Shared your publication'); ?>
+							<?php elseif($cl['li']['subject'] == 'visit'): ?>
+								<?php echo cl_translate('Visited your profile'); ?>
+							<?php elseif($cl['li']['subject'] == 'ad_approval'): ?>
+								<?php echo cl_translate('Your add has been approved'); ?>
+							<?php endif; ?>
+						</span>
+					</a>
+				</div>
+			</div>
+			<div class="notifications-data__ctrls">
+				<div class="notif-ctrls">
+					<div class="notif-ctrls__delete">
+						<button type="button" class="btn-custom-icon col-red" onclick="SMColibri.PS.notifs.delete_notif(<?php echo($cl['li']['id']); ?>);">
+							<?php echo cl_icon("delete"); ?>
+						</button>
+					</div>
+					<div class="notif-ctrls__navnext">
+						<a href="<?php echo($cl['li']['url']); ?>" data-spa="true" class="block-link"> 
+							<?php echo cl_icon("navigate_next"); ?>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

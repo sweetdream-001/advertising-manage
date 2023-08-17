@@ -1,0 +1,66 @@
+<div class="cp-app-container" data-app="app-links">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('mobile_app'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('mobile_app'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('mobile_app_link'); ?>
+                            </h5>
+                        </div>
+
+
+                        <form class="form" data-an="form">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="android_app_url-input">
+                                            <label>
+                                                Android app (Google play item URL)
+                                            </label>
+                                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-brand-android-robot"></i></span>
+                                                <input value="{%config android_app_url%}" name="android_app_url" type="url" class="form-control" placeholder="Firebase App download URL">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="ios_app_url-input">
+                                            <label>
+                                                IOS app (App store item URL)
+                                            </label>
+                                            <div class="input-group"><span class="input-group-text"><i class="icofont icofont-brand-apple"></i></span>
+                                                <input value="{%config ios_app_url%}" name="ios_app_url" type="url" class="form-control" placeholder="Firebase App download URL">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group no-mb">
+                                        <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                    <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo cl_template('cpanel/assets/app_links/scripts/app_master_script'); ?>

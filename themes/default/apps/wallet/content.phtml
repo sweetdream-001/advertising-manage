@@ -1,0 +1,170 @@
+<div class="timeline-container" data-app="wallet">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+			<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+				<span class="go-back" onclick="SMColibri.go_back();">
+				<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link('wallet'); ?>" data-spa="true">
+						<?php echo cl_translate("Wallet"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				
+			</div>
+			<div class="rp">
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="account-wallet">
+		<div class="account-wallet__status">
+			<div class="account-wallet__card">
+			<div class="account-wallet__card-title">
+					<?php echo cl_translate("Your credit"); ?>
+				</div>
+			<div class="wallet-balance">
+				<div class="wallet-balance__icon">
+						<?php echo cl_icon("account_balance"); ?>
+					</div> 
+					<div class="wallet-balance__amount">
+						<span>
+							<?php echo cl_money($me['wallet']); ?>
+						</span>
+						<span>
+							<?php echo cl_translate("Your account's available funds"); ?>
+						</span>
+					</div>
+				
+				</div>
+
+                <?php if (in_array("on", array($cl['config']['paypal_method_status'], $cl['config']['paystack_method_status'], $cl['config']['stripe_method_status'], $cl['config']['bank_method_status']))): ?>
+                    <div class="wallet-footer">
+						<div class="wallet-footer__text">
+							<?php echo cl_translate("Please note that the amount you deposit can only be used within your current account."); ?>
+						</div>
+
+						<div class="wallet-footer__ctrls">
+							<a href="<?php echo cl_link("wallet_add"); ?>" data-spa="true" class="wallet-footer__ctrls-item">
+								<div class="btn btn-custom sm main-outline">
+									<?php echo cl_translate("Add money"); ?>
+								</div></a>
+							<a href="<?php echo cl_link("wallet_send"); ?>" data-spa="true" class="wallet-footer__ctrls-item">
+								<div class="btn btn-custom sm main-grey">
+									<?php echo cl_translate("Send money"); ?>
+								</div>
+							</a>
+						</div>
+					</div>
+                <?php else: ?>
+                	<div class="wallet-footer">
+						<div class="wallet-footer__text">
+							<?php echo cl_translate("Wallet replenishment is temporarily unavailable"); ?>
+						</div>
+						<div class="wallet-footer__ctrls">
+							<button type="button" class="btn btn-custom sm main-grey" disabled="disabled">
+								<?php echo cl_translate("Top-up my wallet"); ?>
+							</button>
+						</div>
+					</div>
+                <?php endif; ?>
+			</div>
+		</div>
+		<div class="account-wallet__history">
+			<div class="account-wallet__history-topline">
+				<h4>
+					<?php echo cl_translate("Wallet transactions"); ?>
+				</h4>
+			</div>
+
+			<?php if (not_empty($cl["wallet_history"])): ?>
+				<div class="wallet-transactions">
+					<?php foreach ($cl["wallet_history"] as $row): ?>
+						<div class="wallet-transactions__item">
+							<div class="lp">
+								<div class="lp__icon">
+									<?php if (in_array($row["operation"], array("paypal_wallet_tup", "stripe_wallet_tup", "razorpay_wallet_tup", "paystack_wallet_tup", "banktrans_wallet_tup", "affiliate_wallet_tup", "wallet_local_receipt"))): ?>
+										<?php if ($row["status"] == "success"): ?>
+											<img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/avatars/income-success.png", $cl["config"]["theme"])); ?>" alt="IMG">
+										<?php elseif($row["status"] == "declined"): ?>
+											<img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/avatars/income-error.png", $cl["config"]["theme"])); ?>" alt="IMG">
+										<?php elseif($row["status"] == "pending_approval"): ?>
+											<img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/avatars/income-pending.png", $cl["config"]["theme"])); ?>" alt="IMG">
+										<?php endif; ?>
+									<?php elseif(in_array($row["operation"], array("wallet_local_transfer", "premium_account_purchase", "blue_account_purchase"))): ?>
+										<img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/avatars/outgo-success.png", $cl["config"]["theme"])); ?>" alt="IMG">
+									<?php endif; ?>
+								</div>
+							</div>
+							<div class="rp">
+								<div class="mp__amount">
+									<div class="flex-item-left">
+										<?php if ($row["status"] == "declined"): ?><s><?php endif; ?>
+
+										<?php if (in_array($row["operation"], array("paypal_wallet_tup", "stripe_wallet_tup", "paystack_wallet_tup", "banktrans_wallet_tup", "affiliate_wallet_tup", "razorpay_wallet_tup"))) {echo "+";} else {echo "-";} ?><?php echo cl_money($row['amount']); ?>
+
+										<?php if ($row["status"] == "declined"): ?></s><?php endif; ?>
+									</div>
+									<div class="flex-item-right">
+										<?php echo $row['time']; ?>
+									</div>
+								</div>
+								<div class="mp__text">
+									<?php if ($row["operation"] == "paypal_wallet_tup"): ?>
+										<?php echo cl_translate("Account replenishment via PayPal"); ?>
+									<?php elseif($row["operation"] == "stripe_wallet_tup"): ?>
+										<?php echo cl_translate("Account replenishment via Stripe"); ?>
+									<?php elseif($row["operation"] == "paystack_wallet_tup"): ?>
+										<?php echo cl_translate("Account replenishment via PayStack"); ?>
+									<?php elseif($row["operation"] == "razorpay_wallet_tup"): ?>
+										<?php echo cl_translate("Account replenishment via RazorPay"); ?>
+									<?php elseif($row["operation"] == "banktrans_wallet_tup"): ?>
+										<?php echo cl_translate("Account replenishment via Bank transfer"); ?>
+									<?php elseif($row["operation"] == "affiliate_wallet_tup"): ?>
+										<?php echo cl_translate("Account replenishment via affiliate bonuses transfer"); ?>
+									<?php elseif($row["operation"] == "wallet_local_transfer"): ?>
+										<?php echo cl_translate("Local transfer via wallet"); ?>
+									<?php elseif($row["operation"] == "wallet_local_receipt"): ?>
+										<?php echo cl_translate("Replenishment of the account via local transfer"); ?>
+									<?php elseif($row["operation"] == "premium_account_purchase"): ?>
+										<?php echo cl_translate("Payment for the premium account subscription"); ?>
+									<?php elseif($row["operation"] == "blue_account_purchase"): ?>
+										<?php echo cl_translate("Payment for the Blue account subscription"); ?>
+									<?php endif; ?>
+								</div>
+								<?php if ($row["status"] == "pending_approval"): ?>
+									<div class="mp__status mp__status_pending">
+										<span><?php echo cl_translate("Transaction pending approval"); ?></span>
+									</div>
+								<?php elseif ($row["status"] == "declined"): ?>
+									<div class="mp__status mp__status_declined">
+										<span><?php echo cl_translate("Transaction was declined"); ?></span>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			<?php else: ?>
+				<div class="timeline-placeholder">
+					<div class="icon">
+						<div class="icon__bg">
+							<?php echo cl_icon('currency_exchange'); ?>
+						</div>
+					</div>
+					<div class="pl-message">
+						<h4>
+							<?php echo cl_translate("No transactions"); ?>
+						</h4>
+						<p>
+							<?php echo cl_translate("There are no transactions in your wallet history yet. All information about your wallet transactions will be available here"); ?>
+						</p>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>

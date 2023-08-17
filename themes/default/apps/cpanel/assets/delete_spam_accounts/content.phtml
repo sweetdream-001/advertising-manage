@@ -1,0 +1,55 @@
+<div class="cp-app-container" data-app="delete-spam-accounts">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('remove_spam'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"><?php echo cl_translate('remove_spam'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" data-an="info-content">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('delete_spam'); ?>
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <p>
+                            <b>(<?php echo cl_number($cl["total_accounts"]); ?>)</b> <?php echo cl_translate('unconfirmed_accounts'); ?>
+                        </p>
+                        <br>
+                        <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+
+                            <p>
+                                <i class="icon-info-alt"></i>
+                                <?php echo cl_translate('delete_spam_help'); ?>
+                                <?php echo cl_translate('delete_spam_help2'); ?>
+                            </p>
+
+                        </div>
+                        <hr>
+                        <form class="form" data-an="form">
+                            <div class="form-group no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                    <?php echo cl_translate("Delete"); ?>
+                                </button>
+                            </div>
+                            <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo cl_template('cpanel/assets/delete_spam_accounts/scripts/app_master_script'); ?>

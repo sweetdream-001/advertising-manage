@@ -1,0 +1,139 @@
+<div class="user-list-item">
+	<div class="user-list-item__avatar">
+		<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+			<div class="user-avatar">
+				<img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+			</div>
+		</a>
+	</div>
+	<div class="user-list-item__data">
+		<div class="user-data">
+			<div class="user-data__body">
+				<div class="user-data__body-topline">
+					
+					<div class="flex-item-left">
+						<div class="user-data__name">
+							<a href="<?php echo($cl['li']['url']); ?>" data-spa="true" data-uinfo-lbox="<?php echo($cl['li']['id']); ?>" data-toggle="popover" data-placement="bottom">
+								<span>
+									<span class="user-name-holder__name">
+										<?php echo $cl['li']['name']; ?>
+									</span>
+
+									<?php if ($cl['li']['verified'] == '1'): ?>
+										<span class="user-name-holder__badge ">
+										<svg viewBox="0 0 24 24" aria-label="Verified account" class="r-1cvl2hr r-4qtqp9 r-yyyyoo r-1xvli5t r-9cviqr r-ea8lvw r-1o7j8w5 r-bnwqim r-1plcrui r-lrvibr"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"></path></g></svg>
+										</span>
+									<?php endif; ?>
+								</span>
+							
+							</a>
+						</div>
+						<div class="user-data__country">
+						<span class="text" style="margin-right:10px; padding-left: 0px;">
+									@<?php echo($cl['li']['username']); ?>
+								</span>
+							<span class="icon"><?php echo cl_icon('public'); ?></span>
+							
+							<span class="text">
+								<?php echo cl_translate("Living in - {@country_name@}", array("country_name" => $cl['li']['country_name'])); ?>
+							</span>
+							<span class="banner">
+								<?php echo cl_banner($cl['li']['country_a2c']); ?>
+							</span>
+						</div>
+					</div>
+					<div class="flex-item-right">
+						<div class="user-data__ctrls">
+							<?php if ($cl['li']['follow_privacy'] == "approved"): ?>
+								<?php if (not_empty($cl['li']['follow_requested'])): ?>
+									<button onclick="SMColibri.req_follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom main-inline md" data-action="unfollow" data-id="<?php echo($cl['li']['id']); ?>">
+										<?php echo cl_translate("Pending"); ?>
+									</button>
+								<?php else: ?>
+									<button onclick="SMColibri.req_follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom main-outline md" data-action="follow" data-id="<?php echo($cl['li']['id']); ?>">
+										<?php echo cl_translate("Follow"); ?>
+									</button>
+								<?php endif; ?>
+							<?php else: ?>
+								<button onclick="SMColibri.follow(this);" data-user-name="<?php echo($cl['li']['name']); ?>" class="btn btn-custom md main-outline" data-action="follow" data-id="<?php echo($cl['li']['id']); ?>">
+									<?php echo cl_translate("Follow"); ?>
+								</button>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="user-data__stats">
+					<div class="stats-item">
+						<span>
+							<?php echo cl_number($cl['li']['posts']); ?>
+						</span>
+						<span><?php echo cl_translate("Posts"); ?></span>	
+					</div>
+					<div class="stats-item">
+						<span>
+							<?php echo cl_number($cl['li']['followers']); ?>
+						</span>
+						<span><?php echo cl_translate("Followers"); ?></span>	
+					</div>
+					<div class="stats-item">
+						<span>
+							<?php echo cl_number($cl['li']['following']); ?>
+						</span>
+						<span><?php echo cl_translate("Following"); ?></span>	
+					</div>
+				</div>
+				<?php if (not_empty($cl['li']['about'])): ?>
+					<div class="user-data__about">
+						<?php echo $cl['li']['about']; ?>
+
+						<?php if (not_empty($cl['li']['website'])): ?>
+							| <?php echo cl_html_el("a", $cl['li']['website'], array("href" => $cl['li']['website'], "target" => "_blank", "class" => "inline-link")); ?>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+
+				<?php if (not_empty($cl['li']['common_follows'])): ?>
+					<div class="user-data__common">
+						<div class="common-follows">
+							<div class="common-follows__title">
+								<?php if (count($cl['li']['common_follows']) > 1): ?>
+									<?php echo cl_translate("Has {@common_follows@} followers you know", array("common_follows" => count($cl['li']['common_follows']))); ?>
+								<?php else: ?>
+									<?php echo cl_translate("Has {@common_follows@} follower you know", array("common_follows" => count($cl['li']['common_follows']))); ?>
+								<?php endif; ?>
+							</div>
+							<div class="common-follows__list">
+								<?php foreach ($cl['li']['common_follows'] as $index => $udata): ?>
+									<?php if ($index <= 4): ?>
+										<div class="common-follows__item"  data-toggle="tooltip" data-placement="bottom" title="<?php echo $udata["name"]; ?> | @<?php echo $udata["username"]; ?>">
+											<a href="<?php echo $udata["url"]; ?>" data-spa="true">
+												<img src="<?php echo $udata["avatar"]; ?>" alt="IMG">
+											</a>
+										</div>
+										
+									<?php endif;?>
+								<?php endforeach; ?>
+
+								<?php if (count($cl['li']['common_follows']) > 5): ?>
+									<div class="common-follows__item common-follows__item_total">
+										<span>
+											+<?php echo (count($cl['li']['common_follows']) - 5); ?>
+										</span>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+		

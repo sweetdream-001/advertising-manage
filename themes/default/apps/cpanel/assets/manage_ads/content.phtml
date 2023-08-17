@@ -1,0 +1,100 @@
+<div class="cp-app-container" data-app="user-ads">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('User ads'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('User ads'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('Manage user ads'); ?>
+                            </h5>
+                        </div>
+
+
+                        <div class="body">
+                            <div class="regular-table">
+                                <table class="table table-hover no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>
+                                                <?php echo cl_translate('Username'); ?>
+                                            </th>
+                                            <th>
+                                                Target URL
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Budget'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Clicks'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Views'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Status'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Approved'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Date'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Action'); ?>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-an="ads-list">
+                                        <?php if (not_empty($cl['user_ads'])) : ?>
+                                            <?php foreach ($cl['user_ads'] as $cl['li']) : ?>
+                                                <?php echo cl_template('cpanel/assets/manage_ads/includes/list_item'); ?>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <tr>
+                                                <td colspan="8">
+                                                    <div class="empty-table">
+                                                        <span class="icon">
+                                                            <i class="material-icons">library_books</i>
+                                                        </span>
+                                                        <h4><?php echo ('No ads found'); ?></h4>
+                                                        <p>
+                                                            <?php echo ('It looks like there are no ads in your database yet. All advertisements of your website users will be displayed here.'); ?>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                                <?php if (not_empty($cl['user_ads'])) : ?>
+                                    <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="prev" href="javascript:void(0);" class="pagination-ctrls prev">
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                    <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="next" href="javascript:void(0);" class="pagination-ctrls next">
+                                        <i class="material-icons">chevron_right</i>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php echo cl_template('cpanel/assets/manage_ads/scripts/app_master_script'); ?>

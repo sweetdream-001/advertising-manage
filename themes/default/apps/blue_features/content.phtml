@@ -1,0 +1,186 @@
+<div class="timeline-container">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("settings/blue"); ?>" data-spa="true">
+						<?php echo cl_translate("Blue features"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+
+			</div>
+			<div class="rp">
+
+			</div>
+		</div>
+	</div>
+	<div class="profile-settings">
+		<div class="profile-settings__title">
+			<h3>
+				<?php echo cl_translate("Blue user account"); ?>
+			</h3>
+			<h4>
+				<?php echo cl_translate("Your blue checkmark account approved."); ?>
+			</h4>
+		</div>
+		<div>
+
+			<div class="ver-icon">
+				<svg viewBox="0 0 22 22" aria-label="Verified account" role="img"
+					class="r-1cvl2hr r-4qtqp9 r-yyyyoo r-1xvli5t r-9cviqr r-f9ja8p r-og9te1 r-bnwqim r-1plcrui r-lrvibr"
+					data-testid="icon-verified">
+					<g>
+						<path
+							d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z">
+						</path>
+					</g>
+				</svg>
+			</div>
+			<div class="blue_desc">
+						<span><svg viewBox="0 0 24 24" aria-hidden="true"
+								class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-1xvli5t r-1b7u577 r-1cvj4g8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+								<g>
+									<path
+										d="M10 5H2V3h8v2zM7 7H2v2h5V7zm12.94 4.946C19.48 15.918 16.1 19 12 19H8.19c-.12.988-.19 1.993-.19 3H6c0-4.669 1.29-9.39 3.95-12.97C12.62 5.421 16.38 2.9 23 3c.17 3.359-.21 7.147-3.06 8.946zM21 5.033c-4.16.276-7.29 2.275-9.45 5.187-1.43 1.929-2.43 4.268-3 6.78H12c2.68 0 4.95-1.76 5.72-4.188-.52.108-1.09.172-1.72.188h-1.5v-2H16c3.9 0 4.95-2.921 5-5.967z">
+									</path>
+								</g>
+							</svg>
+							<?php echo cl_translate("Longer Posts"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("blue_characters_long", array("long" => cl_html_el("strong", cl_text($cl["config"]["max_post_len_blue"])))); ?>
+						</p>
+						<span><svg viewBox="0 0 24 24" aria-hidden="true"
+								class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-1xvli5t r-1b7u577 r-1cvj4g8 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+								<g>
+									<path
+										d="M14.23 2.854c.98-.977 2.56-.977 3.54 0l3.38 3.378c.97.977.97 2.559 0 3.536L9.91 21H3v-6.914L14.23 2.854zm2.12 1.414c-.19-.195-.51-.195-.7 0L5 14.914V19h4.09L19.73 8.354c.2-.196.2-.512 0-.708l-3.38-3.378zM14.75 19l-2 2H21v-2h-6.25z">
+									</path>
+								</g>
+							</svg>
+							<?php echo cl_translate("Edit Post"); ?>
+						</span>
+						<p class="help">
+							<?php echo cl_translate("edit_post_desc"); ?>
+						</p>
+
+					</div>
+			<div class="blue_feat">
+				<div class="profile-settings">
+
+					<h5>
+						<?php echo cl_translate("confirmation_funds_in_the_amount_of_will_b", array("price" => cl_html_el("strong", cl_money($cl["config"]["blue_account_mprice"])), "end_date" => cl_html_el("strong", date("d/m/Y", ($me["blue_ex_date"]))))); ?>
+					</h5>
+
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+
+	<script>
+		"use strict";
+
+		$(document).ready(function ($) {
+			Vue.use(window.vuelidate.default);
+			var VueValids = window.validators;
+
+			new Vue({
+				el: "#cl-blue-features-vue-app",
+				data: {
+					submitting: false,
+					unsuccessful_attempt: false
+				},
+				methods: {
+					submit_form: function (_self = null) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/settings/save_blue_features_settings"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function () {
+								_app_.submitting = true;
+								_app_.unsuccessful_attempt = false;
+							},
+							success: function (data) {
+								if (data.status == 200) {
+									cl_bs_notify("<?php echo cl_translate("Your changes has been successfully saved!"); ?>");
+								}
+								else {
+									_app_.unsuccessful_attempt = true;
+								}
+							},
+							complete: function () {
+								_app_.submitting = false;
+							}
+						});
+					}
+				}
+			});
+		});
+	</script>
+</div>
+<style>
+	.profile-settings__title {
+		text-align: center;
+		color: var(--cl-primary-text-color);
+		margin-top: 40px;
+
+	}
+
+	.ver-icon {
+		width: 200px;
+		height: 200px;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.profile-settings__content {
+		padding: 10px;
+	}
+
+	.blue_feat {
+		width: auto;
+		overflow: hidden;
+		display: flex;
+		border: 0px solid var(--smc-main-border-color);
+		background-color: var(--smc-main-bg-color-2);
+		padding: 20px;
+		border-radius: 16px;
+		text-align: center;
+		margin: 15px;
+	}
+	.blue_desc {
+		padding: 20px;
+	}
+	.blue_desc .help {
+		text-align: left !important;
+		margin-left: 35px !important;
+	}
+
+	.blue_desc span svg {
+		margin-right: 12px;
+		color: var(--cl-primary-text-color);
+		position: relative;
+		max-width: 100%;
+		height: 1.25em;
+		fill: currentcolor;
+		display: inline-block;
+		font-size: 15px;
+	}
+
+</style>

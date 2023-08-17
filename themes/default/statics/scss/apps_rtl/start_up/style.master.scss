@@ -1,0 +1,40 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+body.cl-app-start_up{
+	main.main-content-container{
+		div.main-content-container-inner{
+			div.timeline-container{
+				div.main-profile-startup-container{
+					div.startup{
+						div.startup-body{
+							div.startup-body-content{
+								div.startup-suggested{
+									div.suggested-list{
+										div.suggested-list-item{
+											div.user-info-holder{
+									 			padding: 0  10px 0 0;
+
+									 			p{
+									 				padding-right: 0px;
+									 				padding-left: 40px;
+									 			}
+									 		}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

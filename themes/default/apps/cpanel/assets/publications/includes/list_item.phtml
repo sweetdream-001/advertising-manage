@@ -1,0 +1,66 @@
+<tr data-list-item="<?php echo($cl['li']['id']); ?>">
+    <td scope="row">
+        <?php echo($cl['li']['id']); ?>
+    </td>
+    <td>
+    	<?php if ($cl['li']['type'] == 'image'): ?>
+    		<span class="icon">
+    			<?php echo cl_ikon("image"); ?>
+    		</span>
+    	<?php elseif($cl['li']['type'] == 'video'): ?>
+			<span class="icon">
+    			<?php echo cl_ikon("video"); ?>
+    		</span>
+    	<?php elseif($cl['li']['type'] == 'gif'): ?>
+			<span class="icon">
+    			<?php echo cl_ikon("gif"); ?>
+    		</span>
+    	<?php else: ?>
+    		<span class="icon">
+    			<?php echo cl_ikon("text"); ?>
+    		</span>
+    	<?php endif; ?>
+    </td>
+    <td>
+    	<?php if ($cl['li']['target'] == 'publication'): ?>
+			<?php echo cl_translate('Publication'); ?>
+		<?php else: ?>
+			<?php echo cl_translate('Reply'); ?>
+		<?php endif; ?>
+    </td>
+    <td>
+    	<b class="num">
+    		<?php echo($cl['li']['replys_count']); ?>
+    	</b>
+    </td>
+    <td>
+    	<b class="num">
+    		<?php echo($cl['li']['likes_count']); ?>
+    	</b>
+    </td>
+    <td>
+    	<b class="num">
+    		<?php echo($cl['li']['reposts_count']); ?>
+    	</b>
+    </td>
+    <td>
+    	<time>
+    		<?php echo($cl['li']['time']); ?>
+    	</time>
+    </td>
+    <td>
+    	<div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			<i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="<?php echo($cl['li']['url']); ?>" class="dropdown-item">
+				<?php echo cl_translate('Show thread'); ?>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item" onclick="SMC_CPanel.delete_post('<?php echo($cl['li']['id']); ?>');">
+				<?php echo cl_translate('Delete'); ?>
+                </a>
+            </ul>
+        </div>
+    </td>
+</tr>

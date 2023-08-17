@@ -1,0 +1,310 @@
+<div class="feed_follow">
+   
+    <div class="body_follow">
+        <?php if (not_empty($cl['follow_suggestion'])): ?>
+            <div class="follow_head">
+        <h6>
+            <?php echo cl_translate("who_to_follow"); ?>
+        </h6>
+    </div>
+            <div id="cardSlider2" class="carousel mb-6 max-w-6xl mx-auto bg-gray-50 py-10">
+                <div class="carousel__viewport px-12">
+                    <?php foreach ($cl['follow_suggestion'] as $row): ?>
+                        <figure class="carousel__slide py-3 px-4 w-1/6">
+
+                            <img class="mb-4 avatar" src="<?php echo ($row['avatar']); ?>" alt="avatar">
+
+                            <figcaption>
+                                <div class="mb-4 user-info-holder">
+                                    <h4>
+                                        <a href="<?php echo ($row['url']); ?>" data-uinfo-lbox="<?php echo ($row['id']); ?>"
+                                            data-toggle="popover" data-placement="bottom">
+                                            <span class="user-name-holder">
+                                                <?php echo $row['name']; ?>
+                                                <?php if ($row['verified'] == '1'): ?>
+                                                    <span class="user-name-holder__badge">
+                                                        <svg style='vertical-align: middle;' xmlns='http://www.w3.org/2000/svg'
+                                                            width='20' height='20' viewBox='0 0 24 24'>
+                                                            <path fill='dodgerblue'
+                                                                d='M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'>
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </span>
+
+                                        </a>
+
+                                    </h4>
+                                    <a class="username" href="<?php echo ($row['url']); ?>">
+                                        @<?php echo $row['username']; ?>
+                                    </a>
+
+                                </div>
+                                <?php if ($row['follow_privacy'] == "approved"): ?>
+                                    <?php if (not_empty($row['follow_requested'])): ?>
+                                        <button onclick="SMColibri.req_follow(this);" class="btn-follow" data-action="unfollow"
+                                            data-user-name="<?php echo ($row['name']); ?>" data-id="<?php echo ($row['id']); ?>">
+                                            <?php echo cl_translate("Pending"); ?>
+                                        </button>
+                                    <?php else: ?>
+                                        <button onclick="SMColibri.req_follow(this);" class="btn-follow" data-action="follow"
+                                            data-user-name="<?php echo ($row['name']); ?>" data-id="<?php echo ($row['id']); ?>">
+                                            <?php echo cl_translate("Follow"); ?>
+                                        </button>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <button onclick="SMColibri.follow(this);" class="btn-follow" data-action="follow"
+                                        data-user-name="<?php echo ($row['name']); ?>" data-id="<?php echo ($row['id']); ?>">
+                                        <?php echo cl_translate("Follow"); ?>
+                                    </button>
+                                <?php endif; ?>
+                            </figcaption>
+                            <?php if (not_empty($row['common_follows'])): ?>
+                                <div class="mt-2 user-data__common">
+                                    <div class="common-follows">
+                                        <div class="common-follows__title">
+                                            <?php if (count($row['common_follows']) > 1): ?>
+                                                <?php echo cl_translate("has_followers_you_know_home", array("common_follows" => count($row['common_follows']))); ?>
+                                            <?php else: ?>
+                                                <?php echo cl_translate("has_follower_you_know_home", array("common_follows" => count($row['common_follows']))); ?>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="common-follows__list">
+                                            <?php foreach ($row['common_follows'] as $index => $udata): ?>
+                                                <?php if ($index <= 4): ?>
+                                                    <div class="common-follows__item" data-toggle="tooltip" data-placement="bottom"
+                                                        title="<?php echo $udata["name"]; ?> | @<?php echo $udata["username"]; ?>">
+                                                        <a href="<?php echo $udata["url"]; ?>" data-spa="true">
+                                                            <img src="<?php echo $udata["avatar"]; ?>" alt="IMG">
+                                                        </a>
+                                                    </div>
+
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+
+                                            <?php if (count($row['common_follows']) > 5): ?>
+                                                <div class="common-follows__item common-follows__item_total">
+                                                    <span>
+                                                        +
+                                                        <?php echo (count($row['common_follows']) - 5); ?>
+                                                    </span>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </figure>
+
+                    <?php endforeach; ?>
+                </div>
+                <div class="mb-4 mt-2 follow-suggestion__footer">
+                    <a class="more" href="<?php echo cl_link("suggested"); ?>" data-spa="true">
+                        <?php echo cl_translate("Show more"); ?>
+                    </a>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="follow-suggestion__placeholder" style="padding:10px;">
+              <h6>  <?php echo cl_translate("Here will be a list of the most recommended people to follow"); ?></h6>
+            </div>
+        <?php endif; ?>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+<style>
+    #cardSlider2 {
+        --carousel-button-bg: #fff;
+
+        --carousel-button-width: 28px;
+        --carousel-button-height: 28px;
+
+        --carousel-button-svg-width: 14px;
+        --carousel-button-svg-height: 14px;
+
+        --carousel-button-svg-stroke-width: 3;
+        --carousel-button-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+            rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    }
+
+    .carousel__button.is-prev {
+        left: 10px;
+    }
+
+    .carousel__button.is-next {
+        right: 10px;
+    }
+
+    div.common-follows__list {
+        display: flex;
+        margin-left: 10px;
+    }
+
+    div.common-follows__list div.common-follows__item a {
+        display: block;
+        overflow: hidden;
+        width: 24px;
+        height: 24px;
+        border-radius: 100%;
+        text-decoration: none;
+        border: 1px solid var(--cl-primary-border-color);
+    }
+
+    div.common-follows div.common-follows__list div.common-follows__item a img {
+        width: 100%;
+    }
+
+    div.common-follows div.common-follows__list div.common-follows__item {
+        flex-basis: 24px;
+        flex-shrink: 0;
+        margin-left: -7px;
+    }
+
+    div.common-follows div.common-follows__title {
+        font-size: 12px;
+        line-height: 18px;
+        font-weight: 500;
+        color: var(--smc-main-text-color-2);
+    }
+
+    .feed_follow {
+        display: block;
+        border-bottom: 1px solid var(--smc-main-border-color);
+        padding: 10px;
+    }
+
+    .feed_follow .follow_head {
+        display: flex;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        margin-left: 16px;
+    }
+
+    .feed_follow .follow_head h6 {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 24px;
+    }
+
+    .feed_follow .body_follow {
+        display: block;
+    }
+
+    .feed_follow .body_follow .follow-suggestion__body {
+        display: flex;
+    }
+
+    .carousel__slide .avatar {
+        width: 65px;
+        height: 65px;
+        border-radius: 9999px;
+        box-shadow: rgba(0, 0, 0, 0.03) 0px 0px 2px inset;
+        cursor: pointer;
+        border: 1px solid var(--smc-main-border-color);
+    }
+
+    .carousel__slide {
+        border: 1px solid #eee;
+        border-radius: 16px;
+        width: var(--carousel-slide-width, 28%) ;
+        padding: 15px !important;
+        margin-left: 5px;
+        margin-right: 10px;
+        padding-top: 20px !important;
+        padding-bottom: 10px !important;
+
+    }
+
+    .carousel__slide .user-info-holder {
+        max-width: 150px;
+
+    }
+
+    .follow-suggestion__footer .more {
+        text-decoration: none;
+        font-size: 15px;
+        margin-left: 26px;
+
+        color: var(--smc-main-uiel-color);
+    }
+
+    .carousel__slide .btn-follow {
+        background-color: rgb(15, 20, 25);
+        min-height: 32px;
+        min-width: 32px;
+        outline-style: none;
+        transition-property: background-color, box-shadow;
+        transition-duration: 0.2s;
+        padding-left: 16px;
+        padding-right: 16px;
+        border-color: rgba(0, 0, 0, 0);
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 9999px;
+        cursor: pointer;
+        color: rgb(255, 255, 255);
+        font-weight: 700;
+        -moz-box-align: center;
+        align-items: center;
+        -moz-box-pack: center;
+        justify-content: center;
+        -moz-box-flex: 1;
+        flex-grow: 1;
+        -moz-box-direction: normal;
+        -moz-box-orient: horizontal;
+        flex-direction: row;
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    .carousel__slide .btn-follow:hover {
+        background-color: rgb(15, 20, 25, 0.8);
+    }
+
+    .carousel__slide .user-info-holder h4 {
+        line-height: 20px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .carousel__slide .user-info-holder h4 a .user-name-holder {
+        font-size: 16px;
+        font-weight: 700;
+
+        color: var(--smc-main-text-color);
+        text-decoration: none;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .carousel__track figure {
+        text-align: center;
+    }
+
+    .carousel__slide .user-info-holder a.username {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        color: var(--smc-main-text-color-2);
+        text-decoration: none;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+
+    }
+</style>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

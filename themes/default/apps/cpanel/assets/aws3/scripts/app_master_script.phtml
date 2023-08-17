@@ -1,0 +1,48 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app    = $('[data-app="aws3-storage"]');
+		var _dataf1 = _app.find('form[data-an="form1"]');
+		var _dataf2 = _app.find('form[data-an="form2"]');
+
+		_dataf1.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/save_settings"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_dataf1.find('small.invalid-feedback').remove();
+				_dataf1.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("Your changes have been saved successfully!", 3000);
+				}
+				else {
+					_dataf1.find('[data-an="{0}-input"]'.format(data.err_field)).append($('<small>', {
+						text: data.message,
+						class: 'invalid-feedback animated flash'
+					})).scroll2();
+				}
+			},
+			complete: function() {
+				_dataf1.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Save changes");
+			}
+		});
+
+		_dataf2.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/as3_api_contest"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_dataf2.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				cl_bs_notify(data.message, 3000);
+			},
+			complete: function() {
+				_dataf2.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Test AS3 API Connection");
+			}
+		});
+	});
+</script>

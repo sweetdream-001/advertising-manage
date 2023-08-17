@@ -1,0 +1,41 @@
+&.waitme-on{
+    overflow: hidden !important;
+
+    div.cl-waitme{
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(#ffffff, 0.55);
+        z-index: 1200;
+
+        div.cl-waitme__content{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            margin: 0px !important;
+            transform: unset !important;
+            height: 100vh !important;
+            padding: 7vw;
+
+            div.cl-waitme__spinner{
+                width: 45px;
+                height: 45px;
+                border-radius: 100%;
+                border-width: 5px;
+                border-style: solid;
+                border-left-color: var(--cl-primary-border-color);
+                border-right-color: var(--cl-primary-border-color);
+                border-bottom-color: var(--cl-primary-border-color);
+                border-top-color: var(--cl-primary-color);
+                animation: rotation 0.55s infinite linear;
+            }
+        }
+    }
+}

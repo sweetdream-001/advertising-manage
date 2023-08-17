@@ -1,0 +1,330 @@
+<div class="overlay"></div>
+<div class="page-body-wrapper" id="acp-main-left-sidebar">
+  <!-- Page Sidebar Start-->
+  <div class="sidebar-wrapper">
+    <style>
+      .img-fluid {
+        max-width: 100%;
+        height: 30px;
+      }
+
+      .page-wrapper .page-body-wrapper .page-title .breadcrumb li a {
+        font-size: 18px !important;
+        color: var(--theme-deafult);
+      }
+    </style>
+
+    <div class="logo-wrapper"><a href="<?php echo cl_link('/'); ?>"><img class="img-fluid for-light" src="{%config site_logo%}" alt=""><img class="img-fluid for-dark" src="{%config site_logo%}" alt=""></a><span>{%config name%}</span>
+      <div class="back-btn"><i class="fa fa-angle-left"></i></div>
+      <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i></div>
+    </div>
+    <div>
+
+      <nav class="sidebar-main">
+        <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+        <div id="sidebar-menu">
+          <ul class="sidebar-links" id="simple-bar">
+            <li class="back-btn"><a href="index.html"><img class="img-fluid" src="{%config site_logo%}" alt=""></a>
+              <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
+            </li>
+            <li class="sidebar-main-title">
+              <div>
+                <h6><?php echo cl_translate('general_settings'); ?></h6>
+                <p><?php echo cl_translate('Dashboard'); ?>, <?php echo cl_translate('Settings'); ?>...</p>
+              </div>
+            </li>
+
+            <li class="sidebar-list">
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'dashboard') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/dashboard'); ?>"><i data-feather="home"></i><span> <?php echo cl_translate('Dashboard'); ?> </span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'gen_settings') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/gen_settings'); ?>"><i data-feather="settings"></i><span><?php echo cl_translate('Settings'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><label class="badge badge-danger">New</label>
+              <a href="<?php echo cl_link('admin_panel/toggle_features'); ?>" class="sidebar-link <?php if ($cl["cp_section"] == 'toggle_features') {
+                                                                                                    echo ('active');
+                                                                                                  } ?>">
+
+                <i data-feather="toggle-left"></i><span> <?php echo cl_translate('toggle_functions'); ?>
+                </span>
+              </a>
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'email_settings') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/email_settings'); ?>"><i data-feather="mail"></i><span><?php echo cl_translate('E-mail settings'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'themes') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/themes'); ?>">
+                <i data-feather="monitor"></i><span> <?php echo cl_translate('Themes'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><label class="badge badge-danger">New</label><a class="sidebar-link <?php if ($cl["cp_section"] == 'display_settings') {
+                                                                                                            echo ('active');
+                                                                                                          } ?>" href="<?php echo cl_link('admin_panel/display_settings'); ?>">
+                <i data-feather="sun"></i><span> <?php echo cl_translate('display_settings'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'languages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/languages'); ?>">
+                <i data-feather="globe"></i><span> <?php echo cl_translate('languages'); ?></span></a>
+
+            </li>
+            <!-- Users -->
+            <li class="sidebar-main-title">
+              <div>
+                <h6> <?php echo cl_translate('Users'); ?></h6>
+                <p><?php echo cl_translate('Social login'); ?>, <?php echo cl_translate('Premium account'); ?>, <?php echo cl_translate('Users'); ?>..</p>
+              </div>
+            </li>
+            <li class="sidebar-list">
+            <label class="badge badge-danger">New</label> <a href="<?php echo cl_link('admin_panel/premium_account'); ?>" class="sidebar-link <?php if($cl["cp_section"] == 'premium_account') {echo('active');} ?>">
+            <i data-feather="user-plus"></i>
+                <span>
+                <?php echo cl_translate('Premium account'); ?>
+                </span>
+            </a>
+        </li>
+        <li class="sidebar-list">
+            <label class="badge badge-danger">New</label> <a href="<?php echo cl_link('admin_panel/blue_account'); ?>" class="sidebar-link <?php if($cl["cp_section"] == 'blue_account') {echo('active');} ?>">
+            <i data-feather="check-circle"></i>
+                <span>
+                <?php echo cl_translate('Blue account'); ?>
+                </span>
+            </a>
+        </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'oauth_settings') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/oauth_settings'); ?>"><i data-feather="facebook"></i><span><?php echo cl_translate('Social login'); ?> </span></a>
+
+            </li>
+
+            <li class="sidebar-list">
+             <a class="sidebar-link <?php if ($cl["cp_section"] == 'invite_users') {
+                                                                                    echo ('active');
+                                                                                  } ?>" href="<?php echo cl_link('admin_panel/invite_users'); ?>"><i data-feather="send"></i><span><?php echo cl_translate('Invite users'); ?> </span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'users') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/users'); ?>"><i data-feather="users"></i><span><?php echo cl_translate('Users'); ?></span></a></li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'account_verification') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/account_verification'); ?>"><i data-feather="check-circle"></i>
+                <span> <?php echo cl_translate('Account Verification'); ?></span></a></li>
+                <li class="sidebar-list"> <label class="badge badge-danger">New</label>
+            <a href="<?php echo cl_link('admin_panel/restrictions'); ?>" class="sidebar-link <?php if(in_array($cl["cp_section"], array('restrictions'))) {echo('active');} ?>">
+            <i data-feather="slash"></i>
+                <span>
+                    Restrictions
+                </span>
+            </a>
+        </li>
+            <!-- Reports -->
+            <li class="sidebar-main-title">
+              <div>
+                <h6> <?php echo cl_translate('Reports'); ?></h6>
+                <p><?php echo cl_translate('reports_description'); ?>..</p>
+              </div>
+            </li>
+
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'account_reports') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/account_reports'); ?>"><i data-feather="bar-chart-2"></i><span> <?php echo cl_translate('Account reports'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'post_reports') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/post_reports'); ?>"><i data-feather="bar-chart"></i><span> <?php echo cl_translate('Publication reports'); ?></span></a>
+
+            </li>
+            <!-- end section Reports -->
+            <li class="sidebar-main-title">
+              <div>
+                <h6> <?php echo cl_translate('Payment gateways'); ?></h6>
+                <p><?php echo cl_translate('PayPal, PayStack, Stripe'); ?>..</p>
+              </div>
+            </li>
+            <li class="sidebar-list"><label class="badge badge-danger">New</label>
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'payment_gateways') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/payment_gateways'); ?>"><i data-feather="credit-card"></i><span> <?php echo cl_translate('Settings Payment'); ?> </span></a>
+
+            </li>
+            <li class="sidebar-list"><label class="badge badge-danger">New</label>
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'banktrans_receipts') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/banktrans_receipts'); ?>">
+                <i data-feather="credit-card"></i> <span> <?php echo cl_translate('Bank transfers'); ?> </span>
+              </a>
+            </li>
+            <li class="sidebar-main-title">
+              <div>
+                <h6>APIs</h6>
+                <p> <?php echo cl_translate('Google'); ?>, <?php echo cl_translate('Advertising'); ?>..</p>
+              </div>
+            </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'google_ads') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/google_ads'); ?>">
+                <i data-feather="trending-up"></i><span> <?php echo cl_translate('Google ads'); ?> </span></a>
+
+            </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'recaptcha') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/recaptcha'); ?>">
+                <i data-feather="pocket"></i><span> Google reCAPTCHA </span></a>
+
+            </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'aws3') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/aws3'); ?>">
+                <i data-feather="box"></i><span> AWS3 Storage </span></a>
+
+            </li>
+            <li class="sidebar-list" ><label class="badge badge-danger">New</label>
+            <a href="<?php echo cl_link('admin_panel/custom_jscss'); ?>" class="sidebar-link <?php if($cl["cp_section"] == 'custom_jscss') {echo('active');} ?>">
+            <i data-feather="code"></i><span>
+                    Custom JS/CSS
+                </span>
+            </a>
+        </li>
+            <li class="sidebar-list">
+              <a class="sidebar-link <?php if ($cl["cp_section"] == 'push_notifications') {
+                                        echo ('active');
+                                      } ?>" href="<?php echo cl_link('admin_panel/push_notifications'); ?>">
+                <i data-feather="bell"></i><span> <?php echo cl_translate('Push notifications'); ?> </span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link sidebar-title <?php if (in_array($cl["cp_section"], array('ads_settings', 'manage_ads'))) {
+                                                                            echo ('active');
+                                                                          } ?>" href="#"><i data-feather="airplay"></i><span><?php echo cl_translate('Advertising'); ?></span></a>
+              <ul class="sidebar-submenu">
+                <li><a href="<?php echo cl_link('admin_panel/ads_settings'); ?>" class="<?php if (in_array($cl["cp_section"], array('ads_settings'))) {
+                                                                                          echo ('active');
+                                                                                        } ?>"> <?php echo cl_translate('Settings'); ?></a></li>
+                <li><a href="<?php echo cl_link('admin_panel/manage_ads'); ?>" class="<?php if (in_array($cl["cp_section"], array('manage_ads'))) {
+                                                                                        echo ('active');
+                                                                                      } ?>"> <?php echo cl_translate('Manage ads'); ?></a></li>
+              </ul>
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link sidebar-title <?php if (in_array($cl["cp_section"], array('affiliate_settings', 'affiliate_payouts'))) {
+                                                                            echo ('active');
+                                                                          } ?>" href="#"><i data-feather="git-merge"></i>
+                <span> <?php echo cl_translate('Affiliates'); ?></span></a>
+              <ul class="sidebar-submenu">
+                <li><a href="<?php echo cl_link('admin_panel/affiliate_settings'); ?>" class="<?php if (in_array($cl["cp_section"], array('affiliate_settings'))) {
+                                                                                                echo ('active');
+                                                                                              } ?>"> <?php echo cl_translate('Settings'); ?></a></li>
+                <li><a href="<?php echo cl_link('admin_panel/affiliate_payouts'); ?>" class="<?php if (in_array($cl["cp_section"], array('affiliate_payouts'))) {
+                                                                                                echo ('active');
+                                                                                              } ?>"><?php echo cl_translate('Payouts'); ?></a></li>
+              </ul>
+            </li>
+            <li class="sidebar-main-title">
+              <div>
+                <h6><?php echo cl_translate('pages'); ?></h6>
+                <p> <?php echo cl_translate('faq_pages'); ?>, <?php echo cl_translate('terms_of_use_pages'); ?>..</p>
+              </div>
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'faq_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/faq_pages'); ?>"><i data-feather="help-circle"></i>
+                <span> <?php echo cl_translate('faq_pages'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'terms_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/terms_pages'); ?>"><i data-feather="book"></i>
+                <span> <?php echo cl_translate('terms_of_use_pages'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'privacy_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/privacy_pages'); ?>"><i data-feather="shield"></i>
+                <span> <?php echo cl_translate('privacy_pages'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'cookies_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/cookies_pages'); ?>"><i data-feather="file-text"></i>
+                <span> <?php echo cl_translate('cookies_pages'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'about_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/about_pages'); ?>"><i data-feather="layout"></i>
+                <span> <?php echo cl_translate('about_pages'); ?></span></a>
+
+            </li>
+            <li class="sidebar-main-title">
+              <div>
+                <h6><?php echo cl_translate('Basic navigation'); ?></h6>
+                <p><?php echo cl_translate('Backup'); ?>,<?php echo cl_translate('Publications'); ?>, <?php echo cl_translate('Sitemap'); ?>...</p>
+              </div>
+            </li>
+
+            <li class="sidebar-list">
+              <label class="badge badge-info">Latest </label><a class="sidebar-link  link-nav <?php if ($cl["cp_section"] == 'publications') {
+                                                                                                echo ('active');
+                                                                                              } ?>" href="<?php echo cl_link('admin_panel/publications'); ?>"><i data-feather="monitor"> </i><span> <?php echo cl_translate('Publications'); ?></span></a>
+            </li>
+            <li class="sidebar-list">
+              <label class="badge badge-danger">New </label><a class="sidebar-link  link-nav <?php if ($cl["cp_section"] == 'app_links') {
+                                                                                                echo ('active');
+                                                                                              } ?>" href="<?php echo cl_link('admin_panel/app_links'); ?>"><i data-feather="smartphone"></i><span> <?php echo cl_translate('mobile_app'); ?></span></a>
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'backups') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/backups'); ?>"><i data-feather="download-cloud"></i><span> <?php echo cl_translate('Backup'); ?></span></a>
+
+            </li>
+            <li lass="sidebar-list">
+           <a href="<?php echo cl_link('admin_panel/timezone'); ?>" class="sidebar-link link-nav <?php if($cl["cp_section"] == 'timezone') {echo('active');} ?>">
+            <i data-feather="clock"></i>
+                <span>
+                   <?php echo cl_translate("Timezone settings"); ?>
+                </span>
+            </a>
+        </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'sitemap') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/sitemap'); ?>"><i data-feather="layers"></i><span> <?php echo cl_translate('Sitemap'); ?></span></a>
+
+            </li>
+
+            <li class="sidebar-list"><a class="sidebar-link sidebar-title <?php if (in_array($cl["cp_section"], array('delete_swifts', 'delete_spam_accounts'))) {
+                                                                            echo ('active open');
+                                                                          } ?>" href="#"><i data-feather="database"></i><span> <?php echo cl_translate('Database cleaning'); ?></span></a>
+              <ul class="sidebar-submenu">
+                <li><a href="<?php echo cl_link('admin_panel/delete_swifts'); ?>" class="<?php if ($cl["cp_section"] == 'delete_swifts') {
+                                                                                            echo ('active');
+                                                                                          } ?>"><?php echo cl_translate('remove_expired_swifts'); ?></a></li>
+                <li><a href="<?php echo cl_link('admin_panel/delete_spam_accounts'); ?>" class="<?php if ($cl["cp_section"] == 'delete_spam_accounts') {
+                                                                                                  echo ('active');
+                                                                                                } ?>"> <?php echo cl_translate('remove_spam'); ?></a></li>
+              </ul>
+            </li>
+
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'changelogs') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/changelogs'); ?>"><i data-feather="code"></i><span> <?php echo cl_translate('Changelogs'); ?></span></a></li>
+            <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="https://support.jooj.us/doc/twitter-clone/" target="_blank"><i data-feather="book-open"></i><span> <?php echo cl_translate('Documentation'); ?></span></a></li>
+
+          </ul>
+        </div>
+        <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+      </nav>
+    </div>
+  </div>

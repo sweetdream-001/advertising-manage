@@ -1,0 +1,53 @@
+<div class="cp-app-container" data-app="edit-user">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Users'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Users'); ?></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Edit user data'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            <?php echo cl_translate('User'); ?> <?php echo cl_translate('wallet_balance'); ?>
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <form class="form" data-an="form">
+                                <div class="form-group" data-an="wallet-input">
+                                    <label>
+                                        <?php echo cl_translate('wallet_balance'); ?> <a href="<?php echo cl_link($cl["user_data"]["username"]); ?>" target="_blank"><b>(@<?php echo ($cl["user_data"]["username"]); ?>)</b></a>
+                                    </label>
+                                    <div class="form-group">
+                                        <input value="<?php echo ($cl["user_data"]["wallet"]); ?>" name="wallet" type="text" class="form-control" placeholder="E.g. <?php echo cl_money($cl["config"]["wallet_min_amount"]); ?>">
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="form-group no-mb" style="margin-top: 15px;">
+                            <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                <?php echo cl_translate("Save changes"); ?>
+                            </button>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo ($cl["user_data"]["id"]); ?>" name="user_id">
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/wallet_balance/scripts/app_master_script'); ?>

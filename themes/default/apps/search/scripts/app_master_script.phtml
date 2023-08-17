@@ -1,0 +1,143 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app = new Vue({
+			el: "#vue-search-app",
+			data: {
+				loading_more: false,
+				load_more: true,
+				searching: false,
+				search_query: "<?php echo($cl["search_query"]); ?>",
+				action: "<?php echo($cl["page_tab"]); ?>",
+				query_result: "<?php echo ((not_empty($cl["query_result"])) ? 1 : 0); ?>",
+				empty_list: "<?php echo ((empty($cl["query_result"]) && empty($cl["search_query"])) ? 1 : 0); ?>",
+				init_result: ""
+			},
+			computed: {
+				show_loader: function() {
+					if (this.query_result == '1' && cl_empty(this.searching)) {
+						return true;
+					}
+
+					return false;
+				},
+				search_htags_url: function() {
+					var url = '<?php echo cl_link("search/htags?q={0}"); ?>';
+					return url.format(this.search_query);
+				},
+				search_people_url: function() {
+					var url = '<?php echo cl_link("search/people?q={0}"); ?>';
+					return url.format(this.search_query);
+				},
+				search_posts_url: function() {
+					var url = '<?php echo cl_link("search/posts?q={0}"); ?>';
+					return url.format(this.search_query);
+				}
+			},
+			methods: {
+				search_entries: function(e = false) {
+					if (e) {
+						e.preventDefault();
+						
+						if (_app.search_query.length >= 2) {
+							delay(function() {
+								$.ajax({
+									url: "<?php echo cl_link("native_api/search/search"); ?>",
+									type: 'GET',
+									dataType: 'json',
+									data: {
+										type: "<?php echo($cl["page_tab"]); ?>",
+										q: _app.search_query
+									},
+									beforeSend: function() {
+										_app.searching = true;
+									}
+								}).done(function(data) {
+									if (data.status == 200) {
+										$(_app.$el).find('[data-an="entry-list"]').html(data.html).promise().done(function() {
+											delay(function() {
+												SMColibri.fix_sidebars();
+											}, 300);
+										});
+
+										_app.query_result = '1';
+										_app.load_more    = true;
+									}
+
+									else {
+										_app.query_result = '0';
+									}
+
+								}).always(function() {
+									_app.searching = false;
+								});
+							}, 500);
+						}
+						else {
+							_app.searching = false;
+							_app.load_more = true;
+
+							if (cl_empty(_app.init_result) != true) {
+								$(_app.$el).find('[data-an="entry-list"]').html(_app.init_result);
+								_app.query_result = '1';
+								
+							}
+							else {
+								_app.query_result = '0';
+								$(_app.$el).find('[data-an="entry-list"]').html("");
+							}
+						}
+					}
+
+					else {
+						$(_app.$el).find('form[data-an="search-form"]').trigger('submit');
+					}
+				},
+				load_entries: function(e = false) {
+					e.preventDefault();
+					var last_li = $(_app.$el).find('div[data-list-item]').last();
+					var type    = "<?php echo($cl["page_tab"]); ?>";
+					var offset  = last_li.data('list-item');
+
+					if ($.isNumeric(offset) && offset) {
+						$.ajax({
+							url: "<?php echo cl_link("native_api/search/load_more"); ?>",
+							type: 'GET',
+							dataType: 'json',
+							data: {
+								offset: offset,
+								type: type,
+								q: _app.search_query
+							},
+							beforeSend: function() {
+								_app.loading_more = true;
+							}
+						}).done(function(data) {
+							if (data.status == 200) {
+								$(_app.$el).find('div[data-an="entry-list"]').append(data.html).promise().done(function() {
+									delay(function() {
+										SMColibri.fix_sidebars();
+									}, 300);
+								});
+
+								_app.load_more = true;
+							}
+
+							else {
+								_app.load_more = false;
+							}
+						}).always(function() {
+							_app.loading_more = false;
+						});
+					}
+				}
+			},
+			mounted: function() {
+				if (cl_empty(this.init_result)) {
+					this.init_result = $(this.$el).find('[data-an="entry-list"]').html();
+				}
+			}
+		});
+	});
+</script>

@@ -1,0 +1,115 @@
+<div class="cp-app-container" data-app="blue-account">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Blue account settings'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Blue account settings'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('Manage blue account system settings'); ?>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="blue_account_mprice-input">
+                                            <label>
+                                                <?php echo cl_translate('Blue account monthly price'); ?> (<b><?php echo strtoupper($cl["config"]["site_currency"]); ?></b>)
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config blue_account_mprice%}" name="blue_account_mprice" type="text" class="form-control" placeholder="BlueE.g. 10">
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate('blue_account_monthly_price_help'); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="blue_account_yprice-input">
+                                            <label>
+                                                <?php echo cl_translate('Blue account annually price'); ?> (<b><?php echo strtoupper($cl["config"]["site_currency"]); ?></b>)
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config blue_account_yprice%}" name="blue_account_yprice" type="text" class="form-control" placeholder="BlueE.g. 80">
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <?php echo cl_translate('blue_account_monthly_price_help'); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="max_post_len_blue-input">
+                                            <label>
+                                                <?php echo cl_translate('Maximum post character length for Blue account'); ?> 
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config max_post_len_blue%}" name="max_post_len_blue" type="text" class="form-control" placeholder="BlueE.g. 10000">
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group" data-an="blue_account_system_status-input">
+                                            <label>
+                                                <?php echo cl_translate('Blue account system status'); ?>
+                                            </label>
+                                            <div class="input-group b-15">
+                                                <select name="blue_account_system_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['blue_account_system_status'] == 'on') {
+                                                                            echo ('selected');
+                                                                        } ?>>
+                                                        <?php echo cl_translate('Enabled'); ?>
+                                                    </option>
+                                                    <option value="off" <?php if ($cl['config']['blue_account_system_status'] == 'off') {
+                                                                            echo ('selected');
+                                                                        } ?>>
+                                                        <?php echo cl_translate('Disabled'); ?>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    <b> <?php echo cl_translate('Important'); ?> :</b> <?php echo cl_translate('blue_account_status_help'); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php echo cl_template('cpanel/assets/blue_account/scripts/app_master_script'); ?>

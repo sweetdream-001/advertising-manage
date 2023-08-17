@@ -1,0 +1,107 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)                           @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+@mixin font($fname, $fstyle, $fweight, $furl) {
+    @font-face {
+        font-family: $fname;
+        font-style: $fstyle;
+        font-weight: $fweight;
+        src: url($furl) format('woff');
+    }
+}
+
+@import "libs/bootstrap/functions";
+@import "libs/bootstrap/variables";
+@import "libs/bootstrap/mixins";
+@import "libs/bootstrap/utilities";
+@import "skins/_skins";
+@include font('Inter', normal, 300, '../fonts/Inter/Inter-Light.woff');
+@include font('Inter', normal, 400, '../fonts/Inter/Inter-Regular.woff');
+@include font('Inter', normal, 500, '../fonts/Inter/Inter-Semibold.woff');
+@include font('Inter', normal, 600, '../fonts/Inter/Inter-Semibold.woff');
+@include font('Inter', normal, 700, '../fonts/Inter/Inter-Bold.woff');
+@include font('Inter', normal, 900, '../fonts/Inter/Inter-Black.woff');
+
+/* ===================================================== */
+
+@import 'apps/ads/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/affiliates/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/common/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/confirm_email/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/confirm_reg/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/conversation/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/guest/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/home/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/messages/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/notifications/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/profile/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/search/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/settings/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/start_up/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/stat_pages/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/suggested/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/thread/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/trending/style.master.scss';
+
+/* ===================================================== */
+
+@import 'apps/wallet/style.master.scss';
+
+/* ===================================================== */

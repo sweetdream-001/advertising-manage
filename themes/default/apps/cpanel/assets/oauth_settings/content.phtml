@@ -1,0 +1,317 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<div class="cp-app-container" data-app="oauth-settings">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Social login'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Social login'); ?></li>
+
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('Manage social login API settings'); ?>
+                        </h5>
+                    </div>
+                    <form class="form mega-inline" data-an="form">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="facebook_api_id-input">
+                                        <label>
+                                            <?php echo cl_translate('Facebook API ID'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-facebook"></i></span>
+                                            <input value="{%config facebook_api_id%}" name="facebook_api_id" type="text" class="form-control" placeholder="<?php echo cl_translate('Facebook API ID'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="facebook_api_key-input">
+                                        <label>
+                                            <?php echo cl_translate('Facebook API Key'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-facebook"></i></span>
+                                            <input value="{%config facebook_api_key%}" name="facebook_api_key" type="text" class="form-control" placeholder="<?php echo cl_translate('Facebook API Key'); ?>">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="facebook_oauth-input">
+                                        <label>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-facebook"></i></span>
+                                            <select name="facebook_oauth" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['facebook_oauth'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['facebook_oauth'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="twitter_api_id-input">
+                                        <label>
+                                            <?php echo cl_translate('Twitter API ID'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-twitter"></i></span>
+                                            <input value="{%config twitter_api_id%}" name="twitter_api_id" type="text" class="form-control" placeholder="<?php echo cl_translate('Twitter API ID'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="twitter_api_key-input">
+                                        <label>
+                                            <?php echo cl_translate('Twitter API Key'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-twitter"></i></span>
+                                            <input value="{%config twitter_api_key%}" name="twitter_api_key" type="text" class="form-control" placeholder="<?php echo cl_translate('Twitter API Key'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="twitter_oauth-input">
+                                        <label>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-twitter"></i></span>
+                                            <select name="twitter_oauth" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['twitter_oauth'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['twitter_oauth'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="google_api_id-input">
+                                        <label>
+                                            <?php echo cl_translate('Google API ID'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-google"></i></span>
+                                            <input value="{%config google_api_id%}" name="google_api_id" type="text" class="form-control" placeholder="<?php echo cl_translate('Google API ID'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="google_api_key-input">
+                                        <label>
+                                            <?php echo cl_translate('Google API Key'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-google"></i></span>
+                                            <input value="{%config google_api_key%}" name="google_api_key" type="text" class="form-control" placeholder="<?php echo cl_translate('Google API Key'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="google_oauth-input">
+                                        <label>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-google"></i></span>
+                                            <select name="google_oauth" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['google_oauth'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['google_oauth'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="linkedin_api_id-input">
+                                        <label>
+                                            LinkedIn API ID
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-linkedin"></i></span>
+                                            <input value="{%config linkedin_api_id%}" name="linkedin_api_id" type="text" class="form-control" placeholder="LinkedIn API ID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="linkedin_api_key-input">
+                                        <label>
+                                            LinkedIn API Key
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-linkedin"></i></span>
+                                            <input value="{%config linkedin_api_key%}" name="linkedin_api_key" type="text" class="form-control" placeholder="LinkedIn API Key">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="linkedin_oauth-input">
+                                        <label>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-linkedin"></i></span>
+                                            <select name="linkedin_oauth" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['linkedin_oauth'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['linkedin_oauth'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="discord_api_id-input">
+                                        <label>
+                                            Discord API ID
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-discord"></i></span>
+                                            <input value="{%config discord_api_id%}" name="discord_api_id" type="text" class="form-control" placeholder="Discord API ID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="discord_api_key-input">
+                                        <label>
+                                            Discord API Key
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-discord"></i></span>
+                                            <input value="{%config discord_api_key%}" name="discord_api_key" type="text" class="form-control" placeholder="Discord API Key">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="discord_status-input">
+                                        <label>
+                                            Status
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-discord"></i></span>
+                                            <select name="discord_status" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['discord_status'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['discord_status'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="vkontakte_api_id-input">
+                                        <label>
+                                            Vkontakte API ID
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-vk"></i></span>
+                                            <input value="{%config vkontakte_api_id%}" name="vkontakte_api_id" type="text" class="form-control" placeholder="Vkontakte API ID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="vkontakte_api_key-input">
+                                        <label>
+                                            Vkontakte API Key
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-vk"></i></span>
+                                            <input value="{%config vkontakte_api_key%}" name="vkontakte_api_key" type="text" class="form-control" placeholder="Vkontakte API Key">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 input-group-solid">
+                                    <div class="form-group" data-an="vkontakte_status-input">
+                                        <label>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </label>
+                                        <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-vk"></i></span>
+                                            <select name="vkontakte_status" class="form-select form-control-primary">
+                                                <option value="on" <?php if ($cl['config']['vkontakte_status'] == 'on') {
+                                                                        echo ('selected');
+                                                                    } ?>>On</option>
+                                                <option value="off" <?php if ($cl['config']['vkontakte_status'] == 'off') {
+                                                                        echo ('selected');
+                                                                    } ?>>Off</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                           
+                            <div class="col-sm-4 input-group-solid">
+                                <div class="form-group" data-an="instagram_api_id-input">
+                                    <label>
+                                        Instagram API ID
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-instagram"></i></span>
+                                        <input value="{%config instagram_api_id%}" name="instagram_api_id" type="text" class="form-control" placeholder="Instagram API ID">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 input-group-solid">
+                                <div class="form-group" data-an="instagram_api_key-input">
+                                    <label>
+                                        Instagram API Key
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-instagram"></i></span>
+                                        <input value="{%config instagram_api_key%}" name="instagram_api_key" type="text" class="form-control" placeholder="Instagram API Key">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 input-group-solid">
+                                <div class="form-group" data-an="instagram_status-input">
+                                    <label>
+                                        Status
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="fa-brands fa-instagram"></i></span>
+                                        <select name="instagram_status" class="form-select form-control-primary">
+                                            <option value="on" <?php if($cl['config']['instagram_status'] == 'on') { echo('selected'); } ?>>On</option>
+                                            <option value="off" <?php if($cl['config']['instagram_status'] == 'off') { echo('selected'); } ?>>Off</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-sm-12 no-mb">
+                                    <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                        <?php echo cl_translate("Save changes"); ?>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php echo cl_template('cpanel/assets/oauth_settings/scripts/app_master_script'); ?>

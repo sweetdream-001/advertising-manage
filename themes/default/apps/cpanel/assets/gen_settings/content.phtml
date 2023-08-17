@@ -1,0 +1,318 @@
+<div class="cp-app-container" data-app="general-settings">
+    <div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>  <?php echo cl_translate('General settings'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                   <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><?php echo cl_translate('General settings'); ?></li>
+                   
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                    <?php echo cl_translate('general_settings'); ?>
+                    </h5>
+                </div>
+                    <form class="form mega-inline"  data-an="form">
+                          <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="name-input">
+                                    <label>
+                                    <?php echo cl_translate('Site name'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-pencil-alt-5"></i></span>
+                                        <input value="{%config name%}" name="name" type="text" class="form-control" placeholder="<?php echo cl_translate('Enter the name of your site'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="title-input">
+                                    <label>
+                                    <?php echo cl_translate('Site title'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-pencil-alt-5"></i></span>
+                                        <input value="{%config title%}" name="title" type="text" class="form-control" placeholder="<?php echo cl_translate('Enter the title of your site'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="email-input">
+                                    <label>
+                                    <?php echo cl_translate('E-mail address'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text">@</span>
+                                        <input value="{%config email%}" name="email" class="form-control" placeholder="<?php echo cl_translate('Enter the email address of your site'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="keywords-input">
+                                    <label>
+                                    <?php echo cl_translate('SEO keywords'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-stock-search"></i></span>
+                                        <input value="{%config keywords%}" name="keywords" class="form-control" placeholder="<?php echo cl_translate('Enter SEO keywords of your site'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="description-input">
+                                    <label>
+                                    <?php echo cl_translate('Site description'); ?>
+                                    </label>
+                                    <div class="form-line">
+                                        <textarea name="description" class="form-control" rows="2" placeholder="<?php echo cl_translate('Enter a description of your site'); ?>">{%config description%}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary">
+                                <?php echo cl_translate("Save changes"); ?>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                        <?php echo cl_translate('Manage general site settings'); ?>
+                    </h5>
+                </div>
+               
+                    <form class="form mega-inline" data-an="form">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="acc_validation-input">
+                                    <label>
+                                    <?php echo cl_translate('Account activation'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-toggle-on"></i></span>
+                                        <select name="acc_validation" class="form-select form-control-primary">
+                                            <option <?php if($cl['config']['acc_validation'] == 'on') {echo('selected');} ?> value="on">On</option>
+                                            <option <?php if($cl['config']['acc_validation'] == 'off') {echo('selected');} ?> value="off">Off</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" data-an="giphy_api_key-input">
+                                    <label>
+                                    <?php echo cl_translate('Giphy api'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icon-key"></i></span>
+                                        <input value="{%config giphy_api_key%}" name="giphy_api_key" class="form-control" placeholder="<?php echo cl_translate('Enter Giphy GIFS API Key'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="ffmpeg_binary-input">
+                                    <label>
+                                    <?php echo cl_translate('FFMPEG binary'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-video-alt"></i></span>
+                                        <input value="{%config ffmpeg_binary%}" name="ffmpeg_binary" class="form-control" placeholder="<?php echo cl_translate('Enter the path to the FFMPEG binary file'); ?>">
+                                    </div>
+                                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p><?php echo cl_translate('binary_desc'); ?></p>
+                    </div>
+                                   
+                                  
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group" data-an="site_currency-input">
+                                    <label>
+                                    <?php echo cl_translate('Default site currency'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-cur-dollar"></i></span>
+                                        <select name="site_currency" data-size="5" class="form-select form-control-primary">
+                                            <?php foreach ($cl['site_currencies'] as $k => $v): ?>
+                                                <option value="<?php echo($k); ?>" <?php if($k == $cl['config']['site_currency']) { echo('selected'); } ?>>
+                                                    <?php echo($v['name']); ?> (<?php echo($v['symbol']); ?>)
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group" data-an="currency_symbol_pos-input">
+                                    <label>
+                                    <?php echo cl_translate('currency_symbol_position'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-cur-dollar"></i></span>
+                                        <select name="currency_symbol_pos" data-size="2" class="form-select form-control-primary">
+                                            <option value="before" <?php if($cl['config']['currency_symbol_pos'] == "before") { echo('selected'); } ?>>
+                                                Before
+                                            </option>
+                                            <option value="after" <?php if($cl['config']['currency_symbol_pos'] == "after") { echo('selected'); } ?>>
+                                                After
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 input-group-solid">
+                                <div class="form-group" data-an="wallet_min_amount-input">
+                                    <label>
+                                    <?php echo cl_translate('wallet_topup_min_amount'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-wallet"></i></span>
+                                        <input value="{%config wallet_min_amount%}" name="wallet_min_amount" class="form-control" placeholder="Enter the min user wallet topup amount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 input-group-solid">
+                                <div class="form-group" data-an="page_update_interval-input">
+                                    <label>
+                                    <?php echo cl_translate('Page update time interval'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-ui-timer"></i></span>
+                                        <input value="{%config page_update_interval%}" name="page_update_interval" class="form-control" placeholder="<?php echo cl_translate('Enter the time interval for page update. Default (30) seconds'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 input-group-solid">
+                                <div class="form-group" data-an="chat_update_interval-input">
+                                    <label>
+                                    <?php echo cl_translate('Chat update time interval'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-clock-time"></i></span>
+                                        <input value="{%config chat_update_interval%}" name="chat_update_interval" class="form-control" placeholder="<?php echo cl_translate('Enter the time interval for chat update. Default (5) seconds'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group" data-an="country_id-input">
+                                    <label>
+                                    <?php echo cl_translate('User default country'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-world"></i></span>
+                                        <select data-size="5" name="country_id" class="form-select form-control-primary">
+                                            <?php foreach ($cl['countries'] as $k => $v): ?>
+                                                <option value="<?php echo($k); ?>" <?php if($k == $cl['config']['country_id']) { echo('selected'); } ?>>
+                                                    <?php echo($v); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 input-group-solid">
+                                <div class="form-group" data-an="max_post_len-input">
+                                    <label>
+                                    <?php echo cl_translate('Maximum post character length'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-ui-keyboard"></i></span>
+                                        <input value="{%config max_post_len%}" name="max_post_len" class="form-control" placeholder="<?php echo cl_translate('Enter the maximum length of the post text (for example, 600).'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 input-group-solid">
+                                <div class="form-group" data-an="post_arec_length-input">
+                                    <label>
+                                    <?php echo cl_translate('max_post_audio'); ?>
+                                    </label>
+                                    <div class="input-group"><span class="input-group-text"><i class="icofont icofont-ui-record"></i></span>
+                                        <input value="{%config post_arec_length%}" name="post_arec_length" class="form-control" placeholder="<?php echo cl_translate('max_post_audio_place'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="max_upload_size-input">
+                                    <label>
+                                    <?php echo cl_translate('max_upload_size'); ?>
+                                    </label>
+                                    <div class="form-line">
+                                        <select data-size="5" name="max_upload_size" class="form-select form-control-primary">
+                                            <option value="2097152" <?php echo (($cl['config']['max_upload_size'] == '2097152') ? 'selected': ''); ?>>2 MB</option>
+                                            <option value="6291456" <?php echo (($cl['config']['max_upload_size'] == '6291456') ? 'selected': ''); ?>>6 MB</option>
+                                            <option value="12582912" <?php echo (($cl['config']['max_upload_size'] == '12582912') ? 'selected': ''); ?>>12 MB</option>
+                                            <option value="25165824" <?php echo (($cl['config']['max_upload_size'] == '25165824') ? 'selected': ''); ?>>24 MB</option>
+                                            <option value="50331648" <?php echo (($cl['config']['max_upload_size'] == '50331648') ? 'selected': ''); ?>>48 MB</option>
+                                            <option value="100663296" <?php echo (($cl['config']['max_upload_size'] == '100663296') ? 'selected': ''); ?>>96 MB</option>
+                                            <option value="268435456" <?php echo (($cl['config']['max_upload_size'] == '268435456')? 'selected': ''); ?>>256 MB</option>
+                                            <option value="536870912" <?php echo (($cl['config']['max_upload_size'] == '536870912') ? 'selected': ''); ?>>512 MB</option>
+                                            <option value="1073741824" <?php echo (($cl['config']['max_upload_size'] == '1073741824') ? 'selected': ''); ?>>1 GB</option>
+                                            <option value="5368709120" <?php echo (($cl['config']['max_upload_size'] == '5368709120') ? 'selected': ''); ?>>5 GB</option>
+                                            <option value="10737418240" <?php echo (($cl['config']['max_upload_size'] == '10737418240') ? 'selected': ''); ?>>10 GB</option>
+                                        </select>
+                                    </div>
+                                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                      <?php echo cl_translate('max_post_audio_help'); ?>
+                                            </p>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" data-an="google_analytics-input">
+                                    <label>
+                                    <?php echo cl_translate('Google analytics'); ?>
+                                    </label>
+                                    <div class="form-line">
+                                        <textarea name="google_analytics" class="form-control" rows="5" placeholder="<?php echo cl_translate('Put your Google Analytics JS code here'); ?>">{%config google_analytics%}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary" data-an="submit-ctrl">
+                                <?php echo cl_translate("Save changes"); ?>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php echo cl_template('cpanel/assets/gen_settings/scripts/app_master_script'); ?>

@@ -1,0 +1,243 @@
+<div class="timeline-container">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="lp">
+			<div class="nav-link-holder">
+				<a href="<?php echo cl_link("settings/email_notifs"); ?>" data-spa="true">
+					<?php echo cl_translate("Email notifications"); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+			
+		</div>
+		<div class="rp">
+			<div class="nav-link-holder">
+				<span class="go-back" onclick="SMColibri.go_back();">
+					<?php echo cl_ikon('arrow-left'); ?>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="main-profile-settings-container">
+		<div class="profile-settings-nav">
+			<div class="nav-list-itemset-title">
+				<h4>
+					<?php echo cl_translate("Email notifications settings"); ?>
+				</h4>
+			</div>
+		</div>
+		<div class="profile-settings-content">
+			<div class="settings-form">
+				<form class="form" id="cl-enotifs-settings-vue-app" v-on:submit="submit_form($event)">
+					<div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-liked-my-post" name="like" type="checkbox" class="form-check-input" <?php if(not_empty($me["settings"]["enotifs"]["like"])) {echo("checked");} ?>>
+                                <label for="notify-liked-my-post" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Liked my post"); ?>
+                                    </span>
+
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone like my post"); ?>
+                                    </p>
+                                </label>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-followed-me" name="subscribe" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["subscribe"])) {echo("checked");} ?>>
+                                <label for="notify-followed-me" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Followed me"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone followed me"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-follow-req" name="subscribe_request" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["subscribe_request"])) {echo("checked");} ?>>
+                                <label for="notify-follow-req" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Follow request"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone sends a follow request"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-subscription-acc" name="subscribe_accept" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["subscribe_accept"])) {echo("checked");} ?>>
+                                <label for="notify-subscription-acc" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Subscription acceptance"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when my subscription request is accepted"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-replied-me" name="reply" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["reply"])) {echo("checked");} ?>>
+                                <label for="notify-replied-me" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Replied me"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone replied me"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-pub-repost" name="repost" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["repost"])) {echo("checked");} ?>>
+                                <label for="notify-pub-repost" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Publication repost"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone re-posts my publication"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-mentioned-me" name="mention" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["mention"])) {echo("checked");} ?>>
+                                <label for="notify-mentioned-me" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Mentioned me"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone mentioned me"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="chekbox-block-item">
+                            <div class="form-check">
+                                <input id="notify-visited-me" name="visit" class="form-check-input" type="checkbox" <?php if(not_empty($me["settings"]["enotifs"]["visit"])) {echo("checked");} ?>>
+                                <label for="notify-visited-me" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("Visited me"); ?>
+                                    </span>
+                                    <p class="form-info-label">
+                                        <?php echo cl_translate("Notify me when someone visited my profile"); ?>
+                                    </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="unsuccessful_attempt">
+                        <div class="invalid-main-feedback">
+                            <?php echo cl_translate("Something went wrong while trying to save your changes, please try again later"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group" v-else>
+                        <p class="form-info-label">
+                            <?php echo cl_translate("Choose which email notifications about your (actions, events) related to your account you want to receive"); ?>
+                        </p>
+                    </div>
+                    <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                    <div class="form-group no-mb" style="max-width: 150px; float:right;">
+                    	<button v-if="submitting != true" type="submit" class="btn btn-block btn-custom main-inline lg">
+	                        <?php echo cl_translate("Save changes"); ?>
+	                    </button>
+	                    <button v-else disabled="true" type="button" class="btn btn-block btn-custom main-inline lg">
+	                        <?php echo cl_translate("Please wait"); ?>
+	                    </button>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		"use strict";
+
+		$(document).ready(function($) {
+			Vue.use(window.vuelidate.default);
+			var VueValids = window.validators;
+
+			new Vue({
+				el: "#cl-enotifs-settings-vue-app",
+				data: {
+					submitting: false,
+					unsuccessful_attempt: false
+				},
+				methods: {
+					submit_form: function(_self = null) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/settings/save_enotif_settings"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function() {
+								_app_.submitting = true;
+								_app_.unsuccessful_attempt = false;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+									cl_bs_notify("<?php echo cl_translate("Your changes has been successfully saved!"); ?>");
+								}
+								else{
+									_app_.unsuccessful_attempt = true;
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+							}
+						});
+					}
+				}
+			});
+		});
+	</script>
+</div>
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+		max-width: 990px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.right-sb-container {
+		display: none;
+	}
+    body main.main-content-container div.main-content-container-inner div.left-sb-container {
+		margin-left: -25px;
+	}
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+		max-width: 550px;
+	}
+
+	.main-profile-settings-container {
+		margin-left: 16px;
+		margin-right: auto;
+		padding: 16px;
+		max-width: 550px;
+	}
+</style>

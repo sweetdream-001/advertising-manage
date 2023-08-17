@@ -1,0 +1,138 @@
+<div class="timeline-container" data-app="connections">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo ($cl['prof_user']['url']); ?>">
+						<?php echo ($cl['prof_user']['name']); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+			</div>
+			<div class="rp">
+			</div>
+		</div>
+	</div>
+	<div class="timeline-navbar">
+		<?php if (not_empty($cl['prof_user']['followers'])) : ?>
+			<div class="timeline-navbar__item">
+				<a href="<?php echo (cl_strf('%s/followers', $cl['prof_user']['url'])); ?>" data-spa="true">
+					<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'followers') {
+																	echo 'active';
+																} ?>">
+						<span class="btn-flex-inner">
+							
+							<span class="text">
+								<?php echo cl_translate("Followers"); ?> (<?php echo cl_number($cl['prof_user']['followers']); ?>)
+							</span>
+						</span>
+					</button>
+					<div class="css-1dbjc4n <?php if ($cl['page_tab'] == 'followers') {
+													echo ('active');
+												} ?>"></div>
+				</a>
+			</div>
+		<?php else : ?>
+			<div class="timeline-navbar__item">
+			<a href="<?php echo (cl_strf('%s/followers', $cl['prof_user']['url'])); ?>" data-spa="true">
+			<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'followers') {
+																	echo 'active';
+																} ?>">
+						<span class="btn-flex-inner">
+							
+							<span class="text">
+								<?php echo cl_translate("Followers"); ?> (<?php echo cl_number($cl['prof_user']['followers']); ?>)
+							</span>
+						</span>
+					</button>
+					<div class="css-1dbjc4n <?php if ($cl['page_tab'] == 'followers') {
+													echo ('active');
+												} ?>"></div>
+				</a>
+			</div>
+		<?php endif; ?>
+
+		<?php if (not_empty($cl['prof_user']['following'])) : ?>
+			<div class="timeline-navbar__item">
+				<a href="<?php echo (cl_strf('%s/following', $cl['prof_user']['url'])); ?>" data-spa="true">
+					<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'following') {
+																	echo 'active';
+																} ?>">
+						<span class="btn-flex-inner">
+						
+							<span class="text">
+								<?php echo cl_translate("Following"); ?> (<?php echo cl_number($cl['prof_user']['following']); ?>)
+							</span>
+						</span>
+					</button>
+					<div class="css-1dbjc4n <?php if ($cl['page_tab'] == 'following') {
+													echo ('active');
+												} ?>"></div>
+				</a>
+			</div>
+		<?php else : ?>
+			<div class="timeline-navbar__item">
+			<a href="<?php echo (cl_strf('%s/following', $cl['prof_user']['url'])); ?>" data-spa="true">
+					<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'following') {
+																	echo 'active';
+																} ?>">
+						<span class="btn-flex-inner">
+							
+							<span class="text">
+								<?php echo cl_translate("Following"); ?>
+							</span>
+						</span>
+					</button>
+					<div class="css-1dbjc4n <?php if ($cl['page_tab'] == 'following') {
+													echo ('active');
+												} ?>"></div>
+				</a>
+			</div>
+		<?php endif; ?>
+		<?php if (not_empty($cl['prof_user']['owner'])) : ?>
+			<div class="timeline-navbar__item">
+				<a href="<?php echo (cl_strf('%s/follow_requests', $cl['prof_user']['url'])); ?>" data-spa="true">
+					<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'follow_requests') {
+																	echo 'active';
+																} ?>">
+						<span class="btn-flex-inner">
+							
+							<span class="text">
+								<?php echo cl_translate("Requests"); ?> (<span data-an="total-requests"><?php echo cl_number($cl['prof_user']['follow_requests']); ?></span>)
+							</span>
+						</span>
+					</button>
+					<div class="css-1dbjc4n <?php if ($cl['page_tab'] == 'follow_requests') {
+													echo ('active');
+												} ?>"></div>
+				</a>
+			</div>
+		<?php endif; ?>
+	</div>
+
+	<?php if (not_empty($cl["users_list"])) : ?>
+		<div class="timeline-users-container">
+			<div class="timeline-user-ls" data-an="connectivity-list">
+				<?php if (not_empty($cl["users_list"])) : ?>
+					<?php foreach ($cl["users_list"] as $cl['li']) : ?>
+						<?php echo cl_template('connections/includes/list_item'); ?>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php if (count($cl["users_list"]) >= 25) : ?>
+			<div class="timeline-data-loader">
+				<button class="btn btn-custom main-outline lg" onclick="CLFollowers.load_more(this);">
+					<?php echo cl_translate("Show more"); ?>
+				</button>
+			</div>
+		<?php endif; ?>
+		<?php echo cl_template('connections/scripts/app_master_script'); ?>
+	<?php else : ?>
+		<?php echo cl_template('connections/includes/empty_list'); ?>
+	<?php endif; ?>
+</div>

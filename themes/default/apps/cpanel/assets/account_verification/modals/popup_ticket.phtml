@@ -1,0 +1,35 @@
+<div class="modal popup-ticket-modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                <?php echo cl_translate('Account verification request'); ?>
+                </h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="user-info">
+                    <div class="avatar">
+                        <img src="<?php echo($cl['req_data']['avatar']); ?>" alt="Avatar">
+                    </div>
+                    <div class="uname">
+                        <h5><?php echo($cl['req_data']['full_name']); ?></h5>
+                        <a><?php echo($cl['req_data']['email']); ?></a>
+                    </div>
+                </div>
+
+                <div class="text-message">
+                    <h5> <?php echo cl_translate('Message from the applicant'); ?>:</h5>
+                    <p>
+                        <?php echo $cl['req_data']['text_message']; ?> - <b><a download="<?php echo($cl['req_data']['file_name']); ?>" href="<?php echo $cl['req_data']['video_message']; ?>"><?php echo cl_translate('Download'); ?></a></b>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">
+                <?php echo cl_translate('Close'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

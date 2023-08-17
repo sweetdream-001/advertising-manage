@@ -1,0 +1,33 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app  = $('[data-app="delete-spam-accounts"]');
+		var _data = _app.find('form[data-an="form"]');
+
+		_data.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/delete_spam_accounts"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				
+				SMC_CPanel.waitme("show");
+
+				_data.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("Database cleanup operation completed successfully", 3000);
+				}
+				else {
+					SMC_CPanel.errorMSG();
+				}
+			},
+			complete: function() {
+				SMC_CPanel.waitme();
+
+				_data.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Delete");
+			}
+		});
+	});
+</script>

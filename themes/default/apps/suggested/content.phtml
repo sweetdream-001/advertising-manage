@@ -1,0 +1,46 @@
+<div class="timeline-container" data-app="suggested">
+	<div class="timeline-header__topline" >
+			<div data-el="timeline-bs-notifs" class="timeline-bs-notifs"></div>
+		</div>
+	<div class="timeline-header" data-el="tl-header">
+		
+		<div class="timeline-header">
+			<div class="lp">
+				<div class="nav-link-holder back" >
+				<span class="go-back" onclick="SMColibri.go_back();">
+					<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("suggested"); ?>" data-spa="true">
+						<?php echo cl_translate("Recommendations"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				
+			</div>
+			<div class="rp">
+				
+			</div>
+		</div>
+	</div>
+	<div class="timeline-users-container">
+		<div class="timeline-user-ls" data-an="suggested-list">
+		
+			<?php if (not_empty($cl["users_list"])): ?>
+				<?php foreach ($cl["users_list"] as $cl['li']): ?>
+					<?php echo cl_template('suggested/includes/list_item'); ?>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<?php if (count($cl["users_list"]) >= 25): ?>
+		<div class="timeline-data-loader">
+			<button class="btn btn-custom main-outline lg" data-an="load-more">
+				<?php echo cl_translate("Show more"); ?>
+			</button>
+		</div>
+	<?php endif; ?>
+	
+	<?php echo cl_template('suggested/scripts/app_master_script'); ?>
+</div>

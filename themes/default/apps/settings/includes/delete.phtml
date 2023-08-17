@@ -1,0 +1,200 @@
+<div class="timeline-container">
+<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+				<a href="<?php echo cl_link("settings/delete"); ?>" data-spa="true">
+					<?php echo cl_translate("Delete account"); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+		
+		</div>
+		<div class="rp">
+			
+		</div>
+	</div>
+</div>
+	<div class="main-profile-settings-container">
+		<div class="profile-settings-nav">
+			<div class="nav-list-itemset-title">
+				<h4>
+					<?php echo cl_translate("Delete your account"); ?>
+				</h4>
+			</div>
+		</div>
+		<div class="profile-settings-content">
+			<div class="settings-form">
+				<form class="form" id="cl-delete-settings-vue-app" v-on:submit="submit_form($event)">
+					<div class="form-group">
+	                    <label>
+	                        <?php echo cl_translate("Enter password"); ?>
+	                    </label>
+	                    <div class="password-ctrl">
+	                        <input v-model.trim="$v.password.$model" name="password" v-bind:type="password_display" class="form-control" placeholder="<?php echo cl_translate("Enter your password to confirm"); ?>">
+	                        <button class="password-ctrl" type="button" v-on:click="password_display_toggle">
+	                            <span v-if="password_display == 'password'">
+	                                <?php echo cl_ikon("eye-crossed"); ?>
+	                            </span>
+	                            <span v-else>
+	                                <?php echo cl_ikon("eye"); ?>
+	                            </span>
+	                        </button>
+	                    </div>
+	                    <div class="invalid-main-feedback" v-if="is_valid_password">
+	                        {{invalid_feedback_pass}}
+	                    </div>
+	                </div>
+	                <div class="form-group" v-if="unsuccessful_attempt">
+	                    <div class="invalid-main-feedback">
+	                        <?php echo cl_translate("Something went wrong while trying to save your changes, please try again later"); ?>
+	                    </div>
+	                </div>
+	                <div class="form-group" v-else>
+	                    <p class="form-info-label">
+	                        <?php echo cl_translate("Please note that after deleting your account, all your publications, subscriptions, all your data and all your actions will also be deleted, and this action will not be canceled"); ?>
+	                    </p>
+	                </div>
+	                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+					<div class="form-group no-mb" style="max-width: 150px; float:right;">
+	                	<button v-if="submitting != true" v-bind:disabled="$v.$invalid == true" type="submit" class="btn btn-block btn-custom main-red lg">
+	                        <?php echo cl_translate("Delete account"); ?>
+	                    </button>
+	                    <button v-else disabled="true" type="button" class="btn btn-block btn-custom main-inline lg">
+	                        <?php echo cl_translate("Please wait"); ?>
+	                    </button>
+	                </div>
+	            </form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		"use strict";
+
+		$(document).ready(function($) {
+			Vue.use(window.vuelidate.default);
+			var VueValids = window.validators;
+
+			new Vue({
+				el: "#cl-delete-settings-vue-app",
+				data: {
+					submitting: false,
+					unsuccessful_attempt: false,
+					invalid_feedback_pass: "",
+					password: "",
+					invalid_pass: false,
+					password_display: "password"
+				},
+				computed: {
+					is_valid_password: function() {
+						if (this.$v.password.required == true && this.$v.password.$error) {
+							this.invalid_feedback_pass = "<?php echo cl_translate("Please enter your current password!"); ?>";
+							return true;
+						}
+
+						else if(this.invalid_pass == true) {
+							this.invalid_feedback_pass = "<?php echo cl_translate("The current password you entered is not correct, please check your details and try again!"); ?>";
+							return true;
+						}
+
+						else {
+							this.invalid_feedback_pass = "";
+							return false;
+						}
+					}
+				},
+				validations: {
+					password: {
+						required: VueValids.required,
+						min_length: VueValids.minLength(6),
+						max_length: VueValids.maxLength(20)
+					}
+				},
+				methods: {
+					submit_form: function(_self = null) {
+						_self.preventDefault();
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/settings/delete_account"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function() {
+								_app_.submitting = true;
+								_app_.unsuccessful_attempt = false;
+								_app_.invalid_pass = false;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+									setTimeout(function() {
+										cl_redirect("<?php echo cl_link('guest'); ?>");
+									}, 1000);
+								}
+
+								else if(data.err_code == "invalid_pass") {
+									_app_.invalid_pass = true;
+								}
+
+								else {
+									_app_.unsuccessful_attempt = true;
+								}
+							},
+							complete: function() {
+								_app_.submitting = false;
+							}
+						});
+					},
+					password_display_toggle: function() {
+						var _app_ = this;
+
+						if (_app_.password_display == "text") {
+							_app_.password_display = "password";
+						}
+						else{
+							_app_.password_display = "text";
+						}
+					}
+				}
+			});
+		});
+	</script>
+</div>
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+		max-width: 970px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.right-sb-container {
+		display: none;
+	}
+	body main.main-content-container div.main-content-container-inner div.left-sb-container {
+		margin-left: -25px;
+	}
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+		max-width: 550px;
+	}
+
+	.main-profile-settings-container {
+		margin-left: 16px;
+		margin-right: auto;
+		padding: 16px;
+		max-width: 550px;
+	}
+	body form div.form-group div.password-ctrl button.password-ctrl span svg {
+		width: 100%;
+		stroke: var(--smc-main-text-color-2);
+		fill: none;
+		transition: all 0.5s ease;
+	}
+
+	body form div.form-group div.password-ctrl button.password-ctrl:hover span svg,
+	body form div.form-group div.password-ctrl button.password-ctrl:active span svg {
+		stroke: var(--smc-main-text-color-2);
+		fill: none;
+	}
+</style>

@@ -1,0 +1,42 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+:root {
+    // THEME CONTRAST COLORS
+    $cl-danger-color: #f91155;
+    $cl-success-color: #35c85f;
+    $cl-warning-color: #ffa500;
+    --cl-danger-color: #{$cl-danger-color};
+    --cl-danger-color-lighten-5: #{lighten($cl-danger-color, 5)};
+    --cl-success-color: #{$cl-success-color};
+    --cl-warning-color: #{$cl-warning-color};
+    // THEME SIZES
+    --cl-primary-border-radius: 10px;
+    --cl-secondary-border-radius: 5px;
+    --cl-tertiary-border-radius: 2px;
+    --cl-primary-avatar-size: 52px;
+    --cl-primary-offset-size: 15px;
+    --cl-primary-name-size: 16px;
+    --cl-primary-username-size: 14px;
+    @include media-breakpoint-down(xl) {
+        --cl-primary-avatar-size: 32px;
+        --cl-primary-offset-size: 10px;
+        --cl-primary-name-size: 14px;
+        --cl-primary-username-size: 14px;
+    }
+}
+
+@import 'color_schemes/_default';
+@import 'color_schemes/_green';
+@import 'color_schemes/_yellow';
+@import 'color_schemes/_pink';
+@import 'color_schemes/_purple';
+@import 'color_schemes/_orange';
+@import 'backgrounds/_dark';
+@import 'backgrounds/_white';

@@ -1,0 +1,107 @@
+<script>
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		Vue.use(window.vuelidate.default);
+
+		var _app     = $('[data-app="wallet"]');
+		SMColibri.PS = new Vue({
+			el: "#vue-wallet-topup-app",
+			data: {
+				topup_amount: "",
+				topup_method: false,
+				submitting: false,
+				tos_agree: false,
+				quick_options: {
+					"op1": <?php echo($cl["config"]["wallet_min_amount"]); ?>,
+					"op2": <?php echo($cl["config"]["wallet_min_amount"] * 2); ?>,
+					"op3": <?php echo($cl["config"]["wallet_min_amount"] * 3); ?>
+				},
+				invalid_feedback_pgw: ""
+			},
+			computed: {
+				is_invalid_amount: function() {
+					if (this.$v.topup_amount.required && this.$v.topup_amount.$invalid) {
+						return true;
+					}
+					else{
+						return false;
+					}
+				},
+				is_invalid_form: function() {
+					if (this.$v.$invalid || this.tos_agree != true) {
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+			},
+			validations: {
+				topup_amount: {
+					required: window.validators.required,
+					is_num: window.validators.numeric,
+					min_val: window.validators.minValue(<?php echo intval($cl["config"]["wallet_min_amount"]); ?>),
+					max_val: window.validators.maxValue(15000)
+				}
+			},
+			methods: {
+				topup_wallet: function() {
+					$('div[data-app="topup-wallet-form"]').modal("show");
+				},
+				submit_form: function(_self = false) {
+					_self.preventDefault();
+
+					let _app_ = this;
+
+					$(_self.target).ajaxSubmit({
+						url: "<?php echo cl_link("native_api/wallet/topup_wallet"); ?>",
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							amount: _app_.topup_amount,
+							method: _app_.topup_method
+						},
+						beforeSend: function() {
+							if (_app_.topup_method == false) {
+								_app_.invalid_feedback_pgw = "<?php echo cl_translate("Please select your preferred payment method to proceed with your wallet top-up"); ?>";
+
+								return false;
+							}
+
+							_app_.submitting = true;
+						},
+						success: function(data) {
+							if (data.status == 200) {
+								if (_app_.topup_method == "paypal" || _app_.topup_method == "paystack") {
+									cl_redirect(data.url);
+								}
+								else if(_app_.topup_method == "stripe_alipay" || _app_.topup_method == "stripe") {
+									var stripe = Stripe("<?php echo($cl['config']['stripe_api_key']); ?>");
+
+									stripe.redirectToCheckout({
+										sessionId: data.sess_id
+									}).then(function (result) {
+										SMColibri.errorMSG(result.error.message);
+									});
+								}
+							}
+
+							else if(data.status == 500) {
+								$('div[data-app="topup-wallet-form"]').modal("hide");
+								_app_.submitting = false;
+								cl_bs_notify(data.message, 5000, "danger");
+							}
+
+							else {
+								$('div[data-app="topup-wallet-form"]').modal("hide");
+								_app_.submitting = false;
+								SMColibri.errorMSG();
+							}
+						}
+					});
+				}
+			}
+		});
+	});
+</script>

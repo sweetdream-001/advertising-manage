@@ -1,0 +1,1634 @@
+<div class="timeline-container">
+	<div class="h-laptop">
+		<div class="timeline-header" data-el="tl-header">
+			<div class="timeline-header__botline">
+				<div class="lp">
+					<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+						<span class="go-back" onclick="SMColibri.go_back();">
+							<?php echo cl_ikon('arrow-left'); ?>
+						</span>
+						<a href="<?php echo cl_link("settings"); ?>" data-spa="true">
+							<?php echo cl_translate("Profile settings"); ?>
+						</a>
+					</div>
+				</div>
+				<div class="cp">
+
+				</div>
+				<div class="rp">
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<h4>
+				<?php echo cl_translate("Profile settings"); ?>
+			</h4>
+			<li class="nav-item">
+				<a class="nav-link active h-mobile" data-toggle="tab" href="#home" role="tab" aria-controls="home">
+					<?php echo cl_translate("General profile settings"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#home2">
+					<?php echo cl_translate("General profile settings"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">
+					<?php echo cl_translate("User password"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#profile2">
+					<?php echo cl_translate("User password"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#messages" role="tab" aria-controls="messages">
+					<?php echo cl_translate("Language and Country"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#country">
+					<?php echo cl_translate("Language and Country"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">
+					<?php echo cl_translate("Account verification"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#settings2">
+					<?php echo cl_translate("Account verification"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#privacy" role="tab" aria-controls="privacy">
+					<?php echo cl_translate("Account privacy settings"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#privacy2">
+					<?php echo cl_translate("Account privacy settings"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#notifications" role="tab"
+					aria-controls="notifications">
+					<?php echo cl_translate("Notifications settings"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#notifications2">
+					<?php echo cl_translate("Notifications settings"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<?php if ($cl['config']['blue_account_system_status'] == 'on'): ?>
+					<?php if ($me["is_blue"] == 1): ?>
+						<a class="nav-link" data-spa="true" href="<?php echo cl_link("blue_features"); ?>" data-spa="true">
+							<?php echo cl_translate("Blue features"); ?> 		<?php echo cl_icon('navigate_next'); ?></a>
+					<?php else: ?>
+						<a class="nav-link" data-spa="true" href="<?php echo cl_link("blue_account"); ?>" data-spa="true"
+							data-navitem="blue_account">
+							<?php echo cl_translate("Blue account"); ?> 		<?php echo cl_icon('navigate_next'); ?>
+						</a>
+					<?php endif; ?>
+				<?php endif; ?>
+
+			</li>
+
+			<li class="nav-item">
+				<?php if ($cl['config']['prem_account_system_status'] == 'on'): ?>
+					<?php if ($me["is_premium"] == 1): ?>
+						<a class="nav-link" data-spa="true" href="<?php echo cl_link("premium_features"); ?>" data-spa="true">
+							<?php echo cl_translate("Premium features"); ?> 		<?php echo cl_icon('navigate_next'); ?></a>
+					<?php else: ?>
+						<a class="nav-link" data-spa="true" href="<?php echo cl_link("premium_account"); ?>" data-spa="true"
+							data-navitem="premium_account">
+							<?php echo cl_translate("Premium account"); ?> 		<?php echo cl_icon('navigate_next'); ?>
+						</a>
+					<?php endif; ?>
+				<?php endif; ?>
+
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#information" role="tab"
+					aria-controls="information">
+					<?php echo cl_translate("My account information"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#information2">
+					<?php echo cl_translate("My account information"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link h-mobile" data-toggle="tab" href="#delete" role="tab" aria-controls="delete">
+					<?php echo cl_translate("Delete profile"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+				<a class="nav-link h-laptop" data-toggle="modal" data-target="#delete2">
+					<?php echo cl_translate("Delete profile"); ?>
+					<?php echo cl_icon('navigate_next'); ?>
+				</a>
+			</li>
+		</ul>
+
+		<div class="tab-content h-mobile">
+			<div class="tab-pane active" id="home" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("General profile settings"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("profile_settings_help"); ?>
+				</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/name"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M12 11.816c1.355 0 2.872-.15 3.84-1.256.814-.93 1.078-2.368.806-4.392-.38-2.825-2.117-4.512-4.646-4.512S7.734 3.343 7.354 6.17c-.272 2.022-.008 3.46.806 4.39.968 1.107 2.485 1.256 3.84 1.256zM8.84 6.368c.162-1.2.787-3.212 3.16-3.212s2.998 2.013 3.16 3.212c.207 1.55.057 2.627-.45 3.205-.455.52-1.266.743-2.71.743s-2.255-.223-2.71-.743c-.507-.578-.657-1.656-.45-3.205zm11.44 12.868c-.877-3.526-4.282-5.99-8.28-5.99s-7.403 2.464-8.28 5.99c-.172.692-.028 1.4.395 1.94.408.52 1.04.82 1.733.82h12.304c.693 0 1.325-.3 1.733-.82.424-.54.567-1.247.394-1.94zm-1.576 1.016c-.126.16-.316.246-.552.246H5.848c-.235 0-.426-.085-.552-.246-.137-.174-.18-.412-.12-.654.71-2.855 3.517-4.85 6.824-4.85s6.114 1.994 6.824 4.85c.06.242.017.48-.12.654z">
+											</path>
+										</g>
+									</svg>
+								</div>
+								<div class="lp">
+
+									<span class="preview-label">
+										<?php echo cl_translate("Username"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo $me['name']; ?> - <small>
+											<?php echo $me['username']; ?>
+										</small>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+						<a href="<?php echo cl_link("settings/email"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("envelope"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Email address"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo $me['email']; ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+
+								</div>
+							</div>
+						</a>
+						<a href="<?php echo cl_link("settings/siteurl"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("link"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Website URL address"); ?>
+									</span>
+									<span class="preview-value">
+										<?php if (empty($me['website'])): ?>
+											<?php echo cl_translate("You have not yet determined the URL of your site"); ?>
+										<?php else: ?>
+											<?php echo $me['website']; ?>
+										<?php endif; ?>
+									</span>
+								</div>
+								<div class="rp">
+
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+						<a href="<?php echo cl_link("settings/bio"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M19.98 1.775H4.02c-1.24 0-2.25 1.01-2.25 2.25v15.95c0 1.24 1.01 2.25 2.25 2.25h15.96c1.24 0 2.25-1.01 2.25-2.25V4.025c0-1.24-1.01-2.25-2.25-2.25zm.75 18.2c0 .42-.34.75-.75.75H4.02c-.41 0-.75-.33-.75-.75v-9.48h17.46v9.48zm0-10.23H3.27v-5.72c0-.42.34-.75.75-.75h15.96c.41 0 .75.33.75.75v5.72z">
+											</path>
+											<path
+												d="M8.96 6.515v.09c0 .95-.78 1.72-1.73 1.72h-.08c-.95 0-1.73-.77-1.73-1.72v-.09c0-.95.78-1.73 1.73-1.73h.08c.95 0 1.73.78 1.73 1.73zm9.54.04c0 .42-.34.75-.75.75h-6.39c-.41 0-.75-.33-.75-.75 0-.41.34-.75.75-.75h6.39c.41 0 .75.34.75.75zm-9.54 7.17v.09c0 .95-.78 1.73-1.73 1.73h-.08c-.95 0-1.73-.78-1.73-1.73v-.09c0-.95.78-1.72 1.73-1.72h.08c.95 0 1.73.77 1.73 1.72zm9.54.05c0 .41-.34.75-.75.75h-6.39c-.41 0-.75-.34-.75-.75 0-.42.34-.75.75-.75h6.39c.41 0 .75.33.75.75zm0 3.6c0 .42-.34.75-.75.75h-6.39c-.41 0-.75-.33-.75-.75 0-.41.34-.75.75-.75h6.39c.41 0 .75.34.75.75z">
+											</path>
+										</g>
+									</svg>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("About you"); ?>
+									</span>
+									<span class="preview-value">
+										<?php if (empty($me['about'])): ?>
+											<?php echo cl_translate("The field with information about you is still empty"); ?>
+										<?php else: ?>
+											<?php echo $me['about']; ?>
+										<?php endif; ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+						<a href="<?php echo cl_link("settings/gender"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M16.695 13.037c1.185 0 2.51-.132 3.368-1.11.72-.823.952-2.08.715-3.847-.333-2.478-1.86-3.956-4.083-3.956-2.225 0-3.75 1.48-4.084 3.956-.236 1.766-.002 3.023.717 3.846.858.98 2.184 1.11 3.368 1.11zM14.098 8.28c.134-.992.648-2.656 2.598-2.656 1.948 0 2.463 1.664 2.597 2.655.174 1.293.054 2.187-.358 2.657-.367.42-1.036.6-2.238.6s-1.87-.18-2.24-.6c-.412-.47-.533-1.364-.36-2.658zm9.788 11.222c-.763-3.066-3.72-5.208-7.19-5.208-1.765 0-3.392.558-4.67 1.505-1.278-.948-2.905-1.506-4.67-1.506-3.47 0-6.428 2.142-7.19 5.208-.156.625-.025 1.265.356 1.754.37.473.94.744 1.567.744h19.87c.628 0 1.2-.27 1.57-.745.382-.49.512-1.13.356-1.753zm-1.537.83c-.09.11-.22.168-.39.168h-7.413c.078-.32.084-.66 0-.998-.25-1-.75-1.888-1.41-2.65.993-.665 2.223-1.058 3.558-1.058 2.78 0 5.14 1.674 5.735 4.07.044.174.014.344-.08.467zM7.354 20.5H2.09c-.17 0-.3-.057-.388-.168-.096-.123-.126-.294-.083-.47.596-2.395 2.954-4.068 5.735-4.068 2.78 0 5.14 1.674 5.735 4.07.043.174.014.344-.082.467-.088.113-.22.17-.388.17H7.355zm.001-7.463c1.185 0 2.51-.132 3.367-1.11.72-.823.953-2.08.716-3.847-.333-2.478-1.86-3.956-4.083-3.956-2.225 0-3.75 1.48-4.084 3.956-.236 1.766-.002 3.023.717 3.846.858.98 2.184 1.11 3.368 1.11zM4.758 8.28c.134-.992.648-2.656 2.598-2.656 1.948 0 2.463 1.664 2.597 2.655.174 1.293.053 2.187-.358 2.658-.368.42-1.037.6-2.238.6-1.202 0-1.87-.18-2.24-.6-.412-.47-.533-1.365-.36-2.66z">
+											</path>
+										</g>
+									</svg>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Your gender"); ?>
+									</span>
+									<span class="preview-value">
+										<?php if ($me['gender'] == 'M'): ?>
+											<?php echo cl_translate("Male"); ?>
+										<?php else: ?>
+											<?php echo cl_translate("Female"); ?>
+										<?php endif; ?>
+									</span>
+								</div>
+								<div class="rp">
+
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="profile" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("User password"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("change_your_password"); ?>
+				</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/password"); ?>" class="nav-list-item-link"
+							data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("lock"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("My password"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo cl_translate("Click to set your account password"); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="messages" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("Language and Country"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("Manage which languages are used to personalize your experience."); ?>
+				</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/language"); ?>" class="nav-list-item-link"
+							data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm8.472 9.442c-.242.19-.472.368-.63.486-.68-1.265-1.002-1.78-1.256-2.007-.163-.145-.37-.223-.78-.375-.367-.136-1.482-.55-1.65-.85-.087-.153.136-.602.23-.793.088-.177.164-.33.196-.497.123-.646-.33-1.146-.728-1.59-.066-.072-.153-.17-.23-.26.335-.12.862-.26 1.42-.384 1.95 1.448 3.26 3.704 3.428 6.272zm-9.788-7.83c.076.25.145.5.182.678-.255.15-.663.363-.96.52-.262.136-.522.273-.738.392-.247.137-.442.234-.6.313-.347.174-.598.3-.833.553-.068.073-.26.278-1.02 1.886l-1.79-.656c1.293-1.94 3.362-3.31 5.76-3.685zM12 20.5c-4.687 0-8.5-3.813-8.5-8.5 0-1.197.25-2.335.7-3.37.47.182 1.713.66 2.75 1.035-.107.336-.245.854-.26 1.333-.03.855.502 1.7.562 1.792.053.08.12.15.2.207.303.21.687.5.827.616.063.343.166 1.26.23 1.833.144 1.266.175 1.48.24 1.65.005.012.514 1.188 1.315 1.188.576-.003.673-.206 1.855-2.688.244-.512.45-.95.513-1.058.1-.144.597-.61.87-.83.55-.442.76-1.82.413-2.682-.335-.83-1.92-2.08-2.5-2.195-.17-.033-.43-.04-.953-.053-.497-.01-1.25-.028-1.536-.09-.098-.024-.314-.094-.605-.196.32-.668.627-1.28.71-1.4.05-.052.168-.112.408-.234.17-.086.383-.192.653-.34.208-.116.458-.247.71-.38 1.168-.612 1.484-.8 1.658-1.082.11-.177.263-.44-.04-1.544 1.042.027 2.038.24 2.955.61-.89.32-1.024.595-1.106.77-.367.784.256 1.475.667 1.93.096.107.24.268.32.38l-.017.036c-.234.472-.67 1.35-.196 2.194.406.72 1.384 1.13 2.437 1.52.134.05.25.092.33.126.16.208.496.79 1 1.735l.154.285c.078.14.33.505.842.505.167 0 .363-.04.59-.137.032-.013.083-.035.18-.094C19.72 17.405 16.22 20.5 12 20.5zm-3.812-9.45c.01-.285.102-.646.184-.907l.027.006c.397.09 1.037.11 1.83.13.32.006.59.008.615 0 .326.143 1.355 1 1.483 1.31.113.28.05.812-.034 1.01-.233.197-.845.735-1.085 1.078-.093.13-.212.373-.64 1.274-.133.276-.313.654-.488 1.013-.026-.225-.054-.472-.08-.686-.225-2.003-.273-2.22-.42-2.445-.05-.078-.202-.31-1.135-.973-.117-.213-.268-.564-.26-.813z">
+											</path>
+										</g>
+									</svg>
+
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Display language"); ?>
+									</span>
+									<span class="preview-value">
+										<?php if (isset($cl["languages"][$me['language']])): ?>
+											<?php echo cl_translate($cl["languages"][$me['language']]["name"]); ?>
+										<?php else: ?>
+											<?php echo cl_translate($cl["curr_lang"]["lang_data"]["name"]); ?>
+										<?php endif; ?>
+									</span>
+								</div>
+								<div class="rp">
+
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+						<a href="<?php echo cl_link("settings/country"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm8.472 9.442c-.242.19-.472.368-.63.486-.68-1.265-1.002-1.78-1.256-2.007-.163-.145-.37-.223-.78-.375-.367-.136-1.482-.55-1.65-.85-.087-.153.136-.602.23-.793.088-.177.164-.33.196-.497.123-.646-.33-1.146-.728-1.59-.066-.072-.153-.17-.23-.26.335-.12.862-.26 1.42-.384 1.95 1.448 3.26 3.704 3.428 6.272zm-9.788-7.83c.076.25.145.5.182.678-.255.15-.663.363-.96.52-.262.136-.522.273-.738.392-.247.137-.442.234-.6.313-.347.174-.598.3-.833.553-.068.073-.26.278-1.02 1.886l-1.79-.656c1.293-1.94 3.362-3.31 5.76-3.685zM12 20.5c-4.687 0-8.5-3.813-8.5-8.5 0-1.197.25-2.335.7-3.37.47.182 1.713.66 2.75 1.035-.107.336-.245.854-.26 1.333-.03.855.502 1.7.562 1.792.053.08.12.15.2.207.303.21.687.5.827.616.063.343.166 1.26.23 1.833.144 1.266.175 1.48.24 1.65.005.012.514 1.188 1.315 1.188.576-.003.673-.206 1.855-2.688.244-.512.45-.95.513-1.058.1-.144.597-.61.87-.83.55-.442.76-1.82.413-2.682-.335-.83-1.92-2.08-2.5-2.195-.17-.033-.43-.04-.953-.053-.497-.01-1.25-.028-1.536-.09-.098-.024-.314-.094-.605-.196.32-.668.627-1.28.71-1.4.05-.052.168-.112.408-.234.17-.086.383-.192.653-.34.208-.116.458-.247.71-.38 1.168-.612 1.484-.8 1.658-1.082.11-.177.263-.44-.04-1.544 1.042.027 2.038.24 2.955.61-.89.32-1.024.595-1.106.77-.367.784.256 1.475.667 1.93.096.107.24.268.32.38l-.017.036c-.234.472-.67 1.35-.196 2.194.406.72 1.384 1.13 2.437 1.52.134.05.25.092.33.126.16.208.496.79 1 1.735l.154.285c.078.14.33.505.842.505.167 0 .363-.04.59-.137.032-.013.083-.035.18-.094C19.72 17.405 16.22 20.5 12 20.5zm-3.812-9.45c.01-.285.102-.646.184-.907l.027.006c.397.09 1.037.11 1.83.13.32.006.59.008.615 0 .326.143 1.355 1 1.483 1.31.113.28.05.812-.034 1.01-.233.197-.845.735-1.085 1.078-.093.13-.212.373-.64 1.274-.133.276-.313.654-.488 1.013-.026-.225-.054-.472-.08-.686-.225-2.003-.273-2.22-.42-2.445-.05-.078-.202-.31-1.135-.973-.117-.213-.268-.564-.26-.813z">
+											</path>
+										</g>
+									</svg>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("The country in which you live"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo ($me['country_name']); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+						<!-- City  -->
+						<a href="<?php echo cl_link("settings/city"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon2">
+									<?php echo cl_icon("apartment"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Your State / City / Location"); ?>
+									</span>
+									<span class="preview-value">
+										<?php if (empty($me['city'])): ?>
+											<?php echo cl_translate("Click to set your city name"); ?>
+										<?php else: ?>
+											<?php echo $me['city']; ?>
+										<?php endif; ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="settings" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("Account verification"); ?>
+				</h4>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/verification"); ?>" class="nav-list-item-link"
+							data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("verified"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Verify my account"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo cl_translate("Click to submit a verification request"); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+			</div>
+			<div class="tab-pane" id="privacy" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("Account privacy settings"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("privacy_site"); ?> {%config name%}
+				</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/privacy"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("shield"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Account privacy"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo cl_translate("Click to set your account privacy"); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="notifications" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("Notifications settings"); ?>
+				</h4>
+				<p>Select the kinds of notifications you get about your activities, interests, and recommendations.</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/notifications"); ?>" class="nav-list-item-link"
+							data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("bell"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Notifications"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo cl_translate("Click to set up account notifications"); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+
+								</div>
+							</div>
+						</a>
+						<?php if ($cl["config"]["email_notifications"] == "on"): ?>
+							<a href="<?php echo cl_link("settings/email_notifs"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("envelope-alt"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Email notifications"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to set up account email notification settings"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+						<?php endif; ?>
+						<?php if (not_empty($cl["blocked_users"])): ?>
+							<a href="<?php echo cl_link("settings/blocked"); ?>" class="nav-list-item-link" data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("not-allowed"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Blocked users"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to manage blocked users"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+
+									</div>
+								</div>
+							</a>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="information" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("My account information"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("see_information"); ?>
+				</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/information"); ?>" class="nav-list-item-link"
+							data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<?php echo cl_ikon("download"); ?>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Download my information"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo cl_translate("Please choose what information you want to download"); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="delete" role="tabpanel">
+				<h4>
+					<?php echo cl_translate("Delete profile"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("deactivate_account"); ?>
+				</p>
+				<div class="main--profile-settings-container">
+					<div class="profile-settings-nav">
+						<a href="<?php echo cl_link("settings/delete"); ?>" class="nav-list-item-link" data-spa="true">
+							<div class="nav-list-item">
+								<div class="preview-icon">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M16.75 2.36c-2.34 0-3.92 1.62-4.74 2.8-.83-1.18-2.41-2.8-4.75-2.8-2.93 0-5.51 2.74-5.51 5.86 0 6.51 7.61 13.37 10.27 13.42 2.63-.05 10.23-6.91 10.23-13.42 0-3.12-2.57-5.86-5.5-5.86zm-4.73 17.78c-1.52-.02-8.77-6.03-8.77-11.92 0-2.33 1.88-4.36 4.01-4.36 2.1 0 3.45 1.97 3.9 2.74v.01L9.02 10.5c-.11.2-.12.45-.03.66.1.21.29.37.51.43l2.72.66-2.16 3.15c-.24.34-.15.81.19 1.05.13.08.28.13.43.13.23 0 .47-.12.62-.33l2.77-4.04c.13-.21.17-.47.08-.7-.09-.23-.28-.4-.52-.46l-2.82-.69L12.7 6.9s1.46-3.04 4.05-3.04c2.13 0 4 2.03 4 4.36 0 5.89-7.24 11.9-8.73 11.92z">
+											</path>
+										</g>
+									</svg>
+								</div>
+								<div class="lp">
+									<span class="preview-label">
+										<?php echo cl_translate("Delete profile"); ?>
+									</span>
+									<span class="preview-value">
+										<?php echo cl_translate("Click to confirm deletion of your profile"); ?>
+									</span>
+								</div>
+								<div class="rp">
+									<svg viewBox="0 0 24 24" aria-hidden="true"
+										class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+										<g>
+											<path
+												d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+											</path>
+										</g>
+									</svg>
+
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal Mobile -->
+	<div class="modal fade" id="home2" tabindex="-1" aria-labelledby="home2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("General profile settings"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("profile_settings_help"); ?>
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/name"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M12 11.816c1.355 0 2.872-.15 3.84-1.256.814-.93 1.078-2.368.806-4.392-.38-2.825-2.117-4.512-4.646-4.512S7.734 3.343 7.354 6.17c-.272 2.022-.008 3.46.806 4.39.968 1.107 2.485 1.256 3.84 1.256zM8.84 6.368c.162-1.2.787-3.212 3.16-3.212s2.998 2.013 3.16 3.212c.207 1.55.057 2.627-.45 3.205-.455.52-1.266.743-2.71.743s-2.255-.223-2.71-.743c-.507-.578-.657-1.656-.45-3.205zm11.44 12.868c-.877-3.526-4.282-5.99-8.28-5.99s-7.403 2.464-8.28 5.99c-.172.692-.028 1.4.395 1.94.408.52 1.04.82 1.733.82h12.304c.693 0 1.325-.3 1.733-.82.424-.54.567-1.247.394-1.94zm-1.576 1.016c-.126.16-.316.246-.552.246H5.848c-.235 0-.426-.085-.552-.246-.137-.174-.18-.412-.12-.654.71-2.855 3.517-4.85 6.824-4.85s6.114 1.994 6.824 4.85c.06.242.017.48-.12.654z">
+												</path>
+											</g>
+										</svg>
+									</div>
+									<div class="lp">
+
+										<span class="preview-label">
+											<?php echo cl_translate("Username"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo $me['name']; ?> - <small>
+												<?php echo $me['username']; ?>
+											</small>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+							<a href="<?php echo cl_link("settings/email"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("envelope"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Email address"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo $me['email']; ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+
+									</div>
+								</div>
+							</a>
+							<a href="<?php echo cl_link("settings/siteurl"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("link"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Website URL address"); ?>
+										</span>
+										<span class="preview-value">
+											<?php if (empty($me['website'])): ?>
+												<?php echo cl_translate("You have not yet determined the URL of your site"); ?>
+											<?php else: ?>
+												<?php echo $me['website']; ?>
+											<?php endif; ?>
+										</span>
+									</div>
+									<div class="rp">
+
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+							<a href="<?php echo cl_link("settings/bio"); ?>" class="nav-list-item-link" data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M19.98 1.775H4.02c-1.24 0-2.25 1.01-2.25 2.25v15.95c0 1.24 1.01 2.25 2.25 2.25h15.96c1.24 0 2.25-1.01 2.25-2.25V4.025c0-1.24-1.01-2.25-2.25-2.25zm.75 18.2c0 .42-.34.75-.75.75H4.02c-.41 0-.75-.33-.75-.75v-9.48h17.46v9.48zm0-10.23H3.27v-5.72c0-.42.34-.75.75-.75h15.96c.41 0 .75.33.75.75v5.72z">
+												</path>
+												<path
+													d="M8.96 6.515v.09c0 .95-.78 1.72-1.73 1.72h-.08c-.95 0-1.73-.77-1.73-1.72v-.09c0-.95.78-1.73 1.73-1.73h.08c.95 0 1.73.78 1.73 1.73zm9.54.04c0 .42-.34.75-.75.75h-6.39c-.41 0-.75-.33-.75-.75 0-.41.34-.75.75-.75h6.39c.41 0 .75.34.75.75zm-9.54 7.17v.09c0 .95-.78 1.73-1.73 1.73h-.08c-.95 0-1.73-.78-1.73-1.73v-.09c0-.95.78-1.72 1.73-1.72h.08c.95 0 1.73.77 1.73 1.72zm9.54.05c0 .41-.34.75-.75.75h-6.39c-.41 0-.75-.34-.75-.75 0-.42.34-.75.75-.75h6.39c.41 0 .75.33.75.75zm0 3.6c0 .42-.34.75-.75.75h-6.39c-.41 0-.75-.33-.75-.75 0-.41.34-.75.75-.75h6.39c.41 0 .75.34.75.75z">
+												</path>
+											</g>
+										</svg>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("About you"); ?>
+										</span>
+										<span class="preview-value">
+											<?php if (empty($me['about'])): ?>
+												<?php echo cl_translate("The field with information about you is still empty"); ?>
+											<?php else: ?>
+												<?php echo $me['about']; ?>
+											<?php endif; ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+							<a href="<?php echo cl_link("settings/gender"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M16.695 13.037c1.185 0 2.51-.132 3.368-1.11.72-.823.952-2.08.715-3.847-.333-2.478-1.86-3.956-4.083-3.956-2.225 0-3.75 1.48-4.084 3.956-.236 1.766-.002 3.023.717 3.846.858.98 2.184 1.11 3.368 1.11zM14.098 8.28c.134-.992.648-2.656 2.598-2.656 1.948 0 2.463 1.664 2.597 2.655.174 1.293.054 2.187-.358 2.657-.367.42-1.036.6-2.238.6s-1.87-.18-2.24-.6c-.412-.47-.533-1.364-.36-2.658zm9.788 11.222c-.763-3.066-3.72-5.208-7.19-5.208-1.765 0-3.392.558-4.67 1.505-1.278-.948-2.905-1.506-4.67-1.506-3.47 0-6.428 2.142-7.19 5.208-.156.625-.025 1.265.356 1.754.37.473.94.744 1.567.744h19.87c.628 0 1.2-.27 1.57-.745.382-.49.512-1.13.356-1.753zm-1.537.83c-.09.11-.22.168-.39.168h-7.413c.078-.32.084-.66 0-.998-.25-1-.75-1.888-1.41-2.65.993-.665 2.223-1.058 3.558-1.058 2.78 0 5.14 1.674 5.735 4.07.044.174.014.344-.08.467zM7.354 20.5H2.09c-.17 0-.3-.057-.388-.168-.096-.123-.126-.294-.083-.47.596-2.395 2.954-4.068 5.735-4.068 2.78 0 5.14 1.674 5.735 4.07.043.174.014.344-.082.467-.088.113-.22.17-.388.17H7.355zm.001-7.463c1.185 0 2.51-.132 3.367-1.11.72-.823.953-2.08.716-3.847-.333-2.478-1.86-3.956-4.083-3.956-2.225 0-3.75 1.48-4.084 3.956-.236 1.766-.002 3.023.717 3.846.858.98 2.184 1.11 3.368 1.11zM4.758 8.28c.134-.992.648-2.656 2.598-2.656 1.948 0 2.463 1.664 2.597 2.655.174 1.293.053 2.187-.358 2.658-.368.42-1.037.6-2.238.6-1.202 0-1.87-.18-2.24-.6-.412-.47-.533-1.365-.36-2.66z">
+												</path>
+											</g>
+										</svg>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Your gender"); ?>
+										</span>
+										<span class="preview-value">
+											<?php if ($me['gender'] == 'M'): ?>
+												<?php echo cl_translate("Male"); ?>
+											<?php else: ?>
+												<?php echo cl_translate("Female"); ?>
+											<?php endif; ?>
+										</span>
+									</div>
+									<div class="rp">
+
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Profile -->
+	<div class="modal fade" id="profile2" tabindex="-1" aria-labelledby="profile2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("User password"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("change_your_password"); ?>
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/password"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("lock"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("My password"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to set your account password"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Country -->
+	<div class="modal fade" id="country" tabindex="-1" aria-labelledby="country" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+
+
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("Language and Country"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("Manage which languages are used to personalize your experience."); ?>
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/language"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm8.472 9.442c-.242.19-.472.368-.63.486-.68-1.265-1.002-1.78-1.256-2.007-.163-.145-.37-.223-.78-.375-.367-.136-1.482-.55-1.65-.85-.087-.153.136-.602.23-.793.088-.177.164-.33.196-.497.123-.646-.33-1.146-.728-1.59-.066-.072-.153-.17-.23-.26.335-.12.862-.26 1.42-.384 1.95 1.448 3.26 3.704 3.428 6.272zm-9.788-7.83c.076.25.145.5.182.678-.255.15-.663.363-.96.52-.262.136-.522.273-.738.392-.247.137-.442.234-.6.313-.347.174-.598.3-.833.553-.068.073-.26.278-1.02 1.886l-1.79-.656c1.293-1.94 3.362-3.31 5.76-3.685zM12 20.5c-4.687 0-8.5-3.813-8.5-8.5 0-1.197.25-2.335.7-3.37.47.182 1.713.66 2.75 1.035-.107.336-.245.854-.26 1.333-.03.855.502 1.7.562 1.792.053.08.12.15.2.207.303.21.687.5.827.616.063.343.166 1.26.23 1.833.144 1.266.175 1.48.24 1.65.005.012.514 1.188 1.315 1.188.576-.003.673-.206 1.855-2.688.244-.512.45-.95.513-1.058.1-.144.597-.61.87-.83.55-.442.76-1.82.413-2.682-.335-.83-1.92-2.08-2.5-2.195-.17-.033-.43-.04-.953-.053-.497-.01-1.25-.028-1.536-.09-.098-.024-.314-.094-.605-.196.32-.668.627-1.28.71-1.4.05-.052.168-.112.408-.234.17-.086.383-.192.653-.34.208-.116.458-.247.71-.38 1.168-.612 1.484-.8 1.658-1.082.11-.177.263-.44-.04-1.544 1.042.027 2.038.24 2.955.61-.89.32-1.024.595-1.106.77-.367.784.256 1.475.667 1.93.096.107.24.268.32.38l-.017.036c-.234.472-.67 1.35-.196 2.194.406.72 1.384 1.13 2.437 1.52.134.05.25.092.33.126.16.208.496.79 1 1.735l.154.285c.078.14.33.505.842.505.167 0 .363-.04.59-.137.032-.013.083-.035.18-.094C19.72 17.405 16.22 20.5 12 20.5zm-3.812-9.45c.01-.285.102-.646.184-.907l.027.006c.397.09 1.037.11 1.83.13.32.006.59.008.615 0 .326.143 1.355 1 1.483 1.31.113.28.05.812-.034 1.01-.233.197-.845.735-1.085 1.078-.093.13-.212.373-.64 1.274-.133.276-.313.654-.488 1.013-.026-.225-.054-.472-.08-.686-.225-2.003-.273-2.22-.42-2.445-.05-.078-.202-.31-1.135-.973-.117-.213-.268-.564-.26-.813z">
+												</path>
+											</g>
+										</svg>
+
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Display language"); ?>
+										</span>
+										<span class="preview-value">
+											<?php if (isset($cl["languages"][$me['language']])): ?>
+												<?php echo cl_translate($cl["languages"][$me['language']]["name"]); ?>
+											<?php else: ?>
+												<?php echo cl_translate($cl["curr_lang"]["lang_data"]["name"]); ?>
+											<?php endif; ?>
+										</span>
+									</div>
+									<div class="rp">
+
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+							<a href="<?php echo cl_link("settings/country"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm8.472 9.442c-.242.19-.472.368-.63.486-.68-1.265-1.002-1.78-1.256-2.007-.163-.145-.37-.223-.78-.375-.367-.136-1.482-.55-1.65-.85-.087-.153.136-.602.23-.793.088-.177.164-.33.196-.497.123-.646-.33-1.146-.728-1.59-.066-.072-.153-.17-.23-.26.335-.12.862-.26 1.42-.384 1.95 1.448 3.26 3.704 3.428 6.272zm-9.788-7.83c.076.25.145.5.182.678-.255.15-.663.363-.96.52-.262.136-.522.273-.738.392-.247.137-.442.234-.6.313-.347.174-.598.3-.833.553-.068.073-.26.278-1.02 1.886l-1.79-.656c1.293-1.94 3.362-3.31 5.76-3.685zM12 20.5c-4.687 0-8.5-3.813-8.5-8.5 0-1.197.25-2.335.7-3.37.47.182 1.713.66 2.75 1.035-.107.336-.245.854-.26 1.333-.03.855.502 1.7.562 1.792.053.08.12.15.2.207.303.21.687.5.827.616.063.343.166 1.26.23 1.833.144 1.266.175 1.48.24 1.65.005.012.514 1.188 1.315 1.188.576-.003.673-.206 1.855-2.688.244-.512.45-.95.513-1.058.1-.144.597-.61.87-.83.55-.442.76-1.82.413-2.682-.335-.83-1.92-2.08-2.5-2.195-.17-.033-.43-.04-.953-.053-.497-.01-1.25-.028-1.536-.09-.098-.024-.314-.094-.605-.196.32-.668.627-1.28.71-1.4.05-.052.168-.112.408-.234.17-.086.383-.192.653-.34.208-.116.458-.247.71-.38 1.168-.612 1.484-.8 1.658-1.082.11-.177.263-.44-.04-1.544 1.042.027 2.038.24 2.955.61-.89.32-1.024.595-1.106.77-.367.784.256 1.475.667 1.93.096.107.24.268.32.38l-.017.036c-.234.472-.67 1.35-.196 2.194.406.72 1.384 1.13 2.437 1.52.134.05.25.092.33.126.16.208.496.79 1 1.735l.154.285c.078.14.33.505.842.505.167 0 .363-.04.59-.137.032-.013.083-.035.18-.094C19.72 17.405 16.22 20.5 12 20.5zm-3.812-9.45c.01-.285.102-.646.184-.907l.027.006c.397.09 1.037.11 1.83.13.32.006.59.008.615 0 .326.143 1.355 1 1.483 1.31.113.28.05.812-.034 1.01-.233.197-.845.735-1.085 1.078-.093.13-.212.373-.64 1.274-.133.276-.313.654-.488 1.013-.026-.225-.054-.472-.08-.686-.225-2.003-.273-2.22-.42-2.445-.05-.078-.202-.31-1.135-.973-.117-.213-.268-.564-.26-.813z">
+												</path>
+											</g>
+										</svg>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("The country in which you live"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo ($me['country_name']); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+							<!-- City  -->
+							<a href="<?php echo cl_link("settings/city"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon2">
+										<?php echo cl_icon("apartment"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Your State / City / Location"); ?>
+										</span>
+										<span class="preview-value">
+											<?php if (empty($me['city'])): ?>
+												<?php echo cl_translate("Click to set your city name"); ?>
+											<?php else: ?>
+												<?php echo $me['city']; ?>
+											<?php endif; ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Account Verification -->
+	<div class="modal fade" id="settings2" tabindex="-1" aria-labelledby="settings2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("Account verification"); ?>
+					</h4>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/verification"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("verified"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Verify my account"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to submit a verification request"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Privacy -->
+	<div class="modal fade" id="privacy2" tabindex="-1" aria-labelledby="privacy2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("Account privacy settings"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("privacy_site"); ?> {%config name%}
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/privacy"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("shield"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Account privacy"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to set your account privacy"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Notifications -->
+	<div class="modal fade" id="notifications2" tabindex="-1" aria-labelledby="notifications2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("Notifications settings"); ?>
+					</h4>
+					<p>Select the kinds of notifications you get about your activities, interests, and recommendations.
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/notifications"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("bell"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Notifications"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to set up account notifications"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+
+									</div>
+								</div>
+							</a>
+							<?php if ($cl["config"]["email_notifications"] == "on"): ?>
+								<a href="<?php echo cl_link("settings/email_notifs"); ?>" class="nav-list-item-link"
+									data-spa="true">
+									<div class="nav-list-item">
+										<div class="preview-icon">
+											<?php echo cl_ikon("envelope-alt"); ?>
+										</div>
+										<div class="lp">
+											<span class="preview-label">
+												<?php echo cl_translate("Email notifications"); ?>
+											</span>
+											<span class="preview-value">
+												<?php echo cl_translate("Click to set up account email notification settings"); ?>
+											</span>
+										</div>
+										<div class="rp">
+											<svg viewBox="0 0 24 24" aria-hidden="true"
+												class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+												<g>
+													<path
+														d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+													</path>
+												</g>
+											</svg>
+										</div>
+									</div>
+								</a>
+							<?php endif; ?>
+							<?php if (not_empty($cl["blocked_users"])): ?>
+								<a href="<?php echo cl_link("settings/blocked"); ?>" class="nav-list-item-link"
+									data-spa="true">
+									<div class="nav-list-item">
+										<div class="preview-icon">
+											<?php echo cl_ikon("not-allowed"); ?>
+										</div>
+										<div class="lp">
+											<span class="preview-label">
+												<?php echo cl_translate("Blocked users"); ?>
+											</span>
+											<span class="preview-value">
+												<?php echo cl_translate("Click to manage blocked users"); ?>
+											</span>
+										</div>
+										<div class="rp">
+											<svg viewBox="0 0 24 24" aria-hidden="true"
+												class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+												<g>
+													<path
+														d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+													</path>
+												</g>
+											</svg>
+
+										</div>
+									</div>
+								</a>
+							<?php endif; ?>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- information -->
+	<div class="modal fade" id="information2" tabindex="-1" aria-labelledby="information2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("My account information"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("see_information"); ?>
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/information"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<?php echo cl_ikon("download"); ?>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Download my information"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Please choose what information you want to download"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Delete -->
+	<div class="modal fade" id="delete2" tabindex="-1" aria-labelledby="delete2" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="close">
+						<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+				<div class="modal-body">
+					<h4>
+						<?php echo cl_translate("Delete profile"); ?>
+					</h4>
+					<p>
+						<?php echo cl_translate("deactivate_account"); ?>
+					</p>
+					<div class="main--profile-settings-container">
+						<div class="profile-settings-nav">
+							<a href="<?php echo cl_link("settings/delete"); ?>" class="nav-list-item-link"
+								data-spa="true">
+								<div class="nav-list-item">
+									<div class="preview-icon">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M16.75 2.36c-2.34 0-3.92 1.62-4.74 2.8-.83-1.18-2.41-2.8-4.75-2.8-2.93 0-5.51 2.74-5.51 5.86 0 6.51 7.61 13.37 10.27 13.42 2.63-.05 10.23-6.91 10.23-13.42 0-3.12-2.57-5.86-5.5-5.86zm-4.73 17.78c-1.52-.02-8.77-6.03-8.77-11.92 0-2.33 1.88-4.36 4.01-4.36 2.1 0 3.45 1.97 3.9 2.74v.01L9.02 10.5c-.11.2-.12.45-.03.66.1.21.29.37.51.43l2.72.66-2.16 3.15c-.24.34-.15.81.19 1.05.13.08.28.13.43.13.23 0 .47-.12.62-.33l2.77-4.04c.13-.21.17-.47.08-.7-.09-.23-.28-.4-.52-.46l-2.82-.69L12.7 6.9s1.46-3.04 4.05-3.04c2.13 0 4 2.03 4 4.36 0 5.89-7.24 11.9-8.73 11.92z">
+												</path>
+											</g>
+										</svg>
+									</div>
+									<div class="lp">
+										<span class="preview-label">
+											<?php echo cl_translate("Delete profile"); ?>
+										</span>
+										<span class="preview-value">
+											<?php echo cl_translate("Click to confirm deletion of your profile"); ?>
+										</span>
+									</div>
+									<div class="rp">
+										<svg viewBox="0 0 24 24" aria-hidden="true"
+											class="r-14j79pv r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-f727ji r-bnwqim r-1plcrui r-lrvibr">
+											<g>
+												<path
+													d="M17.207 11.293l-7.5-7.5c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L15.086 12l-6.793 6.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.023 0-1.414z">
+												</path>
+											</g>
+										</svg>
+
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+		max-width: 970px;
+	}
+
+	.modal-dialog {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	.modal-content {
+		height: auto;
+		min-height: 100%;
+		border-radius: 0px !important;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.left-sb-container {
+		margin-left: -25px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.right-sb-container {
+		display: none;
+	}
+
+	.preview-icon {
+		width: 48px;
+		height: 48px;
+		margin-right: 16px;
+		-moz-box-align: center;
+		align-items: center;
+		-moz-box-direction: normal;
+		-moz-box-orient: vertical;
+		display: flex;
+		justify-content: center;
+	}
+
+	.preview-icon2 {
+		width: 48px;
+		height: 48px;
+		margin-right: 16px;
+		-moz-box-align: center;
+		align-items: center;
+		-moz-box-direction: normal;
+		-moz-box-orient: vertical;
+		display: flex;
+		justify-content: center;
+	}
+
+	body.cl-app-settings main.main-content-container div.main-content-container-inner div.timeline-container div.main--profile-settings-container div.profile-settings-nav div.nav-list-item {
+		border-bottom: 0px solid var(--smc-main-border-color);
+		min-height: calc(48px);
+		padding-bottom: 12px;
+		padding-top: 12px;
+		padding-left: 0px;
+		padding-right: 16px;
+	}
+
+	a {
+		text-decoration: none !important;
+	}
+
+	body.cl-app-settings main.main-content-container div.main-content-container-inner div.timeline-container div.main--profile-settings-container div.profile-settings-nav div.nav-list-item div.lp span.preview-label {
+		font-weight: 400;
+		font-size: 15px;
+		line-height: 20px;
+		overflow-wrap: break-word;
+		text-decoration: none !important;
+	}
+
+	.preview-icon svg {
+		width: 18px;
+		height: 18px;
+		stroke: var(--cl-primary-text-color);
+		display: inline-block;
+		-moz-box-pack: center;
+		justify-content: center;
+	}
+
+	.preview-icon2 svg {
+		width: 18px;
+		height: 18px;
+		fill: var(--cl-primary-text-color);
+		display: inline-block;
+		-moz-box-pack: center;
+		justify-content: center;
+	}
+
+	.nav.nav-tabs {
+		float: left;
+		display: block;
+		margin-right: 20px !important;
+		border-bottom: 0;
+		border-right: 1px solid;
+		padding-right: 1px !important;
+		border-right: 1px solid var(--smc-main-border-color) !important;
+	}
+
+	.nav-tabs .nav-link svg {
+		fill: var(--cl-secondary-text-color);
+	}
+
+	.tab-content p {
+		font-size: 13px;
+	}
+
+	.nav-tabs .nav-link.active {
+		color: var(--smc-main-text-color);
+		background-color: var(--smc-main-bg-color-2) !important;
+		min-height: calc(48px);
+		-moz-box-pack: justify;
+		justify-content: space-between;
+		padding-bottom: 12px;
+		padding-top: 12px;
+		padding-left: 16px;
+		padding-right: 16px;
+		border-right-width: 2px;
+		border-right-style: solid;
+		border-right-color: rgb(29, 155, 240) !important;
+		min-width: 388px;
+		display: inline-flex;
+		border-color: transparent;
+	}
+
+	.nav-tabs .nav-link.active a svg {
+		margin-right: -40px;
+	}
+
+	.nav-tabs .nav-link {
+
+		border-top-left-radius: 0rem !important;
+		border-top-right-radius: 0rem !important;
+		background: var(--cl-primary-bg-color);
+		color: var(--smc-main-text-color);
+		min-height: calc(48px);
+		-moz-box-pack: justify;
+		justify-content: space-between;
+		padding-bottom: 12px;
+		padding-top: 12px;
+		padding-left: 16px;
+		padding-right: 16px;
+		min-width: 388px;
+		display: inline-flex;
+	}
+
+	.nav-link {
+		transition: none !important;
+	}
+
+	.nav-tabs .nav-link:hover {
+		background-color: var(--smc-main-bg-color-2) !important;
+		border: 0px !important;
+		border-color: transparent !important;
+		transition: none !important;
+	}
+
+	.tab-content>.active {
+		display: block;
+		background: var(--cl-primary-bg-color);
+		min-height: 565px;
+
+	}
+
+	.container {
+		margin-top: 15px;
+	}
+
+	.container h4 {
+		margin-bottom: 20px;
+		color: var(--smc-main-text-color);
+	}
+
+	.container p {
+		color: var(--smc-main-text-color-2);
+	}
+
+	.nav.nav-tabs {
+		float: left;
+		display: block;
+		margin-right: 20px;
+		border-bottom: 0;
+		border-right: 1px solid transparent;
+		padding-right: 15px;
+		min-height: 440px;
+
+	}
+
+	body div.modal div.modal-content div.modal-header {
+		border-bottom: 0px;
+	}
+
+	@media (max-width: 1024px) {
+		.nav.nav-tabs {
+			width: 100% !important;
+			border-right: 0px !important;
+		}
+
+		#myTab.nav-tabs .nav-link {
+			width: 100%;
+			cursor: pointer;
+		}
+	}
+</style>

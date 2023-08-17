@@ -1,0 +1,132 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+body.cl-app-settings {
+    div.profile-settings {
+        div.profile-settings__title {
+            overflow: hidden;
+            padding: var(--cl-primary-offset-size);
+            background: var(--cl-secondary-bg-color);
+            border-bottom: 1px solid var(--cl-primary-border-color);
+            h4 {
+                font-size: 13px;
+                color: var(--cl-primary-text-color);
+                padding: 0;
+                margin: 0;
+                font-weight: 500;
+                text-transform: uppercase;
+            }
+        }
+        a.profile-settings__link {
+            text-decoration: none;
+            div.nav-list-item {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: center;
+                padding: var(--cl-primary-offset-size);
+                border-bottom: 1px solid var(--cl-primary-border-color);
+                text-decoration: none;
+                cursor: pointer;
+                overflow: hidden;
+                div.mp {
+                    flex: 1;
+                    margin: 0px var(--cl-primary-offset-size);
+                    line-height: 1;
+                    overflow: hidden;
+                    span.preview-label {
+                        font-size: 14px;
+                        line-height: 1;
+                        font-weight: 500;
+                        color: var(--cl-primary-text-color);
+                        display: block;
+                        margin-bottom: 7px;
+                        @include media-breakpoint-down(xl) {
+                            font-size: 13px;
+                        }
+                    }
+                    span.preview-value {
+                        font-size: 14px;
+                        color: var(--cl-secondary-text-color);
+                        line-height: 1;
+                        white-space: nowrap;
+                        display: inline-block;
+                        max-width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        @include media-breakpoint-down(xl) {
+                            font-size: 12px;
+                        }
+                    }
+                }
+                div.rp,
+                div.lp {
+                    line-height: 1;
+                    flex-shrink: 0;
+                    svg {
+                        width: 22px;
+                        height: 22px;
+                        vertical-align: middle;
+                        fill: var(--cl-secondary-text-color);
+                        @include media-breakpoint-down(xl) {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
+                div.lp {
+                    align-self: flex-start;
+                }
+                &:hover,
+                &:active,
+                &:focus {
+                    background: var(--cl-event-hover-bg);
+                    b {
+                        color: var(--cl-primary-color);
+                    }
+                }
+                &.nav-list-item-delete {
+                    background: var(--cl-danger-color);
+                    div.mp {
+                        span.preview-label {
+                            color: #ffffff;
+                            font-weight: 500;
+                        }
+                        span.preview-value {
+                            color: #ffffff;
+                            opacity: 0.9;
+                        }
+                    }
+                    div.rp,
+                    div.lp {
+                        svg {
+                            fill: #ffffff;
+                        }
+                    }
+                }
+            }
+        }
+        div.profile-settings__content {
+            padding: var(--cl-primary-offset-size);
+            div.settings-form {
+                form.form {
+                    div.form-group {
+                        &.padding-x-offset {
+                            padding: 0px var(--cl-primary-offset-size);
+                        }
+                    }
+                }
+            }
+            &.profile-settings__content_no-padding {
+                padding: 0px;
+            }
+        }
+    }
+}

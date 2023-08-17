@@ -1,0 +1,54 @@
+<div class="cp-app-container" data-app="delete-swifts">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Remove expired swifts'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"><?php echo cl_translate('Remove expired swifts'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" data-an="info-content">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('Remove expired user swifts'); ?>
+                        </h5>
+                    </div>
+
+
+                    <div class="card-body">
+                        <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+
+                            <p>
+                                <i class="icon-info-alt"></i> <?php echo ("This function will remove all expired swifts of your users. Note, however, that this process may take some time. Please wait until the process is complete without leaving the page"); ?>
+                            </p>
+
+                        </div>
+                        <hr>
+                        <form class="form" data-an="form">
+                            <div class="form-group no-mb">
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Delete"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo cl_template('cpanel/assets/delete_swifts/scripts/app_master_script'); ?>

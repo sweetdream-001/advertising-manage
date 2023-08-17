@@ -1,0 +1,176 @@
+<div class="timeline-container" data-app="conversation">
+	<div class="timeline-header__botline">
+		<div class="timeline-header" data-el="tl-header">
+
+			<div class="timeline-header">
+				<div class="lp lp__avatar">
+					<div class="" style="display: flex;justify-content: center;align-items: center; margin-left:5px; margin-right: -15px;">
+						<span class="go-back" onclick="SMColibri.go_back();">
+							<?php echo cl_ikon('arrow-left'); ?>
+						</span>
+					</div>
+					<div class="nav-link-avatar">
+						<?php if (not_empty($cl['interlocutor']['is_online'])) : ?>
+							<a href="<?php echo ($cl['interlocutor']['url']); ?>" data-an="last-seen" class="online" data-spa="true" title="<?php echo cl_translate("Online"); ?>">
+							<?php else : ?>
+								<a href="<?php echo ($cl['interlocutor']['url']); ?>" data-an="last-seen" data-spa="true">
+								<?php endif; ?>
+								<img src="<?php echo ($cl['interlocutor']['avatar']); ?>" alt="IMG">
+								</a>
+					</div>
+					<div class="nav-link-holder">
+						<a href="<?php echo ($cl['interlocutor']['url']); ?>" data-spa="true">
+							<span class="">
+								<span class="user-name-holder__name">
+									<?php echo ($cl['interlocutor']['name']); ?>
+								</span>
+
+								<?php if ($cl['interlocutor']['verified'] == '1') : ?>
+									<span class="user-name-holder__badge">
+										<?php echo cl_icon("verified_user_badge"); ?>
+									</span>
+								<?php endif; ?>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div class="cp">
+
+				</div>
+				<div class="rp">
+					<div class="nav-link-holder">
+						<button class="go-options dropleft">
+							<div class="dropdown-toggle icon go-options__icon" data-toggle="dropdown">
+								<?php echo cl_icon('more_horiz'); ?>
+							</div>
+							<div class="dropdown-menu dropdown-icons">
+								<a class="dropdown-item" href="<?php echo ($cl['interlocutor']['url']); ?>" data-spa="true">
+									<span class="flex-item dropdown-item-icon">
+										<?php echo cl_icon("account_box"); ?>
+									</span>
+									<span class="flex-item">
+										<?php echo ($cl['interlocutor']['name']); ?>
+									</span>
+									<span class="flex-item dropdown-item-icon dropdown-item-icon_adinfo">
+										<?php echo cl_icon('navigate_next'); ?>
+									</span>
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item col-red" onclick="SMColibri.PS.chat.delete_chat();">
+									<span class="flex-item dropdown-item-icon">
+										<?php echo cl_icon("delete"); ?>
+									</span>
+									<span class="flex-item">
+										<?php echo cl_translate("Delete chat"); ?>
+									</span>
+								</a>
+								<a class="dropdown-item" onclick="SMColibri.PS.chat.clear_chat();">
+									<span class="flex-item dropdown-item-icon">
+										<?php echo cl_icon("speaker_notes_off"); ?>
+									</span>
+									<span class="flex-item">
+										<?php echo cl_translate("Clear chat"); ?>
+									</span>
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo cl_link(cl_strf("settings/privacy")); ?>" data-spa="true">
+									<span class="flex-item dropdown-item-icon">
+										<?php echo cl_icon('manage_account'); ?>
+									</span>
+									<span class="flex-item">
+										<?php echo cl_translate('Profile settings'); ?>
+									</span>
+									<span class="flex-item dropdown-item-icon dropdown-item-icon_adinfo">
+										<?php echo cl_icon('navigate_next'); ?>
+									</span>
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="javascript:void(0);" onclick="SMColibri.go_back();">
+									<span class="flex-item dropdown-item-icon">
+										<?php echo cl_icon('arrow_back'); ?>
+									</span>
+									<span class="flex-item">
+										<?php echo cl_translate("Go back"); ?>
+									</span>
+									<span class="flex-item dropdown-item-icon dropdown-item-icon_adinfo">
+										<?php echo cl_icon('reply_black'); ?>
+									</span>
+								</a>
+							</div>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="d-block" id="vue-conversation-app">
+		<div class="conversation">
+			<div class="conversation__body">
+				<div v-on:scroll="get_old_messages($event)" data-an="messages-list" class="conversation-messages">
+					<?php if (not_empty($cl["messages"])) : ?>
+						<?php foreach ($cl["messages"] as $cl['li']) : ?>
+							<?php echo cl_template('conversation/includes/list_item'); ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+			</div>
+			<div class="conversation__footer">
+				<?php if (not_empty($cl["can_contact"])) : ?>
+					<form class="form" v-on:submit="send_message($event)" data-an="message-form">
+						<div class="message-input">
+							<button v-on:click="select_image" type="button" class="message-input__ctrl">
+								<svg aria-label="Add Photo or Video" class="_ab6-" color="var(--smc-main-text-color);" fill="var(--smc-main-text-color);" height="24" role="img" viewBox="0 0 24 24" width="24">
+									<path d="M6.549 5.013A1.557 1.557 0 1 0 8.106 6.57a1.557 1.557 0 0 0-1.557-1.557Z" fill-rule="evenodd"></path>
+									<path d="m2 18.605 3.901-3.9a.908.908 0 0 1 1.284 0l2.807 2.806a.908.908 0 0 0 1.283 0l5.534-5.534a.908.908 0 0 1 1.283 0l3.905 3.905" fill="none" stroke="var(--smc-main-text-color);" stroke-linejoin="round" stroke-width="2"></path>
+									<path d="M18.44 2.004A3.56 3.56 0 0 1 22 5.564h0v12.873a3.56 3.56 0 0 1-3.56 3.56H5.568a3.56 3.56 0 0 1-3.56-3.56V5.563a3.56 3.56 0 0 1 3.56-3.56Z" fill="none" stroke="var(--smc-main-text-color);" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+								</svg>
+							</button>
+							<div class="message-input__field">
+								<textarea ref="text_input" v-on:input.trim="text_input_trigger" data-an="msg-input" v-model="message" class="form-control autoresize" placeholder="<?php echo cl_translate("Write a message and hit Enter ..."); ?>"></textarea>
+							</div>
+							<button data-an="submit-btn" v-bind:disabled="is_invalid_form" type="submit" class="message-input__ctrl">
+								<svg fill="#000000" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+									<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+									<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+									<g id="SVGRepo_iconCarrier">
+										<g>
+											<g>
+												<path d="M508.645,18.449c-2.929-2.704-7.133-3.51-10.826-2.085L6.715,204.446c-3.541,1.356-6.066,4.515-6.607,8.264 c-0.541,3.75,0.985,7.496,3.995,9.796l152.127,116.747c-0.004,0.116-0.575,0.224-0.575,0.342v83.592 c0,3.851,2.663,7.393,6.061,9.213c1.541,0.827,3.51,1.236,5.199,1.236c2.026,0,4.181-0.593,5.931-1.756l56.12-37.367 l130.369,99.669c1.848,1.413,4.099,2.149,6.365,2.149c1.087,0,2.186-0.169,3.248-0.516c3.27-1.066,5.811-3.672,6.786-6.974 L511.571,29.082C512.698,25.271,511.563,21.148,508.645,18.449z M170.506,321.508c-0.385,0.36-0.7,0.763-1.019,1.163 L31.659,217.272L456.525,54.557L170.506,321.508z M176.552,403.661v-48.454l33.852,25.887L176.552,403.661z M359.996,468.354 l-121.63-93.012c-1.263-1.77-2.975-3.029-4.883-3.733l-47.29-36.163L480.392,60.86L359.996,468.354z"></path>
+											</g>
+										</g>
+									</g>
+								</svg>
+							</button>
+						</div>
+						<input v-on:change="send_image($event)" type="file" class="d-none hidden" name="image" accept="image/*" data-an="media-input">
+					</form>
+				<?php else : ?>
+					<div class="ghost-form">
+						<?php echo cl_translate("You do not have permission direct messages to this chat"); ?>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+
+	<?php echo cl_template('conversation/scripts/app_master_script'); ?>
+</div>
+<style>
+	body .dropleft div.dropdown-menu.dropdown-icons.show {
+		position: fixed !important;
+		transform: translate3d(-170px, 30px, 0px) !important;
+		top: 0px;
+		left: auto !important;
+		will-change: transform;
+		right: auto !important;
+	}
+
+	.mobile-bottom-navbar2 {
+		display: none;
+	}
+
+	.tweet {
+		display: none;
+	}
+</style>

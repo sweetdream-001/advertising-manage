@@ -1,0 +1,269 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                        @
+// @ Author_url 2: http://jooj.us/twitter-clone                       @
+// @ Author E-mail: sales@jooj.us                                    @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2022 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+.d-flex {
+    width: 100%;
+    .flex-nw,
+    .flex-wn {
+        flex-wrap: nowrap;
+    }
+    .flex-grow-1 {
+        flex: 1;
+    }
+}
+
+.of-hide {
+    overflow: hidden;
+}
+
+.hidden,
+.d-none {
+    display: none;
+}
+
+div.row {
+    margin-left: -10px !important;
+    margin-right: -10px !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-inline-flex {
+    display: inline-flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.align-items-start {
+    align-items: flex-start;
+}
+
+.align-items-end {
+    align-items: flex-end;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-start {
+    justify-content: flex-start;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.flex-wn,
+.flex-nw {
+    flex-wrap: nowrap;
+}
+
+div.col-lg-1,
+div.col-lg-2,
+div.col-lg-3,
+div.col-lg-4,
+div.col-lg-5,
+div.col-lg-6,
+div.col-lg-7,
+div.col-lg-8,
+div.col-lg-9,
+div.col-lg-10,
+div.col-lg-11,
+div.col-lg-12 {
+    padding: 0px 10px;
+}
+
+div.col-md-1,
+div.col-md-2,
+div.col-md-3,
+div.col-md-4,
+div.col-md-5,
+div.col-md-6,
+div.col-md-7,
+div.col-md-8,
+div.col-md-9,
+div.col-md-10,
+div.col-md-11,
+div.col-md-12 {
+    padding: 0px 10px;
+}
+
+div.col-sm-1,
+div.col-sm-2,
+div.col-sm-3,
+div.col-sm-4,
+div.col-sm-5,
+div.col-sm-6,
+div.col-sm-7,
+div.col-sm-8,
+div.col-sm-9,
+div.col-sm-10,
+div.col-sm-11,
+div.col-sm-12 {
+    padding: 0px 10px;
+}
+
+div.col-xs-1,
+div.col-xs-2,
+div.col-xs-3,
+div.col-xs-4,
+div.col-xs-5,
+div.col-xs-6,
+div.col-xs-7,
+div.col-xs-8,
+div.col-xs-9,
+div.col-xs-10,
+div.col-xs-11,
+div.col-xs-12 {
+    padding: 0px 10px;
+}
+
+div.col-xxl-1,
+div.col-xxl-2,
+div.col-xxl-3,
+div.col-xxl-4,
+div.col-xxl-5,
+div.col-xxl-6,
+div.col-xxl-7,
+div.col-xxl-8,
+div.col-xxl-9,
+div.col-xxl-10,
+div.col-xxl-11,
+div.col-xxl-12 {
+    padding: 0px 10px;
+}
+
+a.block-link {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+a.inline-link {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    color: var(--cl-primary-link-color) !important;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.col-red {
+    color: var(--cl-danger-color) !important;
+}
+
+.col-grey {
+    color: var(--cl-secondary-text-color) !important;
+}
+
+.col-blue {
+    color: var(--cl-primary-color) !important;
+}
+
+.ov-h {
+    overflow: hidden;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.fw-400 {
+    font-weight: 400 !important;
+}
+
+svg[stroke-width="1.8"] {
+    stroke-width: 1.6;
+}
+
+video {
+    max-height: 100%;
+}
+
+[data-href] {
+    cursor: pointer;
+}
+
+span.user-name-holder {
+    font-size: inherit;
+    color: inherit;
+    line-height: 1;
+    display: inline-flex !important;
+    justify-content: flex-start !important;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: auto !important;
+    font-weight: inherit;
+    max-width: 100%;
+    span.user-name-holder__name {
+        white-space: nowrap;
+    }
+    span.user-name-holder__badge {
+        width: var(--cl-primary-name-size);
+        height: var(--cl-primary-name-size);
+        line-height: 0;
+        margin-left: 2px;
+        svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--cl-primary-color);
+        }
+    }
+}
+
+a.image-wrapper.fbox-media {
+    display: inherit !important;
+    line-height: 0;
+    text-decoration: none;
+}
+
+div.cl-google-ads {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    &.centered {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        overflow: hidden;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
+
+span.spinner-icon {
+    svg {
+        path {
+            fill: var(--cl-primary-color);
+        }
+    }
+}
+
+div.bootstrap-bp-display {
+    position: fixed;
+    top: 90%;
+    left: 50%;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    background: red;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    color: #fff;
+}

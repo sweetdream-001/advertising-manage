@@ -1,0 +1,102 @@
+<div class="cp-app-container" data-app="affiliate-payouts">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Affiliate payouts'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Affiliate payouts'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" id="vue-cpanel-affiliate-payouts-app" data-an="info-content">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('Manage affiliate payout requests'); ?> - ({{total_requests}})
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-dark dark alert-dismissible fade show" role="alert">
+                                <p>
+                                    <i class="icon-info-alt"></i> <?php echo cl_translate('Please note: When paying or refusing to pay, do not forget to send a notification to the user by email, informing him about the result of his request.'); ?>
+                                </p>
+
+                            </div>
+
+                            <div class="regular-table">
+                                <table class="table table-hover no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>
+                                                <?php echo cl_translate('Username'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('E-mail address'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Paypal'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Amount'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Status'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Requested at'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Action'); ?>
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody data-an="requests-list">
+                                        <?php if (not_empty($cl['requests'])) : ?>
+                                            <?php foreach ($cl['requests'] as $cl['li']) : ?>
+                                                <?php echo cl_template('cpanel/assets/affiliate_payouts/includes/list_item'); ?>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <tr>
+                                                <td colspan="8">
+                                                    <div class="empty-table">
+                                                        <span class="icon">
+                                                            <?php echo cl_ikon("support-alt"); ?>
+                                                        </span>
+                                                        <h4><?php echo ('No requests found'); ?></h4>
+                                                        <p>
+                                                            <?php echo ('It looks like there are no affiliate payout requests in your database yet. All affiliate payout requests will be displayed here.'); ?>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+
+                                <div class="table-pagination">
+                                    <a v-if="show_ctrls" v-bind:class="{'disabled': dis_prev_ctrl}" v-on:click="paginate('up')" href="javascript:void(0);" class="pagination-ctrls prev">
+                                        <?php echo cl_ikon("chevron-left"); ?>
+                                    </a>
+                                    <a v-if="show_ctrls" v-bind:class="{'disabled': dis_next_ctrl}" v-on:click="paginate('down')" href="javascript:void(0);" class="pagination-ctrls next">
+                                        <?php echo cl_ikon("chevron-right"); ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php echo cl_template('cpanel/assets/affiliate_payouts/scripts/app_master_script'); ?>

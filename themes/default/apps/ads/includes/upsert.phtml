@@ -1,0 +1,150 @@
+<div class="ads-management__upsert">
+	<form class="form" id="vue-ads-upsert-app" v-on:submit="submit_form($event)" autocomplete="off">
+		<div class="form-group">
+			<label>
+				<?php echo cl_translate("Advertising cover"); ?>
+			</label>
+
+			<div class="form-dropzone" v-on:click="select_cover">
+				<div v-if="ad_data.cover" class="form-dropzone__image">
+					<img v-bind:src="ad_data.cover" alt="IMG">
+				</div>
+				<div v-else class="form-dropzone__empty">
+					<div class="form-dropzone__header">
+                		<div class="form-dropzone__icon">
+                			<?php echo cl_icon('cloud_upload'); ?>
+                		</div>
+                	</div>
+                	<div class="form-dropzone__body">
+                		<?php echo cl_translate("The recommended size for ad cover is 600x320px"); ?>
+                	</div>
+                	<div class="form-dropzone__footer">
+                		<button type="button" class="btn btn-custom lg main-grey">
+                            <?php echo cl_translate("Click to select file"); ?>
+                        </button>
+                	</div>
+				</div>
+			</div>
+			<div class="form-info-label">
+                <?php echo cl_translate("The cover of your advertisement should be as catchy as possible for the client's attention and have a clear and concise offer for the client"); ?>
+            </div>
+		</div>	
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>
+						<?php echo cl_translate("Campaign title"); ?>
+					</label>
+					<input v-model="$v.ad_data.company.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter your ad title"); ?>">
+					<div v-if="is_invalid_company" class="invalid-main-feedback">
+						{{fb.cs.company}}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>
+						<?php echo cl_translate("Target URL"); ?>
+					</label>
+					<input v-model="$v.ad_data.target_url.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter the target URL of your ad"); ?>">
+					<div v-if="is_invalid_target_url" class="invalid-main-feedback">
+						{{fb.cs.target_url}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label>
+				<?php echo cl_translate("Status"); ?>
+			</label>
+			<div class="dropdown vue-dropdown-select">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span v-if="ad_data.status == 'orphan'">
+                    	<?php echo cl_translate("Nothing selected"); ?>
+                    </span>
+                    <span v-else>
+                    	{{sdds.status[ad_data.status]}}
+                    </span>
+                </button>
+                <div class="dropdown-menu">
+                    <a v-for="(v,k) in sdds.status" v-on:click="ad_data.status = k" class="dropdown-item" href="javascript:void(0);">
+                        {{v}}
+                    </a>
+                </div>
+            </div>
+		</div>
+		<div class="form-group">
+			<label>
+				<?php echo cl_translate("Target audience"); ?>
+			</label>
+			<div class="dropdown vue-dropdown-select vue-dropdown-multiselect">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo cl_translate("Selected countries"); ?> ({{ad_data.audience.length}})
+                </button>
+                <div class="dropdown-menu">
+                    <a v-for="(v,k) in sdds.countries" v-on:click="select_audience(k)" class="dropdown-item" href="javascript:void(0);">
+                        {{v}} <b v-if="ad_data.audience.contains(k)" class="select-check-mark">+</b>
+                    </a>
+                </div>
+            </div>
+            <div class="form-info-label">
+            	<?php echo cl_translate("Select countries for the target audience of your ad, or select all countries if there are no audience restrictions"); ?>
+            </div>
+
+            <div class="multiselect-toggle-all">
+				<div class="form-check">
+					<input v-on:change="select_audience_all($event)" id="select-all-audience" v-bind:checked="is_audience_all_selected" type="checkbox" class="form-check-input">
+					<label for="select-all-audience" class="form-check-label">
+						<?php echo cl_translate("Select all countries"); ?>
+					</label>
+            	</div>
+            </div>
+		</div>
+		<div class="form-group">
+			<label>
+				<?php echo cl_translate("Campaign description"); ?>
+			</label>
+			<textarea v-model="$v.ad_data.description.$model" class="form-control" rows="4" placeholder="<?php echo cl_translate("Enter the description of your ad"); ?>"></textarea>
+			<div v-if="is_invalid_description" class="invalid-main-feedback">
+				{{fb.cs.description}}
+			</div>
+		</div>
+		<div class="form-group">
+			<label>
+				CTA
+			</label>
+			<input v-model="$v.ad_data.cta.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter the CTA of your ad. E.g. (Take our free trial)"); ?>">
+			<div v-if="is_invalid_cta" class="invalid-main-feedback">
+				{{fb.cs.cta}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="form-tos">
+				<div class="form-check">
+					<input v-model="tos_agree" id="tos-agree" type="checkbox" class="form-check-input">
+					<label for="tos-agree" class="form-check-label">
+						<span>
+							<?php echo cl_translate("By continuing, you agree to {@site_name@}",array(
+								"site_name" => $cl["config"]["name"]
+							)); ?>
+						</span>
+						<a href="<?php echo cl_link('terms_of_use'); ?>"><?php echo cl_translate("Terms of Use"); ?></a> <?php echo cl_translate("And"); ?> <a href="<?php echo cl_link('privacy_policy'); ?>"><?php echo cl_translate("Privacy policy"); ?></a>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<button v-if="submitting" disabled="true" class="btn btn-custom main-inline lg btn-block">
+				<?php echo cl_translate("Please wait"); ?>
+			</button>
+			<button v-else v-bind:disabled="is_invalid_form" class="btn btn-custom main-inline lg btn-block">
+				<?php if ($cl['ad_data']['status'] == 'orphan'): ?>
+					<?php echo cl_translate("Publish"); ?>
+				<?php else: ?>
+					<?php echo cl_translate("Save changes"); ?>
+				<?php endif; ?>
+			</button>
+		</div>
+		<input type="file" class="d-none" data-an="cover-input" accept="image/*" v-on:change="upload_cover($event)">
+	</form>
+</div>

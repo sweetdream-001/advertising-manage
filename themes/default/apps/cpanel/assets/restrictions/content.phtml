@@ -1,0 +1,65 @@
+<div class="cp-app-container" data-app="restrictions">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('User data restrictions'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('User data restrictions'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                <?php echo cl_translate('Managing user data restrictions'); ?>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" data-an="form">
+                                <div class="alert alert-light dark alert-dismissible fade show" role="alert">
+                                    <i data-feather="alert-triangle"></i>
+                                    <p> <strong> <?php echo cl_translate('important'); ?> </strong> <?php echo cl_translate('data_restrictions_help'); ?> <br>
+                                        <?php echo cl_translate('data_restrictions_help2'); ?></p>
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close" data-bs-original-title="" title=""></button>
+                                </div>
+                                <div class="form-group" data-an="username_restrictions-input">
+                                    <label>
+                                        <h6> <?php echo cl_translate('Username restrictions'); ?> </h6>
+                                    </label>
+                                    <div class="form-line">
+                                        <textarea name="username_restrictions" class="form-control" placeholder="Enter comma-separated restricted usernames. E.g: username1, username2, username3">{%config username_restrictions%}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group" data-an="useremail_restrictions-input">
+                                    <label>
+                                        <h6> <?php echo cl_translate('User email restrictions'); ?> </h6>
+                                    </label>
+                                    <div class="form-line">
+                                        <textarea name="useremail_restrictions" class="form-control" placeholder="Enter comma-separated restricted email addresses. E.g: email_address1@test.com, email_address2@test.com, email_address3@test.com">{%config useremail_restrictions%}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group no-mb">
+                                    <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                        <?php echo cl_translate("Save changes"); ?>
+                                    </button>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/restrictions/scripts/app_master_script'); ?>

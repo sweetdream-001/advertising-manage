@@ -1,0 +1,12 @@
+##!/bin/bash
+## KEEP THIS CODE COMMENTED UNTIL (RTL) IS BACK TO THE SCRIPT
+##-----------------------------------------------------------------------------------#
+## read -p "Please select layout direction (ltr or rtl)?: " direction                #
+## if [ "$direction" = "ltr" ]; then                                                 #
+##   scss --watch master.styles.scss:../css/master.styles.css --no-cache             #
+## else                                                                              #
+##   scss --watch master.styles-rtl.scss:../css/master.styles.rtl.css --no-cache     #
+## fi                                                                                #
+##-----------------------------------------------------------------------------------#
+
+scss --watch master.styles.scss:../css/master.styles.css --no-cache

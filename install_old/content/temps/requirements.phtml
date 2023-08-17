@@ -1,0 +1,350 @@
+<?php
+# @*************************************************************************@
+# @ @author JOOJ Team (JOOJ.us)						            			@
+# @ @author_url 1: https://jooj.us                                          @
+# @ @author_url 2: http://jooj.us/twitter-clone                             @
+# @ @author_email: sales@jooj.us                                            @
+# @*************************************************************************@
+# @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+# @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+# @*************************************************************************@
+
+$ffmpeg_rights            = (is_executable(PROJ_RP . "/core/libs/ffmpeg/ffmpeg"));
+$php_version              = version_compare(PHP_VERSION, '5.5.0', '>=');
+$mysqli_exists            = function_exists('mysqli_connect');
+$gdlib_exists             = (extension_loaded('gd') && function_exists('gd_info'));
+$mbstr_exists             = extension_loaded('mbstring');
+$phpzip_exists            = extension_loaded('zip');
+$config_exists            = (is_writable(PROJ_RP . '/core/settings.php'));
+$dbsql_exists             = (file_exists(PROJ_RP . '/joojtalk-db.sql') && is_readable(PROJ_RP . '/joojtalk-db.sql'));
+$curl_installed           = function_exists('curl_version');
+$reqs_exists              = array();
+$reqs_exists[]            = $php_version;
+$reqs_exists[]            = $mysqli_exists;
+$reqs_exists[]            = $gdlib_exists;
+$reqs_exists[]            = $mbstr_exists;
+$reqs_exists[]            = $phpzip_exists;
+$reqs_exists[]            = $config_exists;
+$reqs_exists[]            = $dbsql_exists;
+$reqs_exists[]            = $curl_installed;
+$reqs_exists[]            = $ffmpeg_rights;
+$_SESSION['init']         = array();
+$_SESSION['init']['reqs'] = in_array(false, $reqs_exists);
+?>
+
+ <div class="container-fluid">
+      <div class="row">         
+        <div class="col-12 p-0">
+          <div>
+            <div class="theme-form">                     
+              <div class="wizard-4" id="wizard">                       
+                <ul>
+                  <li><a class="logo text-start ps-0" href="index.html"><img class="img-fluid for-light" src="assets/images/logo/login.png" alt="looginpage" style="height: 70px;"><img class="img-fluid for-dark" src="../assets/images/logo/logo_dark.png" alt="looginpage"></a></li>
+                  <li><a href="" class="done">
+                      <h4>1</h4>
+                      <h5>Terms of use</h5><small>License Agreement</small></a></li>
+                  <li><a href="" class="selected">
+                      <h4>2</h4>
+                      <h5>Requirements</h5><small>Server info</small></a></li>
+                  <li><a href="#step-3">
+                      <h4>3</h4>
+                      <h5>Installation</h5><small>Congratulations</small></a></li>
+                  <li class="pb-0"><a href="#step-4">
+                      <h4>4</h4>
+                      <h5> Done <i class="fa fa-thumbs-o-up"></i></h5><small>Complete.. !</small></a></li>
+                  <li>                           <img src="assets/images/login/icon.png" alt="looginpage" style="max-height: 230px; margin-top: 30px;"></li>
+                </ul>
+                	<div class="container">
+		<div class="main-cont">
+			<div class="row">
+				<div class="col-sm-8 offset-sm-2">
+					<div class="wizard-title" style="margin-bottom: 40px;">
+						<h2>
+							Welcome to the JOOJ Talk installer!
+						</h2>
+						<p>
+							Installing <b>JOOJ Talk</b> quick easy. In just a few steps, you get a modern social media sharing platform
+						</p>
+					</div>
+<div class="main-cont-inner">
+<div class="wizard-title">
+		<h2>
+			<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M277 360h-42V235h42v125zm0-166h-42v-42h42v42z"/></svg>
+			Requirements
+		</h2>
+	</div>
+
+	<div class="cont-body">
+
+		<div class="requirements">
+			<div class="requirements-def-title">
+				<p>
+					Please make sure all the necessary dependencies are installed on your server.
+				</p>
+			</div>
+			<table class="table">
+				<thead>
+					<th>
+						Name
+					</th>
+					<th>
+						Description
+					</th>
+					<th>
+						Status
+					</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<b>PHP 5.5.0+</b>
+						</td>
+						<td>
+							Required PHP version 5.5.0 or more
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($php_version): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">
+										Installed
+									</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">
+										Not installed
+									</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>MySQLi</b>
+						</td>
+						<td>
+							Required MySQLi PHP extension
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($mysqli_exists): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">
+										Installed
+									</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">
+										Not installed
+									</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>GD Library</b>
+						</td>
+						<td>
+							Required GD Library for image cropping
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($gdlib_exists): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">
+										Installed
+									</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">
+										Not installed
+									</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>MB-string</b>
+						</td>
+						<td>
+							Required MB-string extension for UTF-8 Text
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($mbstr_exists): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">
+										Installed
+									</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">
+										Not installed
+									</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>PHP Zip</b>
+						</td>
+						<td>
+							Required ZIP extension for backuping data
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($phpzip_exists): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">
+										Installed
+									</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">
+										Not installed
+									</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>settings.php</b>
+						</td>
+						<td>
+							Required settings.php to be writable for the installation <strong>(Located in <code>core/settings.php</code>)</strong>
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($config_exists): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">
+										Uploaded
+									</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">
+										Not uploaded
+									</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>
+								FFmpeg
+							</b>
+						</td>
+						<td>
+							Requires ffmpeg to be executable. I.e has <b>555</b> rights. Otherwise video loading won't work <strong>(Located in <code>core/libs/ffmpeg/ffmpeg</code>)</strong>
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($ffmpeg_rights): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">OK</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">Not OK</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>joojtalk-db.sql</b>
+						</td>
+						<td>
+							Required joojtalk-db.sql for the installation <strong>(Located in the root folder)</strong> 
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($dbsql_exists): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">Uploaded</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">Not uploaded</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>cURL Module</b>
+						</td>
+						<td>
+							Required cURL extension for oAuth logins
+						</td>
+						<td>
+							<span class="requirement-status">
+								<?php if ($curl_installed): ?>
+									<span class="installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48C141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208S370.4 48 256 48zm-42.7 318.9L106.7 260.3l29.9-29.9 76.8 76.8 162.1-162.1 29.9 29.9-192.1 191.9z"/></svg>
+									</span>
+									<span class="stat">Installed</span>
+								<?php else: ?>
+									<span class="not-installed icon">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/><path d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/></svg>
+									</span>
+									<span class="stat">Not installed</span>
+								<?php endif; ?>
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="next-action">
+				<div class="ml-auto">
+					<?php if (in_array(false, $reqs_exists)): ?>
+						<button class="btn btn-primary" disabled="true">
+							Continue
+						</button>
+					<?php else: ?>
+						<a href="?p=installation">
+							<button class="btn btn-primary">
+								Continue
+							</button>
+						</a>
+					<?php endif; ?>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

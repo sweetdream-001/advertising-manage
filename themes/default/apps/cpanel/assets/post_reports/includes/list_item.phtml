@@ -1,0 +1,61 @@
+<tr data-list-item="<?php echo($cl['li']['id']); ?>">
+    <td>
+        <?php echo($cl['li']['id']); ?>
+    </td>
+    <td>
+        <div class="user-info-holder">
+            <div class="avatar-holder">
+                <img src="<?php echo($cl['li']['avatar']); ?>" alt="Avatar">
+            </div>
+            <div class="uname-holder">
+                <b>
+                    <span class="user-name-holder <?php if ($cl['li']['verified'] == '1') {echo('verified-badge');} ?>">
+                        <?php echo($cl['li']['name']); ?>
+                    </span>
+                </b>
+                <a href="<?php echo($cl['li']['u_url']); ?>">
+                    <?php echo($cl['li']['username']); ?>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td>
+        <span>
+            <?php echo($cl['post_report_types'][$cl['li']['reason']]); ?>
+        </span>
+    </td>
+    <td>
+        <time>
+            <?php echo($cl['li']['time']); ?>
+        </time>
+    </td>
+    <td>
+        <?php if ($cl['li']['seen'] == '0'): ?>
+            <span data-an="report-status" class="badge bg-red">
+            <?php echo cl_translate('Not viewed'); ?>
+            </span>
+        <?php else: ?>
+            <span data-an="report-status" class="badge bg-orange">
+            <?php echo cl_translate('Viewed'); ?>
+            </span>
+        <?php endif; ?>
+    </td>
+    <td>
+        <div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="javascript:void(0);" class="dropdown-item" onclick="SMC_CPanel.PS.table.show('<?php echo($cl['li']['id']); ?>');">
+                <?php echo cl_translate('Show details'); ?>
+                </a>
+                <a target="_blank" href="<?php echo($cl['li']['post_url']); ?>" class="dropdown-item">
+                <?php echo cl_translate('Show thread'); ?>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item" onclick="SMC_CPanel.PS.table.ignore('<?php echo($cl['li']['id']); ?>');">
+                <?php echo cl_translate('Ignore'); ?>
+                </a>
+            </ul>
+        </div>
+    </td>
+</tr>

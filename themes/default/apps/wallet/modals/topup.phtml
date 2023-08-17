@@ -1,0 +1,124 @@
+<div class="modal fadeIn" data-app="topup-wallet-form" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+			<div class="modal-header">
+                <div class="modal-header__inner">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate("Top-up my account balance"); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_icon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="form" id="vue-wallet-topup-app" v-on:submit="submit_form($event)">
+                    <div class="form-group">
+                        <label>
+                            <?php echo cl_translate("Select a top-up value"); ?> (Min. <?php echo cl_money($cl["config"]["wallet_min_amount"]); ?>)
+                        </label>
+                        <input v-model.trim="$v.topup_amount.$model" type="text" class="form-control" placeholder="E.g. <?php echo cl_money($cl["config"]["wallet_min_amount"]); ?>">
+                        <div v-if="is_invalid_amount" class="invalid-main-feedback">
+                            <?php echo cl_translate("The value of the top-up amount you entered is invalid"); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button v-on:click="topup_amount = quick_options.op1" type="button" class="btn btn-custom md" v-bind:class="{'main-inline': topup_amount == quick_options.op1, 'main-outline': topup_amount != quick_options.op1}">
+                            <?php echo cl_money($cl["config"]["wallet_min_amount"]); ?>
+                        </button>
+                        <button v-on:click="topup_amount = quick_options.op2" type="button" class="btn btn-custom md" v-bind:class="{'main-inline': topup_amount == quick_options.op2, 'main-outline': topup_amount != quick_options.op2}">
+                            <?php echo cl_money(($cl["config"]["wallet_min_amount"] * 2)); ?>
+                        </button>
+                        <button v-on:click="topup_amount = quick_options.op3" type="button" class="btn btn-custom md" v-bind:class="{'main-inline': topup_amount == quick_options.op3, 'main-outline': topup_amount != quick_options.op3}">
+                            <?php echo cl_money(($cl["config"]["wallet_min_amount"] * 3)); ?>
+                        </button>
+                    </div>
+
+                    <div class="form-group no-mb">
+                        <label>
+                            <?php echo cl_translate("Select payment method"); ?>
+                        </label>
+                        <div class="form-paymethods">
+                            <div class="row">
+                                <?php if ($cl['config']['paypal_method_status'] == 'on'): ?>
+                                    <div class="col-xxl-3 col-sm-6 col-6">
+                                        <div class="form-paymethods__item" v-on:click="topup_method = 'paypal'" v-bind:class="{'active': topup_method == 'paypal'}">
+                                            <img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/paypal.png", $cl["config"]["theme"])); ?>" alt="PayPal">
+                                            
+                                            <div class="form-paymethods__item-checkmark">
+                                                <?php echo cl_icon("ok_single"); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ($cl['config']['paystack_method_status'] == 'on'): ?>
+                                    <div class="col-xxl-3 col-sm-6 col-6">
+                                        <div class="form-paymethods__item" v-on:click="topup_method = 'paystack'" v-bind:class="{'active': topup_method == 'paystack'}">
+                                            <img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/paystack.png", $cl["config"]["theme"])); ?>" alt="PayStack">
+                                            
+                                            <div class="form-paymethods__item-checkmark">
+                                                <?php echo cl_icon("ok_single"); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ($cl['config']['stripe_method_status'] == 'on'): ?>
+                                    <div class="col-xxl-3 col-sm-6 col-6"> 
+                                        <div class="form-paymethods__item" v-on:click="topup_method = 'stripe'" v-bind:class="{'active': topup_method == 'stripe'}">
+                                            <img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/stripe.png", $cl["config"]["theme"])); ?>" alt="Stripe">
+                                        
+                                            <div class="form-paymethods__item-checkmark">
+                                                <?php echo cl_icon("ok_single"); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <?php if ($cl['config']['alipay_method_status'] == 'on'): ?>
+                                        <div class="col-xxl-3 col-sm-6 col-6">
+                                            <div class="form-paymethods__item" v-on:click="topup_method = 'stripe_alipay'" v-bind:class="{'active': topup_method == 'stripe_alipay'}">
+                                                <img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/pgws/alipay.png", $cl["config"]["theme"])); ?>" alt="AliPay">
+                                            
+                                                <div class="form-paymethods__item-checkmark">
+                                                    <?php echo cl_icon("ok_single"); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="invalid-main-feedback" v-if="invalid_feedback_pgw && topup_method == false">
+                            {{invalid_feedback_pgw}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button v-if="submitting" disabled="true" class="btn btn-custom main-inline lg btn-block">
+                            <?php echo cl_translate('Please wait'); ?>
+                        </button>
+                        <button v-else v-bind:disabled="is_invalid_form" class="btn btn-custom main-inline lg btn-block">
+                            <?php echo cl_translate("Continue"); ?>
+                        </button>
+                    </div>
+                    <div class="form-group no-mb">
+                        <div class="form-tos">
+                            <div class="form-check">
+                                <input v-model="tos_agree" id="tos-agree" type="checkbox" class="form-check-input">
+                                <label for="tos-agree" class="form-check-label">
+                                    <span>
+                                        <?php echo cl_translate("By continuing, you agree to {@site_name@}",array(
+                                            "site_name" => $cl["config"]["name"]
+                                        )); ?>
+                                    </span>
+                                    <a href="<?php echo cl_link('terms_of_use'); ?>"><?php echo cl_translate("Terms of Use"); ?></a> <?php echo cl_translate("And"); ?> <a href="<?php echo cl_link('privacy_policy'); ?>"><?php echo cl_translate("Privacy policy"); ?></a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

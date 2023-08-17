@@ -1,0 +1,71 @@
+<div class="timeline-placeholder" style="padding-top: 0px;">
+	<?php if ($cl['page_tab'] == "posts"): ?>
+		<div class="icon">
+			<div class="icon__bg_img">
+			<img src="{%config theme_url%}/statics/img/Mention-bro.png">
+			</div>
+		</div>
+	<?php elseif ($cl['page_tab'] == "media"): ?>
+		<div class="icon">
+			<div class="icon__bg">
+				<?php echo cl_icon('media'); ?>
+			</div>
+		</div>
+	<?php else: ?>
+		<div class="icon">
+			<div class="icon__bg">
+				<?php echo cl_icon('thumb_up'); ?>
+			</div>
+		</div>
+	<?php endif; ?>
+
+	<div class="pl-message">
+		<?php if ($cl['page_tab'] == 'posts'): ?>
+			<h4>
+				<?php echo cl_translate("No posts yet!"); ?>
+			</h4>
+			<?php if (not_empty($cl['prof_user']['owner'])): ?>
+				<p>
+					<?php echo cl_translate("There are no posts your profile yet. in order to post something click on the button (New post) in the lower left corner"); ?>
+				</p>
+			<?php else: ?>
+				<p>
+					<?php echo cl_translate("There are no posts in this profile yet. If you want to receive this user's publications on your timeline, click the (follow) button if you have not already done so"); ?>
+				</p>
+			<?php endif; ?>
+		<?php elseif($cl['page_tab'] == 'media'): ?>
+			<h4>
+				<?php echo cl_translate("No media yet!"); ?>
+			</h4>
+			<?php if (not_empty($cl['prof_user']['owner'])): ?>
+				<p>
+					<?php echo cl_translate("There are no media your profile yet. in order to post Video, Images or GIFs click on the button (New post) in the lower left corner"); ?>
+				</p>
+			<?php else: ?>
+				<p>
+					<?php echo cl_translate("There are no media publications in this profile yet. If you want to receive this user's publications on your timeline, click the (follow) button if you have not already done so"); ?>
+				</p>
+			<?php endif; ?>
+		<?php else: ?>
+			<h4>
+				<?php echo cl_translate("No likes yet!"); ?>
+			</h4>
+			<?php if (not_empty($cl['prof_user']['owner'])): ?>
+				<p>
+					<?php echo cl_translate("You don’t have any favorite posts yet. All posts that you like will be displayed here."); ?>
+				</p>
+			<?php else: ?>
+				<p>
+					<?php echo cl_translate("This user seems to have not liked any posts yet. All liked posts by this user will be displayed here."); ?>
+				</p>
+			<?php endif; ?>
+		<?php endif; ?>
+	</div>
+	<div class="c2action-single">
+		<a href="<?php echo cl_link('/'); ?>">
+			<button class="btn btn-custom main-inline lg">
+				<?php echo cl_translate("Go to the homepage"); ?>
+			</button>
+		</a>
+	</div>
+</div>

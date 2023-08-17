@@ -1,0 +1,151 @@
+<div class="modal display-settings-modal" tabindex="-1" role="dialog" data-app="display-settings-app">
+    <div class="modal-dialog" role="document" id="cl-display-settings-vue-app">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="main---mh--block">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate("Display settings"); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_ikon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="display-settings">
+                    <div class="display-settings__header">
+                        <h4>
+                            <?php echo cl_translate("Change display view"); ?>
+                        </h4>
+                        <p>
+                            <?php echo cl_translate("manage_your_display_color_and_background_these_settings_affect_on", array('name' => $cl['config']['name'])); ?>
+                        </p>
+                    </div>
+                    <div class="display-settings__body">
+                        <div class="display-settings__group">
+                            <div class="display-settings__group-title">
+                                <?php echo cl_translate("Color scheme"); ?>
+                            </div>
+
+                            <div class="display-settings__options-list">
+                                <div class="row">
+                                    <?php foreach ($cl["color_schemes"] as $k => $v): ?>
+                                        <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-3" title="<?php echo cl_translate($v["name"]); ?>">
+                                            <div class="options-li" v-on:click="change_color('<?php echo($k); ?>')">
+                                               
+                                                <div class="icon">
+                                                <span v-if="'<?php echo($k); ?>' == active_color" class="active-color2">
+                                                    <?php echo cl_ikon("ok"); ?>
+                                                </span>
+                                                    <span class="emoji-icon" >
+                                                        <?php echo cl_ikon(cl_strf("emoji/%s", $v["icon"])); ?> 
+                                                    </span>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="display-settings__group">
+                            <div class="display-settings__group-title">
+                                <?php echo cl_translate("Background color"); ?>
+                            </div>
+
+                            <div class="display-settings__options-list">
+                                <div class="row">
+                                    <?php foreach ($cl["bg_colors"] as $k => $v): ?>
+                                        <div class="col-xxl-4 col-xl-3 col-lg-3 col-md-3 col-3">
+                                            <div class="options-li" v-on:click="change_bg('<?php echo($k); ?>')">
+                                                <span v-if="'<?php echo($k); ?>' == active_bg" class="active-color">
+                                                    <?php echo cl_ikon("ok"); ?>
+                                                </span>
+                                                <div class="icon back">
+                                                    <span class="emoji-icon back">
+                                                        <?php echo cl_ikon(cl_strf("emoji/%s", $v["icon"])); ?>
+                                                    </span>
+                                                </div>
+                                                <div class="name">
+                                                    <b>
+                                                        <?php echo cl_translate($v["name"]); ?>
+                                                    </b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button v-if="submitting" disabled="true" class="btn btn-custom main-inline lg btn-block">
+                    <?php echo cl_translate("Please wait"); ?>
+                </button>
+                <button v-else v-on:click="save_changes" class="btn btn-custom main-inline lg btn-block">
+                    <?php echo cl_translate("Save changes"); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    "use strict";
+
+    jQuery(document).ready(function($) {
+        new Vue({
+            el: "#cl-display-settings-vue-app",
+            data: {
+                active_bg: "<?php echo($cl['display_set']['background']) ?>",
+                active_color: "<?php echo($cl['display_set']['color_scheme']) ?>",
+                submitting: false,
+                color_schemes: <?php echo cl_minify_js(json($cl["color_schemes"], true)); ?>
+            },
+            methods: {
+                change_color: function(color = "default") {
+                    var _app_ = this;
+
+                    _app_.active_color = color;
+
+                    $("body").attr("data-skin", color);
+                    $('meta[name="theme-color"]').attr("content", _app_.color_schemes[color].color);
+                },
+                change_bg: function(bg = false) {
+                    var _app_ = this;
+
+                    _app_.active_bg = bg;
+
+                    $("body").attr("data-bg", bg);     
+                },
+                save_changes: function() {
+                    var _app_ = this;
+
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/main/save_display_settings"); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            color: _app_.active_color,
+                            bg: _app_.active_bg
+                        },
+                        beforeSend: function() {
+                            _app_.submitting = true;
+                        }
+                    }).done(function(data) {
+                        if (data.status != 200) {
+                            SMColibri.errorMSG();
+                        }
+                        else{
+                            SMColibri.display_settings("hide");
+                        }
+                    }).always(function() {
+                        _app_.submitting = false;
+                    });
+                }
+            }
+        });
+    });
+</script>

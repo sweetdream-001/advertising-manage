@@ -1,0 +1,221 @@
+<div class="post-list-item">
+	<?php if (not_empty($cl['li']['is_repost'])): ?>
+		<div class="post-list-item-header">
+			<div class="publication-repost">
+				<?php echo cl_ikon('repeat'); ?>
+				<?php if (not_empty($cl['li']['is_reposter'])): ?>
+					<a href="<?php echo $me['url']; ?>" data-spa="true">
+						<?php echo cl_translate('You reposted'); ?>
+					</a>
+				<?php else: ?>
+					<a href="<?php echo($cl['li']['reposter']['url']); ?>" data-spa="true">
+						<?php echo cl_translate('{@uname@} reposted', array('uname' => $cl['li']['reposter']['name'])) ?>
+					</a>
+				<?php endif; ?>
+			</div>
+		</div>
+	<?php endif; ?>
+	<div class="post-list-item-content">
+		<div class="publisher-avatar">
+			<div class="avatar-holder">
+				<img src="<?php echo($cl['li']['owner']['avatar']); ?>">
+			</div> 
+		</div>
+		<div class="publication-data">
+			<div class="publication-data-inner">
+				<div class="publisher-info">
+					<div class="lp">
+						<a href="<?php echo($cl['li']['owner']['url']); ?>" data-spa="true">
+							<b>
+								<span class="user-name-holder <?php if ($cl['li']['owner']['verified'] == '1') { echo('verified-badge'); } ?>">
+									<?php echo($cl['li']['owner']['name']); ?>
+								</span>
+							</b>
+							<span>
+								<?php echo($cl['li']['owner']['username']); ?>	
+							</span>
+						</a>
+					</div>
+					<div class="rp">
+						<span class="posted-time">
+							<?php echo cl_ikon('calendar'); ?>
+							<time>
+								<?php echo($cl['li']['time']); ?>
+							</time>
+						</span>
+					</div>
+				</div>
+
+				<?php if ($cl['li']['target'] == 'pub_reply' && not_empty($cl['li']['reply_to'])): ?>
+					<div class="publication-target">
+						<?php if (not_empty($cl['li']['reply_to']['is_owner'])): ?>
+							<div class="post-reply">
+								<span>
+									<?php echo cl_translate('In response to your {@post_url@}', array(
+										'post_url' => cl_html_el('a', cl_translate('post'), array(
+											'href' => $cl['li']['reply_to']['thread_url'],
+											'data-spa' => 'true'
+										))
+									)); ?>
+								</span>
+							</div>
+						<?php else: ?>
+							<div class="post-reply">
+								<span>
+									<?php
+										$text_temp = 'In response {@uname@} to his {@post_url@}';
+
+										if ($cl['li']['reply_to']['gender'] == 'F') {
+											$text_temp = 'In response {@uname@} to her {@post_url@}';
+										}
+
+										echo cl_translate($text_temp, array(
+											'uname' => cl_html_el('a', $cl['li']['reply_to']['name'], array(
+												'href' => $cl['li']['reply_to']['url'],
+												'data-spa' => 'true'
+											)),
+											'post_url' => cl_html_el('a', cl_translate('publication'), array(
+												'href' => $cl['li']['reply_to']['thread_url'],
+												'data-spa' => 'true'
+											))
+										)); 
+									?>
+								</span>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php else: ?>
+					<div class="publication-target">
+						<div class="post-reply">
+							<span>
+								<a href="<?php echo($cl['li']['url']); ?>">
+									<?php echo cl_translate('View publication'); ?>
+								</a>
+							</span>
+						</div>
+					</div>
+				<?php endif; ?>
+				
+				<div class="publication-content">
+					<?php if (not_empty($cl['li']['text'])): ?>
+						<?php 
+							$cl['li']['text'] = cl_rn2br($cl['li']['text']);
+							$cl['li']['text'] = cl_strip_brs($cl['li']['text']);
+						?>
+						<div class="publication-text">
+							<p>
+								<?php echo($cl['li']['text']); ?>
+							</p>
+						</div>
+					<?php endif; ?>
+
+					<?php if ($cl['li']['type'] == 'image' && not_empty($cl['li']['media'])): ?>
+						<?php if (count($cl['li']['media']) == 1): ?>
+							<div class="publication-media">
+								<div class="publication-image">
+									<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+										<img class="publication-iamge" src="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['src'],'')); ?>" alt="Picture">
+									</a>
+								</div>
+							</div>
+						<?php else: ?>
+							<div class="publication-images-slider">
+								<div class="row">
+									<?php foreach ($cl['li']['media'] as $i => $row): ?>
+										<div class="col-sm-4">
+											<div class="publication-media">
+												<div class="publication-image">
+													<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+														<img class="d-block w-100" src="<?php echo cl_get_media($row['src']); ?>" alt="Image">
+													</a>
+												</div>
+											</div>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
+					<?php elseif($cl['li']['type'] == 'video' && not_empty($cl['li']['media'])): ?>
+						<div class="publication-media">
+							<div class="publication-image">
+								<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+									<img src="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['x']['poster_thumb'],'')); ?>" alt="Video">
+									<div class="video-icon">
+										<span>
+											<?php echo cl_ikon("play"); ?>
+										</span>
+									</div>
+								</a>
+						    </div>
+						</div>
+					<?php elseif($cl['li']['type'] == 'gif' && not_empty($cl['li']['media'])): ?>
+						<div class="publication-media">
+							<div class="publication-image">
+								<a href="<?php echo($cl['li']['url']); ?>" class="block-link">
+									<img src="<?php echo fetch_or_get($cl['li']['media'][0]['src'],''); ?>" alt="GIF-Image">
+								</a>
+							</div>
+						</div>
+					<?php elseif($cl['li']['type'] == 'poll' && not_empty($cl['li']['poll'])): ?>
+						<div class="publication-poll-data">
+							<div class="publication-poll-data-inner">
+								<?php foreach ($cl['li']['poll']['options'] as $i => $poll_data): ?>
+									<a href="<?php echo($cl['li']['url']); ?>" class="block-link mb-20">
+										<div class="poll-option-bar">
+											<div class="bar-icon">
+												<?php echo cl_ikon("ok-circle"); ?>
+											</div>
+											<div class="bar-text">
+												<p>
+													<?php echo $poll_data["option"]; ?>
+												</p>
+											</div>
+											<div class="bar-num">
+												<b>
+													<?php if (not_empty($cl['li']['poll']['has_voted'])): ?>
+														<?php echo $poll_data["percentage"]; ?>%
+													<?php endif; ?>
+												</b>
+											</div>
+
+											<?php if (not_empty($cl['li']['poll']['has_voted'])): ?>
+												<span class="bar-slider" style="width: <?php echo $poll_data["percentage"]; ?>%;"></span>
+											<?php else: ?>
+												<span class="bar-slider"></span>
+											<?php endif; ?>
+										</div>
+									</a>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php elseif(not_empty($cl['li']['og_data'])): ?>
+						<div class="publication-og-data">
+							<div class="publication-og-data-inner">
+								<div class="og-image">
+									<?php if (not_empty($cl['li']['og_data']['image'])): ?>
+										<div class="og-image-holder" style="background-image: url('<?php echo cl_get_media($cl['li']['og_data']['image']); ?>');"></div>
+									<?php else: ?>
+										<div class="og-icon-holder">
+											<?php echo cl_ikon('language'); ?>
+										</div>
+									<?php endif; ?>
+								</div>
+								<div class="og-url-data">
+									<h5>
+										<?php echo($cl['li']['og_data']['title']); ?>
+									</h5>
+									<p>
+										<?php echo($cl['li']['og_data']['description']); ?>
+									</p>
+									<a href="<?php echo($cl['li']['og_data']['url']); ?>" target="_blank">
+										<?php echo($cl['li']['og_data']['url']); ?>
+									</a>
+								</div>
+							</div>
+						</div>
+					<?php endif; ?>
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>

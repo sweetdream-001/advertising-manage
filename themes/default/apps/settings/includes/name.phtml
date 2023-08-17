@@ -1,0 +1,249 @@
+<div class="timeline-container">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("settings/name"); ?>" data-spa="true">
+						<?php echo cl_translate("Username"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+
+			</div>
+			<div class="rp">
+
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="main-profile-settings-container">
+			<div class="profile-settings-nav">
+				<div class="nav-list-itemset-title">
+					<h4>
+						<?php echo cl_translate("Change username"); ?>
+					</h4>
+				</div>
+			</div>
+			<div class="profile-settings-content">
+				<div class="settings-form">
+					<form class="form" id="cl-name-settings-vue-app" v-on:submit="submit_form($event)">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label>
+										<?php echo cl_translate("Username"); ?>
+									</label>
+									<input v-model.trim="$v.uname.$model" name="uname" type="text" class="form-control"
+										placeholder="<?php echo cl_translate("Enter username"); ?>">
+									<div class="invalid-main-feedback" v-if="is_valid_uname">
+										{{invalid_feedback_uname}}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label>
+										<?php echo cl_translate("First name"); ?>
+									</label>
+									<input v-model.trim="$v.fname.$model" name="fname" type="text" class="form-control"
+										placeholder="<?php echo cl_translate("Enter first name"); ?>">
+									<div class="invalid-main-feedback" v-if="is_valid_fname">
+										{{invalid_feedback_fname}}
+									</div>
+								</div>
+							</div>
+							<!-- <div class="col-sm-6">
+							<div class="form-group">
+								<label><?php echo cl_translate("Last name"); ?></label>
+								<input v-model.trim="$v.lname.$model" name="lname" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter last name"); ?>">
+								<div class="invalid-main-feedback" v-if="is_valid_lname">
+									{{invalid_feedback_lname}}
+								</div>
+							</div>
+						</div> -->
+						</div>
+						<div class="form-group" v-if="unsuccessful_attempt">
+							<div class="invalid-main-feedback">
+								<?php echo cl_translate("Something went wrong while trying to save your changes, please try again later"); ?>
+							</div>
+						</div>
+						<input type="hidden" class="d-none"
+							value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+						<div class="form-group no-mb" style="max-width: 150px; float:right;">
+							<button v-if="submitting != true" v-bind:disabled="$v.$invalid == true" type="submit"
+								class="btn btn-block btn-custom main-inline lg">
+								<?php echo cl_translate("Save changes"); ?>
+							</button>
+							<button v-else disabled="true" type="button"
+								class="btn btn-block btn-custom main-inline lg">
+								<?php echo cl_translate("Please wait"); ?>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			"use strict";
+
+			$(document).ready(function ($) {
+				Vue.use(window.vuelidate.default);
+				var VueValids = window.validators;
+
+				new Vue({
+					el: "#cl-name-settings-vue-app",
+					data: {
+						submitting: false,
+						unsuccessful_attempt: false,
+						invalid_feedback_fname: "",
+						invalid_feedback_lname: "",
+						invalid_feedback_uname: "",
+						fname: "<?php echo ($me["fname"]) ?>",
+						// lname: "<?php echo ($me["lname"]) ?>",
+						uname: "<?php echo ($me["raw_uname"]) ?>",
+						uname_taken: false,
+						uname_denied: false
+					},
+					computed: {
+						is_valid_fname: function () {
+							if (this.$v.fname.required == true && this.$v.fname.$error) {
+								this.invalid_feedback_fname = "<?php echo cl_translate("Please enter your first name, which is from 3 to 25 characters"); ?>";
+								return true;
+							}
+
+							else {
+								this.invalid_feedback_fname = "";
+								return false;
+							}
+						},
+						// is_valid_lname: function() {
+						// 	if(this.$v.lname.$error) {
+						// 		this.invalid_feedback_lname = "<?php echo cl_translate("Please enter your last name, which is from 3 to 25 characters"); ?>";
+						// 		return true;
+						// 	}
+
+						// 	else {
+						// 		this.invalid_feedback_lname = "";
+						// 		return false;
+						// 	}
+						// },
+						is_valid_uname: function () {
+							if (this.$v.uname.required == true && this.$v.uname.$error) {
+								this.invalid_feedback_uname = "<?php echo cl_translate("This username does not match the valid format. Please select a username of no more than 25 characters using only letters (a-z) numbers and underscores"); ?>";
+								return true;
+							}
+
+							else if (this.uname_taken == true) {
+								this.invalid_feedback_uname = "<?php echo cl_translate("This username is already taken, please select another"); ?>";
+								return true;
+							}
+
+							else if (this.uname_denied == true) {
+								this.invalid_feedback_uname = "<?php echo cl_translate("This username is reserved, please select another"); ?>";
+								return true;
+							}
+
+							else {
+								this.invalid_feedback_uname = "";
+								return false;
+							}
+						}
+					},
+					validations: {
+						fname: {
+							required: VueValids.required,
+							min_length: VueValids.minLength(3),
+							max_length: VueValids.maxLength(25),
+						},
+						// lname: {
+						// 	min_length: VueValids.minLength(3),
+						// 	max_length: VueValids.maxLength(25),
+						// },
+						uname: {
+							required: VueValids.required,
+							min_length: VueValids.minLength(3),
+							max_length: VueValids.maxLength(25),
+							is_alpha_num: cl_uname_valid
+						}
+					},
+					methods: {
+						submit_form: function (_self = null) {
+							_self.preventDefault();
+
+							var _app_ = this;
+
+							$(_self.target).ajaxSubmit({
+								url: "<?php echo cl_link("native_api/settings/save_profile_name"); ?>",
+								type: 'POST',
+								dataType: 'json',
+								beforeSend: function () {
+									_app_.submitting = true;
+									_app_.uname_taken = false;
+									_app_.uname_denied = false;
+								},
+								success: function (data) {
+									if (data.status == 200) {
+										cl_bs_notify("<?php echo cl_translate("Your changes has been successfully saved!"); ?>");
+									}
+
+									else if (data.err_code && data.err_code == 'doubling_uname') {
+										_app_.uname_taken = true;
+
+										delay(function () {
+											_app_.uname_taken = false;
+										}, 5000);
+									}
+
+									else if (data.err_code && data.err_code == 'denied_uname') {
+										_app_.uname_denied = true;
+
+										delay(function () {
+											_app_.uname_denied = false;
+										}, 5000);
+									}
+
+									else {
+										_app_.unsuccessful_attempt = true;
+									}
+								},
+								complete: function () {
+									_app_.submitting = false;
+								}
+							});
+						}
+					}
+				});
+			});
+		</script>
+	</div>
+	<style>
+		body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+			max-width: 970px;
+		}
+
+		body main.main-content-container div.main-content-container-inner div.left-sb-container {
+			margin-left: -25px;
+		}
+
+		body main.main-content-container div.main-content-container-inner div.right-sb-container {
+			display: none;
+		}
+
+		body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+			max-width: 550px;
+		}
+
+		.main-profile-settings-container {
+			margin-left: 16px;
+			margin-right: auto;
+			padding: 16px;
+			max-width: 550px;
+		}
+	</style>

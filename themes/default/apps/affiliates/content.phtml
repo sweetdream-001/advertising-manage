@@ -1,0 +1,165 @@
+<div class="timeline-container" data-app="affiliates">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+			<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_icon('arrow_back'); ?>
+					</span>
+					<a href="<?php echo cl_link('affiliates'); ?>">
+						<?php echo cl_translate('Affiliates'); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				
+			</div>
+			<div class="rp">
+				
+			</div>
+		</div>
+	</div>
+	<div class="affiliates">
+		<div class="affiliates__header">
+			<div class="icon">
+			<div class="icon__bg">
+				<img src="{%config theme_url%}/statics/img/affiliate1.png">
+				</div>
+			</div>
+			<h4>
+				<?php echo cl_translate('Join our affiliate program'); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate('Just share your affiliate URL and every time someone signs up with your referral link you will earn {@aff_bonus_rate@}', array(
+					'aff_bonus_rate' => cl_html_el("b", cl_money($cl['config']['aff_bonus_rate']))
+				)); ?>.
+
+				<span onclick="SMCAffiliates.how_it_works();">
+					<?php echo cl_translate("Find out how it works?"); ?>
+				</span>
+			</p>
+			<div class="icon icon-2">
+				<?php echo cl_icon('arrow_down'); ?>
+			</div>
+		</div>
+		<div class="affiliates__body">
+			<div class="affiliates__body-topline">
+				<?php echo cl_translate('This is your affiliate URL'); ?>
+			</div>
+			<div class="affiliates__body-midline">
+				<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>
+			</div>
+			<div class="affiliates__body-botline">
+				<a href="javascript:void(0);" class="social-link-btn copy-link clip-board-copy" data-clipboard-text="<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>">
+					<span class="social-link-btn__icon">
+						<?php echo cl_icon('content_copy'); ?>
+					</span>
+				</a>
+				<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>" class="social-link-btn facebook">
+					<span class="social-link-btn__icon">
+						<?php echo cl_icon('logos/logo-facebook'); ?>
+					</span>
+				</a>
+				<a target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>" class="social-link-btn twitter">
+					<span class="social-link-btn__icon">
+						<?php echo cl_icon('logos/logo-twitter'); ?>
+					</span>
+				</a>
+				<a target="_blank" href="https://api.whatsapp.com/send?text=<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>" class="social-link-btn whatsapp">
+					<span class="social-link-btn__icon">
+						<?php echo cl_icon('logos/logo-whatsapp'); ?>
+					</span>
+				</a>
+				<a target="_blank" href="https://www.pinterest.ru/pin/create/button/?url=<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>" class="social-link-btn pinterest">
+					<span class="social-link-btn__icon">
+						<?php echo cl_icon('logos/logo-pinterest'); ?>
+					</span>
+				</a>
+				<a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo cl_strf("%s?ref=%s",$cl['config']['url'], $me['raw_uname']); ?>" class="social-link-btn linkedin">
+					<span class="social-link-btn__icon">
+						<?php echo cl_icon('logos/logo-linkedin'); ?>
+					</span>
+				</a>
+			</div>
+		</div>
+		<div class="affiliates__footer">
+			<div class="affiliates__footer-topline">
+				<?php if (cl_aff_request_exists()): ?>
+					<div class="payout-request-cta">
+						<?php echo cl_translate('Your affiliate earnings payout request is pending'); ?>
+					</div>
+				
+					<button onclick="SMCAffiliates.cancel_pending_req(this);" class="btn btn-custom main-inline lg btn-block">
+						<?php echo cl_translate('Cancel request'); ?>
+					</button>
+				<?php else: ?>
+					<div class="payout-request-cta">
+						<?php echo cl_translate('Submit a request to pay your earnings'); ?>
+					</div>
+
+					<button onclick="SMCAffiliates.new_req();" class="btn btn-custom main-inline lg btn-block" style="margin-bottom:30px;">
+						<?php echo cl_translate('Request payout'); ?> (<?php echo cl_money(cl_calc_affiliate_bonuses()); ?>)
+					</button>
+					<?php if ($me["aff_bonuses"]): ?>
+						<button onclick="SMCAffiliates.transfer2wallet(this);" class="btn btn-custom main-outline lg btn-block">
+							<?php echo cl_translate('Transfer earnings to my wallet'); ?> (<?php echo cl_money(cl_calc_affiliate_bonuses()); ?>)
+						</button>
+					<?php else: ?>
+						<button disabled="true" class="btn btn-custom main-outline lg btn-block">
+							<?php echo cl_translate('Transfer earnings to my wallet'); ?> (<?php echo cl_money(cl_calc_affiliate_bonuses()); ?>)
+						</button>
+					<?php endif; ?>
+				<?php endif; ?>
+				
+			</div>
+		</div>
+
+		<?php if (not_empty($cl["payout_history"])): ?>
+			<div class="affiliates__payouts" style="margin-bottom: 60px;">
+				<div class="affiliates__payouts-title">
+					<h4>
+						<?php echo cl_translate('Payouts history'); ?>
+					</h4>
+				</div>
+				<div class="affiliates-transactions">
+					<?php if (not_empty($cl["payout_history"])): ?>
+	                    <?php foreach ($cl["payout_history"] as $row): ?>
+	                        <div class="affiliates-transactions__item">
+	                        	<div class="lp">
+		                        	<?php if ($row['status'] == 'pending'): ?>
+		                        		<div class="lp__icon">
+		                                	<img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/aff/payout-pending.png", $cl["config"]["theme"])); ?>" alt="IMG">
+		                                </div>
+		                            <?php else: ?>
+		                            	<div class="lp__icon">
+		                                	<img src="<?php echo cl_link(cl_strf("themes/%s/statics/img/aff/payout-success.png", $cl["config"]["theme"])); ?>" alt="IMG">
+		                                </div>
+		                            <?php endif; ?>								
+								</div>
+								<div class="rp">
+									<div class="mp__amount">
+										<div class="flex-item-left">
+											<?php echo $row['amount']; ?>
+										</div>
+										<div class="flex-item-right">
+											<?php echo $row['time']; ?>
+										</div>
+									</div>
+									<div class="mp__text">
+										<?php echo cl_translate('Send to'); ?>: <span><?php echo $row['email']; ?></span>
+									</div>
+								</div>
+	                        </div>
+	                    <?php endforeach; ?>
+	                <?php endif; ?>
+				</div>
+			</div>
+		<?php endif; ?>
+	</div>
+
+	<?php echo cl_template("affiliates/modals/payout_req"); ?>
+
+	<?php echo cl_template("affiliates/modals/howit_works"); ?>
+
+	<?php echo cl_template("affiliates/scripts/app_master_script"); ?>
+</div>

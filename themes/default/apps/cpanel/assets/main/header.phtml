@@ -1,0 +1,73 @@
+<div class="page-header">
+        <div class="header-wrapper row m-0">
+          <div class="header-logo-wrapper col-auto p-0">
+            <div class="logo-wrapper"> <a href="<?php echo cl_link('/'); ?>"  class="navbar-nav-item-link"><img src="{%config site_logo%}" alt="Logo"></a><span>{%config name%}</span></div>
+            <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
+          </div>
+          <div class="left-header col horizontal-wrapper ps-0">
+           <ul class="horizontal-menu">
+              <li class="mega-menu outside"><a class="nav-link" href="<?php echo cl_link('/'); ?>" target="_blank"><i data-feather="home"></i><span><?php echo cl_translate('Go Home'); ?></span></a></ul>
+          </div>
+          <div class="nav-right col-8 pull-right right-header p-0">
+            <ul class="nav-menus">
+             <li class="cart-nav onhover-dropdown">
+                <div > <a href="<?php echo cl_link('/'); ?>" ><i data-feather="home"></i></a></div>
+              </li>
+              <li class="onhover-dropdown">
+                <div class="notification-box"><a href="<?php echo cl_link('notifications'); ?>" class="navbar-nav-item-link"><i data-feather="bell"> </i>
+                <span class="badge rounded-pill badge-primary" data-an="new-notifs"><?php echo fetch_or_get($me['new_notifs']); ?>                               </span></a></div>
+              </li>
+              <li class="onhover-dropdown" > <div class="notification-box"><a href="<?php echo cl_link('chats'); ?>"><i data-feather="message-square"></i><span class="badge rounded-pill badge-secondary" data-an="new-messages"><?php echo fetch_or_get($me['new_messages']); ?>                             </span></a></div>
+              </li>
+               <li>
+                <div class="mode"><i class="fa fa-moon-o"></i></div>
+              </li>
+              <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
+               
+                  <?php if (not_empty($cl["curr_lang"])): ?>
+			<li class="language-nav">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<?php echo cl_translate($cl["curr_lang"]["lang_data"]["name"]); ?>
+				</a>
+				<div class="dropdown-menu dropdown-icons">
+					<?php foreach ($cl["languages"] as $lang): ?>
+						<a class="dropdown-item <?php if($lang["slug"] == $cl["curr_lang"]["lang_data"]["slug"]) {echo('active');} ?>" href="<?php echo cl_link(cl_strf("language/%s", $lang["slug"])); ?>">
+							<?php echo cl_translate($lang["name"]); ?>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			</li>
+		<?php endif; ?>
+
+                  
+              <li class="profile-nav onhover-dropdown p-0 me-0">
+                <div class="media profile-media"><img class="b-r-10" src="<?php echo($me['avatar']); ?>" alt="">
+                  <div class="media-body"><span class="user-name-holder <?php if ($me['verified'] == '1') {echo('verified-badge');} ?>">
+                        <?php echo($me['name']); ?>
+                    </span>
+                    <p class="mb-0 font-roboto"> <a href="<?php echo($me['url']); ?>">
+                    <?php echo($me['username']); ?>
+                <i class="middle fa fa-angle-down"></i></a> </p>
+                  </div>
+                </div>
+                <ul class="profile-dropdown onhover-show-div">
+                  <li><a href="<?php echo cl_link("/"); ?>"><i data-feather="home"></i><span><?php echo cl_translate('Home'); ?></span></a></li>
+                  <li><a href="<?php echo cl_link('chats'); ?>"><i data-feather="mail"></i><span><?php echo cl_translate('inbox'); ?></span></a></li>
+                  <li><a href="<?php echo($me["url"]); ?>"><i data-feather="user"></i><span><?php echo cl_translate('Profile'); ?></span></a></li>
+                  <li><a href="<?php echo cl_link('settings'); ?>"><i data-feather="settings"></i><span><?php echo cl_translate('settings'); ?></span></a></li>
+                  <li><a href="<?php echo cl_link("logout"); ?>"><i data-feather="log-in"> </i><span> <?php echo cl_translate('Logout'); ?></span></a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <script class="result-template" type="text/x-handlebars-template">
+            <div class="ProfileCard u-cf">                        
+            <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
+            <div class="ProfileCard-details">
+            <div class="ProfileCard-realName">{{name}}</div>
+            </div>
+            </div>
+          </script>
+          <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
+        </div>
+      </div>

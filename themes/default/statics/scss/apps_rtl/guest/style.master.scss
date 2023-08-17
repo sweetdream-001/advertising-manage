@@ -1,0 +1,78 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+body.cl-app-guest{
+	main.main-content-container{
+		div.main-content-container-inner{
+			div.welcome-page-container{
+				div.welcome-page__inner{
+					div.welcome-page__content{
+						div.welcome-page__lp{
+							div.welcome-page__lp-inner{
+
+								div.welcome-page__lp-body{
+									display: block;
+									margin-bottom: 120px;
+
+									div.welcome-page-features{
+										div.welcome-page-features__li{
+											div.text{
+												margin-left: 0px;
+												margin-right: 25px;
+											}
+										}
+									}
+								}
+							}
+						}
+
+						div.welcome-page__rp{
+							div.welcome-page__rp-inner{
+								div.welcome-page-form{
+									div.welcome-page-form__footer{
+										div.welcome-footer{
+											div.main-footer{
+												ul.footer-nav{
+													li.footer-nav-item{
+														margin-left: 20px;
+														margin-right: 0px;
+														margin-bottom: 10px;
+
+
+														&.dropdown{
+															a.dropdown-item{
+																text-decoration: none;
+															}
+														}
+													}
+												}
+
+												div.footer-nav-get-apps{
+													a{
+														margin-right: 0px;
+														margin-left: 15px;
+
+														&:last-child{
+															margin-left: 0px;
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

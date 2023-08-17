@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
+
+<defs>
+</defs>
+<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
+	<path d="M 45 77.344 c -2.738 0 -26.949 -0.052 -33.693 -1.859 c -4.599 -1.23 -8.22 -4.85 -9.449 -9.45 C 0.021 59.178 0 45.576 0 45 s 0.021 -14.178 1.859 -21.037 c 1.229 -4.598 4.85 -8.22 9.45 -9.449 c 6.741 -1.806 30.953 -1.859 33.691 -1.859 s 26.949 0.052 33.692 1.859 c 4.598 1.229 8.219 4.85 9.449 9.45 C 89.979 30.824 90 44.424 90 45 s -0.021 14.178 -1.859 21.036 c -1.229 4.599 -4.85 8.22 -9.45 9.449 C 71.949 77.292 47.738 77.344 45 77.344 z M 45 18.281 c -7.236 0 -27.134 0.3 -32.237 1.668 c -2.663 0.711 -4.759 2.807 -5.47 5.468 C 5.644 31.571 5.625 44.866 5.625 45 s 0.021 13.436 1.668 19.58 c 0.711 2.663 2.807 4.759 5.469 5.47 c 5.105 1.368 25.002 1.668 32.238 1.668 s 27.133 -0.3 32.237 -1.667 c 2.663 -0.712 4.759 -2.808 5.47 -5.469 c 1.649 -6.153 1.668 -19.449 1.668 -19.582 s -0.021 -13.437 -1.667 -19.581 l -0.001 -0.001 c -0.711 -2.662 -2.807 -4.758 -5.468 -5.468 C 72.132 18.581 52.235 18.281 45 18.281 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: var(--smc-main-uiel-color); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+	<polygon points="36.56,57.66 58.48,45 36.56,32.34 " style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: var(--smc-main-uiel-color); fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "/>
+</g>
+</svg>

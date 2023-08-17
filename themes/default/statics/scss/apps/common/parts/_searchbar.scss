@@ -1,0 +1,103 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                       @
+// @ Author_url 2: http://jooj.us/twitter-clone                      @
+// @ Author E-mail: sales@jooj.us                                   @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+div.timeline-searchbar {
+    form.timeline-searchbar__form {
+        padding: var(--cl-primary-offset-size);
+        border-bottom: 1px solid var(--cl-primary-border-color);
+        div.keyword-input {
+            position: relative;
+            input {
+                border: 2px solid transparent;
+                background: var(--cl-input-bg-color);
+                border-radius: var(--cl-tertiary-border-radius);
+                padding: 0px 48px;
+                margin: 0px;
+                height: 48px;
+                display: block;
+                width: 100%;
+                font-size: 15px;
+                color: var(--cl-primary-text-color);
+                &::placeholder {
+                    color: var(--cl-input-placeholder-color);
+                    font-size: 15px;
+                }
+                &:active,
+                &:hover,
+                &:focus {
+                    box-shadow: none;
+                    outline: none;
+                    border: 2px solid var(--cl-primary-color);
+                    background: var(--cl-primary-bg-color);
+                    &+span.keyword-input__left-icon svg {
+                        fill: var(--cl-primary-color);
+                        opacity: 1;
+                    }
+                }
+                @include media-breakpoint-down(xl) {
+                    height: 42px;
+                    padding: 0px 42px;
+                    &::placeholder {
+                        font-size: 13px;
+                    }
+                }
+            }
+            span.keyword-input__left-icon,
+            span.keyword-input__right-spinner,
+            span.keyword-input__right-icon {
+                position: absolute;
+                top: 0px;
+                text-decoration: none;
+                z-index: 2;
+                width: 48px;
+                height: 48px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                svg {
+                    width: 22px;
+                    height: 22px;
+                }
+                @include media-breakpoint-down(xl) {
+                    width: 42px;
+                    height: 42px;
+                }
+            }
+            span.keyword-input__left-icon {
+                left: 0px;
+                svg {
+                    fill: var(--cl-secondary-text-color);
+                    opacity: 0.8;
+                }
+            }
+            span.keyword-input__right-spinner {
+                right: 0px;
+                svg {
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+            span.keyword-input__right-icon {
+                right: 0px;
+                cursor: pointer;
+                svg {
+                    fill: var(--cl-secondary-text-color);
+                    opacity: 0.8;
+                }
+                &:active,
+                &:hover,
+                &:focus {
+                    svg {
+                        fill: var(--cl-primary-color);
+                    }
+                }
+            }
+        }
+    }
+}

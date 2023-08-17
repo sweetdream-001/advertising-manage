@@ -1,0 +1,67 @@
+<div class="timeline-container" data-app="confirm_email">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link("confirm_email"); ?>" data-spa="true">
+						<?php echo cl_translate("Confirm new email"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+			</div>
+			<div class="rp">
+			</div>
+		</div>
+	</div>
+	<div class="confirm-email">
+		<div class="timeline-placeholder">
+			<div class="icon">
+				<div class="icon__bg">
+					<?php echo cl_icon('forward_to_inbox'); ?>
+				</div>
+			</div>
+			<div class="pl-message">
+				<h4>
+					<?php echo cl_translate("Email confirmation"); ?>
+				</h4>
+				<p>
+					<?php echo cl_translate("Please check your inbox, we have just sent you an email with a new email confirmation code, enter this code in the (Activation Code) field and click (Confirm)!"); ?>
+				</p>
+			</div>
+		</div>
+		<form class="form" id="vue-confirm-email-app" v-on:submit="submit_form($event)">
+			<div class="form-body">
+				<div class="form-group">
+					<label>
+						<?php echo cl_translate("Activation code"); ?>
+					</label>
+					<input v-model.trim="$v.code.$model" type="number" name="code" class="form-control" placeholder="<?php echo cl_translate("Enter email confirmation code"); ?> ...">
+					<div class="invalid-main-feedback" v-if="is_invalid_code">
+						{{invalid_feedback_code}}
+					</div>
+					<div class="invalid-main-feedback" v-else-if="unsuccessful_attempt">
+						<?php echo cl_translate("An error occurred while processing your request. Please try again later."); ?>
+					</div>
+				</div>
+				<div class="form-group no-mb">
+					<button v-if="done" disabled="true" class="btn btn-custom main-inline lg btn-block">
+						<?php echo cl_translate("Done! Please wait.."); ?>
+					</button>
+					<button v-else-if="submitting" disabled="true" class="btn btn-custom main-inline lg btn-block">
+						<?php echo cl_translate("Please wait"); ?>
+					</button>
+					<button v-else v-bind:disabled="is_invalid_form" class="btn btn-custom main-inline lg btn-block">
+						<?php echo cl_translate("Confirm email"); ?>
+					</button>
+				</div>
+			</div>
+			<input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+		</form>
+	</div>
+
+	<?php echo cl_template("confirm_email/scripts/app_master_script"); ?>
+</div>

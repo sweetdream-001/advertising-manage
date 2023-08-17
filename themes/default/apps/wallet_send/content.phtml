@@ -1,0 +1,108 @@
+<div class="timeline-container" data-app="wallet_send">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+			<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+				<span class="go-back" onclick="SMColibri.go_back();">
+				<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link('wallet_send'); ?>">
+						<?php echo cl_translate("Send money"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				
+			</div>
+			<div class="rp">
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="wallet-send">
+
+		<div class="account-wallet__card">
+			<div class="account-wallet__card-title">
+				<?php echo cl_translate("Send money to your friends"); ?>
+			</div>
+			<div class="wallet-balance">
+				<div class="wallet-balance__amount">
+					<span>
+						<?php echo cl_money($me['wallet']); ?>
+					</span>
+					<span>
+						<?php echo cl_translate("Your account's available funds"); ?>
+					</span>
+				</div>
+				<div class="wallet-balance__icon">
+					<?php echo cl_icon("account_balance"); ?>
+				</div> 
+			</div>
+
+			<div class="wallet-send__form">
+				<form class="form" id="vue-wallet-moneysend-app" v-on:submit="submit_form($event)">
+		            <div class="form-group">
+		                <label>
+		                    <?php echo cl_translate("Amount"); ?>
+		                </label>
+		                <input v-model.trim="$v.send_amount.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("From {@min_amount@} to {@max_amount@}", array("min_amount" => cl_money(0.1), "max_amount" => cl_money(15000))); ?>">
+		                <div v-if="is_invalid_amount" class="invalid-main-feedback">
+		                    {{invalid_feedback_amount}}
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label>
+		                    <?php echo cl_translate("Send to"); ?>
+		                </label>
+		                <div class="recipients-search-input">
+		                	<input v-model.trim="keyword" v-on:input="search" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter username to search"); ?>">
+		                	<span class="input-spinner" v-if="searching">
+								<?php echo cl_icon('spinner-icon'); ?>
+							</span>
+		                </div>
+		                <div class="recipients-list" v-if="recipients.length">
+		                	<div class="recipients-list__body">
+		                		<div class="recipients-list">
+		                			<div v-on:click="select_recipient(i.id)" class="recipients-list__item" v-for="i in recipients">
+			                			<div class="recipients-list__item-avatar">
+											<img v-bind:src="i.avatar" alt="IMG">
+										</div>
+										<div class="recipients-list__item-username">
+											<span class="user-name-holder">
+												<span class="user-name-holder__name">
+													{{i.name}}
+												</span>
+												<span v-if="i.verified == 1" class="user-name-holder__badge">
+													<?php echo cl_icon("verified_user_badge"); ?>
+												</span>
+											</span>
+											<span class="username">
+												@{{i.username}}
+											</span>
+										</div>
+			                		</div>
+		                		</div>
+		                	</div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+	                    <div class="form-info-label">
+	                        <?php echo cl_translate("Enter the username to select the recipient of the money, and then enter the transfer amount and click send money"); ?>
+	                    </div>
+	                </div>
+		            <div class="form-group no-mb">
+		                <button v-if="submitting" disabled="true" class="btn btn-custom main-inline lg btn-block">
+		                    <?php echo cl_translate('Please wait'); ?>
+		                </button>
+		                <button v-else v-bind:disabled="is_invalid_form" class="btn btn-custom main-inline lg btn-block">
+		                    <?php echo cl_translate("Send money"); ?>
+		                </button>
+		            </div>
+		        </form>
+	        </div>
+        </div>
+	</div>
+
+	<?php echo cl_template("wallet_send/scripts/app_master_script"); ?>
+</div>

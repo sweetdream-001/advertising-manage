@@ -1,0 +1,106 @@
+<div class="modal fadeIn" data-app="post-text-edit" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static" data-onclose="remove">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+			<div class="modal-header">
+                <div class="modal-header__inner">
+                    <h5 class="modal-title">
+                        <?php echo cl_translate('Edit post'); ?>
+                    </h5>
+                    <span class="dismiss-modal" data-dismiss="modal">
+                        <?php echo cl_icon('close'); ?>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                 <form class="form" id="vue-pubbox-app-editor" v-on:submit="publish($event)">
+                    <div class="timeline-edbox">
+                        <div class="timeline-edbox__header">
+                            <div class="form-group">
+                                <label class="d-flex justify-content-between flex-wn">
+                                    <span><?php echo cl_translate("Post caption"); ?></span> <span class="fw-400" v-bind:class="{'col-red': (post_text.length > settings.max_length)}">({{post_text.length}}/{{settings.max_length}})</span>
+                                </label>
+                                <textarea v-model="post_text" name="post_text" class="form-control" placeholder="<?php echo cl_translate("Enter post caption"); ?>" v-bind:rows="post_text.length / 30">{{post_text}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-info-label">
+                                    <?php echo cl_translate("Editing a post allows you to correct a typographical error, and this option is given once per post."); ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-edbox__footer">
+                            <button v-if="submitting" disabled="true" type="button" class="btn btn-block btn-custom main-inline lg">
+                                <?php echo cl_translate("Please wait"); ?>
+                            </button>
+                            <button v-else type="submit" class="btn btn-block btn-custom main-inline lg">
+                                <?php echo cl_translate("Save changes"); ?>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+                </form>
+                <script>
+                    "use strict";
+
+                    $(document).ready(function() {
+                        new Vue({
+                            el: "#vue-pubbox-app-editor",
+                            data: {
+                                post_text: "<?php echo $cl['post_data']['text']; ?>",
+                                submitting: false,
+                                settings: {
+                                    max_length: "<?php echo fetch_or_get($cl['config']['max_post_len'], 600); ?>"
+                                }
+                            },
+                            methods: {
+                                publish: function(_self = null) {
+                                    _self.preventDefault();
+
+                                    var form  = $(_self.$el);
+                                    var _app_ = this;
+
+                                    $(_self.target).ajaxSubmit({
+                                        url: "<?php echo cl_link("native_api/edit_post/save_data"); ?>",
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        data: {
+                                            id: <?php echo $cl['post_data']['id']; ?>,
+                                            post_text: _app_.post_text,
+                                            curr_pn: SMColibri.curr_pn
+                                        },
+                                        beforeSend: function() {
+                                            _app_.submitting = true;
+                                        },
+                                        success: function(data) {
+                                            if (data.status == 200) {
+                                                $('div[data-app="post-text-edit"]').modal('hide');
+                                                cl_bs_notify("<?php echo cl_translate("Your changes has been successfully saved!"); ?>");
+
+                                                if(SMColibri.curr_pn == "thread") {
+                                                    setTimeout(function() {
+                                                        SMColibri.spa_reload();
+                                                    }, 2000);
+                                                }
+                                                else{
+                                                    $('div[data-list-item="{0}"]'.format(<?php echo $cl['post_data']['id']; ?>)).replaceWith($(data.html));
+                                                }
+                                            }
+
+                                            else {
+                                                _app_.submitting = false;
+                                                SMColibri.errorMSG();
+                                            }
+                                        },
+                                        complete: function() {
+                                            _app_.submitting = false;
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
+                </script>          
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "thingengineer/mysqli-database-class": "dev-master"
+    }
+}

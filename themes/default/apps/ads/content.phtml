@@ -1,0 +1,90 @@
+<div class="timeline-container" data-app="advertisements">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__topline">
+			<div data-el="timeline-bs-notifs" class="timeline-bs-notifs"></div>
+		</div>
+		<div class="timeline-header" data-el="tl-header">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center; margin-left:5px;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+					<a href="<?php echo cl_link('ads'); ?>">
+						<?php echo cl_translate('Advertisement'); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+				<span class="rate"> Current Rate: <strong class="wallet">${%config ad_conversion_rate%}</strong> </span>
+			</div>
+			<div class="rp">
+				<div class="nav-link-holder">
+					<?php if (in_array($cl["page_tab"], array('upsert', 'edit'))) : ?>
+						<span class="go-back" onclick="SMColibri.go_back();">
+							
+						</span>
+					<?php else : ?>
+						<a href="<?php echo cl_link("ads/new"); ?>" data-spa="true" title="<?php echo cl_translate("New"); ?>">
+							<?php echo cl_ikon('plus'); ?>
+						</a>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="timeline-navbar">
+		<div class="timeline-navbar__item">
+			<a href="<?php echo cl_link('ads') ?>" data-spa="true">
+				<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'active') {
+																echo ('active');
+															} ?>">
+					<span class="btn-flex-inner">
+						<span class="text">
+							<?php echo cl_translate("Active ads"); ?>
+						</span>
+					</span>
+				</button>
+			</a>
+		</div>
+		<div class="timeline-navbar__item">
+			<a href="<?php echo cl_link('ads/archive') ?>" data-spa="true">
+				<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'archive') {
+																echo ('active');
+															} ?>">
+					<span class="btn-flex-inner">
+						<span class="text">
+							<?php echo cl_translate("Archive"); ?>
+						</span>
+					</span>
+				</button>
+			</a>
+		</div>
+		<div class="timeline-navbar__item">
+			<a href="<?php echo cl_link('ads/pending') ?>" data-spa="true">
+				<button class="timeline-navbar__item-btn <?php if ($cl['page_tab'] == 'pending') {
+																echo ('active');
+															} ?>">
+					<span class="btn-flex-inner">
+						<span class="text">
+							<?php echo cl_translate("Pending"); ?>
+						</span>
+					</span>
+				</button>
+			</a>
+		</div>
+	</div>
+
+	<div class="ads-management">
+		<?php if ($cl["page_tab"] == 'active') : ?>
+			<?php echo cl_template('ads/includes/active'); ?>
+		<?php elseif ($cl["page_tab"] == 'archive') : ?>
+			<?php echo cl_template('ads/includes/archive'); ?>
+		<?php elseif ($cl["page_tab"] == 'pending') : ?>
+			<?php echo cl_template('ads/includes/pending'); ?>
+		<?php elseif ($cl["page_tab"] == 'upsert') : ?>
+			<?php echo cl_template('ads/includes/upsert'); ?>
+		<?php endif; ?>
+	</div>
+
+	<?php echo cl_template('ads/scripts/app_master_script'); ?>
+</div>

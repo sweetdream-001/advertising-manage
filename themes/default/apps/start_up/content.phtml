@@ -1,0 +1,397 @@
+<div class="timeline-container" data-app="start_up">
+	<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder">
+					<a href="<?php echo cl_link("start_up"); ?>" data-spa="true">
+						<?php echo cl_translate("Completion"); ?>
+					</a>
+				</div>
+			</div>
+			<div class="cp">
+
+			</div>
+			<div class="rp">
+				<div class="nav-link-holder">
+					<a href="<?php echo cl_link("about_us"); ?>" class="go-forward" data-spa="true">
+						<?php echo cl_icon('info'); ?>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="d-block" id="vue-startup-app">
+		<div v-if="progstat.avatar == 0" class="startup">
+			<div class="startup__header">
+				<div class="timeline-placeholder">
+					<div class="pl-message">
+						<h4>
+							<?php echo cl_translate("Welcome!"); ?>
+						</h4>
+						<p>
+							<?php echo cl_translate("There are only a few steps left before registration is complete. Once you enter the required information about your profile, your account is ready to use."); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="startup__body">
+				<div class="startup-avatar">
+					<div class="startup-avatar__image">
+						<img v-if="avatar.src" v-bind:src="avatar.src" alt="Avatar">
+						<img v-else v-bind:src="avatar.default" alt="Avatar">
+						<button class="upload-avatar" v-on:click="select_avatar" v-bind:disabled="fe_state.submitting">
+							<?php echo cl_icon('add_a_photo_inline'); ?>
+						</button>
+					</div>
+					<div class="startup-avatar__desc" v-if="avatar.src">
+						<?php echo cl_translate("It looks just fine! <br> Now it remains to fill in the necessary information about you"); ?>
+					</div>
+					<div class="startup-avatar__desc" v-else>
+						<?php echo cl_translate("Let's start by uploading your profile avatar"); ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="startup__footer">
+				<button v-if="avatar.src" v-on:click="save_avatar" class="btn btn-custom main-inline lg btn-block">
+					<?php echo cl_translate("Save and continue"); ?>
+				</button>
+				<button v-else v-on:click="save_avatar" class="btn btn-custom main-inline lg btn-block">
+					<?php echo cl_translate("Skip and continue"); ?>
+				</button>
+			</div>
+		</div>
+		<div v-else-if="progstat.info == 0" class="startup">
+			<div class="startup__header">
+				<div class="timeline-placeholder">
+					<div class="pl-message">
+						<h4>
+							<?php echo cl_translate("Almost ready!"); ?>
+						</h4>
+						<p>
+							<?php echo cl_translate("You are just one step away from completing the registration, it remains to fill in the basic information about you and the account will be ready"); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="startup__body">
+				<div class="startup__form">
+					<form class="form">
+						<div class="row">
+							<div class="col-sm-12 col-12">
+								<div class="form-group">
+									<label>
+										<?php echo cl_translate("First name"); ?>
+									</label>
+									<input name="fname" v-model.trim="$v.info.user_data.fname.$model" type="text"
+										class="form-control"
+										placeholder="<?php echo cl_translate("Enter your first name"); ?>">
+									<div class="invalid-main-feedback" v-if="is_valid_fname">
+										{{info.fe_feedback.invalid_fname }}
+									</div>
+								</div>
+							</div>
+							<!-- <div class="col-sm-6 col-12">
+								<div class="form-group">
+									<label>
+										<?php echo cl_translate("Last name"); ?>	
+									</label>
+									<input name="lname" v-model.trim="$v.info.user_data.lname.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter your last name"); ?>">
+									<div class="invalid-main-feedback" v-if="is_valid_lname">
+										{{info.fe_feedback.invalid_lname}}
+									</div>
+								</div>
+							</div> -->
+						</div>
+						<div class="form-group">
+							<label>
+								<?php echo cl_translate("About you"); ?>
+
+								<small class="col-grey">({{info.user_data.bio.length}})</small>
+							</label>
+							<textarea v-model.trim="$v.info.user_data.bio.$model" name="bio" class="form-control"
+								placeholder="<?php echo cl_translate("Please enter here about yourself"); ?>"
+								rows="3"></textarea>
+							<div class="invalid-main-feedback" v-if="is_valid_bio">
+								{{info.fe_feedback.invalid_bio}}
+							</div>
+						</div>
+						<div class="form-group">
+							<label>
+								<?php echo cl_translate("Choose your country"); ?>
+							</label>
+							<div class="dropdown vue-dropdown-select">
+								<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+									{{sdds.countries[info.user_data.country]}}
+								</button>
+								<div class="dropdown-menu">
+									<a v-for="(v,k) in sdds.countries" v-on:click="info.user_data.country = k"
+										class="dropdown-item" href="javascript:void(0);">
+										{{v}}
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>
+								<?php echo cl_translate("Select your gender"); ?>
+							</label>
+							<div class="dropdown vue-dropdown-select">
+								<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+									<span v-if="info.user_data.gender">
+										{{sdds.genders[info.user_data.gender]}}
+									</span>
+									<span v-else>
+										<?php echo cl_translate("Nothing selected"); ?>
+									</span>
+								</button>
+								<div class="dropdown-menu">
+									<a v-for="(v,k) in sdds.genders" v-on:click="info.user_data.gender = k"
+										class="dropdown-item" href="javascript:void(0);">
+										{{v}}
+									</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="startup__footer">
+				<button v-if="fe_state.submitting" disabled="true" type="button"
+					class="btn btn-custom main-inline lg btn-block">
+					<?php echo cl_translate("Please wait"); ?>
+				</button>
+				<button v-else v-on:click="save_info" v-bind:disabled="is_invalid_form"
+					class="btn btn-custom main-inline lg btn-block">
+					<?php echo cl_translate("Save and continue"); ?>
+				</button>
+			</div>
+		</div>
+		<div v-else-if="progstat.follow == 0" class="startup">
+			<div class="startup__header">
+				<div class="timeline-placeholder" style="padding-top:0px;">
+					<div class="icon">
+						<div class="icon__bg_img">
+							<img src="{%config theme_url%}/statics/img/Startup.png" style="width: 200px;">
+						</div>
+					</div>
+					<div class="pl-message">
+						<h4>
+							<?php echo cl_translate("Let's get started!"); ?>
+						</h4>
+						<p>
+							<?php echo cl_translate("Congratulations, your account has been successfully created and ready to use. But first, we would recommend you to subscribe to the most popular users"); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="startup__body no-mb">
+				<div class="startup-suggested">
+					<div class="startup-suggested__skip">
+						<button v-on:click="finish_startup(true)" class="btn btn-custom main-inline lg btn-block">
+							<?php echo cl_translate("Follow users & Finish!"); ?>
+						</button>
+						<button v-on:click="finish_startup(false)" class="btn btn-custom main-grey lg btn-block">
+							<?php echo cl_translate("Or skip this step & Finish!"); ?>
+						</button>
+					</div>
+
+					<div class="timeline-users-container">
+						<div class="timeline-user-ls">
+							<?php foreach ($cl["suggestions"] as $cl["li"]): ?>
+								<div class="user-list-item">
+									<div class="user-list-item__avatar">
+										<a href="<?php echo ($cl['li']['url']); ?>" class="block-link">
+											<div class="user-avatar">
+												<img src="<?php echo ($cl['li']['avatar']); ?>" alt="Avatar">
+											</div>
+										</a>
+									</div>
+									<div class="user-list-item__data">
+										<div class="user-data">
+											<div class="user-data__body">
+												<div class="user-data__body-topline">
+													<div class="flex-item-left">
+														<div class="user-data__name">
+															<a href="<?php echo ($cl['li']['url']); ?>" data-spa="true"
+																data-uinfo-lbox="<?php echo ($cl['li']['id']); ?>"
+																data-toggle="popover" data-placement="bottom">
+																<span class="user-name-holder">
+																	<span class="user-name-holder__name">
+																		<?php echo $cl['li']['name']; ?>
+																	</span>
+
+																	<?php if ($cl['li']['verified'] == '1'): ?>
+																		<span class="user-name-holder__badge">
+																			<?php echo cl_icon("verified_user_badge"); ?>
+																		</span>
+																	<?php endif; ?>
+																</span>
+																<span>
+																	@
+																	<?php echo ($cl['li']['username']); ?>
+																</span>
+															</a>
+														</div>
+														<div class="user-data__country">
+															<span class="icon">
+																<?php echo cl_icon('public'); ?>
+															</span>
+															<span class="text">
+																<?php echo cl_translate("Living in - {@country_name@}", array("country_name" => $cl['li']['country_name'])); ?>
+															</span>
+															<span class="banner">
+																<?php echo cl_banner($cl['li']['country_a2c']); ?>
+															</span>
+														</div>
+													</div>
+													<div class="flex-item-right">
+														<div class="user-data__ctrls">
+															<?php if (not_empty($cl["li"]["pending_req"])): ?>
+																<div class="dropdown-menu-holder">
+																	<button class="dropleft">
+																		<a href="#" class="dropdown-toggle icon"
+																			data-toggle="dropdown">
+																			<?php echo cl_icon('more_horiz'); ?>
+																		</a>
+																		<div class="dropdown-menu dropdown-icons">
+																			<a class="dropdown-item"
+																				href="<?php echo ($cl['li']['url']); ?>"
+																				data-spa="true">
+																				<span class="flex-item dropdown-item-icon">
+																					<?php echo cl_icon("account_box"); ?>
+																				</span>
+																				<span class="flex-item">
+																					<?php echo $cl['li']['name']; ?>
+																				</span>
+																				<span
+																					class="flex-item dropdown-item-icon dropdown-item-icon_adinfo">
+																					<?php echo cl_icon('navigate_next'); ?>
+																				</span>
+																			</a>
+																			<div class="dropdown-divider"></div>
+																			<a class="dropdown-item" href="javascript:void(0);"
+																				onclick="CLFollowers.accept_request(<?php echo ($cl['li']['offset_id']); ?>);">
+																				<span class="flex-item dropdown-item-icon">
+																					<?php echo cl_icon('verified'); ?>
+																				</span>
+																				<span class="flex-item">
+																					<?php echo cl_translate("Accept request"); ?>
+																				</span>
+																			</a>
+																			<div class="dropdown-divider"></div>
+																			<a class="dropdown-item col-red"
+																				href="javascript:void(0);"
+																				onclick="CLFollowers.delete_request(<?php echo ($cl['li']['offset_id']); ?>);">
+																				<span class="flex-item dropdown-item-icon">
+																					<?php echo cl_icon('delete'); ?>
+																				</span>
+																				<span class="flex-item">
+																					<?php echo cl_translate("Delete request"); ?>
+																				</span>
+																			</a>
+																		</div>
+																	</button>
+																</div>
+															<?php else: ?>
+																<?php if (empty($cl['li']['is_user'])): ?>
+																	<?php if ($cl['li']['follow_privacy'] == 'approved'): ?>
+																		<?php if (not_empty($cl['li']['is_following'])): ?>
+																			<button onclick="SMColibri.req_follow(this);"
+																				data-user-name="<?php echo ($cl['li']['name']); ?>"
+																				class="btn btn-custom main-inline md" data-action="unfollow"
+																				data-id="<?php echo ($cl['li']['id']); ?>">
+																				<?php echo cl_translate("Unfollow"); ?>
+																			</button>
+																		<?php elseif (not_empty($cl['li']['follow_requested'])): ?>
+																			<button onclick="SMColibri.req_follow(this);"
+																				data-user-name="<?php echo ($cl['li']['name']); ?>"
+																				class="btn btn-custom main-inline md" data-action="cancel"
+																				data-id="<?php echo ($cl['li']['id']); ?>">
+																				<?php echo cl_translate("Pending"); ?>
+																			</button>
+																		<?php else: ?>
+																			<button onclick="SMColibri.req_follow(this);"
+																				data-user-name="<?php echo ($cl['li']['name']); ?>"
+																				class="btn btn-custom main-outline md" data-action="follow"
+																				data-id="<?php echo ($cl['li']['id']); ?>">
+																				<?php echo cl_translate("Follow"); ?>
+																			</button>
+																		<?php endif; ?>
+																	<?php else: ?>
+																		<?php if (empty($cl['li']['is_following'])): ?>
+																			<button onclick="SMColibri.follow(this);"
+																				data-user-name="<?php echo ($cl['li']['name']); ?>"
+																				class="btn btn-custom md main-outline" data-action="follow"
+																				data-id="<?php echo ($cl['li']['id']); ?>">
+																				<?php echo cl_translate("Follow"); ?>
+																			</button>
+																		<?php else: ?>
+																			<button onclick="SMColibri.follow(this);"
+																				data-user-name="<?php echo ($cl['li']['name']); ?>"
+																				class="btn btn-custom md main-inline" data-action="unfollow"
+																				data-id="<?php echo ($cl['li']['id']); ?>">
+																				<?php echo cl_translate("Unfollow"); ?>
+																			</button>
+																		<?php endif; ?>
+																	<?php endif; ?>
+																<?php endif; ?>
+															<?php endif; ?>
+														</div>
+													</div>
+												</div>
+
+												<div class="user-data__stats">
+													<div class="stats-item">
+														<span>
+															<?php echo cl_number($cl['li']['posts']); ?>
+														</span>
+														<span>
+															<?php echo cl_translate("Posts"); ?>
+														</span>
+													</div>
+													<div class="stats-item">
+														<span>
+															<?php echo cl_number($cl['li']['followers']); ?>
+														</span>
+														<span>
+															<?php echo cl_translate("Followers"); ?>
+														</span>
+													</div>
+													<div class="stats-item">
+														<span>
+															<?php echo cl_number($cl['li']['following']); ?>
+														</span>
+														<span>
+															<?php echo cl_translate("Following"); ?>
+														</span>
+													</div>
+												</div>
+												<?php if (not_empty($cl['li']['about'])): ?>
+													<div class="user-data__about">
+														<?php echo $cl['li']['about']; ?>
+
+														<?php if (not_empty($cl['li']['website'])): ?>
+															|
+															<?php echo cl_html_el("a", $cl['li']['website'], array("href" => $cl['li']['website'], "target" => "_blank", "class" => "inline-link")); ?>
+														<?php endif; ?>
+													</div>
+												<?php endif; ?>
+											</div>
+										</div>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input ref="avatar-input" v-on:change="upload_avatar($event)" type="file" accept="image/*"
+			class="hidden d-none">
+	</div>
+
+	<?php echo cl_template('start_up/scripts/app_master_script'); ?>
+</div>

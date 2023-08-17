@@ -1,0 +1,199 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app = $('[data-app="account-verification"]');
+
+        var CSMAccountVerification = new Vue({
+            el: "#vue-cpanel-account-verification-app",
+            data: {
+                total_requests: <?php echo fetch_or_get($cl['requests_total'], 0); ?>,
+                loading: false,
+                prev_ctrl: true,
+                next_ctrl: true,
+            },
+            computed: {
+                dis_prev_ctrl: function() {
+                    if (this.loading || this.prev_ctrl != true) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                },
+                dis_next_ctrl: function() {
+                    if (this.loading || this.next_ctrl != true) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                },
+                show_ctrls: function() {
+                    if (this.total_requests > 0) {
+                        return true;
+                    }
+
+                    else {
+                        return false;
+                    }
+                }
+            },
+            methods: {
+                paginate: function(dir = false) {
+                    var _app_     = this;
+                    var reqs_list = _app.find('[data-an="requests-list"]');
+                    var offset_lt = reqs_list.find('tr[data-list-item]').first().data('list-item');
+                    var offset_gt = reqs_list.find('tr[data-list-item]').last().data('list-item');
+
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/cpanel/get_account_verifications"); ?>',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            dir: dir,
+                            offset_lt: offset_lt, 
+                            offset_gt: offset_gt
+                        },
+                        beforeSend: function() {
+                            _app_.loading   = true;
+                            _app_.prev_ctrl = true;
+                            _app_.next_ctrl = true;
+
+                            SMC_CPanel.waitme("show");
+                        }
+                    }).done(function(data) {
+                        if (data.status == 200) {
+                            reqs_list.html(data.html);
+                        }
+                        else{
+                            if (dir == 'up') {
+                                _app_.prev_ctrl = false;
+                            }
+                            else{
+                                _app_.next_ctrl = false;
+                            }
+                        }
+                    }).always(function() {
+                        delay(function() {
+                            _app_.loading = false;
+
+                            SMC_CPanel.waitme();
+                        },500);
+                    });
+                },
+                show: function(id = false) {
+                    if ($.isNumeric(id) && id) {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/get_verifreq_data"); ?>',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {id: id},
+                            beforeSend: function() {
+                                SMC_CPanel.waitme("show");
+                            }
+                        }).done(function(data) {
+                            if (data.status == 200) {
+                                $('[data-app="black-hole"]').html(data.html).find('div.modal').modal('show');
+                            }
+
+                            if (data.message) {
+                                cl_bs_notify(data.message, 3000, "danger");
+                            }
+                        }).always(function() {
+                            SMC_CPanel.waitme();
+                        });
+                    }
+                },
+                delete: function(id = false) {
+                    if ($.isNumeric(id) && id) {
+
+                        var promise = SMC_CPanel.confirm_action({
+                            btn_1: "Cancel",
+                            btn_2: "Delete",
+                            title: "Please confirm your actions!",
+                            message: "Please note that all information about this request will also be completely deleted!",
+                        });
+
+                        promise.done(function() {
+                            $.ajax({
+                                url: '<?php echo cl_link("native_api/cpanel/delete_verifreq_data"); ?>',
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {id: id},
+                                beforeSend: function() {
+                                    SMC_CPanel.waitme("show");
+                                    $("div.confirm-actions-modal").modal("hide");
+                                }
+                            }).done(function(data) {
+                                if (data.status == 200) {
+
+                                    var reqs_list = _app.find('[data-an="requests-list"]');
+
+                                    if (reqs_list.find('[data-list-item]').length > 1) {
+                                        reqs_list.find('[data-list-item="{0}"]'.format(id)).slideUp(300, function() {
+                                            $(this).remove();
+                                        });
+                                    }
+
+                                    else {
+                                        $(window).reloadPage(100);
+                                    }
+                                } 
+
+                                if (data.message) {
+                                    cl_bs_notify(data.message, 3000, "danger");
+                                }
+                            }).always(function() {
+                                SMC_CPanel.waitme();
+                            });
+                        });
+
+                        promise.fail(function() {
+                            $("div.confirm-actions-modal").modal("hide");
+                        });
+                    }
+                },
+                verify: function(id = false) {
+                    if ($.isNumeric(id) && id) {
+                        $.ajax({
+                            url: '<?php echo cl_link("native_api/cpanel/verify_user_account"); ?>',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {id: id},
+                            beforeSend: function() {
+                                SMC_CPanel.waitme("show");
+                            }
+                        }).done(function(data) {
+                            if (data.status == 200) {
+                                var reqs_list = _app.find('[data-an="requests-list"]');
+
+                                if (reqs_list.find('[data-list-item]').length > 1) {
+                                    reqs_list.find('[data-list-item="{0}"]'.format(id)).slideUp(300, function() {
+                                        $(this).remove();
+                                    });
+                                }
+
+                                else {
+                                    $(window).reloadPage(100);
+                                }
+                            }
+
+                            if (data.message) {
+                                cl_bs_notify(data.message, 3000, "danger");
+                            }
+                        }).always(function() {
+                            SMC_CPanel.waitme();
+                        });
+                    }
+                }
+            }
+        });
+
+        if (window.CSMAccountVerification === undefined) {
+            window.CSMAccountVerification = CSMAccountVerification;
+        }
+	});
+</script>

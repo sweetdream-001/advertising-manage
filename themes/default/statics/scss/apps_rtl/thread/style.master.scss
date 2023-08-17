@@ -1,0 +1,115 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+body.cl-app-thread{
+	main.main-content-container {
+		div.main-content-container-inner {
+			div.timeline-container{
+				div.publication--thread-container{
+					div.publication--thread-container-inner{
+						div.publication--thread-data-holder{
+							div.publication-data{
+								div.publication-data-inner{
+									div.publisher-info{
+										div.rp{
+											padding-left: 0px;
+											padding-right: 15px;
+										}
+									}
+
+									div.publication-meta-info{
+										div.publication-target{
+											margin-left: 0px;
+											margin-right: 15px;
+										}
+
+										div.post-privacy{
+											margin-left: 0;
+											margin-right: auto;
+
+											button.privacy-settings{
+												a.dropdown-toggle{
+													span.d-inline-flex{
+														span.flex-item.label{
+															margin-right: 5px;
+															margin-left: 0;
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+
+								div.soft-hidden-post{
+									p{
+										margin-left: 15px;
+										margin-right: 0px;
+									}
+								}
+
+								div.post-placeholder{
+									div.icon{
+										margin-left: 15px;
+										margin-right: 0px;
+									}
+
+									p{
+										margin-left: 15px;
+										margin-right: 0px;
+									}
+								}
+							}
+						}
+
+						div.publication--thread-reply-privacy{
+							div.info-message{
+								p{
+									margin-right: 15px;
+									margin-left: 0px;
+								}
+							}
+						}
+
+						div.publication--thread-replys-holder{
+							div.timeline-posts-container{
+								div.timeline-posts-ls{
+									div.timeline-posts-ls-group{
+										div.timeline-posts-ls-group-inner{
+											div.post-list-item{
+												&:after{
+													right: 65px;
+													left: 15px;
+												}
+											}
+										}
+
+										a.show-thread{
+											flex-direction: row-reverse;
+										}
+									}
+								}
+							}
+						}
+
+						div.publication--thread-chain-holder{
+							div.post-list-item{
+								&:after{
+									right: 65px;
+									left: 15px;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

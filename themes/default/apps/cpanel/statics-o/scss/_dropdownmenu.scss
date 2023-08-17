@@ -1,0 +1,47 @@
+﻿.dropdown, .dropleft, .dropright, .dropup{
+    position: relative;
+    a.dropdown-toggle{
+        &:before,&:after{
+            display: none !important;
+        }
+
+        &:active,&:hover,&:focus{
+            background: transparent !important;
+            color: inherit;
+        }
+    }
+
+    div.dropdown-menu{
+        border: none !important;
+        box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+        padding: 0px;
+        position: absolute;
+
+        a.dropdown-item{
+            font-size: 13px;
+            line-height: 32px;
+            color: $black;
+            padding: 5px 20px;
+            display: block;
+            text-decoration: none;
+
+            &:hover,&:active{
+                background: $el_hovbg !important;
+            }
+        }
+
+        div.dropdown-divider{
+            padding: 0;
+            margin: 0;
+            border-top: 1px solid $border;
+            line-height: 0px;
+        }
+    }
+
+    &.dropdown-menu-left{
+        .dropdown-menu{
+            left: unset !important;
+            right: 0px !important;
+        }
+    }
+}

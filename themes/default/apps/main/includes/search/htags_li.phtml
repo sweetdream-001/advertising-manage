@@ -1,0 +1,19 @@
+<div class="search-result__list-item search-result__list-item_htag">
+	<a href="<?php echo($cl['li']['url']); ?>" data-spa="true">
+		<div class="result-item-data">
+			<div class="result-item-data__icon">
+				<div class="icon">
+					<?php echo cl_icon("tag"); ?>
+				</div>
+			</div>
+			<div class="result-item-data__data">
+				<div class="result-item-data__topline">
+					<?php echo($cl['li']['hashtag']); ?>
+				</div>
+				<div class="result-item-data__botline">
+					<?php echo($cl['li']['total']); ?> <?php echo cl_translate('Posts'); ?>
+				</div>
+			</div>
+		</div>
+	</a>
+</div>

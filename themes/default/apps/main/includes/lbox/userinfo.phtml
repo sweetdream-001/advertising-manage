@@ -1,0 +1,157 @@
+<div class="user-info-lbox" data-app="user-info-lbox">
+	<div class="user-info-lbox__inner">
+		<div class="user-info-lbox__user-data">
+			<div class="user-info-lbox__avatar">
+				<div class="cover">
+					<?php if (empty($cl['lbox_usr']['owner'])) : ?>
+						<div class="user-info-lbox__user-ctrls">
+							<?php if ($cl['lbox_usr']['follow_privacy'] == 'approved') : ?>
+								<?php if (not_empty($cl['lbox_usr']['is_following'])) : ?>
+									<button onclick="SMColibri.req_follow(this);" class="btn btn-custom btn-block main-inline md" data-action="unfollow" data-user-name="<?php echo ($cl['lbox_usr']['name']); ?>" data-id="<?php echo ($cl['lbox_usr']['id']); ?>">
+										<?php echo cl_translate("Unfollow"); ?>
+									</button>
+								<?php elseif (not_empty($cl['lbox_usr']['follow_requested'])) : ?>
+									<button onclick="SMColibri.req_follow(this);" class="btn btn-custom btn-block main-inline md" data-action="cancel" data-user-name="<?php echo ($cl['lbox_usr']['name']); ?>" data-id="<?php echo ($cl['lbox_usr']['id']); ?>">
+										<?php echo cl_translate("Pending"); ?>
+									</button>
+								<?php else : ?>
+									<button onclick="SMColibri.req_follow(this);" class="btn btn-custom sm main-outline" data-action="follow" data-user-name="<?php echo ($cl['lbox_usr']['name']); ?>" data-id="<?php echo ($cl['lbox_usr']['id']); ?>">
+										<?php echo cl_translate("Follow"); ?>
+									</button>
+								<?php endif; ?>
+							<?php else : ?>
+								<?php if (not_empty($cl['lbox_usr']['is_following'])) : ?>
+									<button onclick="SMColibri.follow(this);" class="btn btn-custom btn-block main-inline md" data-action="unfollow" data-user-name="<?php echo ($cl['lbox_usr']['name']); ?>" data-id="<?php echo ($cl['lbox_usr']['id']); ?>">
+										<?php echo cl_translate("Unfollow"); ?>
+									</button>
+								<?php else : ?>
+									<button onclick="SMColibri.follow(this);" class="btn btn-custom btn-block main-outline" data-action="follow" data-user-name="<?php echo ($cl['lbox_usr']['name']); ?>" data-id="<?php echo ($cl['lbox_usr']['id']); ?>">
+										<?php echo cl_translate("Follow"); ?>
+									</button>
+								<?php endif; ?>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
+				</div>
+				<div class="avatar">
+					<img src="<?php echo ($cl["lbox_usr"]["avatar"]); ?>" alt="IMG">
+				</div>
+			</div>
+			<div class="user-info-lbox__info">
+				<div class="name">
+					<a href="<?php echo ($cl["lbox_usr"]["url"]); ?>">
+						<h4>
+							<span class="user-name-holder <?php if ($cl["lbox_usr"]['verified'] == '1') {
+																echo ('verified-badge');
+															} ?>">
+								<b>
+									<?php echo ($cl["lbox_usr"]["name"]); ?>
+								</b>
+							</span>
+						</h4>
+						<span>
+							<?php echo ($cl["lbox_usr"]["username"]); ?>
+						</span>
+					</a>
+				</div>
+				<div class="stats">
+					<div class="stat-holder">
+						<?php if (not_empty($cl["lbox_usr"]['following'])) : ?>
+							<a href="<?php echo (cl_strf('%s/following', $cl["lbox_usr"]["url"])); ?>" data-spa="true">
+								<b data-an="total-following"><?php echo cl_number($cl["lbox_usr"]['following']); ?></b>
+								<span><?php echo cl_translate('Following'); ?></span>
+							</a>
+						<?php else : ?>
+							<b data-an="total-following"><?php echo cl_number($cl["lbox_usr"]['following']); ?></b>
+							<span><?php echo cl_translate('Following'); ?></span>
+						<?php endif; ?>
+					</div>
+					<div class="stat-holder">
+						<?php if (not_empty($cl["lbox_usr"]['followers'])) : ?>
+							<a href="<?php echo (cl_strf('%s/followers', $cl["lbox_usr"]["url"])); ?>" data-spa="true">
+								<b data-an="total-followers"><?php echo cl_number($cl["lbox_usr"]['followers']); ?></b>
+								<span><?php echo cl_translate('Followers'); ?></span>
+							</a>
+						<?php else : ?>
+							<b data-an="total-followers"><?php echo cl_number($cl["lbox_usr"]['followers']); ?></b>
+							<span><?php echo cl_translate('Followers'); ?></span>
+						<?php endif; ?>
+					</div>
+				</div>
+				<?php if (not_empty($cl["lbox_usr"]["about"])) : ?>
+					<div class="about">
+						<p>
+							<?php echo ($cl["lbox_usr"]["about"]); ?>
+						</p>
+					</div>
+				<?php endif; ?>
+
+				<?php if (not_empty($cl["lbox_usr"]['common_follows'])) : ?>
+					<div class="user-data__common">
+						<div class="common-follows">
+							<div class="common-follows__title">
+								<?php if (count($cl["lbox_usr"]['common_follows']) > 1) : ?>
+									<?php echo cl_translate("Has {@common_follows@} followers you know", array("common_follows" => count($cl["lbox_usr"]['common_follows']))); ?>
+								<?php else : ?>
+									<?php echo cl_translate("Has {@common_follows@} follower you know", array("common_follows" => count($cl["lbox_usr"]['common_follows']))); ?>
+								<?php endif; ?>
+							</div>
+							<div class="common-follows__list">
+								<?php foreach ($cl["lbox_usr"]['common_follows'] as $index => $udata) : ?>
+									<?php if ($index <= 4) : ?>
+										<div class="common-follows__item" title="<?php echo $udata["name"]; ?> | @<?php echo $udata["username"]; ?>">
+											<a href="<?php echo $udata["url"]; ?>" data-spa="true">
+												<img src="<?php echo $udata["avatar"]; ?>" alt="IMG">
+											</a>
+										</div>
+
+									<?php endif; ?>
+								<?php endforeach; ?>
+
+								<?php if (count($cl["lbox_usr"]['common_follows']) > 5) : ?>
+									<div class="common-follows__item common-follows__item_total">
+										<span>
+											+<?php echo (count($cl["lbox_usr"]['common_follows']) - 5); ?>
+										</span>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+
+	</div>
+</div>
+<style>
+	div.common-follows__list {
+		display: flex;
+		flex-wrap: nowrap;
+		margin-left: 7px;
+		align-items: center;
+
+	}
+
+	div.common-follows div.common-follows__list div.common-follows__item a {
+		display: block;
+		overflow: hidden;
+		width: 20px;
+		height: 20px;
+		border-radius: 9999px;
+		text-decoration: none;
+		border: 1px solid var(--cl-primary-border-color);
+		line-height: 0;
+	}
+
+	div.common-follows div.common-follows__list div.common-follows__item a img {
+		width: 100%;
+
+	}
+
+	div.common-follows div.common-follows__list div.common-follows__item {
+		flex-basis: 20px;
+		flex-shrink: 0;
+		margin-left: -7px;
+	}
+</style>

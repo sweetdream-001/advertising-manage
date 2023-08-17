@@ -1,0 +1,22 @@
+<?php 
+# @*************************************************************************@
+# @ @author JOOJ Team (JOOJ.us)						            			@
+# @ @author_url 1: https://jooj.us                                          @
+# @ @author_url 2: http://jooj.us/twitter-clone                             @
+# @ @author_email: sales@jooj.us                                            @
+# @*************************************************************************@
+# @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+# @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+# @*************************************************************************@
+
+$cl["app_statics"] = array(
+	"scripts" => array(
+		cl_static_file_path("statics/js/libs/bootstrap-select-v1.13.9.min.js"),
+		cl_static_file_path("statics/js/libs/jquery-plugins/jquery.form-v4.2.2.min.js"),
+	),
+	"styles" => array(
+		cl_static_file_path("statics/css/libs/bootstrap-select-v1.13.9.min.css")
+	)
+);
+
+$cl['http_res'] = cl_template("cpanel/assets/terms_pages/content");

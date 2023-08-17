@@ -1,0 +1,1749 @@
+<script>
+	/* @*************************************************************************@
+	// @ Software author: JOOJ Team (JOOJ.us)							 @
+	// @ Author_url 1: https://jooj.us                        @
+	// @ Author_url 2: http://jooj.us/twitter-clone                       @
+	// @ Author E-mail: sales@jooj.us                                    @
+	// @*************************************************************************@
+	// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+	// @ Copyright (c) 2020 - 2022 JOOJ Talk. All rights reserved.               @
+	// @*************************************************************************@
+	*/
+
+
+	"use strict";
+
+	(function (window) {
+		function _SMColibri() {
+			var data = {
+				url: "{%config url%}"
+			};
+
+			var _smc = Object({
+				curr_pn: "<?php echo fetch_or_get($cl["pn"], "none"); ?>",
+				PS: Object({}),
+				vue: Object({}),
+				is_logged_user: '<?php echo (($cl["is_logged"] == true) ? 1 : 0); ?>',
+				back_url: data.url,
+				timeout: false,
+				msb_upinterval: "<?php echo fetch_or_get($cl["config"]["page_update_interval"], "30"); ?>",
+				userlbox: {
+					interv: 0,
+					status: false,
+					lifetm: 1000,
+					curr_id: false,
+					curr_el: false,
+					pre_delay: false
+				}
+			});
+
+			if (_smc.curr_pn != "conversation") {
+				if ($(window).width() > 1024) {
+					_smc.lsb = new StickySidebar('[data-app="left-sidebar"]', {
+						topSpacing: 0,
+						bottomSpacing: 0
+					});
+
+					_smc.rsb = new StickySidebar('[data-app="right-sidebar"]', {
+						topSpacing: 0,
+						bottomSpacing: 0
+					});
+				}
+			}
+			_smc.toggleSB = function (a = false) {
+				var left_sidebar = $('[data-app="left-sidebar"]');
+
+				if (a) {
+					if (a == "show") {
+						left_sidebar.addClass('show');
+
+						$('body').addClass("mobile-sb-open").append($('<div>', {
+							'class': 'sb-open-overlay',
+							'data-app': 'lsb-back-drop'
+						}));
+					}
+					else {
+						left_sidebar.removeClass('show').promise().done(function () {
+							$('body').removeClass("mobile-sb-open").find('div[data-app="lsb-back-drop"]').remove();
+						});
+					}
+				}
+
+				else {
+					if (left_sidebar.hasClass("show")) {
+						left_sidebar.removeClass('show').promise().done(function () {
+							$('body').removeClass("mobile-sb-open").find('div[data-app="lsb-back-drop"]').remove();
+						});
+					}
+					else {
+						left_sidebar.addClass('show');
+
+						$('body').addClass("mobile-sb-open").append($('<div>', {
+							'class': 'sb-open-overlay',
+							'data-app': 'lsb-back-drop'
+						}));
+					}
+				}
+			}
+
+
+			_smc.toggleSBMenu = function (e = false) {
+				var left_sidebar = $('[data-app="left-sidebar"]');
+
+				left_sidebar.find("div.sidebar__nav-group_collapse").slideToggle(100);
+
+
+				if (left_sidebar.find("div.sidebar__nav-group_collapse").hasClass("open")) {
+					$(e).find("a").text("<?php echo cl_translate('More'); ?>");
+					left_sidebar.find("div.sidebar__nav-group_collapse").removeClass("open");
+				} else {
+					$(e).find("a").text("<?php echo cl_translate('Less'); ?>");
+					left_sidebar.find("div.sidebar__nav-group_collapse").addClass("open");
+				}
+			}
+
+			_smc.init = function () {
+				_smc.fix_sidebars();
+				_smc.update_msb_indicators();
+				_smc.update_ilb();
+
+				if (cl_empty(window.history.state)) {
+					window.history.pushState({ state: "new", back_url: window.location.href }, "", window.location.href);
+				}
+			}
+
+			_smc.fix_sidebars = function () {
+				if (_smc.curr_pn != "chat") {
+					if ($(window).width() > 1024) {
+						if (_smc.lsb) {
+							_smc.lsb.updateSticky();
+						}
+
+						if (_smc.rsb) {
+							_smc.rsb.updateSticky();
+						}
+					}
+				}
+			}
+
+
+			_smc.get_cookie = function (name = "") {
+				var matches = document.cookie.match(new RegExp(
+					"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+				));
+
+				return (matches ? decodeURIComponent(matches[1]) : undefined);
+			}
+
+			_smc.is_logged = function () {
+				if (_smc.is_logged_user == '1') {
+					return true;
+				}
+
+				return false;
+			}
+
+			_smc.user_lbox = function (id = false, el = false) {
+				if ($.isNumeric(id)) {
+					if (cl_empty(_smc.userlbox.curr_id) != true && _smc.userlbox.curr_id == id) {
+						return false;
+					} else {
+
+						if (_smc.userlbox.pre_delay !== false) {
+							clearTimeout(_smc.userlbox.pre_delay);
+
+							_smc.userlbox.pre_delay = false;
+						}
+
+						_smc.userlbox.pre_delay = setTimeout(function () {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/main/user_lbox"); ?>',
+								type: 'GET',
+								dataType: 'json',
+								data: {
+									id: id
+								},
+								beforeSend: function () {
+									_smc.user_lbox_rm();
+
+									_smc.userlbox.curr_id = id;
+									_smc.userlbox.curr_el = el;
+								}
+							}).done(function (data) {
+								if (data.status == 200) {
+									if (_smc.userlbox.curr_id) {
+										_smc.userlbox.status = true;
+										_smc.userlbox.lifetm = 1000;
+
+										el.popover({
+											html: true,
+											content: data.html,
+											placement: "auto"
+										});
+
+										el.popover("show");
+									}
+								} else {
+									_smc.errorMSG();
+								}
+							});
+						}, 1500);
+					}
+				}
+			}
+
+			_smc.display_settings = function (a = "show") {
+				$('[data-app="display-settings-app"]').modal(a);
+			}
+
+			_smc.user_lbox_rm = function () {
+
+				if (_smc.userlbox.curr_el) {
+					_smc.userlbox.curr_el.popover("dispose");
+				} else {
+					if ($("[data-app='user-info-lbox']").length) {
+						$("div.popover").each(function (index, el) {
+							$(el).popover("dispose");
+						});
+					}
+				}
+
+				_smc.userlbox.curr_id = false;
+				_smc.userlbox.status = false;
+				_smc.userlbox.curr_el = false;
+			}
+
+			_smc.max_upload = function (size = 0) {
+				var max_upload_size = "{%config max_upload_size%}";
+
+				if (size > max_upload_size) {
+					cl_bs_notify("<?php echo cl_translate('The file you selected ({0}) exceeds the maximum file size limit ({1})'); ?>".format(cl_format_bytes(size), cl_format_bytes(max_upload_size)), 5000, "danger");
+
+					return false;
+				}
+
+				else {
+					return true;
+				}
+			}
+
+
+			_smc.post_privacy = function (priv = "everyone", id = false) {
+				if ($.isNumeric(id)) {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/main/post_privacy"); ?>',
+						type: 'POST',
+						dataType: 'json',
+						data: { id: id, priv: priv },
+						beforeSend: function () {
+							_smc.progress_bar("show");
+						}
+					}).done(function (data) {
+						if (data.status == 200) {
+							_smc.spa_reload();
+						}
+						else {
+							_smc.errorMSG();
+						}
+					}).always(function () {
+						setTimeout(function () {
+							_smc.progress_bar("end");
+						}, 1500);
+					});
+				}
+
+				else {
+					return false;
+				}
+			}
+
+			_smc.confirm_action = function (data = {}) {
+				var modal = "<div class='modal fadeIn confirm-actions-modal vh-center' tabindex='-1' data-onclose='remove' role='dialog' aria-hidden='true' data-keyboard='false' data-backdrop='static'><div class='modal-dialog modal-md' role='document'><div class='modal-content'><div class='modal-body'><h4>{0}</h4><p>{1}</p></div><div class='modal-footer'><button id='confirm-actions-confirm' type='button' class='btn btn-custom main-inline md btn-block'>{3}</button><button id='confirm-actions-cancel' type='button' class='btn btn-custom main-outline md btn-block'>{2}</button></div></div></div></div>";
+				var title = data['title'];
+				var message = data['message'];
+				var btn_1 = data['btn_1'];
+				var btn_2 = data['btn_2'];
+				var modal = modal.format(title, message, btn_1, btn_2);
+				var deferred = new $.Deferred();
+
+				_smc.user_lbox_rm();
+
+				$(document).on('click', '#confirm-actions-confirm', function (event) {
+					$(this).attr("disabled", true).text("<?php echo cl_translate('Please wait'); ?>");
+					deferred.resolve();
+				});
+
+				$(document).on('click', '#confirm-actions-cancel', function (event) {
+					deferred.reject();
+				});
+
+				$('div[data-app="black-hole"]').append($(modal)).find('div.confirm-actions-modal').modal('show');
+
+				return deferred.promise();
+			}
+
+			_smc.req_auth = function () {
+				var modal = "<div class='modal fadeIn info-popup-modal' tabindex='-1' data-onclose='remove' role='dialog' aria-hidden='true' data-keyboard='false' data-backdrop='static'><div class='modal-dialog modal-md' role='document'><div class='modal-content'><div class='modal-body'><h4><?php echo cl_translate('This action requires authorization!'); ?></h4><p><?php echo cl_translate('Please log in to your account in order to perform this action, or register if you do not already have an account on -{@site_name@}', array('site_name' => cl_html_el('b', $cl['config']['name']))); ?></p></div><div class='modal-footer'><button data-dismiss='modal' type='button' class='btn btn-block btn-custom main-inline lg'><?php echo cl_translate('Okey!'); ?></button></div></div></div></div>";
+
+				$('div[data-app="black-hole"]').append($(modal)).find('div.info-popup-modal').modal('show');
+			}
+
+			_smc.info = function (title = "", body = "") {
+				var modal = "<div class='modal fadeIn info-popup-modal' tabindex='-1' data-onclose='remove' role='dialog' aria-hidden='true' data-keyboard='false' data-backdrop='static'><div class='modal-dialog modal-md' role='document'><div class='modal-content'><div class='modal-body'><h4>{0}</h4><p>{1}</p></div><div class='modal-footer'><button data-dismiss='modal' type='button' class='btn btn-block btn-custom main-inline md btn-block'><?php echo cl_translate('Okey!'); ?></button></div></div></div></div>";
+				var modal = modal.format(title, body);
+
+				$('div[data-app="black-hole"]').append($(modal)).find('div.info-popup-modal').modal('show');
+			}
+
+			_smc.vote_poll = function (id = false, index = false) {
+				if (_smc.is_logged()) {
+					if ($.isNumeric(id) && $.isNumeric(index)) {
+						var post_poll = $('[data-post-poll="{0}"]'.format(id));
+
+						if (post_poll.length && post_poll.data("status") != 1) {
+							post_poll.data("status", 1);
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/main/vote_poll"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: {
+									id: id,
+									option: index
+								}
+							}).done(function (data) {
+								if (data.status == 200) {
+									for (var i = 0; i < data.poll.options.length; i++) {
+										var poll_option = post_poll.find('[data-poll-option="{0}"]'.format(i));
+										var data_option = data.poll.options[i];
+
+										if (poll_option && poll_option.length) {
+											if (data_option.active != undefined) {
+												poll_option.addClass("active");
+											}
+
+											poll_option.find('b').text("{0}%".format(data_option.percentage));
+											poll_option.find('span').css("width", "{0}%".format(data_option.percentage));
+										}
+									}
+								}
+								else {
+									_smc.errorMSG();
+								}
+							});
+						}
+						else {
+							return false;
+						}
+					}
+				}
+
+				else {
+					_smc.req_auth();
+				}
+			}
+
+			_smc.pub_reply = function (id = false) {
+				if (_smc.is_logged()) {
+					if ($.isNumeric(id) && id) {
+						_smc.vue.pubbox2.post_privacy = false;
+						_smc.vue.pubbox2.thread_id = id;
+
+						$("div#add_new_post_reply").modal('show');
+						
+					}
+				}
+				else {
+					_smc.req_auth();
+				}
+			}
+
+
+			_smc.show_post = function (id = false, type = false) {
+				if ($.isNumeric(id) && id) {
+					if (type == "blocked") {
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("View"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Are you sure you want to see the content of this post? Please note that the owner of the post is on your blacklist."); ?>"
+						});
+					}
+					else if (type == "reported") {
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("View"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("This post has been hidden from you due to your complaint, as it may contain inappropriate content for you. Are you sure you want to see the content of this post?"); ?>"
+						});
+					}
+
+					promise.done(function () {
+						$('[data-softhidden-post="{0}"]'.format(id)).remove();
+						$("div.confirm-actions-modal").modal("hide");
+					});
+
+					promise.fail(function () {
+						$("div.confirm-actions-modal").modal("hide");
+					});
+				}
+			}
+
+			_smc.delete_post = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					if (_smc.is_logged()) {
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Delete"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Please note that if you delete this post, then with the removal of this post all posts related to this thread will also be permanently deleted!"); ?>"
+						});
+
+						promise.done(function () {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/main/delete_post"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: { id: id },
+							}).done(function (data) {
+								if (data.status != 200) {
+									_smc.errorMSG();
+								}
+								else {
+									if (_smc.curr_pn == 'home') {
+										var hp_tl_app = $('div[data-app="homepage"]');
+
+										hp_tl_app.find('div[data-an="entry-list"]').find('div[data-list-item="{0}"]'.format(id)).slideUp(200, function () {
+											$(this).remove();
+
+											if (hp_tl_app.find('div[data-an="entry-list"]').find('div[data-list-item]').length < 1) {
+												$(window).reloadPage(50);
+											}
+										});
+									}
+									else if (_smc.curr_pn == 'profile') {
+										var profile_app = $('div[data-app="profile"]');
+
+										profile_app.find('div[data-an="entry-list"]').find('div[data-list-item="{0}"]'.format(id)).slideUp(200, function () {
+											$(this).remove();
+
+											if (profile_app.find('div[data-an="entry-list"]').find('div[data-list-item]').length < 1) {
+												$(window).reloadPage(50);
+											}
+										});
+									}
+									else if (_smc.curr_pn == 'bookmarks') {
+										var bookmarks_app = $('div[data-app="bookmarks"]');
+
+										bookmarks_app.find('div[data-an="entry-list"]').find('div[data-list-item="{0}"]'.format(id)).slideUp(200, function () {
+											$(this).remove();
+
+											if (bookmarks_app.find('div[data-an="entry-list"]').find('div[data-list-item]').length < 1) {
+												$(window).reloadPage(50);
+											}
+										});
+									}
+									else if (_smc.curr_pn == 'search') {
+										var search_app = $('div[data-app="search"]');
+
+										search_app.find('div[data-an="entry-list"]').find('div[data-list-item="{0}"]'.format(id)).slideUp(200, function () {
+											$(this).remove();
+										});
+									}
+									else {
+										cl_redirect(data.url);
+									}
+								}
+							}).always(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						});
+
+						promise.fail(function () {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+					}
+					else {
+						_smc.req_auth();
+					}
+				}
+			}
+			_smc.delete_account = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					if (_smc.is_logged()) {
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Delete account"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Please note that if you delete this user, then all posts, replies, and all other data associated with this user will also be deleted!"); ?>"
+						});
+
+						promise.done(function () {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/cpanel/delete_user"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: { id: id },
+							}).done(function (data) {
+								if (data.status != 200) {
+									_smc.errorMSG();
+								}
+								else {
+									_smc.go_back();
+								}
+							}).always(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						});
+
+						promise.fail(function () {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+					}
+					else {
+						_smc.req_auth();
+					}
+				}
+			}
+			_smc.suspend_account = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					if (_smc.is_logged()) {
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Suspend account"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Please note that if you delete this user, then all posts, replies, and all other data associated with this user will also be deleted!"); ?>"
+						});
+
+						promise.done(function () {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/cpanel/toggle_user_status"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: { id: id },
+							}).done(function (data) {
+								if (data.status != 200) {
+									_smc.errorMSG();
+								}
+								else {
+									_smc.spa_reload();
+								}
+							}).always(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						});
+
+						promise.fail(function () {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+					}
+					else {
+						_smc.req_auth();
+					}
+				}
+			}
+
+			_smc.unsuspend_account = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/cpanel/toggle_user_status"); ?>',
+						type: 'POST',
+						dataType: 'json',
+						data: { id: id },
+						beforeSend: function () {
+							_smc.progress_bar("start");
+						}
+					}).done(function (data) {
+						if (data.status != 200) {
+							_smc.errorMSG();
+						}
+						else {
+							_smc.spa_reload();
+						}
+					}).always(function () {
+						_smc.progress_bar("end");
+					});
+				}
+			}
+			_smc.logout = function () {
+				var promise = SMColibri.confirm_action({
+					btn_1: "<?php echo cl_translate("Cancel"); ?>",
+					btn_2: "<?php echo cl_translate("Logout"); ?>",
+					title: "<?php echo cl_translate("Leaving already?"); ?>",
+					message: "<?php echo cl_translate("Are you sure that you want to log out from your account?"); ?>"
+				});
+
+				promise.done(function () {
+					cl_redirect("<?php echo cl_link("logout"); ?>");
+				});
+
+				promise.fail(function () {
+					$("div.confirm-actions-modal").modal("hide");
+				});
+			}
+
+			_smc.like_post = function (id = false, event = false) {
+				if (_smc.is_logged()) {
+					if ($.isNumeric(id) && id) {
+						$(event).attr('disabled', 'true');
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/main/like_post"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: { id: id },
+						}).done(function (data) {
+							if (data.status == 200) {
+								if ($(event).hasClass('liked')) {
+									$(event).removeClass('liked');
+
+									$(event).removeClass('liked').addClass('animated bounceIn').promise().done(function () {
+										delay(function () {
+											$(event).removeClass('animated bounceIn');
+										}, 1000);
+									});
+
+									$(event).find('span[data-an="likes-count"]').text(data.likes_count);
+								}
+								else {
+									$(event).addClass('liked').addClass('animated bounceIn').promise().done(function () {
+										delay(function () {
+											$(event).removeClass('animated bounceIn');
+										}, 1000);
+									});
+
+									$(event).find('span[data-an="likes-count"]').text(data.likes_count);
+								}
+							}
+							else {
+								_smc.errorMSG();
+							}
+
+						}).always(function () {
+							$(event).removeAttr('disabled');
+						});
+					}
+				}
+				else {
+					_smc.req_auth();
+				}
+			}
+			_smc.repost = function (id = false, event = false) {
+				if (_smc.is_logged()) {
+					if ($.isNumeric(id) && id) {
+						$(event).attr('disabled', 'true');
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/main/repost"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: { id: id },
+						}).done(function (data) {
+							if (data.status == 200) {
+								if ($(event).hasClass('reposted')) {
+									$(event).removeClass('reposted');
+
+									$(event).removeClass('reposted').addClass('animated bounceIn').promise().done(function () {
+										delay(function () {
+											$(event).removeClass('animated bounceIn');
+										}, 1000);
+									});
+
+									$(event).find('span[data-an="reposts-count"]').text(data.reposts_count);
+
+									if (_smc.curr_pn == 'home' || _smc.curr_pn == 'profile') {
+
+										var timeline_app = ((_smc.curr_pn == 'home') ? $('div[data-app="homepage"]') : $('div[data-app="profile"]'));
+										var orig_post = timeline_app.find('div[data-an="entry-list"]').find('[data-list-item="{0}"]'.format(id));
+										var repost = timeline_app.find('div[data-an="entry-list"]').find('[data-repost="{0}"]'.format(data.repost_id));
+
+										if (repost.length) {
+											repost.slideUp(200, function () {
+												$(this).remove();
+											});
+										}
+
+										if (orig_post.length) {
+											orig_post.find('button[data-an="repost-ctrl"]').removeClass('reposted');
+											orig_post.find('span[data-an="reposts-count"]').text(data.reposts_count);
+											orig_post.find('span[data-an="reposts-count"]').addClass('animated bounceIn').promise().done(function () {
+												delay(function () {
+													$(event).removeClass('animated bounceIn');
+												}, 1000);
+											});
+										}
+									}
+								}
+								else {
+									$(event).addClass('reposted').addClass('animated bounceIn').promise().done(function () {
+										delay(function () {
+											$(event).removeClass('animated bounceIn');
+										}, 1000);
+									});
+
+									$(event).find('span[data-an="reposts-count"]').text(data.reposts_count);
+								}
+							}
+							else {
+								_smc.errorMSG();
+							}
+						}).always(function () {
+							$(event).removeAttr('disabled');
+						});
+					}
+				}
+				else {
+					_smc.req_auth();
+				}
+			}
+
+			_smc.share_post = function (url = false, encoded_url = false) {
+				if (url && encoded_url) {
+					var modal = "<div class='modal fadeIn share-post-modal' data-an='share-post' tabindex='-1' data-onclose='remove' role='dialog' aria-hidden='true' data-keyboard='false' data-backdrop='static'><div class='modal-dialog modal-md' role='document'><div class='modal-content'><div class='modal-header'><div class='modal-header__inner'><h5 class='modal-title'><?php echo cl_translate('Share post'); ?></h5><span class='dismiss-modal' data-dismiss='modal'><?php echo str_replace('"', '\'', cl_icon('close')); ?></span></div></div><div class='modal-body'><div class='social-media-links'><a href='https://twitter.com/intent/tweet?url={0}' target='_blank' class='link-item twitter'><?php echo str_replace('"', '\'', cl_icon('logos/logo-twitter')); ?></a><a href='https://www.facebook.com/sharer.php?u={0}' target='_blank' class='link-item facebook'><?php echo str_replace('"', '\'', cl_icon('logos/logo-facebook')); ?></a><a href='https://www.linkedin.com/shareArticle?mini=true&url={0}' target='_blank' class='link-item linkedin'><?php echo str_replace('"', '\'', cl_icon('logos/logo-linkedin')); ?></a><a href='https://www.pinterest.ru/pin/create/button/?url={0}' target='_blank' class='link-item pinterest'><?php echo str_replace('"', '\'', cl_icon('logos/logo-pinterest')); ?></a><a href='https://www.reddit.com/submit?url={0}' target='_blank' class='link-item reddit'><?php echo str_replace('"', '\'', cl_icon('logos/logo-reddit')); ?></a><a href='https://api.whatsapp.com/send?text={0}' target='_blank' class='link-item whatsapp'><?php echo str_replace('"', '\'', cl_icon('logos/logo-whatsapp')); ?></a><a href='https://telegram.me/share/url?url={0}' target='_blank' class='link-item telegram'><?php echo str_replace('"', '\'', cl_icon('logos/logo-telegram')); ?></a></div><div class='raw-link'><p><?php echo cl_translate('Or copy link'); ?></p><div class='link-input'><input type='text' readonly='true' value='{1}' id='copy-link-input'><button data-clipboard-target='#copy-link-input' data-clipboard-action='copy' class='clip-board-copy copy-link'><?php echo str_replace('"', '\'', cl_icon('content_copy')); ?></button></div></div></div></div></div></div>";
+					var modal = modal.format(encoded_url, url);
+
+					$('body').find('[data-app="black-hole"]').append($(modal)).promise().done(function () {
+						$('body').find('[data-app="black-hole"]').find('[data-an="share-post"]').modal('show');
+					});
+				}
+			}
+
+			_smc.isURL = function (str = "") {
+				var regex = new RegExp("^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$", "i");
+				return regex.test(str);
+			}
+
+			_smc.show_likes = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/main/show_likes"); ?>',
+						type: 'POST',
+						dataType: 'json',
+						data: { id: id },
+					}).done(function (data) {
+						if (data.status == 200) {
+							$('div[data-app="black-hole"]').append($(data.html)).find('div[data-app="post-likes-list"]').modal('show');
+						}
+
+						else if (data.status == 404) {
+							_smc.info("<?php echo cl_translate("No likes yet!"); ?>", "<?php echo cl_translate("This post appears to have no likes yet. To like this post, click {@svg_icon@} below it.", array('svg_icon' => str_replace('"', '\'', cl_icon('sentiment_satisfied')))); ?>");
+						}
+
+						else {
+							_smc.errorMSG();
+						}
+					});
+				}
+			}
+
+
+			_smc.edit_post = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/edit_post/get_data"); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: { id: id },
+					}).done(function (data) {
+						if (data.status == 200) {
+							$('div[data-app="black-hole"]').append($(data.html)).find('div[data-app="post-text-edit"]').modal('show');
+						}
+						else {
+							_smc.errorMSG();
+						}
+					});
+				}
+			}
+			_smc.edit_post_blue = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/edit_post_blue/get_data_blue"); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: { id: id },
+					}).done(function (data) {
+						if (data.status == 200) {
+							$('div[data-app="black-hole"]').append($(data.html)).find('div[data-app="post-text-edit"]').modal('show');
+						}
+						else {
+							_smc.errorMSG();
+						}
+					});
+				}
+			}
+			_smc.edit_post_blue_f = function (id = false) {
+				if ($.isNumeric(id) && id) {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/edit_post_blue/get_data_blue_f"); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: { id: id },
+					}).done(function (data) {
+						if (data.status == 200) {
+							$('div[data-app="black-hole"]').append($(data.html)).find('div[data-app="post-text-edit"]').modal('show');
+						}
+						else {
+							_smc.errorMSG();
+						}
+					});
+				}
+			}
+			_smc.bookmark_post = function (id = false, _self = false) {
+				if (_smc.is_logged()) {
+					if ($.isNumeric(id) && id) {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/main/bookmark_post"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: { id: id, a: 'save' },
+						}).done(function (data) {
+							if (data.status == 200) {
+								if (data.status_code == '1') {
+									cl_bs_notify("<?php echo cl_translate("Post has been bookmarked!"); ?>", 500);
+
+									$(_self).text("<?php echo cl_translate('Unbookmark'); ?>");
+								}
+								else {
+									cl_bs_notify("<?php echo cl_translate("Post has been deleted from bookmarks!"); ?>", 500);
+									$(_self).text("<?php echo cl_translate('Bookmark'); ?>");
+								}
+							}
+							else {
+								_smc.errorMSG();
+							}
+						});
+					}
+				}
+				else {
+					_smc.req_auth();
+				}
+			}
+
+			_smc.load_likes = function (id = false, event = false) {
+				if ($.isNumeric(id) && id) {
+					var _self = $(event);
+					var likes_ls = $('div[data-app="post-likes-list"]');
+					var last_item = likes_ls.find('div[data-list-item]').last();
+
+					if (last_item.length) {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/main/load_likes"); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: { id: id, offset: last_item.data('list-item') },
+							beforeSend: function () {
+								_self.attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+							}
+						}).done(function (data) {
+							if (data.status == 200) {
+								likes_ls.find('div[data-an="users-ls"]').append($(data.html));
+
+								_self.removeAttr('disabled').text("<?php echo cl_translate("Show more"); ?>");
+							}
+							else {
+								_self.text("<?php echo cl_translate("That is all for now!"); ?>");
+							}
+						});
+					}
+				}
+			}
+
+			_smc.follow = function (event = false) {
+				if (event) {
+					if (_smc.is_logged()) {
+						var target = $(event);
+
+						if (target.data('action') == 'unfollow') {
+							var promise = SMColibri.confirm_action({
+								btn_1: "<?php echo cl_translate("Cancel"); ?>",
+								btn_2: "<?php echo cl_translate("Unfollow"); ?>",
+								title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+								message: "<?php echo cl_translate("Please note that, if you unsubscribe then this user's posts will no longer appear in the feed on your main page."); ?>",
+							});
+
+							promise.done(function () {
+								target.data('action', 'follow');
+
+								target.text("<?php echo cl_translate("Follow"); ?>");
+								target.replaceClass('main-inline', 'main-outline');
+
+								$.ajax({
+									url: '<?php echo cl_link("native_api/main/follow"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									data: { id: target.data('id') },
+								}).done(function (data) {
+									if (data.status != 200) {
+										_smc.errorMSG();
+									}
+									else {
+										if (_smc.curr_pn == "profile") {
+											if (data.refresh != undefined) {
+												$(window).reloadPage(1000);
+											}
+										}
+									}
+								}).always(function () {
+									$("div.confirm-actions-modal").modal("hide");
+								});
+
+								cl_bs_notify("<?php echo cl_translate("You unfollowed <b>@{0}</b>"); ?>".format(target.data("user-name")), 1500);
+							});
+
+							promise.fail(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						}
+
+						else {
+							target.data('action', 'unfollow');
+							target.text("<?php echo cl_translate("Following"); ?>");
+							target.replaceClass('main-outline', 'main-inline');
+
+							delay(function () {
+								target.text("<?php echo cl_translate("Unfollow"); ?>");
+							}, 1500);
+
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/main/follow"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: { id: target.data('id') },
+							}).done(function (data) {
+								if (data.status != 200) {
+									_smc.errorMSG();
+								}
+								else {
+									if (_smc.curr_pn == "profile") {
+										if (data.refresh != undefined) {
+											$(window).reloadPage(1000);
+										}
+									}
+								}
+							});
+
+							cl_bs_notify("<?php echo cl_translate("You followed <b>@{0}</b>"); ?>".format(target.data("user-name")), 1500);
+						}
+					}
+					else {
+						_smc.req_auth();
+					}
+				}
+			}
+
+			_smc.req_follow = function (event = false) {
+				if (event) {
+					if (_smc.is_logged()) {
+						var target = $(event);
+
+						if (target.data('action') == 'unfollow') {
+							var promise = SMColibri.confirm_action({
+								btn_1: "<?php echo cl_translate("Cancel"); ?>",
+								btn_2: "<?php echo cl_translate("Unfollow"); ?>",
+								title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+								message: "<?php echo cl_translate("Please note that, if you unsubscribe then this user's posts will no longer appear in the feed on your main page."); ?>",
+							});
+
+							promise.done(function () {
+								target.data('action', 'follow');
+								target.text("<?php echo cl_translate("Follow"); ?>");
+								target.replaceClass('main-inline', 'main-outline');
+
+								$.ajax({
+									url: '<?php echo cl_link("native_api/main/follow"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									data: { id: target.data('id') },
+								}).done(function (data) {
+									if (data.status != 200) {
+										_smc.errorMSG();
+									}
+								}).always(function () {
+									$("div.confirm-actions-modal").modal("hide");
+								});
+
+								cl_bs_notify("<?php echo cl_translate("You unfollowed <b>@{0}</b>"); ?>".format(target.data("user-name")), 1500);
+							});
+
+							promise.fail(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						}
+						else if (target.data('action') == 'cancel') {
+							var promise = SMColibri.confirm_action({
+								btn_1: "<?php echo cl_translate("Cancel"); ?>",
+								btn_2: "<?php echo cl_translate("Cancel request"); ?>",
+								title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+								message: "<?php echo cl_translate("This will cancel your pending request and this user will no longer see it."); ?>",
+							});
+
+							promise.done(function () {
+								target.data('action', 'follow');
+								target.text("<?php echo cl_translate("Follow"); ?>");
+								target.replaceClass('main-inline', 'main-outline');
+
+								$.ajax({
+									url: '<?php echo cl_link("native_api/main/follow"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									data: { id: target.data('id') },
+								}).done(function (data) {
+									if (data.status != 200) {
+										_smc.errorMSG();
+									}
+								}).always(function () {
+									$("div.confirm-actions-modal").modal("hide");
+								});
+
+								cl_bs_notify("<?php echo cl_translate("You unfollowed <b>@{0}</b>"); ?>".format(target.data("user-name")), 1500);
+							});
+
+							promise.fail(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						}
+
+						else {
+							target.data('action', 'cancel');
+							target.text("<?php echo cl_translate("Requested"); ?>");
+							target.replaceClass('main-outline', 'main-inline');
+
+							delay(function () {
+								target.text("<?php echo cl_translate("Pending"); ?>");
+							}, 1500);
+
+							$.ajax({
+								url: '<?php echo cl_link("native_api/main/follow"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: { id: target.data('id') },
+							}).done(function (data) {
+								if (data.status != 200) {
+									_smc.errorMSG();
+								}
+							});
+
+							cl_bs_notify("<?php echo cl_translate("Follow request sent to <b>@{0}</b>"); ?>".format(target.data("user-name")), 1500);
+						}
+					}
+					else {
+						_smc.req_auth();
+					}
+				}
+			}
+
+			_smc.block = function (event = false) {
+				if (event) {
+					if (_smc.is_logged()) {
+						var target = $(event);
+
+						if (target.data('action') == 'block') {
+							var promise = SMColibri.confirm_action({
+								btn_1: "<?php echo cl_translate("Cancel"); ?>",
+								btn_2: "<?php echo cl_translate("Block"); ?>",
+								title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+								message: "<?php echo cl_translate("Blocked users will no longer be able to write a message to you, follow you, or see your profile and publications, etc."); ?>",
+							});
+
+							promise.done(function () {
+								target.data('action', 'unblock');
+								target.text("<?php echo cl_translate("Unblock"); ?>");
+
+								if (target.hasClass('toggle-class')) {
+									target.replaceClass('main-inline', 'main-outline');
+								}
+
+								$.ajax({
+									url: '<?php echo cl_link("native_api/main/block"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									data: { id: target.data('id') },
+								}).done(function (data) {
+									if (data.status != 200) {
+										SMColibri.errorMSG();
+									}
+									else {
+										if (_smc.curr_pn == 'profile') {
+											_smc.spa_reload();
+										}
+									}
+								}).always(function () {
+									$("div.confirm-actions-modal").modal("hide");
+								});
+							});
+
+							promise.fail(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						}
+
+						else if (target.data('action') == 'unblock') {
+							var promise = SMColibri.confirm_action({
+								btn_1: "<?php echo cl_translate("Cancel"); ?>",
+								btn_2: "<?php echo cl_translate("Unblock"); ?>",
+								title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+								message: "<?php echo cl_translate("Are you sure you want to unblock this user? Now they can follow you or see your posts, etc."); ?>",
+							});
+
+							promise.done(function () {
+								target.data('action', 'block');
+								target.text("<?php echo cl_translate("Block"); ?>");
+
+								if (target.hasClass('toggle-class')) {
+									target.replaceClass('main-outline', 'main-inline');
+								}
+
+								$.ajax({
+									url: '<?php echo cl_link("native_api/main/block"); ?>',
+									type: 'POST',
+									dataType: 'json',
+									data: { id: target.data('id') },
+								}).done(function (data) {
+									if (data.status != 200) {
+										SMColibri.errorMSG();
+									}
+									else {
+										if (_smc.curr_pn == 'profile') {
+											$(window).reloadPage();
+										}
+									}
+								}).always(function () {
+									$("div.confirm-actions-modal").modal("hide");
+								});
+							});
+
+							promise.fail(function () {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+						}
+					}
+					else {
+						_smc.req_auth();
+					}
+				}
+			}
+
+			_smc.errorMSG = function () {
+				cl_bs_notify("<?php echo cl_translate("An error occurred while processing your request. Please try again later."); ?>", 3000, "danger");
+			}
+
+			_smc.extend_vue = function (app_name = "", vue_instance = {}) {
+				_smc.vue[app_name] = vue_instance;
+			}
+
+			_smc.progress_bar = function (a = "show") {
+				if (a == "show") {
+					window.waitMe.start();
+				}
+
+				else {
+					window.waitMe.end();
+				}
+			}
+
+			_smc.update_msb_indicators = function () {
+				if (_smc.is_logged()) {
+					var main_left_sb = $('div[data-app="left-sidebar"]');
+					var main_bottom_nb = $('div[data-app="mobile-navbar"]');
+					var timer_id = setInterval(function () {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/main/update_msb_indicators"); ?>',
+							type: 'GET',
+							dataType: 'json',
+						}).done(function (data) {
+							if (data.status == 200) {
+								if (data.notifications > 0) {
+									var notifs_total = data.notifications;
+
+									if (data.notifications > 99) {
+										notifs_total = "99+";
+									}
+
+									main_left_sb.find('[data-an="group-ind"]').addClass("group-ind-active");
+									main_left_sb.find('[data-an="new-notifs"]').text($.trim(notifs_total));
+									main_bottom_nb.find('[data-an="new-notifs"]').text($.trim(notifs_total));
+								}
+								else {
+									main_left_sb.find('[data-an="group-ind"]').removeClass("group-ind-active");
+									main_left_sb.find('[data-an="new-notifs"]').empty();
+									main_bottom_nb.find('[data-an="new-notifs"]').empty();
+								}
+
+								if (data.messages) {
+
+									var messages_total = data.messages;
+
+									if (data.messages > 99) {
+										messages_total = "99+";
+									}
+
+									main_left_sb.find('[data-an="group-ind"]').addClass("group-ind-active");
+									main_left_sb.find('[data-an="new-messages"]').text($.trim(messages_total));
+									main_bottom_nb.find('[data-an="new-messages"]').text($.trim(messages_total));
+								}
+								else {
+									main_left_sb.find('[data-an="group-ind"]').removeClass("group-ind-active");
+									main_left_sb.find('[data-an="new-messages"]').empty();
+									main_bottom_nb.find('[data-an="new-messages"]').empty();
+								}
+							}
+							else {
+								clearInterval(timer_id);
+							}
+						});
+					}, (Number(_smc.msb_upinterval) * 1000));
+				}
+			}
+
+			_smc.hide_sb = function () {
+				$('div[data-app="lsb-back-drop"]').trigger('click');
+			}
+
+			_smc.spa_load = function (url = "", push_state = true, reload = false) {
+
+				if (_smc.curr_url == url && reload == false) {
+					return false;
+				}
+
+				_smc.curr_url = url;
+
+				var timeline = $('[data-el="timeline-container-wrapper"]');
+				var preloader = timeline.find('[data-el="spa-preloader"]');
+				var left_sidebar = $('[data-app="left-sidebar"]');
+				var mobile_navbar = $('[data-app="mobile-navbar"]');
+
+				if (push_state) {
+					window.history.pushState({ state: "new", back_url: url }, "", url);
+				}
+
+				if (window.mobileCheck()) {
+					_smc.hide_sb();
+				}
+
+				$.ajax({
+					url: url,
+					type: 'GET',
+					data: { spa_load: '1' },
+					dataType: 'json',
+					async: true,
+					beforeSend: function () {
+						_smc.user_lbox_rm();
+
+						preloader.removeClass('d-none');
+
+						_smc.toggleSB("hide");
+
+						$(window).scrollTop(0);
+
+						cl_close_all_modals();
+					}
+				}).done(function (data = {}) {
+					if (data.status == 200) {
+						var prevapp = _smc.curr_pn;
+						var json_data = data.json_data;
+						_smc.curr_pn = json_data.pn;
+
+
+						$('head').find('title').text(json_data.page_title);
+
+						if ($('body').hasClass('cl-app-{0}'.format(prevapp))) {
+							$('body').removeClass('cl-app-{0}'.format(prevapp));
+							$('body').addClass('cl-app-{0}'.format(json_data.pn));
+						}
+						else {
+							$('body').addClass('cl-app-{0}'.format(json_data.pn));
+						}
+
+						$('body').attr('data-page-tab', json_data.page_tab);
+
+
+
+						timeline.find('[data-el="timeline-content"]').html($(data.html));
+
+						left_sidebar.find('[data-navitem]').each(function (index, el) {
+							$(el).removeClass('active');
+						}).promise().done(function () {
+
+							if (_smc.curr_pn == "profile") {
+								if (json_data.page_xdata.is_me) {
+									left_sidebar.find('[data-navitem="profile"]').addClass('active');
+								}
+							}
+							else {
+								left_sidebar.find('[data-navitem="{0}"]'.format(_smc.curr_pn)).addClass('active');
+							}
+						});
+
+						mobile_navbar.find('[data-navitem]').each(function (index, el) {
+							$(el).removeClass('active');
+						}).promise().done(function () {
+							mobile_navbar.find('[data-navitem="{0}"]'.format(_smc.curr_pn)).addClass('active');
+						});
+					}
+					else if (data.status == 302) {
+						_smc.spa_load(data.redirect_url);
+					}
+
+					else {
+						_smc.spa_load("<?php echo cl_link('404'); ?>");
+					}
+				}).always(function () {
+					if (_smc.timeout !== false) {
+						clearTimeout(_smc.timeout);
+					}
+
+					_smc.timeout = setTimeout(function () {
+						preloader.addClass('d-none');
+					}, 1000);
+
+					$("div.dropdown-menu.show").each(function (index, el) {
+						$(el).removeClass("show");
+					});
+				});
+			}
+
+			_smc.spa_reload = function () {
+				if (window.location.href != undefined) {
+					_smc.spa_load(window.location.href, false, true);
+				}
+				else {
+					_smc.spa_load(data['url'], false, true);
+				}
+
+				return false;
+			}
+
+			_smc.go_back = function () {
+				history.back();
+			}
+
+			_smc.jump_back = function (step = 1) {
+				history.go(step);
+			}
+
+
+			_smc.ad_conversion = function (e = false) {
+				if (e) {
+					var _self = $(e);
+					var id = _self.data('ad-id');
+					var url = _self.data('ad-url');
+
+					if (_self.data('conversed') == undefined) {
+						$.ajax({
+							url: '<?php echo cl_link("native_api/ads/ad_conversion"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: { id: id },
+						});
+
+						_self.data('conversed', 'true');
+					}
+
+					window.open(url, '_blank');
+				}
+			}
+
+			_smc.report_post = function (id = false) {
+				if (_smc.is_logged()) {
+					if (_smc.vue.report_post != undefined && id) {
+						_smc.vue.report_post.open(id);
+					}
+					else {
+						_smc.errorMSG();
+					}
+				}
+				else {
+					_smc.req_auth();
+				}
+			}
+
+			_smc.update_ilb = function () {
+				$("a.fbox-media").fancybox({
+					arrows: true,
+					openEffect: 'elastic',
+					closeEffect: false,
+					hash: false,
+					i18n: {
+						en: {
+							ERROR: "The requested content could not be loaded. <br/> Please try again later.",
+						}
+					}
+				});
+			}
+			_smc.update_plyr = function () {
+				$("video.plyr").each(function (index, el) {
+					if ($(el).parents("div.plyr__video-wrapper").length == 0) {
+						new Plyr(el, {
+							controls: ["current-time", "progress", "play-large", "play", "fullscreen", "mute"],
+							ratio: "8:6",
+							loadSprite: true,
+							autopause: { enabled: true },
+							muted: false,
+							resetOnEnd: true,
+							invertTime: false,
+							loop: { active: false },
+							iconUrl: "<?php echo cl_link(cl_strf("themes/%s/statics/js/libs/plyr/plyr-code/plyr.svg", $cl["config"]["theme"])); ?>"
+						});
+					}
+				});
+
+				$("audio.plyr").each(function (index, el) {
+					if ($(el).parents("div.plyr__audio-wrapper").length == 0) {
+						new Plyr(el, {
+							controls: ["current-time", "progress", "play", "mute"],
+							autopause: { enabled: true },
+							iconUrl: "<?php echo cl_link(cl_strf("themes/%s/statics/js/libs/plyr/plyr-code/plyr.svg", $cl["config"]["theme"])); ?>"
+						});
+					}
+				});
+			}
+			return _smc;
+		}
+
+		if (window.SMColibri === undefined) {
+			window.SMColibri = _SMColibri();
+		}
+	})(window);
+
+	$(document).ready(function ($) {
+
+		SMColibri.init();
+
+		var clipboard = new ClipboardJS('.clip-board-copy');
+		var page_height = $(document).height();
+
+		clipboard.on('success', function (event) {
+			cl_bs_notify("<?php echo cl_translate("Copied to your clipboard!"); ?>", 500);
+		});
+
+		clipboard.on('error', function (event) {
+			cl_bs_notify("<?php echo cl_translate("Failed to copy to clipboard!"); ?>", 3000);
+		});
+
+		if (navigator.cookieEnabled == false) {
+			$('[data-app="announcement"]').html("<div class='announcement-danger'><?php echo cl_translate('Oops! It looks like you have cookies disabled. For this site to work properly, you need to enable cookies.'); ?></div>");
+		}
+
+		$(document).on('click', 'div[data-app="lsb-back-drop"]', function (event) {
+			event.preventDefault();
+			SMColibri.toggleSB();
+		});
+
+		SMColibri.update_plyr();
+
+		setInterval(function () {
+
+			var new_page_height = $(document).height();
+			var _lozad_ = lozad();
+
+			_lozad_.observe();
+
+			if (page_height != new_page_height) {
+				page_height = new_page_height;
+				SMColibri.fix_sidebars();
+				SMColibri.update_ilb();
+				SMColibri.update_plyr();
+			}
+
+			if ($('video[data-el="colibrism-video"]').length) {
+				$('video[data-el="colibrism-video"]').each(function (index, el) {
+					if ($(el).hasClass('afterglow') != true) {
+						var video_src = $(el).find("source").first().attr("src");
+						$(el).width("100%").height("100%").addClass('afterglow');
+
+						$(el).find("source").remove();
+
+						$(el).append($("<source>", {
+							type: "video/mp4",
+							src: video_src
+						}));
+
+						$(el).append($("<source>", {
+							type: "video/webm",
+							src: video_src
+						}));
+
+						$(el).append($("<source>", {
+							type: "video/mov",
+							src: video_src
+						}));
+
+
+						$(el).append($("<source>", {
+							type: "video/3gp",
+							src: video_src
+						}));
+
+						$(el).append($("<source>", {
+							type: "video/ogg",
+							src: video_src
+						}));
+
+						afterglow.init();
+					}
+				});
+			}
+		}, 500);
+
+		$(document).on('click tap', 'a[data-spa]', function (event) {
+			event.preventDefault();
+
+			var page_url_source = $(this).attr('href');
+
+			SMColibri.spa_load(page_url_source);
+
+			return false;
+		});
+
+		$(window).on("popstate", function () {
+
+			if (history.state) {
+				if ($.isEmptyObject(history.state.back_url) != true) {
+					SMColibri.spa_load(history.state.back_url, false);
+				}
+			}
+
+			return false;
+		});
+		$(document).on('click tap', '[data-href]', function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			window.open($(this).data('href'), '_blank');
+
+			return false;
+		});
+
+		if (window.mobileCheck() != true) {
+			$(document).on('mouseenter', '[data-uinfo-lbox]', function (event) {
+				event.preventDefault();
+
+				var uid = $(this).data("uinfo-lbox");
+
+				SMColibri.user_lbox(uid, $(this));
+			});
+
+			$(document).on('mouseleave', '[data-uinfo-lbox]', function (event) {
+				event.preventDefault();
+
+				if (cl_empty(SMColibri.userlbox.status)) {
+					clearTimeout(SMColibri.userlbox.pre_delay);
+
+					SMColibri.userlbox.pre_delay = false;
+				}
+
+				if (cl_empty(SMColibri.userlbox.interv) != true) {
+					clearInterval(SMColibri.userlbox.interv);
+				}
+
+				SMColibri.userlbox.interv = setInterval(function () {
+					if (SMColibri.userlbox.lifetm !== "pause" && $.isNumeric(SMColibri.userlbox.lifetm)) {
+						if (SMColibri.userlbox.lifetm <= 0) {
+							SMColibri.user_lbox_rm();
+
+							clearInterval(SMColibri.userlbox.interv);
+						}
+						else {
+							SMColibri.userlbox.lifetm -= 100;
+						}
+					}
+				}, 100);
+			});
+
+			$(document).on('mouseenter', "[data-app='user-info-lbox']", function () {
+				SMColibri.userlbox.lifetm = "pause";
+			});
+
+			$(document).on('mouseleave', "[data-app='user-info-lbox']", function () {
+				SMColibri.userlbox.lifetm = 1000;
+			});
+		}
+	});
+</script>
+
+
+<!-- Logo Anime -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+<script>
+	// Wrap every letter in a span
+	var textWrapper = document.querySelector('.ml11 .letters');
+	textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>");
+
+	anime.timeline({
+		loop: true
+	})
+		.add({
+			targets: '.ml11 .line',
+			scaleY: [0, 1],
+			opacity: [0.5, 1],
+			easing: "easeOutExpo",
+			duration: 700
+		})
+		.add({
+			targets: '.ml11 .line',
+			translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
+			easing: "easeOutExpo",
+			duration: 700,
+			delay: 9000
+		}).add({
+			targets: '.ml11 .letter',
+			opacity: [0, 1],
+			easing: "easeOutExpo",
+			duration: 600,
+			offset: '-=775',
+			delay: (el, i) => 34 * (i + 1)
+		}).add({
+			targets: '.ml11',
+			opacity: 0,
+			duration: 1000,
+			easing: "easeOutExpo",
+			delay: 3000
+		});
+</script>
+<!-- Fancyapps -->
+<script type="text/javascript">
+	function showHtmlDiv() {
+		var htmlShow = document.getElementById("html-show");
+		var showHtmlDiv = document.getElementById("btn");
+		var showHtmlDiv = document.getElementById("btn2");
+		if (htmlShow.style.display === "none") {
+			htmlShow.style.display = "block";
+			htmlShow.style.transition = " 0.2s fade-out";
+			btn2.style.display = "flex";
+			btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" class="r-jwli3a r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"><g><path d="M11.59 12L3.54 3.96l1.42-1.42L14.41 12l-9.45 9.46-1.42-1.42L11.59 12zm7 0l-8.05-8.04 1.42-1.42L21.41 12l-9.45 9.46-1.42-1.42L18.59 12z"></path></g></svg>';
+			btn.title = "Hide";
+		} else {
+			htmlShow.style.display = "none";
+			htmlShow.style.transition = "0.2s fade-in";
+			btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" class="r-jwli3a r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"><g><path d="M12.04 2.54l1.42 1.42L5.41 12l8.05 8.04-1.42 1.42L2.59 12l9.45-9.46zm7 0l1.42 1.42L12.41 12l8.05 8.04-1.42 1.42L9.59 12l9.45-9.46z"></path></g></svg>';
+			btn.title = "Show";
+			btn2.style.display = "flex";
+			btn2.style.width = "100%";
+		}
+	};
+</script>
+
+<!-- <script src="{%config theme_url%}/apps/timeline/scripts/js/fancyapps.js"></script> -->
+
+<script>
+	Fancybox.Plugins.Toolbar.defaults.items.rate = {
+		type: "div",
+		class: "fancybox__rate",
+		html: '<span class="hide"><a id="btn" onclick="showHtmlDiv()" data-toggle="tooltip" title="Hide"  data-placement="bottom"><svg viewBox="0 0 24 24" aria-hidden="true" class="r-jwli3a r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"><g><path d="M11.59 12L3.54 3.96l1.42-1.42L14.41 12l-9.45 9.46-1.42-1.42L11.59 12zm7 0l-8.05-8.04 1.42-1.42L21.41 12l-9.45 9.46-1.42-1.42L18.59 12z"></path></g></svg></a></span>',
+		tabindex: -1,
+		position: "right",
+		click: function (event) {
+			event.preventDefault();
+			console.log(`Current slide:`);
+			console.log(this.fancybox.getSlide());
+		},
+	};
+
+	Fancybox.bind('[data-fancybox="gallery"]', {
+		dragToClose: false,
+		click: false,
+		Toolbar: false,
+		Thumbs: false,
+		closeButton: "top",
+
+
+		Toolbar: {
+			display: ["rate"],
+		},
+		Image: {
+			zoom: false,
+
+
+		},
+
+		on: {
+			initLayout: (fancybox) => {
+				// Create elements
+				// ===
+
+				// Create left column
+				const $leftCol = document.createElement("div");
+				$leftCol.classList.add("fancybox__leftCol");
+
+				while (fancybox.$container.firstChild) {
+					$leftCol.appendChild(fancybox.$container.firstChild);
+				}
+
+				// Create right column
+				const $rightCol = document.createElement("div");
+				$rightCol.classList.add("fancybox__rightCol");
+				$rightCol.id = 'html-show';
+				$rightCol.innerHTML =
+					``;
+
+				// Create info-box
+				const $info = document.createElement("div");
+				$rightCol.appendChild($info);
+				fancybox.$info = $info;
+
+				// Create btn
+				const $btn = document.createElement("div");
+				$leftCol.appendChild($btn);
+				fancybox.$btn = $btn;
+
+				// Add elements to DOM
+				fancybox.$container.appendChild(fancybox.$backdrop);
+
+				fancybox.$container.appendChild($leftCol);
+				fancybox.$container.appendChild($rightCol);
+
+				fancybox.$leftCol = $leftCol;
+				fancybox.$rightCol = $rightCol;
+			},
+			"Carousel.ready Carousel.change": (fancybox, carousel, slideIndex) => {
+				// Update info-box
+				// ===
+
+				// Get index of the current gallery item
+				slideIndex =
+					slideIndex === undefined ? carousel.options.initialPage : slideIndex;
+
+				// Get link related to current item
+				const $trigger = fancybox.items[slideIndex].$trigger;
+
+				// Get data from `data-info` attribute
+				const data = $trigger.dataset.info || "";
+
+				// Update info
+				fancybox.$info.innerHTML = `${data}`;
+
+
+
+				// Get data from `data-info` attribute
+
+				const likebtn = $trigger.dataset.btn || "";
+				// Update info
+
+				fancybox.$btn.innerHTML = `${likebtn}`;
+			},
+
+			initCarousel: (fancybox) => {
+				const slide = fancybox.Carousel.slides[fancybox.Carousel.page];
+
+				fancybox.$container.style.setProperty(
+					"--bg-image",
+					`url("${slide.$thumb.src}")`
+				);
+			},
+			"Carousel.change": (fancybox, carousel, to, from) => {
+				const slide = carousel.slides[to];
+
+				fancybox.$container.style.setProperty(
+					"--bg-image",
+					`url("${slide.$thumb.src}")`
+				);
+			},
+		},
+
+
+	});
+</script>
+<!-- End FancyApss -->
+<!-- Audio player -->

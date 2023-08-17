@@ -1,0 +1,36 @@
+<div class="timeline-placeholder" style="padding-top: 10px;">
+	<div class="icon">
+		<div class="icon__bg_img">
+			<?php if ($cl["page_tab"] == 'notifs'): ?>
+				<img src="{%config theme_url%}/statics/img/Mail-bro.png">
+			<?php else: ?>
+				<img src="{%config theme_url%}/statics/img/Mail-bro.png">
+			
+			<?php endif; ?>
+		</div>
+	</div>
+	<div class="pl-message">
+		<?php if ($cl["page_tab"] == 'notifs'): ?>
+			<h4>
+				<?php echo cl_translate("No notifications yet!"); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate("There seems to be you have no notifications yet. All notifications about replies to your posts, likes, etc., will be displayed here."); ?>
+			</p>
+		<?php else: ?>
+			<h4>
+				<?php echo cl_translate("No mentions yet!"); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate("There seems to be no mention of you. All links to you in user publications will be displayed here."); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+	<div class="c2action-single">
+		<a href="<?php echo cl_link('/'); ?>" data-spa="true">
+			<button class="btn btn-custom main-inline lg">
+				<?php echo cl_translate("Go to the homepage"); ?>
+			</button>
+		</a>
+	</div>
+</div>

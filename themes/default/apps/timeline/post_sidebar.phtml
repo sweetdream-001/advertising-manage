@@ -1,0 +1,37 @@
+<?php if (not_empty($cl['li']['me_blocked'])) : ?>
+
+<?php elseif (empty($cl['li']['can_see'])) : ?>
+
+<?php else : ?>
+    <?php if (not_empty($cl['li']['is_repost'])) : ?>
+
+    <?php endif; ?>
+
+    <?php if (not_empty($cl['li']['is_blocked'])) : ?>
+
+    <?php elseif (not_empty($cl['li']['is_reported'])) : ?>
+
+    <?php endif; ?>
+  
+    <?php if ($cl['li']['type'] == 'image' && not_empty($cl['li']['media'])): ?>
+       
+        <a href="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['src'], '')); ?>" class="fbox-media2" data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery" data-info='<?php echo cl_template('timeline/right_col'); ?>'>
+            <img class="lozad" src="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['src'], '')); ?>" style="border-width: 0;" alt="&nbsp;">
+        </a>
+    <?php elseif ($cl['li']['type'] == 'video' && not_empty($cl['li']['media'])) : ?>
+        <a href="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['src'], '')); ?>" data-type="html5video" class="fbox-media2" data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery" data-info='<?php echo cl_template('timeline/right_col'); ?>'>
+            <img class="lozad" src="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['x']['poster_thumb'], '')); ?>" alt="&nbsp;">
+        </a>
+    <?php elseif ($cl['li']['type'] == 'audio' && not_empty($cl['li']['media'])) : ?>
+        <a href="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['src'], '')); ?>" data-type="html5video" data-thumb="{%config theme_url%}/statics/img/audiowave.gif" class="fbox-media2" data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery" data-info='<?php echo cl_template('timeline/right_col'); ?>'>
+            <img class="lozad" src="{%config theme_url%}/statics/img/play.png" alt="&nbsp;">
+        </a>
+        <?php elseif ($cl['li']['type'] == 'gif' && not_empty($cl['li']['media'])) : ?>
+            <a href="<?php echo fetch_or_get($cl['li']['media'][0]['src'], ''); ?>"  class="fbox-media2" data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery" data-info='<?php echo cl_template('timeline/right_col'); ?>'>
+       
+            <img class="lozad" data-src="<?php echo fetch_or_get($cl['li']['media'][0]['src'], ''); ?>"  alt="&nbsp;">
+            
+        </a>
+   
+    <?php endif; ?>
+<?php endif; ?>

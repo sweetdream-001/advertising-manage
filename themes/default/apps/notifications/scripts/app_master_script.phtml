@@ -1,0 +1,118 @@
+<script>
+
+	"use strict";
+
+	$(document).ready(function($) {
+		SMColibri.PS.notifs = new Vue({
+			el: "#vue-notifications-app",
+			data: {
+				selected: {},
+				loading: false,
+				loadmore: true,
+				type: '<?php echo($cl["page_tab"]); ?>',
+				total_notifs: '<?php echo($cl['total_notifs']); ?>'
+			},
+			methods: {
+				load_notifications: function() {
+					var _app_     = this;
+					var notifs_ls = $(_app_.$el).find('[data-an="notifs-list"]');
+				    var offset    = 0;
+
+					if (cl_empty(_app_.loading) && _app_.loadmore) {
+
+			            if (notifs_ls.find('div[data-list-item]').length) {
+			            	offset = notifs_ls.find('div[data-list-item]').last().data('list-item');
+			            }
+
+			            if ($.isNumeric(offset) && offset) {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/notifications/load_more"); ?>',
+								type: 'GET',
+								dataType: 'json',
+								data: {
+									offset: offset,
+									type: _app_.type
+								},
+								beforeSend: function() {
+									_app_.loading = true;
+								}
+							}).done(function(data) {
+								if (data.status == 200) {
+									notifs_ls.append($(data.html));
+								}
+								else{
+									_app_.loadmore = false;
+								}
+							}).always(function() {
+								_app_.loading = false;
+							});
+						}
+		       		}
+				},
+				delete_notif: function(id = false) {
+					var _app_ = this;
+
+					if(id) {
+						var notifs_ls = $(_app_.$el).find('[data-an="notifs-list"]');
+
+						$.ajax({
+							url: '<?php echo cl_link("native_api/notifications/delete"); ?>',
+							type: 'POST',
+							dataType: 'json',
+							data: {id: id},
+						}).done(function(data) {
+							if (data.status == 200) {
+								notifs_ls.find('div[data-list-item="{0}"]'.format(id)).slideUp(150, function() {
+									$(this).remove();
+
+									if (notifs_ls.find('div[data-list-item]').length < 1) {
+										SMColibri.spa_reload(500);
+									}
+								});
+							}
+							else {
+								SMColibri.errorMSG();
+							}
+						}).always(function() {
+							$("div.confirm-actions-modal").modal("hide");
+						});
+					}
+				},
+				delete_all_notifs: function() {
+					var _app_ = this;
+
+					if(_app_.total_notifs) {
+						var promise = SMColibri.confirm_action({
+							btn_1: "<?php echo cl_translate("Cancel"); ?>",
+							btn_2: "<?php echo cl_translate("Delete"); ?>",
+							title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+							message: "<?php echo cl_translate("Are you sure you want to delete all notifications? Please note that this action cannot be undone!"); ?>",
+						});
+
+						promise.done(function() {
+							$.ajax({
+								url: '<?php echo cl_link("native_api/notifications/delete_all"); ?>',
+								type: 'POST',
+								dataType: 'json',
+								data: {type: _app_.type},
+							}).done(function(data) {
+								if (data.status == 200) {
+									SMColibri.spa_reload();
+								}
+								else {
+									SMColibri.errorMSG();
+								}
+							}).always(function() {
+								$("div.confirm-actions-modal").modal("hide");
+							});
+				        });
+
+						promise.fail(function() {
+				            $("div.confirm-actions-modal").modal("hide");
+				        });
+					}
+				}
+			}
+		});
+	});
+</script>

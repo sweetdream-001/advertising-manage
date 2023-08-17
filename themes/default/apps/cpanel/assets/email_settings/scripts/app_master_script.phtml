@@ -1,0 +1,59 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app   = $('[data-app="email-settings"]');
+		var _data1 = _app.find('form[data-an="form1"]');
+		var _data2 = _app.find('form[data-an="form2"]');
+
+		_data1.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/save_settings"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_data1.find('small.invalid-feedback').remove();
+				_data1.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Please wait");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("Your changes have been saved successfully!", 3000);
+				}
+				else {
+					_data1.find('[data-an="{0}-input"]'.format(data.err_field)).append($('<small>', {
+						text: data.message,
+						class: 'invalid-feedback animated flash'
+					})).scroll2();
+				}
+			},
+			complete: function() {
+				_data1.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Save changes");
+			}
+		});
+
+		_data2.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/check_smtp_server"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_data2.find('small.invalid-feedback').remove();
+				_data2.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("Checking SMTP. Please wait...");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("Sending a test message went smoothly. Please check your inbox to make sure the test message reaches you. Sometimes it can be in the spam folder of your inbox.", 10000);
+				}
+				else {
+					if (data.message) {
+						cl_bs_notify(data.message, 3000, "danger");
+					}
+					else{
+						SMC_CPanel.errorMSG();
+					}
+				}
+			},
+			complete: function() {
+				_data2.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("Send test message");
+			}
+		});
+	});
+</script>

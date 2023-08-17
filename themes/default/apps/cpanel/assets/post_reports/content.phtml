@@ -1,0 +1,73 @@
+<div class="cp-app-container" data-app="post-reports">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('Publication reports'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('Publication reports'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="vue-cpanel-post-reports-app">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" data-an="info-content">
+                    <div class="card-header">
+                        <h5>
+                            <?php echo cl_translate('Manage post reports'); ?> - ({{total_reports}})
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="regular-table">
+                            <table class="table table-hover no-mb">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>
+                                            <?php echo cl_translate('Report from'); ?>
+                                        </th>
+                                        <th>
+                                            <?php echo cl_translate('Reason'); ?>
+                                        </th>
+                                        <th>
+                                            <?php echo cl_translate('Date'); ?>
+                                        </th>
+                                        <th>
+                                            <?php echo cl_translate('Status'); ?>
+                                        </th>
+                                        <th>
+                                            <?php echo cl_translate('Action'); ?>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody data-an="reports-list">
+                                    <?php if (not_empty($cl['post_reports'])) : ?>
+                                        <?php foreach ($cl['post_reports'] as $cl['li']) : ?>
+                                            <?php echo cl_template('cpanel/assets/post_reports/includes/list_item'); ?>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <?php echo cl_template('cpanel/assets/post_reports/includes/empty_table'); ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                            <a v-if="show_ctrls" v-bind:class="{'disabled': dis_prev_ctrl}" v-on:click="paginate('up')" href="javascript:void(0);" class="pagination-ctrls prev">
+                                <i class="material-icons">chevron_left</i>
+                            </a>
+                            <a v-if="show_ctrls" v-bind:class="{'disabled': dis_next_ctrl}" v-on:click="paginate('down')" href="javascript:void(0);" class="pagination-ctrls next">
+                                <i class="material-icons">chevron_right</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/post_reports/scripts/app_master_script'); ?>

@@ -1,0 +1,89 @@
+// @*************************************************************************@
+// @ @author JOOJ Team (JOOJ.us)	    									 @
+// @ @author_url 1: https://jooj.us                                          @
+// @ @author_url 2: http://jooj.us/twitter-clone                             @
+// @ @author_email: sales@jooj.us                                            @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 27.07.2020 JOOJ Talk. All rights reserved.                @
+// @*************************************************************************@
+
+div.right-sb-container{
+	div.sidebar__inner{
+		padding: 15px 20px 10px 0px;
+
+		div.main-search-bar-container{
+			form{
+				div.input-holder{
+					input{
+						padding: 0 50px 0 0;
+					}
+				}
+
+				div.search-result-holder{
+					div.search-result-body{
+						ul.result-list{
+							li.htag-list-item{
+								&.user{
+									a{
+										div.user-info{
+										    padding: 0 10px 0 0;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		div.follow-suggestion{
+			div.follow-suggestion__body{
+				div.follow-suggestion__item{	
+					div.flex-cr{
+				 		div.user-info-holder{
+				 			padding: 0 15px 0 0;
+				 		}
+				 	}
+				}
+			}
+		}
+
+		div.topical-posts{
+			div.topical-posts__body{
+				width: 100%;
+				display: block;
+				margin: 20px 0;
+
+				div.topical-posts__item{
+					a.htag{
+						span{
+							margin-left: 0px;
+							margin-right: 10px;
+						}
+					}
+				}
+			}
+		}
+
+		div.main-footer{
+			ul.footer-nav{
+				li.footer-nav-item{
+					margin-right: 0px !important;
+					margin-left: 10px !important;
+				}
+			}
+
+			div.footer-nav-get-apps{
+				a{
+					width: calc(50% - 7.5px);
+					min-width: calc(50% - 7.5px);
+					flex-basis: calc(50% - 7.5px);
+					margin-right: 0px;
+					margin-left: 15px;
+				}
+			}
+		}
+	}
+}

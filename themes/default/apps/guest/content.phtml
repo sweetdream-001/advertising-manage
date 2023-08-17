@@ -1,0 +1,134 @@
+<div class="welcome-page-container" data-app="guest">
+	<div class="welcome-page__inner">
+		<div class="welcome-page__content">
+			<div class="welcome-page__lp">
+				<div class="lp-h" style="background-image: url('<?php echo cl_link('themes/default/statics/img/welcomewp/back.jpg'); ?>');">
+					<div class="welcome-page__lp-inner">
+						<span class="icon-home">
+							<a href="<?php echo cl_link('/'); ?>">
+								<img src="<?php echo cl_get_media('themes/default/statics/img/welcomewp/logo.png'); ?>" alt="Logo">
+							</a>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="welcome-page__rp">
+				<div class="welcome-page__rp-inner">
+					<div class="welcome-page-form">
+						<div class="welcome-page-form__header">
+							<div class="autu-navbar">
+								<div class="autu-navbar__item logo">
+									<div class="logo">
+										<a href="<?php echo cl_link('/'); ?>">
+											<img src="{%config site_logo%}" alt="Logo">
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="welcome-page-form__body">
+							<div class="auth-form">
+								<div class="auth-form-holder">
+									<?php if ($cl["auth_type"] == "login") : ?>
+										<?php echo cl_template('auth/login-home'); ?>
+									<?php elseif ($cl["auth_type"] == "forgot_pass") : ?>
+										<?php echo cl_template('auth/reset_password'); ?>
+									<?php elseif ($cl["auth_type"] == "reset_pass" && not_empty($cl['em_code'])) : ?>
+										<?php echo cl_template('auth/new_password'); ?>
+									<?php else : ?>
+										<?php if ($cl['config']['user_signup'] == "on" || not_empty($cl["invite_code_status"])) : ?>
+											<?php echo cl_template('auth/register'); ?>
+										<?php else : ?>
+											<?php echo cl_template('auth/register_off'); ?>
+										<?php endif; ?>
+									<?php endif; ?>
+								</div>
+							</div>
+						</div>
+						<div class="welcome-page-form__footer">
+							<div class="welcome-footer">
+								<?php echo cl_template('main/footer'); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="close">
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<img src="{%config site_logo%}" alt="Logo" class="logo_login">
+
+			</div>
+			<div class="modal-body">
+				<div class="guest-welcome" style="width:350px;">
+					<div class="login-form">
+						<?php echo cl_template('auth/login-home'); ?>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<!-- Sign Up Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="close">
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<img src="{%config site_logo%}" alt="Logo" class="logo_login">
+
+			</div>
+			<div class="modal-body">
+				<div class="guest-welcome">
+					<div class="login-form">
+						<?php echo cl_template('auth/register'); ?>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<!-- Forgot Modal -->
+<div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="close">
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<img src="{%config site_logo%}" alt="Logo" class="logo_login">
+
+			</div>
+			<div class="modal-body">
+				<div class="guest-welcome">
+					<div class="login-form">
+						<?php echo cl_template('auth/reset_password'); ?>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<style>
+	.modal-body h3.login-home {
+		display: none;
+	}
+	.modal-body h1.login-home {
+		font-size: 32px;
+	}
+	</style>
+
+<?php echo cl_template('auth/scripts/app_master_script'); ?>

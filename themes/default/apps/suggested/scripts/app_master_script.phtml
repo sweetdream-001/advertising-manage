@@ -1,0 +1,38 @@
+<script>
+
+	"use strict";
+
+	jQuery(document).ready(function($) {
+		
+		var _app   = $('div[data-app="suggested"]');
+		var offset = 30;
+
+		_app.find('button[data-an="load-more"]').on('click', function(event) {
+			event.preventDefault();
+			var _self   = $(this);
+
+			$.ajax({
+				url: "<?php echo cl_link("native_api/suggested/load_more"); ?>",
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					offset: offset
+				},
+				beforeSend: function(){
+					_self.attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+					offset += 30;
+				}
+			}).done(function(data) {
+				if (data.status == 200) {
+					_app.find('div[data-an="suggested-list"]').append(data.html);
+
+					_self.removeAttr('disabled').text("<?php echo cl_translate("Show more"); ?>");
+				}
+
+				else {
+					_self.text("<?php echo cl_translate("That is all for now!"); ?>");
+				}
+			});
+		});
+	});
+</script>

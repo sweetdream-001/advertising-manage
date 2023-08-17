@@ -1,0 +1,251 @@
+<div class="timeline-container">
+<div class="timeline-header" data-el="tl-header">
+		<div class="timeline-header__botline">
+			<div class="lp">
+				<div class="nav-link-holder" style="display: flex;justify-content: center;align-items: center;">
+					<span class="go-back" onclick="SMColibri.go_back();">
+						<?php echo cl_ikon('arrow-left'); ?>
+					</span>
+				<a href="<?php echo cl_link("settings/verification"); ?>" data-spa="true">
+					<?php echo cl_translate("Verification"); ?>
+				</a>
+			</div>
+		</div>
+		<div class="cp">
+		
+		</div>
+		<div class="rp">
+		
+		</div>
+	</div>
+</div>
+	<div class="main-profile-settings-container">
+		<div class="profile-settings-nav">
+			<div class="nav-list-itemset-title">
+				<h4>
+					<?php echo cl_translate("Verify my account"); ?>
+				</h4>
+			</div>
+		</div>
+		<div class="profile-settings-content">
+			<div class="settings-form">
+				<form class="form" id="cl-verif-settings-vue-app" v-on:submit="submit_form($event)">
+					<div class="d-block" v-if="verification_status == '0'">
+						<div class="form-group">
+	                        <label>
+	                            <?php echo cl_translate("Full name"); ?>
+	                        </label>
+	                        <input v-model.trim="$v.full_name.$model" name="full_name" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter your full name"); ?>">
+	                        <div class="invalid-main-feedback" v-if="is_valid_full_name">
+	                            {{invalid_feedback_full_name}}
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label>
+	                            <?php echo cl_translate("Message to reviewer"); ?>
+	                            <small v-if="text_message.length" v-bind:class="{'col-red': (text_message.length > 1200)}">({{text_message.length}})</small>
+	                        </label>
+
+	                        <textarea v-model.trim="$v.text_message.$model" name="text_message" rows="2" class="form-control" placeholder="<?php echo cl_translate("Enter message to reviewer"); ?>"></textarea>
+	                        <div class="invalid-main-feedback" v-if="is_valid_text_message">
+	                            {{invalid_feedback_text_message}}
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label>
+	                            <?php echo cl_translate("Video message"); ?>
+	                        </label>
+	                        
+	                        <div class="file-select-zone-wrapper">
+	                            <div class="file-select-zone">
+	                                <button v-on:click="select_video" type="button" class="btn btn-block btn-custom main-inline md">
+	                                    {{selected_file_name}}
+	                                </button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="form-group" v-if="unsuccessful_attempt">
+	                        <div class="invalid-main-feedback">
+	                            <?php echo cl_translate("An error occurred while processing your request. Please try again later."); ?>
+	                        </div>
+	                    </div>
+	                    <div class="form-group" v-else>
+	                        <p class="form-info-label">
+	                            <?php echo cl_translate("Please note that this material will not be published or shared with third parties. We request this information solely to verify the authenticity of your identity in order to further verify your account! To do this, we need you to record a video of no more than 1 minute in length, holding your Passport / ID in your right hand in a clear vision of your face and the data of your document, besides giving your full name and also the user nickname that you use on our website"); ?>
+	                        </p>
+	                    </div>
+	                    <input v-on:change="display_filename($event)" type="file" name="video" class="d-none" accept="video/*" data-an="video-message-input">
+	                    <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'],'none'); ?>" name="hash">
+	                    <div class="form-group no-mb">
+	                    	<button v-if="submitting != true" v-bind:disabled="is_valid_form != true" type="submit" class="btn btn-block btn-custom main-inline md">
+		                        <?php echo cl_translate("Submit request"); ?>
+		                    </button>
+		                    <button v-else disabled="true" type="button" class="btn btn-block btn-custom main-inline md">
+		                        <?php echo cl_translate("Please wait"); ?>
+		                    </button>
+	                    </div>
+	                </div>
+	                <div class="d-block" v-else-if="verification_status == '1'">
+	                	<div class="form-group">
+                            <p class="form-info-label text-center">
+                                <?php echo cl_translate("Your account has been verified, now a blue checkmark will always be displayed next to your name! However, keep in mind that if you change your username, you will lose this icon and you will have to contact us again with a request! Thank you for verifying your account!"); ?>
+                            </p>
+                        </div>
+						<div class="form-group no-mb" style="max-width: 150px; float:right;">
+                            <a class="block-link" href="<?php echo cl_link("settings"); ?>" data-spa="true">
+                            	<button class="btn btn-custom main-inline lg home btn-block">
+	                                <?php echo cl_translate('Okey!'); ?>
+	                            </button>
+                            </a>
+                        </div>
+	                </div>
+	                <div class="d-block" v-else-if="verification_status == '2'">
+	                	<div class="form-group">
+                            <p class="form-info-label text-center">
+                                <?php echo cl_translate("Your request for verification of your account has been successfully received and is under consideration, you will receive a notification as soon as the administration considers your request! Please note that this may take several business days!"); ?>
+                            </p>
+                        </div>
+						<div class="form-group no-mb" style="max-width: 150px; float:right;">
+                        	<a class="block-link" href="<?php echo cl_link("settings"); ?>" data-spa="true">
+	                            <button class="btn btn-block btn-custom main-inline lg">
+	                                <?php echo cl_translate('Okey!'); ?>
+	                            </button>
+	                        </a>
+                        </div>
+	                </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		"use strict";
+
+		$(document).ready(function($) {
+			Vue.use(window.vuelidate.default);
+			var VueValids = window.validators;
+
+			new Vue({
+				el: "#cl-verif-settings-vue-app",
+				data: {
+					verification_status: "<?php echo fetch_or_get($me['verified'], 0); ?>",
+					submitting: false,
+					unsuccessful_attempt: false,
+					invalid_feedback_full_name: "",
+					invalid_feedback_text_message: "",
+					full_name: "<?php echo fetch_or_get($me['name'], ''); ?>",
+					text_message: "",
+					is_file_selected: false,
+					selected_file_name: "<?php echo cl_translate("Please select a video appeal to the reviewer!"); ?>"
+				},
+				computed: {
+					is_valid_full_name: function() {
+						if (this.$v.full_name.required == true && this.$v.full_name.$error) {
+							this.invalid_feedback_full_name = "<?php echo cl_translate("Please enter your full name between 3 and 60 characters long!"); ?>";
+							return true;
+						}
+
+						else {
+							return false;
+						}
+					},
+					is_valid_text_message: function() {
+						if (this.$v.text_message.required == true && this.$v.text_message.$error) {
+							this.invalid_feedback_text_message = "<?php echo cl_translate("Please enter a message for the reviewer, no more than 1200 characters in length!"); ?>";
+							return true;
+						}
+
+						else {
+							return false;
+						}
+					},
+					is_valid_form: function() {
+						if(this.$v.$invalid == true || this.is_file_selected != true) {
+							return false;
+						}
+
+						else {
+							return true;
+						}
+					}
+				},
+				validations: {
+					full_name: {
+						required: VueValids.required,
+						min_length: VueValids.minLength(3),
+						max_length: VueValids.maxLength(60)
+					},
+					text_message: {
+						required: VueValids.required,
+						min_length: VueValids.minLength(1),
+						max_length: VueValids.maxLength(1200)
+					}
+				},
+				methods: {
+					submit_form: function(_self = null) {
+						_self.preventDefault();
+
+						var _app_ = this;
+
+						$(_self.target).ajaxSubmit({
+							url: "<?php echo cl_link("native_api/settings/verify_account"); ?>",
+							type: 'POST',
+							dataType: 'json',
+							beforeSend: function() {
+								_app_.submitting           = true;
+								_app_.unsuccessful_attempt = false;
+							},
+							success: function(data) {
+								if (data.status == 200) {
+									_app_.verification_status = 2;
+								}
+
+								else {
+									_app_.unsuccessful_attempt = true;
+									_app_.submitting = false;
+								}
+							}
+						});
+					},
+					select_video: function() {
+						var _app = $(this.$el);
+						_app.find('[data-an="video-message-input"]').trigger('click');
+					},
+					display_filename: function(e = false) {
+						var _app_ = this;
+
+						if (SMColibri.max_upload(e.target.files[0].size)) {
+							_app_.selected_file_name = e.target.files[0].name;
+							_app_.is_file_selected   = true;
+						}
+						else {
+							$(_app_.$el).find('[data-an="video-message-input"]').val('');
+						}
+					}
+				}
+			});
+		});
+	</script>
+</div>
+<style>
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper {
+		max-width: 970px;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.right-sb-container {
+		display: none;
+	}
+
+	body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+		max-width: 550px;
+	}
+	body main.main-content-container div.main-content-container-inner div.left-sb-container {
+		margin-left: -25px;
+	}
+	.main-profile-settings-container {
+		margin-left: 16px;
+		margin-right: auto;
+		padding: 16px;
+		max-width: 550px;
+	}
+</style>

@@ -1,0 +1,58 @@
+<script>
+	"use strict";
+	
+	$(document).ready(function($) {
+		var _app     = $('div[data-app="chat"]');
+		SMColibri.PS = new Vue({
+			el: "#vue-chats-app",
+			data: {
+				display_chats: true,
+				search_query: ""
+			},
+			methods: {
+				search_chats: function(e) {
+					var _app_ = this;
+
+					if (_app_.search_query.length) {
+						
+						var contacts = _app.find('[data-an="contacts-list"]');
+						var matches  = 0;
+
+						contacts.find('span.user-name-holder').each(function(index, el) {
+							var username = $.trim($(el).text());
+							var regex    = new RegExp(_app_.search_query, 'ig');
+
+							if (username.search(regex) == -1) {
+								$(el).parents('div[data-list-item]').addClass('hidden');
+							}
+							else {
+								$(el).parents('div[data-list-item]').removeClass('hidden');
+
+								matches++;
+							}
+						}).promise().done(function() {
+							if (cl_empty(matches)) {
+								_app_.display_chats = false;
+							}
+							else {
+								_app_.display_chats = true;
+							}
+						});
+					}
+					else {
+						_app_.display_chats = true;
+						$(_app).find('div[data-list-item]').removeClass('hidden');
+					}
+				},
+				cancel_search: function() {
+					var _app_ = this;
+
+					_app_.search_query  = "";
+					_app_.display_chats = true;
+
+					$(_app).find('div[data-list-item]').removeClass('hidden');
+				}
+			}
+		});
+	});
+</script>

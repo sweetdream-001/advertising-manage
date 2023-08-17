@@ -1,0 +1,57 @@
+<div class="timeline-placeholder" style="padding-top:10px;">
+	<div class="icon">
+		<div class="icon__bg_img">
+			<?php if ($cl['page_tab'] == "followers"): ?>
+				<img src="{%config theme_url%}/statics/img/Subscriber-bro.png">
+			<?php elseif($cl['page_tab'] == "follow_requests"): ?>
+				<img src="{%config theme_url%}/statics/img/Subscriber-bro.png">
+			<?php else: ?>
+				<img src="{%config theme_url%}/statics/img/Subscriber-bro.png">
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<div class="pl-message">
+		<?php if ($cl['page_tab'] == "followers"): ?>
+			<h4>
+				<?php echo cl_translate("No followers yet"); ?>
+			</h4>
+			<?php if (not_empty($cl['prof_user']['owner'])): ?>
+				<p>
+					<?php echo cl_translate("You have no followers yet. The list of all people who follow you will be displayed here"); ?>
+				</p>
+			<?php else: ?>
+				<p>
+					<?php echo cl_translate("This user has no followers yet. A list of all the people that follow this user will be displayed here."); ?>
+				</p>
+			<?php endif; ?>
+		<?php elseif($cl['page_tab'] == "follow_requests"): ?>
+			<h4>
+				<?php echo cl_translate("No subscription requests"); ?>
+			</h4>
+			<p>
+				<?php echo cl_translate("You don't have any subscription requests yet. A list of all the people who want to follow you will be displayed here."); ?>
+			</p>
+		<?php else: ?>
+			<h4>
+				<?php echo cl_translate("Not following yet"); ?>
+			</h4>
+			<?php if (not_empty($cl['prof_user']['owner'])): ?>
+				<p>
+					<?php echo cl_translate("You are not following any user yet. The list of all people you follow will be displayed here"); ?>
+				</p>
+			<?php else: ?>
+				<p>
+					<?php echo cl_translate("This user has not followed anyone yet. A list of all the people he follows will be displayed here"); ?>
+				</p>
+			<?php endif; ?>
+		<?php endif; ?>
+	</div>
+	<div class="c2action-single">
+		<a href="<?php echo $cl['prof_user']['url']; ?>" data-spa="true">
+			<button class="btn btn-custom main-inline lg">
+				<?php echo cl_translate("Go back!"); ?>
+			</button>
+		</a>
+	</div>
+</div>

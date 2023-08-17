@@ -1,0 +1,50 @@
+<div class="modal fadeIn" data-app="post-likes-list" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static" data-onclose="remove">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content of-hide">
+			<div class="post-likes-container">
+				<div class="modal-header">
+                    <div class="main---mh--block">
+                        <h5 class="modal-title">
+                            <?php echo cl_translate("People who liked"); ?> (<?php echo($cl['likes_count']); ?>)
+                        </h5>
+                        <span class="dismiss-modal" data-dismiss="modal">
+                            <?php echo cl_ikon('close'); ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <?php if (not_empty($cl['post_likes'])): ?>
+                    	<div class="post-likes-ls" data-an="users-ls">
+							<?php foreach ($cl['post_likes'] as $cl['li']): ?>
+								<?php echo cl_template('timeline/includes/like_li'); ?>
+							<?php endforeach; ?>
+                    	</div>
+                        <?php if (count($cl['post_likes']) == 30): ?>
+                            <div class="load-more">
+                                <button onclick="SMColibri.load_likes('<?php echo($cl['liked_post']); ?>', this);" class="btn btn-custom main-outline lg">
+                                    <?php echo cl_translate("Show more"); ?>
+                                </button>
+                            </div>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="post-likes-ls-empty">
+                            <div class="icon">
+                                <?php echo cl_ikon('thumb-up'); ?>
+                            </div>
+                            <div class="pl-message">
+                                <h4>
+                                    <?php echo cl_translate("No likes yet!"); ?>
+                                </h4>
+                                <p>
+                                    <?php echo cl_translate("This post appears to have no likes yet. To like this post, click {@svg_icon@} below it.",array(
+                                        "svg_icon" => cl_html_el("span", cl_ikon('favourite')),
+                                    )); ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+			</div>
+        </div>
+    </div>
+</div>

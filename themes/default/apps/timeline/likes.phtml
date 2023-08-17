@@ -1,0 +1,283 @@
+<div id="btn2" class="fancybox__bottom">
+    <div class="icons_bottom">
+        <button class="ctrls-item chat">
+            <a href="<?php echo $cl['li']['url']; ?>">
+                <span class="icon">
+                    <?php echo cl_ikon('chat-post'); ?>
+                </span>
+                <span class="num"><?php echo $cl['li']['replys_count']; ?></span>
+            </a>
+        </button>
+        <?php if (empty($cl['li']['has_reposted'])) : ?>
+            <button onclick="SMColibri.repost(<?php echo $cl['li']['id']; ?>, this);" class="ctrls-item repost" data-an="repost-ctrl">
+                <span class="icon">
+                    <?php echo cl_ikon('repost'); ?>
+                </span>
+                <span class="num" data-an="reposts-count">
+                    <?php echo $cl['li']['reposts_count']; ?>
+                </span>
+            </button>
+        <?php else : ?>
+            <button onclick="SMColibri.repost(<?php echo $cl['li']['id']; ?>, this);" class="ctrls-item reposted2" data-an="repost-ctrl">
+                <span class="icon">
+                    <?php echo cl_ikon('repost'); ?>
+                </span>
+                <span class="num" data-an="reposts-count">
+                    <?php echo $cl['li']['reposts_count']; ?>
+                </span>
+            </button>
+        <?php endif; ?>
+        <?php if (empty($cl['li']['has_liked'])) : ?>
+            <button class="ctrls-item likes" onclick="SMColibri.like_post(<?php echo $cl['li']['id']; ?>, this);">
+                <span class="icon">
+                    <?php echo cl_ikon('likes'); ?>
+                </span>
+                <span class="num" data-an="likes-count">
+                    <?php echo $cl['li']['likes_count']; ?>
+                </span>
+            </button>
+        <?php else : ?>
+            <button class="ctrls-item liked" onclick="SMColibri.like_post(<?php echo $cl['li']['id']; ?>, this);">
+                <span class="icon">
+                    <?php echo cl_ikon('liked'); ?>
+                </span>
+                <span class="num" data-an="likes-count">
+                    <?php echo $cl['li']['likes_count']; ?>
+                </span>
+            </button>
+        <?php endif; ?>
+        <button class="ctrls-item chat" onclick="SMColibri.share_post(`<?php echo $cl['li']['url']; ?>`,`<?php echo urlencode($cl['li']['url']); ?>`);">
+            <span class="icon">
+                <?php echo cl_ikon('share'); ?>
+            </span>
+        </button>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+<style>
+    a[data-fancybox] img {
+        cursor: zoom-in;
+    }
+
+    .hide {
+        margin: 10px;
+        backdrop-filter: blur(4px);
+        background-color: var(--carousel-button-bg, transparent);
+        min-width: 36px;
+        min-height: 36px;
+        display: flex;
+        border-radius: 9999px;
+        -moz-box-pack: center;
+        justify-content: center;
+        -moz-box-align: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .hide svg {
+        width: 20px;
+        height: 20px;
+        fill: rgb(255, 255, 255);
+    }
+
+    .fancybox__rightCol .avatar-holder-r {
+        display: flex;
+    }
+
+    .fancybox__rightCol .name {
+        -moz-box-pack: center;
+        justify-content: center;
+        flex-basis: 0px;
+        display: flex;
+        -moz-box-direction: normal;
+        -moz-box-orient: horizontal;
+        flex-direction: column;
+        transform: translateX(-20%) translateY(-50%);
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+
+    .fancybox__rightCol .name .user-name-holder {
+        white-space: nowrap;
+        color: rgb(15, 20, 25);
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .fancybox__rightCol .name .user-name {
+        color: rgb(83, 100, 113);
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .fancybox__rightCol .avatar-holder-r img {
+        width: 48px;
+        height: 48px;
+        border-radius: 9999px;
+        transform: translateX(-50%) translateY(-50%);
+        box-shadow: rgba(0, 0, 0, 0.03) 0px 0px 2px inset;
+        transition-property: background-color, box-shadow;
+        transition-duration: 0.2s;
+        margin-left: 20px;
+        margin-top: 16px;
+        margin-bottom: -10px;
+    }
+
+    .fancybox__bottom {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 48px;
+        background-color: transparent;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        z-index: 9999;
+        align-items: center;
+        color: #fff;
+        margin-bottom: 5px;
+
+    }
+
+    .fancybox__carousel {
+        padding-bottom: 50px;
+    }
+
+    .fancybox__backdrop::after {
+        content: "";
+        position: absolute;
+        width: 10%;
+        height: 10%;
+        filter: blur(4px);
+        left: 50%;
+        top: 50%;
+        transform: scale(11);
+        opacity: 0.6;
+        background-image: var(--bg-image);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    .fancybox__rightCol::-webkit-scrollbar {
+        width: 2em;
+
+    }
+
+    @media (min-width: 1024px) {
+        .fancybox__container {
+            --carousel-button-width: 36px;
+            --carousel-button-height: 36px;
+            --carousel-button-svg-width: 20px;
+            --carousel-button-svg-height: 20px;
+        }
+    }
+
+    .fancybox__leftCol {
+        width: 100%;
+        min-height: 1px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .fancybox__rightCol {
+        width: 20vw;
+        max-width: 350px;
+        height: 100%;
+        padding: 10px;
+        overflow: auto;
+        background: rgba(255, 255, 255);
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-width: 350px;
+        border-left: 1px solid #edeef0;
+        overflow-x: hidden;
+        opacity: var(--fancybox-opacity, 1);
+        padding-left: 15px;
+        padding-top: 20px;
+    }
+
+    .fancybox__container.is-animated[aria-hidden="false"] .fancybox__rightCol {
+        animation: 0.15s ease backwards fancybox-fadeIn;
+    }
+
+    /* Closing */
+    .fancybox__container.is-animated.is-closing .fancybox__rightCol {
+        animation: 0.15s ease both fancybox-fadeOut;
+    }
+
+    .fancybox__container.is-animated.is-closing .fancybox__leftCol {
+
+        overflow: hidden;
+    }
+
+    .fancybox__container {
+
+        --fancybox-bg: rgba(0, 0, 0, 0.9);
+        --fancybox-thumbs-width: 48px;
+        --fancybox-thumbs-ratio: 1;
+
+        --carousel-button-bg: rgb(91 78 76 / 74%);
+
+        --carousel-button-svg-width: 24px;
+        --carousel-button-svg-height: 24px;
+
+        --carousel-button-svg-stroke-width: 2.5;
+        overflow: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .fancybox__nav {
+        --carousel-button-svg-width: 24px;
+        --carousel-button-svg-height: 24px;
+    }
+
+    .fancybox__nav .carousel__button.is-prev {
+        left: 20px;
+    }
+
+    .fancybox__nav .carousel__button.is-next {
+        right: 20px;
+    }
+
+    .carousel__button.is-close {
+        right: auto;
+        top: 20px;
+        left: 20px;
+    }
+
+    .fancybox__slide {
+        padding: 8px 88px;
+    }
+
+    /* Thumbnails */
+    .fancybox__thumbs .carousel__slide {
+        padding: 8px 8px 16px 8px;
+    }
+
+    .is-nav-selected::after {
+        display: none;
+    }
+
+    .fancybox__thumb {
+        border-radius: 6px;
+        opacity: 0.4;
+    }
+
+    .fancybox__thumb:hover,
+    .is-nav-selected .fancybox__thumb {
+        border-radius: 6px;
+        opacity: 1;
+    }
+
+    .is-nav-selected .fancybox__thumb::after {
+        display: none;
+    }
+</style>

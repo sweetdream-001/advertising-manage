@@ -1,0 +1,78 @@
+@media only screen and (max-width: 1024px) {
+	div.acp-main-left-sidebar{
+		position: fixed;
+		top: 0px;
+		bottom: 0px;
+		left: -300px;
+
+		div.admin-info{
+			padding: 20px;
+
+			div.user-info{
+				div.avatar{
+					min-width: 35px;
+	                width: 35px;
+	                height: 35px;
+				}
+
+				div.uname{
+					h5{
+						font-size: 14px;
+						margin-bottom: 10px;
+					}
+
+					div{
+						font-size: 13px;
+					}
+				}
+
+				div.menu-ctrl{
+					display: block;
+				}
+			}
+		}
+
+		div.menu-list-header{
+			font-size: 11px;
+			padding: 10px 20px;
+		}
+
+		ul.menu-list{
+			li.menu-list-item{
+				padding-left: 20px;
+				padding-right: 20px;
+
+				a.menu-list-item-link{
+					height: 20px;
+
+					span.icon{
+						width: 18px;
+                    	height: 18px;
+					}
+
+					span.text{
+						font-size: 12px;
+					}
+				}
+
+				div.submenu-list{
+					a.submenu-list-item{
+						font-size: 12px;
+					}
+				}
+			}
+		}
+
+		div.sb-footer{
+			padding: 15px 20px;
+		}
+	}
+
+	section.content{
+	    padding: 15px 20px;
+
+	    div.main-content-block-ctrl{
+	    	display: block;
+	    }
+	}
+}

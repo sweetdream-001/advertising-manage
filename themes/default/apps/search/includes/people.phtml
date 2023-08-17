@@ -1,0 +1,9 @@
+<div class="timeline-users-container" v-show="(query_result == '1')">
+	<div class="timeline-user-ls" data-an="entry-list">
+		<?php if (not_empty($cl["query_result"])): ?>
+			<?php foreach ($cl["query_result"] as $cl['li']): ?>
+				<?php echo cl_template('search/includes/li/people_li'); ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</div>
+</div>

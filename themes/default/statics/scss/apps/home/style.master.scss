@@ -1,0 +1,809 @@
+// @*************************************************************************@
+// @ Software author: JOOJ Team (JOOJ.us)							 @
+// @ Author_url 1: https://jooj.us                        @
+// @ Author_url 2: http://jooj.us/twitter-clone                       @
+// @ Author E-mail: sales@jooj.us                                    @
+// @*************************************************************************@
+// @ JOOJ Talk - The Ultimate Modern Social Media Sharing Platform           @
+// @ Copyright (c) 2020 - 2022 JOOJ Talk. All rights reserved.               @
+// @*************************************************************************@
+body.cl-app-home {
+    div.homepage {
+        div.homepage__pubbox {
+            border-bottom: 1px solid var(--cl-primary-border-color);
+            padding: var(--cl-primary-offset-size);
+        }
+        div.homepage__swifts {
+            div.swifts-slider {
+                div.swiper {
+                    overflow: hidden;
+                    position: relative;
+                    padding: var(--cl-primary-offset-size);
+                    div.swiper-wrapper {
+                        display: flex;
+                        width: 100%;
+                        div.swiper-slide {
+                            div.swift-item {
+                                display: flex;
+                                flex-direction: column;
+                                flex-wrap: nowrap;
+                                justify-content: center;
+                                align-items: center;
+                                width: 65px;
+                                overflow: hidden;
+                                cursor: pointer;
+                                div.swift-item__body {
+                                    margin-bottom: 5px;
+                                    div.swift-item__avatar {
+                                        width: 65px;
+                                        height: 65px;
+                                        border-radius: 100%;
+                                        border: 2px solid var(--cl-secondary-border-color);
+                                        overflow: hidden;
+                                        img {
+                                            width: 100%;
+                                            height: 100%;
+                                            border-radius: 100%;
+                                            border: 2px solid var(--cl-primary-bg-color);
+                                        }
+                                        @include media-breakpoint-down(xl) {
+                                            width: 55px;
+                                            height: 55px;
+                                        }
+                                    }
+                                    &.create-swift {
+                                        position: relative;
+                                        span.add-ikon {
+                                            position: absolute;
+                                            width: 20px;
+                                            height: 20px;
+                                            background: var(--cl-primary-color);
+                                            border-radius: 10em;
+                                            bottom: 0;
+                                            right: 0;
+                                            line-height: 0;
+                                            svg {
+                                                width: 100%;
+                                                height: 100%;
+                                                fill: #fff;
+                                                stroke-width: 2;
+                                            }
+                                        }
+                                    }
+                                }
+                                div.swift-item__footer {
+                                    max-width: 100%;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    font-size: 12px;
+                                    line-height: 12px;
+                                    white-space: nowrap;
+                                    color: var(--cl-secondary-text-color);
+                                }
+                                &.active {
+                                    div.swift-item__body div.avatar {
+                                        border-color: var(--cl-primary-color);
+                                    }
+                                }
+                                @include media-breakpoint-down(xl) {
+                                    width: 55px;
+                                }
+                            }
+                            &:last-child {
+                                margin-right: 0px !important;
+                            }
+                        }
+                    }
+                }
+                div.swifts-slider__footer {
+                    background: var(--cl-primary-border-color);
+                    height: 8px;
+                    div.swiper-scrollbar {
+                        width: 100%;
+                        height: 8px;
+                        position: relative;
+                        div.swiper-scrollbar-drag {
+                            height: 8px;
+                            background: var(--cl-primary-color);
+                            position: absolute;
+                            top: 0px;
+                            &:active {
+                                cursor: ew-resize;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    div.swift-player {
+        display: none;
+        visibility: hidden;
+        &.show {
+            visibility: visible;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 1000;
+            background: rgba(#000000, 0.9);
+            display: flex;
+            justify-content: center;
+            padding: var(--cl-primary-offset-size);
+            @include media-breakpoint-down(xl) {
+                bottom: 55px;
+                padding: 0px;
+            }
+        }
+        div.swift-player__body {
+            position: relative;
+            div.swift-data {
+                width: 540px;
+                min-width: 300px;
+                max-width: 540px;
+                background: #02020d;
+                height: 100%;
+                position: relative;
+                div.swift-data__header {
+                    position: absolute;
+                    left: 0px;
+                    right: 0px;
+                    top: 0px;
+                    padding: var(--cl-primary-offset-size);
+                    z-index: 100;
+                    background: linear-gradient(180deg, rgba(38, 38, 38, 1) 0%, rgba(38, 38, 38, 0.09) 100%);
+                    padding-bottom: 30px;
+                    div.swift-data__header-topline {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: var(--cl-primary-offset-size);
+                        div.swift-timebar {
+                            flex: 1;
+                            margin-right: 5px;
+                            height: 4px;
+                            background: rgba(255, 255, 255, 0.3);
+                            max-width: 100%;
+                            min-width: 10px;
+                            cursor: pointer;
+                            span {
+                                height: 100%;
+                                display: block;
+                                width: 0px;
+                                background: #ffffff;
+                            }
+                            &:last-child {
+                                margin-right: 0px;
+                            }
+                        }
+                    }
+                    div.swift-data__header-botline {
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: nowrap;
+                        justify-content: space-between;
+                        div.swift-publisher {
+                            width: calc(50% - 15px);
+                            display: flex;
+                            align-items: center;
+                            flex-wrap: nowrap;
+                            div.swift-publisher__avatar {
+                                width: 45px;
+                                height: 45px;
+                                flex-shrink: 0;
+                                overflow: hidden;
+                                border-radius: 100%;
+                                img {
+                                    width: 100%;
+                                }
+                                @include media-breakpoint-down(xl) {
+                                    width: 35px;
+                                    height: 35px;
+                                }
+                            }
+                            div.swift-publisher__username {
+                                flex: 1;
+                                margin-left: var(--cl-primary-offset-size);
+                                a {
+                                    text-decoration: none;
+                                    display: block;
+                                    line-height: 1.2;
+                                    span {
+                                        display: block;
+                                        width: 100%;
+                                        &:first-child {
+                                            font-size: var(--cl-primary-name-size);
+                                            font-weight: 500;
+                                            color: #ffffff;
+                                        }
+                                        &:last-child {
+                                            font-size: 14px;
+                                            color: rgba(#ffffff, 0.8);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        div.swift-controls {
+                            width: calc(50% - 15px);
+                            display: flex;
+                            align-items: center;
+                            flex-wrap: nowrap;
+                            justify-content: flex-end;
+                            button.swift-controls__item {
+                                width: 40px;
+                                height: 40px;
+                                border: none;
+                                background: transparent;
+                                padding: 0px;
+                                margin: 0px;
+                                border-radius: 100%;
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                outline: 0;
+                                cursor: pointer;
+                                line-height: 1;
+                                svg {
+                                    width: 24px;
+                                    height: 24px;
+                                    fill: #ffffff;
+                                }
+                                &.swift-controls__item_pause {
+                                    svg {
+                                        width: 28px;
+                                        height: 28px;
+                                    }
+                                }
+                                &.swift-controls__item_dismiss {
+                                    display: none;
+                                    @include media-breakpoint-down(xl) {
+                                        display: inherit;
+                                    }
+                                }
+                                &:hover,
+                                &:active {
+                                    &.swift-controls__item_delete {
+                                        background: var(--cl-danger-color);
+                                    }
+                                    &.swift-controls__item_pause {
+                                        background: rgba(#ffffff, 0.3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                div.swift-data__body {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    position: relative;
+                    overflow: hidden;
+                    min-height: 300px;
+                    div.swift-media {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
+                        position: relative;
+                        div.swift-media__image {
+                            width: 100%;
+                            overflow: hidden;
+                            img {
+                                width: 100%;
+                                display: block;
+                            }
+                        }
+                        div.swift-media__video {
+                            width: 100%;
+                            overflow: hidden;
+                            video {
+                                display: block;
+                                height: 100%;
+                                width: 100%;
+                                object-fit: cover;
+                            }
+                        }
+                    }
+                }
+                div.swift-data__views {
+                    position: absolute;
+                    left: 0px;
+                    right: 0px;
+                    bottom: 0px;
+                    background: var(--cl-primary-bg-color);
+                    box-shadow: rgba(0, 0, 0, 0.3) 0px -10px 10px 0px;
+                    div.swift-views {
+                        div.swift-views__header {
+                            padding: var(--cl-primary-offset-size);
+                            border-bottom: 1px solid var(--cl-primary-border-color);
+                            line-height: 1;
+                            display: flex;
+                            flex-wrap: nowrap;
+                            justify-content: space-between;
+                            align-items: center;
+                            span.flex-item-left {
+                                font-size: 16px;
+                                text-transform: uppercase;
+                                font-weight: 500;
+                                color: var(--cl-primary-text-color);
+                                max-width: calc(80%);
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                @include media-breakpoint-down(xl) {
+                                    font-size: 13px;
+                                }
+                            }
+                            span.flex-item-right {
+                                padding: 0;
+                                margin: 0;
+                                width: 35px;
+                                height: 35px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                border-radius: 100%;
+                                svg {
+                                    width: 20px;
+                                    height: 20px;
+                                    fill: var(--cl-secondary-text-color);
+                                }
+                                &:hover,
+                                &:active {
+                                    background: var(--cl-secondary-bg-color);
+                                    svg {
+                                        fill: var(--cl-primary-color);
+                                    }
+                                }
+                            }
+                        }
+                        div.swift-views__list {
+                            max-height: 400px;
+                            overflow-x: hidden;
+                            overflow-y: auto;
+                            div.swift-views__list-item {
+                                display: flex;
+                                flex-wrap: nowrap;
+                                align-items: center;
+                                padding: var(--cl-primary-offset-size);
+                                line-height: 1;
+                                border-bottom: 1px solid var(--cl-primary-border-color);
+                                div.avatar {
+                                    width: 45px;
+                                    height: 45px;
+                                    flex-shrink: 0;
+                                    border-radius: 100%;
+                                    overflow: hidden;
+                                    img {
+                                        width: 100%;
+                                    }
+                                    @include media-breakpoint-down(xl) {
+                                        width: 35px;
+                                        height: 35px;
+                                    }
+                                }
+                                div.userdata {
+                                    flex: 1;
+                                    padding-left: var(--cl-primary-offset-size);
+                                    display: flex;
+                                    justify-content: space-between;
+                                    div.username__name {
+                                        span {
+                                            font-size: var(--cl-primary-name-size);
+                                            color: var(--cl-primary-text-color);
+                                            font-weight: 500;
+                                            display: block;
+                                            &:last-child {
+                                                text-transform: lowercase;
+                                                color: var(--cl-secondary-text-color);
+                                                font-weight: normal;
+                                                margin-top: 5px;
+                                                font-size: 15px;
+                                            }
+                                            &:hover,
+                                            &:focus,
+                                            &:active {
+                                                color: var(--cl-primary-link-color);
+                                            }
+                                        }
+                                    }
+                                    div.username__time {
+                                        font-size: 13px;
+                                        color: var(--cl-secondary-text-color);
+                                    }
+                                }
+                                &:hover,
+                                &:active {
+                                    background: var(--cl-event-hover-bg);
+                                }
+                            }
+                        }
+                    }
+                    &+div.swift-data__footer {
+                        display: none;
+                    }
+                }
+                div.swift-data__footer {
+                    position: absolute;
+                    left: 0px;
+                    right: 0px;
+                    bottom: 0px;
+                    background: linear-gradient(0deg, rgba(38, 38, 38, 1) 0%, rgba(38, 38, 38, 0.15) 100%);
+                    div.swift-data__desc {
+                        text-align: center;
+                        font-size: 16px;
+                        line-height: 1.6;
+                        color: #ffffff;
+                        max-height: 250px;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        padding: var(--cl-primary-offset-size);
+                        padding-top: 30px;
+                        text-shadow: 0px 0px 5px rgba(#000000, 0.5);
+                    }
+                    div.swift-data__views-total {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 10px var(--cl-primary-offset-size);
+                        cursor: pointer;
+                        line-height: 1;
+                        span.icon {
+                            width: 22px;
+                            height: 22px;
+                            flex-shrink: 0;
+                            margin-right: 3px;
+                            svg {
+                                width: 100%;
+                                height: 100%;
+                                fill: rgba(#ffffff, 0.8);
+                            }
+                        }
+                        span.text {
+                            color: rgba(#ffffff, 0.8);
+                            font-weight: 500;
+                            font-size: 14px;
+                            text-transform: uppercase;
+                        }
+                        &:hover,
+                        &:active {
+                            span.icon {
+                                svg {
+                                    fill: #ffffff;
+                                }
+                            }
+                            span.text {
+                                color: #ffffff;
+                            }
+                        }
+                    }
+                }
+                @include media-breakpoint-down(xl) {
+                    width: 100%;
+                    max-width: 100%;
+                    min-width: 300px;
+                }
+            }
+            button.swift-player__nav-ctrl {
+                width: 40px;
+                height: 40px;
+                border: none;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 0px;
+                margin: 0px;
+                border-radius: 0;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 100%;
+                outline: 0;
+                cursor: pointer;
+                line-height: 1;
+                transition: all 0.27s ease;
+                position: absolute;
+                top: calc(50% - 20px);
+                &.prev {
+                    left: -65px;
+                }
+                &.next {
+                    right: -65px;
+                }
+                &.pause {
+                    top: calc(50% - 25px);
+                    left: calc(50% - 25px);
+                    width: 50px;
+                    height: 50px;
+                }
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: #ffffff;
+                }
+                &:hover,
+                &:active {
+                    transform: scale(1.2);
+                }
+            }
+        }
+        button.swift-player__close {
+            position: fixed;
+            top: var(--cl-primary-offset-size);
+            right: var(--cl-primary-offset-size);
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            padding: 0px;
+            margin: 0px;
+            border-radius: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            outline: 0;
+            cursor: pointer;
+            line-height: 1;
+            transition: all 0.27s ease;
+            svg {
+                width: 100%;
+                height: 100%;
+                fill: #ffffff;
+            }
+            &:hover,
+            &:active {
+                transform: scale(1.2);
+            }
+            @include media-breakpoint-down(xl) {
+                display: none;
+            }
+        }
+    }
+    div.modal.modal-swift-pubbox {
+        div.modal-body {
+            form.form {
+                div.swift-pubbox {
+                    button.delete-preview {
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        width: 24px;
+                        height: 24px;
+                        cursor: pointer;
+                        background-color: var(--cl-primary-color);
+                        border-radius: 3px;
+                        border: none;
+                        box-shadow: none;
+                        outline: 0;
+                        padding: 3px;
+                        z-index: 1000;
+                        line-height: 1;
+                        &:disabled {
+                            cursor: wait !important;
+                        }
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                            fill: #ffffff;
+                        }
+                        &:hover,
+                        &:active {
+                            svg {
+                                transform: scale(1.2);
+                            }
+                        }
+                    }
+                    div.swift-pubbox__input {
+                        margin-bottom: 20px;
+                        textarea {
+                            display: block;
+                            width: 100%;
+                            min-height: 30px;
+                            padding: 0px;
+                            max-height: 400px;
+                            resize: none;
+                            font-size: 16px;
+                            color: var(--cl-primary-text-color);
+                            line-height: 1;
+                            border: none;
+                            border-radius: 0px;
+                            outline: 0;
+                            background: transparent;
+                            &::placeholder {
+                                color: var(--cl-input-placeholder-color);
+                                font-size: 18px;
+                                font-weight: normal;
+                            }
+                        }
+                    }
+                    div.swift-pubbox__emoticons {
+                        margin-bottom: 20px;
+                        div.pubbox-emoticons {
+                            border: 2px solid var(--cl-primary-border-color);
+                            margin-bottom: 20px;
+                            border-radius: var(--cl-secondary-border-radius);
+                            overflow: hidden;
+                            div.pubbox-emoticons__type-nav {
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: nowrap;
+                                border-bottom: 2px solid var(--cl-primary-border-color);
+                                overflow: hidden;
+                                padding: 0px var(--cl-primary-offset-size);
+                                span.pubbox-emoticons__type-nav-item {
+                                    height: 45px;
+                                    width: 45px;
+                                    min-width: 15px;
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    span.emoji_group_icon {
+                                        font-size: 15px;
+                                        line-height: 15px;
+                                        svg {
+                                            width: 22px;
+                                            height: 22px;
+                                            filter: grayscale(100%);
+                                            opacity: 0.5;
+                                        }
+                                    }
+                                    &.active {
+                                        border-bottom: 3px solid var(--cl-primary-color);
+                                        border-bottom-style: inset;
+                                        span.emoji_group_icon svg {
+                                            filter: unset;
+                                            opacity: 1;
+                                        }
+                                    }
+                                }
+                            }
+                            div.pubbox-emoticons__list {
+                                max-height: 300px;
+                                overflow-x: hidden;
+                                overflow-y: auto;
+                                div.pubbox-emoticons__list-group {
+                                    width: 100%;
+                                    display: block;
+                                    line-height: 20px;
+                                    border-bottom: 1px solid var(--cl-primary-border-color);
+                                    padding: 15px;
+                                    span {
+                                        display: inline-block;
+                                        width: 30px;
+                                        height: 30px;
+                                        font-size: 22px;
+                                        cursor: pointer;
+                                        -webkit-user-select: none;
+                                        -khtml-user-select: none;
+                                        -moz-user-select: -moz-none;
+                                        -o-user-select: none;
+                                        user-select: none;
+                                    }
+                                    &:last-child {
+                                        border-bottom: none;
+                                    }
+                                }
+                                @import "../../snippets/_scrollbar.scss";
+                            }
+                        }
+                    }
+                    div.swift-pubbox__image {
+                        margin-bottom: 20px;
+                        div.pubbox-image {
+                            position: relative;
+                            border-radius: var(--cl-secondary-border-radius);
+                            border: 2px solid var(--cl-primary-border-color);
+                            overflow: hidden;
+                            img {
+                                width: 100%;
+                            }
+                        }
+                    }
+                    div.swift-pubbox__video {
+                        margin-bottom: 20px;
+                        div.pubbox-video {
+                            position: relative;
+                            border-radius: var(--cl-secondary-border-radius);
+                            border: 2px solid var(--cl-primary-border-color);
+                            overflow: hidden;
+                        }
+                    }
+                    div.swift-pubbox__ctrls {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        button.ctrl-item {
+                            background: none;
+                            border: none;
+                            outline: none;
+                            padding: 0px;
+                            margin: 0 3px 0 0;
+                            box-shadow: none;
+                            width: 35px;
+                            height: 35px;
+                            border-radius: 10em;
+                            position: relative;
+                            cursor: pointer;
+                            transition: all 0.10s ease-in-out;
+                            svg {
+                                width: 24px;
+                                height: 24px;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                bottom: 0;
+                                right: 0;
+                                margin: auto;
+                                fill: var(--cl-primary-color);
+                            }
+                            &:hover,
+                            &:active,
+                            &:focus {
+                                &::after {
+                                    width: 35px;
+                                    height: 35px;
+                                    position: absolute;
+                                    left: 0;
+                                    top: 0;
+                                    bottom: 0;
+                                    right: 0;
+                                    background: #0074b01f;
+                                    content: "";
+                                    border-radius: 5em;
+                                }
+                            }
+                            &.text-length {
+                                text-align: center;
+                                border: none;
+                                padding: 0px;
+                                width: auto;
+                                margin-right: 0;
+                                margin-left: auto;
+                                &:hover,
+                                &:active,
+                                &:focus {
+                                    background: transparent;
+                                    &:after {
+                                        display: none;
+                                    }
+                                }
+                                small {
+                                    color: var(--cl-secondary-text-color);
+                                    font-weight: normal;
+                                    font-size: 13px;
+                                    line-height: 1;
+                                    &.len-error {
+                                        color: var(--cl-danger-color);
+                                        font-weight: bold;
+                                    }
+                                }
+                            }
+                            &:disabled {
+                                cursor: not-allowed;
+                                opacity: 0.5;
+                            }
+                        }
+                    }
+                    div.swift-pubbox__publisher {
+                        button {
+                            &:disabled {
+                                cursor: not-allowed;
+                                opacity: 0.5;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

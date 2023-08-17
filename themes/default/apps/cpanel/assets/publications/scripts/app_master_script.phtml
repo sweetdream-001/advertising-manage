@@ -1,0 +1,50 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app = $('[data-app="posts"]');
+
+		_app.find('a[data-an="pagination"]').on('click',function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if ($(this).hasClass('disabled') != true) {
+
+            	var _self      = $(this);
+                var posts_list = _app.find('[data-an="posts-list"]');
+                var dir        = (($(this).data('dir') == 'prev') ? 'up' : 'down');
+                var offset_lt  = posts_list.find('[data-list-item]').first().data('list-item');
+                var offset_gt  = posts_list.find('[data-list-item]').last().data('list-item');
+
+                $.ajax({
+                    url: '<?php echo cl_link("native_api/cpanel/get_posts"); ?>',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        dir: dir, 
+                        offset_lt: offset_lt, 
+                        offset_gt: offset_gt,
+                    },
+                    beforeSend: function() {
+                    	_app.find('a[data-an="pagination"]').removeClass('disabled');
+
+                    	SMC_CPanel.waitme("show");
+                    }
+                }).done(function(data) {
+                    if (data.status == 200) {
+                        posts_list.html(data.html);
+                    }
+                    else{
+                        _self.addClass('disabled');
+                    }
+                }).always(function() {
+                    delay(function() {
+                    	SMC_CPanel.waitme();
+                    }, 1000);
+                });
+            }
+            else {
+                return false;
+            }
+        });		
+	});
+</script>

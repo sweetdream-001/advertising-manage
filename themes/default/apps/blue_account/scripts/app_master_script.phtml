@@ -1,0 +1,77 @@
+<script>
+
+	"use strict";
+
+	$(document).ready(function($) {
+		SMColibri.PS.blue_account = Object({
+			buy: function() {
+				var promise = SMColibri.confirm_action({
+					btn_1: "<?php echo cl_translate("Cancel"); ?>",
+					btn_2: "<?php echo cl_translate("Yes, Upgrade to Blue"); ?>",
+					title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+					message: "<?php echo cl_translate("Please note that after confirmation, funds in the amount of {@price@} will be debited from your wallet. The subscription is valid for 30 days from the date of purchase, that is, until {@end_date@}", array("price" => cl_html_el("strong", cl_money($cl["config"]["blue_account_mprice"])), "end_date" => date("d/m/Y", (time() + (86400 * 31))))); ?>",
+				});
+
+				promise.done(function() {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/settings/upgrade_to_blue"); ?>',
+						type: 'POST',
+						dataType: 'json',
+					}).done(function(data) {
+						if (data.status == 200) {
+							cl_bs_notify("Congratulations, your account has been successfully upgraded to blue user account", 3000, "primary");
+
+							setTimeout(function() {
+								SMColibri.spa_load("blue_features");
+							}, 2500);
+						}
+						else {
+							cl_bs_notify("Your wallet does not have enough funds to pay for a blue subscription. Please replenish your wallet with at least the amount of the blue account and try again", 7000, "danger");
+						}
+					}).always(function() {
+						$("div.confirm-actions-modal").modal("hide");
+					});
+		        });
+
+				promise.fail(function() {
+		            $("div.confirm-actions-modal").modal("hide");
+		        });
+			}
+		});
+		SMColibri.PS.blue_account_year = Object({
+			buy: function() {
+				var promise = SMColibri.confirm_action({
+					btn_1: "<?php echo cl_translate("Cancel"); ?>",
+					btn_2: "<?php echo cl_translate("Yes, Upgrade to Blue"); ?>",
+					title: "<?php echo cl_translate("Please confirm your actions!"); ?>",
+					message: "<?php echo cl_translate("Please note that after confirmation, funds in the amount of {@price@} will be debited from your wallet. The subscription is valid for 30 days from the date of purchase, that is, until {@end_date@}", array("price" => cl_html_el("strong", cl_money($cl["config"]["blue_account_yprice"])), "end_date" => cl_html_el("strong", date("d/m/Y", (time() + (86400 * 365)))))); ?>",
+				});
+
+				promise.done(function() {
+					$.ajax({
+						url: '<?php echo cl_link("native_api/settings/upgrade_to_blue_year"); ?>',
+						type: 'POST',
+						dataType: 'json',
+					}).done(function(data) {
+						if (data.status == 200) {
+							cl_bs_notify("Congratulations, your account has been successfully upgraded to blue user account", 3000, "primary");
+
+							setTimeout(function() {
+								SMColibri.spa_load("blue_features");
+							}, 2500);
+						}
+						else {
+							cl_bs_notify("Your wallet does not have enough funds to pay for a blue subscription. Please replenish your wallet with at least the amount of the blue account and try again", 7000, "danger");
+						}
+					}).always(function() {
+						$("div.confirm-actions-modal").modal("hide");
+					});
+		        });
+
+				promise.fail(function() {
+		            $("div.confirm-actions-modal").modal("hide");
+		        });
+			}
+		});
+	});
+</script>
