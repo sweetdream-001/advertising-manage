@@ -1,0 +1,30 @@
+
+<div v-show="(query_result == '1')" class="timeline-posts-container">
+	<div class="timeline-posts-ls" data-an="entry-list">
+		<?php if (not_empty($cl["query_result"])): ?>
+		<div class="mainCat" style="background: white;padding: 1px;width: 100%;">
+			<?php foreach ($cl["query_result"] as $cl['li']): ?>
+			    <div data-catid="<?php echo $cl['li']['id']?>" class="category" style="width: 100%;margin: 26px;cursor: pointer; margin-bottom: 0px;">
+				    <?php echo $cl['li']['name'] ?>
+				</div>
+			    <div class="subCat-<?php echo $cl['li']['id']?>" style="padding: 1px;width: 100%;margin-left: 20px;display:none;padding-bottom: 0px;">
+				    <?php foreach ($cl['li']['childs'] as $child): ?>
+				        <div class="subcategory" style="width: 100%;margin: 26px;cursor: pointer;"><?php echo $child['name'] ?></div>
+			        <?php endforeach; ?>	    
+			    </div>
+				    
+			<?php endforeach; ?>
+		</div>
+		<?php endif; ?>
+	</div>
+</div>
+
+
+
+<script>
+    $(function(){
+        $(document).on('click', '.category', function(){
+            $('.subCat-'+$(this).data('catid')).toggle();
+        });
+    })
+</script>

@@ -1,3 +1,9 @@
+<!-- Initialize tooltips -->
+<style>
+.tooltip {
+    z-index: 100000000 !important; 
+}
+</style>
 <div class="timeline-pubbox-container">
 	<div class="lp">
 		<div class="avatar">
@@ -541,13 +547,20 @@
 					v-bind:disabled="doc_ctrl != true">
 					<?php echo cl_icon('file_present'); ?>
 				</button>
+				
+				<button type="button" class="ctrl-item" data-toggle="tooltip" data-placement="bottom"
+					title="URL shortner" onclick="window.open('https://cutt.ly/')">
+					<?php echo cl_icon('ads_click'); ?>
+				</button>
+				
 				<div class="flex-item ml-auto">
 					<button v-bind:disabled="valid_form != true || submitting" type="submit"
 						class="btn-custom main-inline md post-pub-btn">
 						<?php echo cl_translate("Publish"); ?>
 					</button>
 				</div>
-				<!-- Document -->
+				<!-- Document -->   
+				
 				
 			</div>
 

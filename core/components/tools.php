@@ -275,12 +275,10 @@ function cl_send_mail($data = array()) {
 
         if ($cl['config']['smtp_or_mail'] == 'mail') {
             $mail->IsMail();
-        } 
-
-        else if ($cl['config']['smtp_or_mail'] == 'smtp') {
+        } else if ($cl['config']['smtp_or_mail'] == 'smtp') {
             $mail->isSMTP();
             $mail->Timeout     = 30;
-            $mail->SMTPDebug   = false;
+            $mail->SMTPDebug   = true;
             $mail->Host        = $cl['config']['smtp_host'];
             $mail->SMTPAuth    = true;
             $mail->Username    = $cl['config']['smtp_username'];

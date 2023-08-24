@@ -324,6 +324,8 @@
 			search: function() {
 				if (this.search_query.length > 2) {
 					var _app_ = this;
+					console.log("_app_");
+					console.log(_app_);
 					delay(function() {
 						$.ajax({
 							url: '<?php echo cl_link("native_api/main/search"); ?>',
@@ -331,7 +333,8 @@
 							dataType: 'json',
 							data: {
 								query: _app_.search_query.replace('#',''),
-								type: _app_.query_type
+								// type: _app_.query_type,
+								type: "general"
 							},
 							beforeSend: function() {
 								_app_.searching = true;

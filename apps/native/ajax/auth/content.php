@@ -365,6 +365,7 @@ else if ($action == 'resetpass') {
                 'message_body'   => cl_template('emails/reset_password')
             ); 
 
+        
             if (cl_send_mail($send_email_data)) {
                 $data['status'] = 200;
             }

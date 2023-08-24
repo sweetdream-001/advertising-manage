@@ -244,6 +244,18 @@
                 <span> <?php echo cl_translate('faq_pages'); ?></span></a>
 
             </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'categories_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/categories_pages'); ?>"><i data-feather="help-circle"></i>
+                <span> <?php echo cl_translate('Categories'); ?></span></a>
+
+            </li>
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'sub_categories_pages') {
+                                                              echo ('active');
+                                                            } ?>" href="<?php echo cl_link('admin_panel/sub_categories_pages'); ?>"><i data-feather="help-circle"></i>
+                <span> <?php echo cl_translate('Sub Categories'); ?></span></a>
+
+            </li>
             <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'terms_pages') {
                                                               echo ('active');
                                                             } ?>" href="<?php echo cl_link('admin_panel/terms_pages'); ?>"><i data-feather="book"></i>

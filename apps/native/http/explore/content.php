@@ -21,6 +21,7 @@ $cl["search_query"] = fetch_or_get($_GET['q'], "");
 $cl["page_tab"]     = fetch_or_get($_GET['tab'], "posts");
 $cl["query_result"] = array();
 
+
 if (not_empty($cl["search_query"])) {
 	$cl["search_query"] = cl_text_secure($cl["search_query"]);
 	$cl["page_title"]   = $cl["search_query"];
@@ -33,6 +34,19 @@ if ($cl["page_tab"] == 'htags') {
 
 else if($cl["page_tab"] == 'people') {
 	$cl["query_result"] = cl_search_people($cl["search_query"], false, 30);
+}
+
+else if($cl["page_tab"] == 'categories') {
+    // echo json_encode(cl_search_people($cl["search_query"], false, 30));die;
+    $data = $db->rawQuery("SELECT * FROM `cl_categories` WHERE `parent_id` IS NULL");
+    
+    foreach($data as $k => $cat){
+        $childs = $db->rawQuery("SELECT * FROM `cl_categories` WHERE `parent_id` = " . $cat['id']);   
+        $data[$k]['childs'] = $childs;
+    }
+    $cl["query_result"]  = $data;
+    // echo json_encode($data);die;
+// 	$cl["query_result"] = cl_search_people($cl["search_query"], false, 30);
 }
 
 else {

@@ -34,6 +34,10 @@
 				search_posts_url: function() {
 					var url = '<?php echo cl_link("explore/posts?q={0}"); ?>';
 					return url.format(this.search_query);
+				},
+				search_categories_url: function() {
+					var url = '<?php echo cl_link("explore/categories?q={0}"); ?>';
+					return url.format(this.search_query);
 				}
 			},
 			methods: {

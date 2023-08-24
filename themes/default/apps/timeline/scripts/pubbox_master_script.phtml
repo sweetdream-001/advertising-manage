@@ -15,9 +15,20 @@
 			SMColibri.extend_vue('pubbox2', pubbox_app_2);
 
 			$(document).on('hidden.bs.modal', 'div#add_new_post', function () {  
+			    console.log('hide now');
 		        pubbox_app_2.thread_id    = 0;
 		        pubbox_app_2.post_privacy = "everyone";
 		    });
+		    
+            $(document).on('shown.bs.modal', 'div#add_new_post', function () {
+              console.log("modal show");
+              console.log($(this));
+              setTimeout(() => {
+                  console.log("afer 3 secs"); 
+                  $('.modal [data-toggle="tooltip"]').tooltip({trigger: 'hover'}); 
+              })
+             
+            });
 		}
 		if ($("form#vue-pubbox-app-3").length) {
 			var pubbox_app_2 = new Vue({
@@ -32,5 +43,32 @@
 		        pubbox_app_2.post_privacy = "everyone";
 		    });
 		}
+		
 	});
+	
+	
+document.addEventListener('DOMContentLoaded', function () {
+  // Get all post list items
+  const postListItems = document.querySelectorAll('.post-list-item');
+  console.log(postListItems);
+
+  // Hide the first three elements and apply initial transform
+  postListItems[0].style.display = 'none';
+  postListItems[1].style.display = 'none';
+  postListItems[2].style.display = 'none';
+  postListItems[0].style.transform = 'translateY(-100%)';
+  postListItems[1].style.transform = 'translateY(-100%)';
+  postListItems[2].style.transform = 'translateY(-100%)';
+
+  setTimeout(() => {
+    [2, 1, 0].forEach((val, i) => {
+      setTimeout(() => {
+        postListItems[val].style.display = 'block'; // Show the element
+        postListItems[val].style.transition = 'transform 0.5s';
+        postListItems[val].style.transform = 'translateY(0)';
+      }, 4000 * i);
+    });
+  }, 3000);
+});
+	
 </script>

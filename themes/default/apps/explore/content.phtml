@@ -89,6 +89,23 @@
 					
 				</a>
 			</div>
+			<div class="timeline-navbar__item">
+				<a v-bind:href="search_categories_url" data-spa="true">
+					<button class="timeline-navbar__item-btn <?php if($cl["page_tab"] == "categories") { echo("active");} ?>">
+						<span class="btn-flex-inner">
+							
+							<span class="text">
+								<?php echo cl_translate("Categories"); ?>
+							</span>
+						</span>
+						
+					</button>
+					<div class="css-1dbjc4n <?php if ($cl['page_tab'] == 'categories') {
+													echo ('active');
+												} ?>"></div>
+					
+				</a>
+			</div>
 		</div>
 
 		<?php if (empty($cl["query_result"]) && empty($cl["search_query"])): ?>

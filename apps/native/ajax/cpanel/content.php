@@ -1474,3 +1474,32 @@ else if ($action == 'save_customcode') {
 		$data['status'] = 200;
 	}
 }
+else if ($action == 'get_categories') {	
+    $data['status']    = 200;
+    $categories = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id IS NULL");
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $data['data']    = $categories;
+}
+else if ($action == 'update_categories') {	
+    $data['status']    = 200;
+    
+    // Read the raw POST data
+    $requestPayload = file_get_contents("php://input");
+    
+    // Convert the JSON payload to a PHP associative array
+    $data = json_decode($requestPayload, true);
+
+    echo var_dump($data['name']);die;
+    
+    
+    $categories = $db->rawQuery("update `cl_categories` set name = "  . $data['name'] . " where id = " . $data['id']);
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $categories = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id IS NULL");
+    $data['data']    = $categories;
+}
