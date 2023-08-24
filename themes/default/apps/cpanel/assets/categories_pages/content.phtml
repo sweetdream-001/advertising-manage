@@ -27,6 +27,7 @@
                 </div>
 
                 <div class="vueCat">
+                    <button type="button" v-on:click="addCategory()" class="btn btn-primary">Add New</button>
                     <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -36,12 +37,15 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <tr v-if="loading">
+                          <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
+                      </tr>
                       <tr v-for="(cat, id) in categories">
                         <td>{{id+1}}</td>
                         <td>{{cat.name}}</td>
                         <td>
                             <a href="Javascript:;"  data-toggle="modal" data-target="#myModal" v-on:click="editCategory(cat)">Edit</a> | 
-                            <a href="Javascript:;">Delete</a>
+                            <a href="Javascript:;" v-on:click="deleteCategory(cat)">Delete</a>
                         </td>
                       </tr>
                     </tbody>
@@ -68,6 +72,36 @@
                               </div>
                           
                               <button type="button" v-on:click="updateCategory()" class="btn btn-primary">Update</button>
+                          </div>
+                    
+                          <!-- Modal footer -->
+                          <!--<div class="modal-footer">-->
+                          <!--  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                          <!--</div>-->
+                    
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- The Modal -->
+                    <div class="modal" id="addCategoryModal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                    
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Add Category</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                    
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                              <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" placeholder="Enter name" id="name" v-model='addObj.name' >
+                              </div>
+                          
+                              <button type="button" v-on:click="addCategoryPost()" class="btn btn-primary">Update</button>
                           </div>
                     
                           <!-- Modal footer -->

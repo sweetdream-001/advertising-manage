@@ -35,16 +35,22 @@
 				el: ".vueCat",
 				data: {
 					submitting: false,
+					loading: true,
 					selectedCategory: '',
+					addObj: {
+					  name: ''  
+					},
 					categories: []
 				},
 				methods: {
 				    getCategories(){
+				        
 				        let that = this;
 				        $.get('https://p-tweets.com/talk/native_api/cpanel/get_categories', function(data) {
                           // Handle the response data here
                           console.log(data);
                           that.categories = data.data;
+                          that.loading = false;
                           console.log(that.categories);
                         })
                         .fail(function(error) {
@@ -53,6 +59,8 @@
                         });
 				    },
 				    editCategory(cat){
+				        // $('#myModal').modal("show");
+				        // $(".modal-backdrop").show()
 				        this.selectedCategory = cat;
 				        console.log(cat);
 				    },
@@ -60,6 +68,7 @@
 				        console.log("=====");
 				        console.log(this.selectedCategory);
 				        let that = this;
+				        that.loading = true;
 				        $.ajax({
                           url: 'https://p-tweets.com/talk/native_api/cpanel/update_categories',
                           method: 'POST',
@@ -67,16 +76,67 @@
                           data: JSON.stringify(this.selectedCategory),
                           success: function(data) {
                             // Handle the response data here
-                            that.categories = data.data;
-                            $('#myModal').modal('hide')
+                            // that.categories = data.data;
+                            // $('#myModal').modal('hide');
+                            // $(".modal-backdrop").hide()
+                            that.loading = false;
                           },
                           error: function(xhr, status, error) {
                             // Handle the error here
-                            console.error('Error:', error);
+                            console.error(error);
                           }
                         });
-
-				        
+				    },
+				    deleteCategory(cat){
+				        let confirm = window.confirm("are you sure you want to remove this category?");
+				        if(confirm){
+				            let that = this;
+    				        that.loading = true;
+    				        $.ajax({
+                              url: 'https://p-tweets.com/talk/native_api/cpanel/delete_categories',
+                              method: 'POST',
+                              contentType: 'application/json',
+                              data: JSON.stringify(cat),
+                              success: function(data) {
+                                // Handle the response data here
+                                // that.categories = data.data;
+                                // $('#myModal').modal('hide');
+                                // $(".modal-backdrop").hide()
+                                that.loading = false;
+                                that.getCategories();
+                              },
+                              error: function(xhr, status, error) {
+                                // Handle the error here
+                                console.error(error);
+                              }
+                            });
+				        }
+				    },
+				    addCategoryPost(){
+				        console.log(this.addObj);
+				        let that = this;
+				        that.loading = true;
+				        $.ajax({
+                          url: 'https://p-tweets.com/talk/native_api/cpanel/add_categories',
+                          method: 'POST',
+                          contentType: 'application/json',
+                          data: JSON.stringify(this.addObj),
+                          success: function(data) {
+                            // Handle the response data here
+                            // that.categories = data.data;
+                            // $('#myModal').modal('hide');
+                            // $(".modal-backdrop").hide()
+                            that.loading = false;
+                            that.getCategories();
+                          },
+                          error: function(xhr, status, error) {
+                            // Handle the error here
+                            console.error(error);
+                          }
+                        });
+				    },
+				    addCategory(){
+				        $('#addCategoryModal').modal('show');
 				    }
 				},
 				mounted: function () {
