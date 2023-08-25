@@ -67,7 +67,7 @@
 							<?php echo cl_translate('Following'); ?>
 						</span>
 					</a>
-				<?php else: ?>
+				<?php else: ?>e
 					<b data-an="total-following">
 						<?php echo cl_number($me['following']); ?>
 					</b>
@@ -120,6 +120,16 @@
 					<span class="nav-item-holder">
 						<a href="<?php echo cl_link("explore"); ?>">
 							<?php echo cl_translate('search'); ?>
+						</a>
+					</span>
+				</li>
+				<li data-navitem="explore" class="sidebar-v-nav-item">
+					<span class="icon">
+						<?php echo cl_ikon('explore'); ?>
+					</span>
+					<span class="nav-item-holder">
+						<a href="<?php echo cl_link("explore"); ?>">
+							<?php echo cl_translate('Categories'); ?>
 						</a>
 					</span>
 				</li>
