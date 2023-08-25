@@ -351,7 +351,10 @@ var pubbox_form_app_mixin = Object({
 
 			var form  = $(_self.$el);
 			var _app_ = this;
-
+            if(!$('.categorySelect').val()){
+                window.confirm("Please select category");
+                return;
+            }
 			$(_self.target).ajaxSubmit({
 				url: "<?php echo cl_link("native_api/main/publish_new_post"); ?>",
 				type: 'POST',
@@ -362,7 +365,8 @@ var pubbox_form_app_mixin = Object({
 					curr_pn: SMColibri.curr_pn,
 					og_data: _app_.og_data,
 					privacy: _app_.post_privacy,
-					poll_data: _app_.poll
+					poll_data: _app_.poll,
+					cat_id: $('.categorySelect').val()
 				},
 				beforeSend: function() {
 					_app_.submitting = true;

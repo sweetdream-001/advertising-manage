@@ -72,6 +72,11 @@
 			<div class="input-holder">
 				<textarea ref="text_input" v-on:input.trim="text_input_trigger" v-on:blur="text_blur_trigger"
 					class="autoresize" v-model="text" name="post_text" v-bind:placeholder="text_ph"></textarea>
+					<div>
+                      <select id="categorySelect" class="categorySelect" style="padding: 10px;">
+                        <option value="">Select category...</option>
+                      </select>
+                    </div>
 			</div>
 			<div class="input-autocomplete" v-if="hashtags.tags.length">
 				<div class="input-autocomplete__hashtags">

@@ -83,7 +83,7 @@
 				        let that = this;
 				        that.loading = true;
 				        $.ajax({
-                          url: 'https://p-tweets.com/talk/native_api/cpanel/update_categories',
+                          url: 'https://p-tweets.com/talk/native_api/cpanel/update_sub_categories',
                           method: 'POST',
                           contentType: 'application/json',
                           data: JSON.stringify(this.selectedCategory),
@@ -93,6 +93,7 @@
                             // $('#myModal').modal('hide');
                             // $(".modal-backdrop").hide()
                             that.loading = false;
+                            that.getSubCategories();
                           },
                           error: function(xhr, status, error) {
                             // Handle the error here
@@ -116,7 +117,7 @@
                                 // $('#myModal').modal('hide');
                                 // $(".modal-backdrop").hide()
                                 that.loading = false;
-                                that.getCategories();
+                                that.getSubCategories();
                               },
                               error: function(xhr, status, error) {
                                 // Handle the error here
@@ -130,7 +131,7 @@
 				        let that = this;
 				        that.loading = true;
 				        $.ajax({
-                          url: 'https://p-tweets.com/talk/native_api/cpanel/add_categories',
+                          url: 'https://p-tweets.com/talk/native_api/cpanel/add_sub_categories',
                           method: 'POST',
                           contentType: 'application/json',
                           data: JSON.stringify(this.addObj),
@@ -140,7 +141,7 @@
                             // $('#myModal').modal('hide');
                             // $(".modal-backdrop").hide()
                             that.loading = false;
-                            that.getCategories();
+                            that.getSubCategories();
                           },
                           error: function(xhr, status, error) {
                             // Handle the error here

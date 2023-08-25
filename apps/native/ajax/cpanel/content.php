@@ -1474,6 +1474,23 @@ else if ($action == 'save_customcode') {
 		$data['status'] = 200;
 	}
 }
+else if ($action == 'get_all_categories') {	
+    $data['status']    = 200;
+    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL;");
+
+    $flattenedData = [];
+    
+    foreach ($categories as $k => $cat) {
+        $flattenedData[] = $cat; // Add main category
+        $subcategories = $db->rawQuery("SELECT * FROM `cl_categories` WHERE parent_id = " . $cat['id']);
+        foreach ($subcategories as $subcategory) {
+            $flattenedData[] = $subcategory; // Add subcategory
+        }
+    }
+    
+    $data['data'] = $flattenedData;
+    
+}
 else if ($action == 'get_categories') {	
     $data['status']    = 200;
     $categories = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id IS NULL");
@@ -1496,6 +1513,27 @@ else if ($action == 'update_categories') {
     
     
      $db->rawQuery("update `cl_categories` set name = '"  . $data['name'] . "' where id = " . $data['id']);
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $categories = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id IS NULL");
+    $data['data']    = $categories;
+}
+else if ($action == 'update_sub_categories') {	
+    $data['status']    = 200;
+    
+    // Read the raw POST data
+    $requestPayload = file_get_contents("php://input");
+    
+    // Convert the JSON payload to a PHP associative array
+    $data = json_decode($requestPayload, true);
+
+    // echo var_dump($data['name']);die;
+    
+    
+     $db->rawQuery("update `cl_categories` set name = '"  . $data['name'] . "' where id = " . $data['id']);
+     $db->rawQuery("UPDATE cl_categories SET name = '"  . $data['name'] . "', parent_id = '"  . $data['parent_id'] . "' WHERE id = ". $data['id']);
     // foreach($categories as $k => $cat){
     //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
     // }
@@ -1535,6 +1573,25 @@ else if ($action == 'add_categories') {
     
     
      $db->rawQuery("INSERT INTO `cl_categories` (`id`, `name`, `enabled`, `parent_id`, `created_at`, `updated_at`) VALUES (NULL, '".$data['name']."', '1', NULL, NULL, NULL);");
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $data['data']    = [];
+}
+else if ($action == 'add_sub_categories') {	
+    $data['status']    = 200;
+    
+    // Read the raw POST data
+    $requestPayload = file_get_contents("php://input");
+    
+    // Convert the JSON payload to a PHP associative array
+    $data = json_decode($requestPayload, true);
+
+    // echo var_dump($data['name']);die;
+    
+    
+     $db->rawQuery("INSERT INTO `cl_categories` (`id`, `name`, `enabled`, `parent_id`, `created_at`, `updated_at`) VALUES (NULL, '".$data['name']."', '1', '".$data['parent_id']."', NULL, NULL);");
     // foreach($categories as $k => $cat){
     //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
     // }

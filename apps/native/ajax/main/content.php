@@ -627,6 +627,7 @@ else if ($action == 'publish_new_post') {
         $poll_data        = fetch_or_get($_POST['poll_data'], array());
         $thread_id        = fetch_or_get($_POST['thread_id'], 0);
         $post_privacy     = fetch_or_get($_POST['privacy'], "everyone");
+        $category_id     = fetch_or_get($_POST['cat_id'], "");
         $post_text        = cl_croptxt($post_text, $max_post_length);
         $thread_data      = array();
 
@@ -658,7 +659,8 @@ else if ($action == 'publish_new_post') {
                 "thread_id" => $thread_id,
                 "time"      => time(),
                 "priv_wcs"  => $me["profile_privacy"],
-                "priv_wcr"  => $post_privacy
+                "priv_wcr"  => $post_privacy,
+                "category_id" => $category_id
             ));
 
             if (empty($thread_id)) {
@@ -717,7 +719,8 @@ else if ($action == 'publish_new_post') {
                     "thread_id" => $thread_id,
                     "time"      => time(),
                     "priv_wcs"  => $me["profile_privacy"],
-                    "priv_wcr"  => $post_privacy
+                    "priv_wcr"  => $post_privacy,
+                    "category_id" => $category_id
                 );
 
                 if(not_empty($post_text) && not_empty($poll_data) && cl_is_valid_poll($poll_data)) {

@@ -74,8 +74,8 @@
                               </div>
                               <div class="form-group">
                                 <label for="name">Parent Category:</label>
-                                <select class="form-control" v-if="parent_categories">
-                                
+                                <select class="form-control" v-if="parent_categories"  v-model='selectedCategory.parent_id'>
+                                    <option v-for="c in parent_categories" :value="c.id">{{c.name}}</option>
                                 </select>
                               </div>
                           
@@ -108,7 +108,12 @@
                                 <label for="name">Name:</label>
                                 <input type="text" class="form-control" placeholder="Enter name" id="name" v-model='addObj.name' >
                               </div>
-                          
+                              <div class="form-group">
+                                <label for="name">Parent Category:</label>
+                                <select class="form-control" v-if="parent_categories"  v-model='addObj.parent_id'>
+                                    <option v-for="c in parent_categories" :value="c.id">{{c.name}}</option>
+                                </select>
+                              </div>
                               <button type="button" v-on:click="addCategoryPost()" class="btn btn-primary">Update</button>
                           </div>
                     
