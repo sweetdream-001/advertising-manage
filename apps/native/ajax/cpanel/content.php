@@ -1541,3 +1541,12 @@ else if ($action == 'add_categories') {
     
     $data['data']    = [];
 }
+else if ($action == 'get_sub_categories') {	
+    $data['status']    = 200;
+    $categories = $db->rawQuery("SELECT a.*, (SELECT name FROM cl_categories b WHERE b.id = a.parent_id) as parent_name FROM cl_categories as a WHERE parent_id IS NOT NULL;");
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $data['data']    = $categories;
+}
