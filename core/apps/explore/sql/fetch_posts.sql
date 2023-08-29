@@ -41,7 +41,8 @@ SELECT * FROM `<?php echo($data['t_pubs']); ?>`
 		AND (`id` NOT IN (SELECT `post_id` FROM `<?php echo($data['t_reports']); ?>` WHERE `user_id` = <?php echo($data['user_id']); ?>))
 	<?php endif; ?>
 
-	ORDER BY `likes_count` DESC, `replys_count` DESC, `reposts_count` DESC
+    ORDER BY `id` DESC
+-- 	ORDER BY `likes_count` DESC, `replys_count` DESC, `reposts_count` DESC
 
 <?php if(is_posnum($data['limit'])): ?>
 	LIMIT <?php echo($data['limit']); ?>
