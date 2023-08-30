@@ -10,7 +10,9 @@
 @*************************************************************************@
 */
 
-SELECT * FROM `<?php echo($data['t_pubs']); ?>` 
+SELECT `<?php echo($data['t_pubs']); ?>`.*, cl_categories.name as cat_name FROM `<?php echo($data['t_pubs']); ?>` 
+
+left join cl_categories on cl_publications.category_id = cl_categories.id
 
 	WHERE `status` = "active"
 
@@ -38,10 +40,10 @@ SELECT * FROM `<?php echo($data['t_pubs']); ?>`
 
 		AND `user_id` NOT IN (SELECT b2.`user_id` FROM `<?php echo($data['t_blocks']); ?>` b2 WHERE b2.`profile_id` = <?php echo($data['user_id']); ?>)
 
-		AND (`id` NOT IN (SELECT `post_id` FROM `<?php echo($data['t_reports']); ?>` WHERE `user_id` = <?php echo($data['user_id']); ?>))
+		AND (`<?php echo($data['t_pubs']); ?>`.`id` NOT IN (SELECT `post_id` FROM `<?php echo($data['t_reports']); ?>` WHERE `user_id` = <?php echo($data['user_id']); ?>))
 	<?php endif; ?>
 
-    ORDER BY `id` DESC
+    ORDER BY `<?php echo($data['t_pubs']); ?>`.`id` DESC
 -- 	ORDER BY `likes_count` DESC, `replys_count` DESC, `reposts_count` DESC
 
 <?php if(is_posnum($data['limit'])): ?>

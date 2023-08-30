@@ -25,6 +25,7 @@ else {
 	$cl["sbl"]        = true;
 	$cl["feed"]       = cl_get_guest_feed(false, 30);
 	$cl["search_query"] = fetch_or_get($_GET['q'], "");
+// 	echo var_dump(fetch_or_get($_GET['tab'], "posts"));die;
 $cl["page_tab"]     = fetch_or_get($_GET['tab'], "posts");
 $cl["query_result"] = array();
 
@@ -43,7 +44,9 @@ else if($cl["page_tab"] == 'people') {
 }
 
 else {
+    
 	$cl["query_result"] = cl_search_posts($cl["search_query"], false, 30);
+// 	echo json_encode($cl["query_result"]);die;
 }
 	$cl["http_res"]   = cl_template("feed/content");
 }

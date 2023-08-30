@@ -87,7 +87,7 @@ function cl_search_people($keyword = "", $offset = false, $limit = 10) {
 
 function cl_search_posts($keyword = "", $offset = false, $limit = 10) {
 	global $db,$cl,$me;
-
+// echo 1;die;
 	$user_id        = ((not_empty($cl['is_logged'])) ? $me['id'] : false);
 	$data           = array();
     $htag           = ((not_empty($keyword)) ? cl_get_htag_id($keyword) : false);

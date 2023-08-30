@@ -19,6 +19,7 @@ function cl_get_guest_feed($offset = false, $limit = 10) {
 		"limit"  => $limit
  	));
 
+    
 	$query_res = $db->rawQuery($sql);
     $counter   = 0;
 
@@ -58,5 +59,6 @@ function cl_get_guest_feed($offset = false, $limit = 10) {
         }
 	}
 
+    // echo json_encode($data);die;
 	return $data;
 }
