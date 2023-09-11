@@ -25,9 +25,11 @@ function cl_get_timeline_feed($limit = false, $offset = false, $onset = false) {
 		"limit"     => $limit,
 		"offset"    => $offset,
 		"onset"     => $onset,
-		"user_id"   => $me['id']
+		"user_id"   => $me['id'],
+		'cat_id'    => isset($_GET['cat_id']) ? $_GET['cat_id'] : ''
  	));
 
+    // echo var_dump($sql);die;
 	$query_res = $db->rawQuery($sql);
 	$counter   = 0;
 
@@ -93,6 +95,7 @@ function cl_get_timeline_feed($limit = false, $offset = false, $onset = false) {
 		}
 	}
 
+    // echo json_encode($data);die;
 	return $data;
 }
 

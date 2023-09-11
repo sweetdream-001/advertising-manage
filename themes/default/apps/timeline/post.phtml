@@ -139,7 +139,7 @@
 
 								<span class="posted-time ahsan1">
 									<time>
-										<?php echo ($cl['li']['cat_name']); ?> - <?php echo ($cl['li']['time']); ?>
+									 <a href="?cat_id=<?php echo ($cl['li']['cat_id']); ?>"> <?php echo ($cl['li']['cat_name']); ?> - <?php echo ($cl['li']['time']); ?> </a>	
 									</time>
 									<?php if (not_empty($cl['li']['edited'])): ?>
 										<span
