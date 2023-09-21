@@ -4,22 +4,35 @@
 
 	$(document).ready(function($) {
         
+        $.get('https://p-tweets.com/talk/native_api/cpanel/banned_words', function(data) {
+          // Handle the response data here
+          console.log(data);
+              let jsonData = data.data;
+              console.log("jsonData");
+              console.log(jsonData);
+              window.banned_words = jsonData
+        })
+        .fail(function(error) {
+          // Handle the error here
+          console.error(error);
+        });
+        
         $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_categories', function(data) {
-                          // Handle the response data here
-                          console.log(data);
-                              let jsonData = data.data;
-                              const $categorySelect = $('#categorySelect');
+          // Handle the response data here
+          console.log(data);
+              let jsonData = data.data;
+              const $categorySelect = $('#categorySelect');
 
-                              // Add options to select box
-                                jsonData.forEach(category => {
-                                    const indentation = category.parent_id !== null ? '&nbsp;&nbsp;&nbsp;' : '';
-                                    $categorySelect.append(`<option value="${category.id}">${indentation}${category.name}</option>`);
-                                });
-                        })
-                        .fail(function(error) {
-                          // Handle the error here
-                          console.error(error);
-                        });
+              // Add options to select box
+                jsonData.forEach(category => {
+                    const indentation = category.parent_id !== null ? '&nbsp;&nbsp;&nbsp;' : '';
+                    $categorySelect.append(`<option value="${category.id}">${indentation}${category.name}</option>`);
+                });
+        })
+        .fail(function(error) {
+          // Handle the error here
+          console.error(error);
+        });
 
 		<?php echo cl_js_template('apps/timeline/scripts/js/pubbox_mixin'); ?>
 		

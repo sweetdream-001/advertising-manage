@@ -92,7 +92,7 @@ var pubbox_form_app_mixin = Object({
 
 			else if(_app_.active_media == 'gifs') {
 				if(cl_empty(_app_.gif_source) != true && cl_empty(_app_.submitting)) {
-					return true;
+					return true;p
 				}
 
 				else {
@@ -355,6 +355,27 @@ var pubbox_form_app_mixin = Object({
                 window.confirm("Please select category");
                 return;
             }
+            console.log(window.banned_words);
+           
+            console.log(_app_.text);
+            
+            const post_text = _app_.text;
+
+            const bannedWordsFound = window.banned_words.map(wordObj => {
+                const keyword = wordObj.keyword;
+                const regex = new RegExp(`\\b${keyword}\\b`, 'i');
+                return regex.test(post_text);
+            });
+            
+            const isBanned = bannedWordsFound.includes(true);
+            
+            if (isBanned) {
+                alert('The post contains a banned word.');
+                return false;
+            } else {
+                console.log('The post is clean.');
+            }
+            
 			$(_self.target).ajaxSubmit({
 				url: "<?php echo cl_link("native_api/main/publish_new_post"); ?>",
 				type: 'POST',

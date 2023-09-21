@@ -1474,6 +1474,12 @@ else if ($action == 'save_customcode') {
 		$data['status'] = 200;
 	}
 }
+else if ($action == 'banned_words') {
+    $data['status']    = 200;
+    $words = $db->rawQuery("SELECT * FROM cl_banned_words;");
+
+    $data['data'] = $words;  
+}
 else if ($action == 'get_all_categories') {	
     $data['status']    = 200;
     $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL;");
