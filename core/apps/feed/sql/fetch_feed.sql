@@ -10,7 +10,7 @@
 @*************************************************************************@
 */
 
-SELECT `<?php echo($data['t_pubs']); ?>`.*, cl_categories.name as cat_name  FROM `<?php echo($data['t_pubs']); ?>` 
+SELECT `<?php echo($data['t_pubs']); ?>`.*, cl_categories.name as cat_name, cl_categories.id as cat_id  FROM `<?php echo($data['t_pubs']); ?>` 
 
     
     left join cl_categories on cl_publications.category_id = cl_categories.id

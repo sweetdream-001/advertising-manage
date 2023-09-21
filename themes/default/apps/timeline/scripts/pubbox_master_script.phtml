@@ -65,6 +65,16 @@
 	
 	
 document.addEventListener('DOMContentLoaded', function () {
+    try{
+        var catId = <?php echo ($_GET['cat_id'] ?? '0'); ?>;
+    } catch(e){
+        console.log(e);
+    }
+  
+  console.log("catId")
+  console.log(catId)
+if(catId != 0){return}
+    
   // Get all post list items
   const postListItems = document.querySelectorAll('.post-list-item');
   console.log(postListItems);

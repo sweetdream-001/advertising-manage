@@ -16,11 +16,9 @@ SELECT posts.`id` as offset_id, posts.`publication_id`, posts.`type`, posts.`use
 
 	WHERE pubs.`status` = 'active'
 	
-		<?php 
-    if($data['cat_id'] != ''){ ?>
+	<?php if($data['cat_id'] != ''){ ?>
       and pubs.category_id = '`<?php echo($data['cat_id']); ?>`'   
-<?php    }
-?>
+    <?php } ?>
 
 	AND (posts.`user_id` = <?php echo($data['user_id']); ?> OR posts.`user_id` IN (SELECT `following_id` FROM `<?php echo($data['t_conns']); ?>` WHERE `follower_id` = <?php echo($data['user_id']); ?> AND `status` = "active"))
 

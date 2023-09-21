@@ -15,7 +15,7 @@
 				</div>
 			    <div class="subCat-<?php echo $cl['li']['id']?>" style="padding: 1px;width: 100%;margin-left: 20px;display:none;padding-bottom: 0px;">
 				    <?php foreach ($cl['li']['childs'] as $child): ?>
-				        <div class="subcategory" style="width: 100%;margin: 26px;cursor: pointer;"><?php echo $child['name'] ?></div>
+				        <div onclick="window.location.href='https://p-tweets.com/talk/?cat_id=<?php echo $child['id'] ?>'" class="subcategory" style="width: 100%;margin: 26px;cursor: pointer;"><?php echo $child['name'] ?></div>
 			        <?php endforeach; ?>	    
 			    </div>
 				    
