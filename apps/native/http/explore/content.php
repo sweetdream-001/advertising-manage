@@ -38,7 +38,7 @@ else if($cl["page_tab"] == 'people') {
 
 else if($cl["page_tab"] == 'categories') {
     // echo json_encode(cl_search_people($cl["search_query"], false, 30));die;
-    $data = $db->rawQuery("SELECT * FROM `cl_categories`  WHERE `parent_id` IS NULL order by sort desc");
+    $data = $db->rawQuery("SELECT * FROM `cl_categories`  WHERE `parent_id` IS NULL order by sort asc");
     
     foreach($data as $k => $cat){
         $childs = $db->rawQuery("SELECT * FROM `cl_categories` WHERE `parent_id` = " . $cat['id']);   

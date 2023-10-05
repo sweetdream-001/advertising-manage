@@ -28,7 +28,7 @@ else {
 // 	echo var_dump(fetch_or_get($_GET['tab'], "posts"));die;
 $cl["page_tab"]     = fetch_or_get($_GET['tab'], "posts");
 $cl["query_result"] = array();
-
+// echo json_encode($cl);die;
 if (not_empty($cl["search_query"])) {
 	$cl["search_query"] = cl_text_secure($cl["search_query"]);
 	$cl["page_title"]   = $cl["search_query"];
