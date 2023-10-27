@@ -254,6 +254,11 @@
                                                               echo ('active');
                                                             } ?>" href="<?php echo cl_link('admin_panel/sub_categories_pages'); ?>"><i data-feather="help-circle"></i>
                 <span> <?php echo cl_translate('Sub Categories'); ?></span></a>
+                
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'bad_words_page') {
+                                                          echo ('active');
+                                                        } ?>" href="<?php echo cl_link('admin_panel/bad_words_page'); ?>"><i data-feather="help-circle"></i>
+            <span> <?php echo cl_translate('Bad Words'); ?></span></a>
 
             </li>
             <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'terms_pages') {

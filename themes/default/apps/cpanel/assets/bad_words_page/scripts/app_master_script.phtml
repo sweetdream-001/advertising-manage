@@ -1,0 +1,162 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app  = $('[data-app="about_settings"]');
+		var _data = _app.find('form[data-an="form"]');
+
+		_data.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/save_settings_about"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_data.find('small.invalid-feedback').remove();
+				_data.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("<?php echo cl_translate("Your changes have been saved successfully!"); ?>", 3000);
+				}
+				else {
+					_data.find('[data-an="{0}-input"]'.format(data.err_field)).append($('<small>', {
+						text: data.message,
+						class: 'invalid-feedback animated flash'
+					})).scroll2();
+				}
+			},
+			complete: function() {
+				_data.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("<?php echo cl_translate("Save changes"); ?>");
+			}
+		});
+	});
+	
+	$(document).ready(function ($) {
+			new Vue({
+				el: ".vueCat",
+				data: {
+					submitting: false,
+					loading: true,
+					selectedCategory: '',
+					addObj: {
+					  name: ''  
+					},
+					categories: [],
+					parent_categories: []
+				},
+				methods: {
+				    getBannedWords(){
+				        let that = this;
+				        $.get('https://p-tweets.com/talk/native_api/cpanel/banned_words', function(data) {
+                          // Handle the response data here
+                          console.log(data);
+                          that.categories = data.data;
+                          that.loading = false;
+                          console.log(that.categories);
+                        })
+                        .fail(function(error) {
+                          // Handle the error here
+                          console.error(error);
+                        });
+				    },
+				    // getCategories(){
+				    //     let that = this;
+				    //     $.get('https://p-tweets.com/talk/native_api/cpanel/get_categories', function(data) {
+        //                   // Handle the response data here
+        //                   console.log(data);
+        //                   that.parent_categories = data.data;
+        //                 })
+        //                 .fail(function(error) {
+        //                   // Handle the error here
+        //                   console.error(error);
+        //                 });
+				    // },
+				    editBannedWord(cat){
+				        // $('#myModal').modal("show");
+				        // $(".modal-backdrop").show()
+				        this.selectedCategory = cat;
+				        console.log(cat);
+				    },
+				    updateBannedWord(){
+				        console.log("=====");
+				        console.log(this.selectedCategory);
+				        let that = this;
+				        that.loading = true;
+				        $.ajax({
+                          url: 'https://p-tweets.com/talk/native_api/cpanel/update_banned_words',
+                          method: 'POST',
+                          contentType: 'application/json',
+                          data: JSON.stringify(this.selectedCategory),
+                          success: function(data) {
+                            // Handle the response data here
+                            // that.categories = data.data;
+                            // $('#myModal').modal('hide');
+                            // $(".modal-backdrop").hide()
+                            that.loading = false;
+                            that.getBannedWords();
+                          },
+                          error: function(xhr, status, error) {
+                            // Handle the error here
+                            console.error(error);
+                          }
+                        });
+				    },
+				    deleteBannedWord(cat){
+				        let confirm = window.confirm("are you sure you want to remove this category?");
+				        if(confirm){
+				            let that = this;
+    				        that.loading = true;
+    				        $.ajax({
+                              url: 'https://p-tweets.com/talk/native_api/cpanel/delete_banned_words',
+                              method: 'POST',
+                              contentType: 'application/json',
+                              data: JSON.stringify(cat),
+                              success: function(data) {
+                                // Handle the response data here
+                                // that.categories = data.data;
+                                // $('#myModal').modal('hide');
+                                // $(".modal-backdrop").hide()
+                                that.loading = false;
+                                that.getBannedWords();
+                              },
+                              error: function(xhr, status, error) {
+                                // Handle the error here
+                                console.error(error);
+                              }
+                            });
+				        }
+				    },
+				    addBannedWordPost(){
+				        console.log(this.addObj);
+				        let that = this;
+				        that.loading = true;
+				        $.ajax({
+                          url: 'https://p-tweets.com/talk/native_api/cpanel/add_banned_words',
+                          method: 'POST',
+                          contentType: 'application/json',
+                          data: JSON.stringify(this.addObj),
+                          success: function(data) {
+                            // Handle the response data here
+                            // that.categories = data.data;
+                            // $('#myModal').modal('hide');
+                            // $(".modal-backdrop").hide()
+                            that.loading = false;
+                            that.getBannedWords();
+                          },
+                          error: function(xhr, status, error) {
+                            // Handle the error here
+                            console.error(error);
+                          }
+                        });
+				    },
+				    addCategory(){
+				        $('#addCategoryModal').modal('show');
+				    }
+				},
+				mounted: function () {
+				    console.log("mounted");
+				    this.getBannedWords();
+				    // this.getCategories();
+				}
+			});
+		});
+</script>

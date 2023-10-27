@@ -1526,6 +1526,26 @@ else if ($action == 'update_categories') {
     $categories = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id IS NULL");
     $data['data']    = $categories;
 }
+else if ($action == 'update_banned_words') {	
+    $data['status']    = 200;
+    
+    // Read the raw POST data
+    $requestPayload = file_get_contents("php://input");
+    
+    // Convert the JSON payload to a PHP associative array
+    $data = json_decode($requestPayload, true);
+
+    // echo var_dump($data['name']);die;
+    
+    
+     $db->rawQuery("update `cl_banned_words` set keyword = '"  . $data['keyword'] . "' where id = " . $data['id']);
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $categories = $db->rawQuery("SELECT * FROM `cl_banned_words`");
+    $data['data']    = $categories;
+}
 else if ($action == 'update_sub_categories') {	
     $data['status']    = 200;
     
@@ -1566,6 +1586,25 @@ else if ($action == 'delete_categories') {
     
     $data['data']    = [];
 }
+else if ($action == 'delete_banned_words') {	
+    $data['status']    = 200;
+    
+    // Read the raw POST data
+    $requestPayload = file_get_contents("php://input");
+    
+    // Convert the JSON payload to a PHP associative array
+    $data = json_decode($requestPayload, true);
+
+    // echo var_dump($data['name']);die;
+    
+    
+     $db->rawQuery("DELETE FROM `cl_banned_words` WHERE id = " . $data['id']);
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $data['data']    = [];
+}
 else if ($action == 'add_categories') {	
     $data['status']    = 200;
     
@@ -1579,6 +1618,25 @@ else if ($action == 'add_categories') {
     
     
      $db->rawQuery("INSERT INTO `cl_categories` (`id`, `name`, `enabled`, `parent_id`, `created_at`, `updated_at`) VALUES (NULL, '".$data['name']."', '1', NULL, NULL, NULL);");
+    // foreach($categories as $k => $cat){
+    //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
+    // }
+    
+    $data['data']    = [];
+}
+else if ($action == 'add_banned_words') {	
+    $data['status']    = 200;
+    
+    // Read the raw POST data
+    $requestPayload = file_get_contents("php://input");
+    
+    // Convert the JSON payload to a PHP associative array
+    $data = json_decode($requestPayload, true);
+
+    // echo var_dump($data['name']);die;
+    
+    
+     $db->rawQuery("INSERT INTO `cl_banned_words` (`id`, `keyword`) VALUES (NULL, '".$data['name']."');");
     // foreach($categories as $k => $cat){
     //     $categories[$k]['childs'] = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id = " . $cat['id']);
     // }

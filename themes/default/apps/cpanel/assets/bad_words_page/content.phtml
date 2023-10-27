@@ -1,0 +1,121 @@
+<div class="cp-app-container" data-app="about_settings">
+<div class="container-fluid">        
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>Sub Categories Page </h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item">    <?php echo cl_translate('Categories'); ?></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+ 
+     <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card"  style="padding: 15px;">
+                  <div class="card-header">
+                    <h5>
+                       Manage Banner Words
+                    </h5>
+                </div>
+
+                <div class="vueCat">
+                    <button type="button" v-on:click="addCategory()" class="btn btn-primary">Add New</button>
+                    <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Keyword</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="loading">
+                          <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
+                      </tr>
+                      <tr v-for="(cat, id) in categories">
+                        <td>{{id+1}}</td>
+                        <td>{{cat.keyword}}</td>
+                        <td>
+                            <a href="Javascript:;"  data-toggle="modal" data-target="#myModal" v-on:click="editBannedWord(cat)">Edit</a> | 
+                            <a href="Javascript:;" v-on:click="deleteBannedWord(cat)">Delete</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
+                  
+                  
+                    <!-- The Modal -->
+                    <div class="modal" id="myModal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                    
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Edit Keyword</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                    
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                              <div class="form-group">
+                                <label for="name">Keyword:</label>
+                                <input type="text" class="form-control" placeholder="Enter name" id="name" v-model='selectedCategory.keyword' >
+                              </div>
+                          
+                              <button type="button" v-on:click="updateBannedWord()" class="btn btn-primary">Update</button>
+                          </div>
+                    
+                          <!-- Modal footer -->
+                          <!--<div class="modal-footer">-->
+                          <!--  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                          <!--</div>-->
+                    
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- The Modal -->
+                    <div class="modal" id="addCategoryModal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                    
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Add Banner Word</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                    
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                              <div class="form-group">
+                                <label for="name">Keyword:</label>
+                                <input type="text" class="form-control" placeholder="Enter name" id="name" v-model='addObj.name' >
+                              </div>
+                              <button type="button" v-on:click="addBannedWordPost()" class="btn btn-primary">Update</button>
+                          </div>
+                    
+                          <!-- Modal footer -->
+                          <!--<div class="modal-footer">-->
+                          <!--  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                          <!--</div>-->
+                    
+                        </div>
+                      </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php echo cl_template('cpanel/assets/bad_words_page/scripts/app_master_script'); ?>
