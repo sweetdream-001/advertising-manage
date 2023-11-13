@@ -1482,13 +1482,13 @@ else if ($action == 'banned_words') {
 }
 else if ($action == 'get_all_categories') {	
     $data['status']    = 200;
-    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL;");
+    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL  order by sort ASC ;");
 
     $flattenedData = [];
     
     foreach ($categories as $k => $cat) {
         $flattenedData[] = $cat; // Add main category
-        $subcategories = $db->rawQuery("SELECT * FROM `cl_categories` WHERE parent_id = " . $cat['id']);
+        $subcategories = $db->rawQuery("SELECT * FROM `cl_categories` WHERE parent_id = " . $cat['id'] . " order by sort ASC");
         foreach ($subcategories as $subcategory) {
             $flattenedData[] = $subcategory; // Add subcategory
         }

@@ -13,9 +13,9 @@
 SELECT `<?php echo($data['t_pubs']); ?>`.*, cl_categories.name as cat_name, cl_categories.id as cat_id FROM `<?php echo($data['t_pubs']); ?>` 
 
 left join cl_categories on cl_publications.category_id = cl_categories.id
-
+inner join cl_users on cl_users.id = cl_publications.user_id
 	WHERE `status` = "active"
-
+and cl_users.active = "1"
 	AND `target` = "publication"
 
 	<?php if(empty($cl["is_admin"])): ?>

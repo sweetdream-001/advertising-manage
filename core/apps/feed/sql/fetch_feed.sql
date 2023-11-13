@@ -15,11 +15,15 @@ SELECT `<?php echo($data['t_pubs']); ?>`.*, cl_categories.name as cat_name, cl_c
     
     left join cl_categories on cl_publications.category_id = cl_categories.id
     
+    inner join cl_users on cl_users.id = cl_publications.user_id 
+    
 	WHERE `status` = "active"
 
 	AND `target` = "publication"
 
 	AND `priv_wcs` = "everyone"
+
+    AND cl_users.active = "1"
 
     ORDER BY `id` DESC
 -- 	ORDER BY `likes_count` DESC, `replys_count` DESC, `reposts_count` DESC
