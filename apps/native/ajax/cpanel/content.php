@@ -1497,6 +1497,20 @@ else if ($action == 'get_all_categories') {
     $data['data'] = $flattenedData;
     
 }
+else if ($action == 'delete_categories') {
+    $id = $_GET['id'];
+    $data['id'] = $id;
+    $q = "delete from cl_publications where id = " . $id;
+    $db->rawQuery($q);
+    $data['id'] = $id;
+}
+else if ($action == 'update_post') {
+    $data = $_POST['object'];
+    
+    $q = "UPDATE `cl_publications` SET `text` = '"  . $data['text'] . "', `category_id` = '"  . $data['category_id'] . "' WHERE `cl_publications`.`id` = ". $data['id'];
+    $resp = $db->rawQuery($q);
+    $data['data'] = $resp;
+}
 else if ($action == 'get_categories') {	
     $data['status']    = 200;
     $categories = $db->rawQuery("SELECT * FROM `cl_categories` where parent_id IS NULL");
@@ -1670,4 +1684,42 @@ else if ($action == 'get_sub_categories') {
     // }
     
     $data['data']    = $categories;
+}
+else if ($action == 'get_all_posts_admin') {
+    $data['status']    = 200;
+    $words = $db->rawQuery("
+select cl_publications.*, cl_pubmedia.src, cl_categories.name as category_name, cl_users.username as username from cl_publications 
+inner join cl_categories on cl_publications.category_id = cl_categories.id
+inner join cl_users on cl_publications.user_id = cl_users.id
+left join cl_pubmedia on cl_publications.id = cl_pubmedia.pub_id
+where text is not null order by id DESC;
+    ");
+
+    $data['data'] = $words;  
+}
+else if ($action == 'search_all_posts_admin') {
+    $data['status']    = 200;
+    $username = $_GET['username'];
+    $text = $_GET['text'];
+    
+    $query = "
+select cl_publications.*, cl_pubmedia.src, cl_categories.name as category_name, cl_users.username as username from cl_publications 
+inner join cl_categories on cl_publications.category_id = cl_categories.id
+inner join cl_users on cl_publications.user_id = cl_users.id
+left join cl_pubmedia on cl_publications.id = cl_pubmedia.pub_id
+where text is not null";
+    
+    if(!empty($username) && !empty($text)){
+        $query .= " and text like '%".$text."%' OR username like '%".$username."%'";
+    } else if(!empty($username)){
+        $query .= " and username like '%".$username."%'";
+    } else if(!empty($text)){
+        $query .= " and text like '%".$text."%'";
+    }
+    $query .= " order by id DESC";
+    
+    
+    $words = $db->rawQuery($query);
+
+    $data['data'] = $words;  
 }

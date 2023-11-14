@@ -1,0 +1,145 @@
+<script>
+	"use strict";
+
+	$(document).ready(function($) {
+		var _app  = $('[data-app="about_settings"]');
+		var _data = _app.find('form[data-an="form"]');
+
+		_data.ajaxForm({
+			url: '<?php echo cl_link("native_api/cpanel/save_settings_about"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function() {
+				_data.find('small.invalid-feedback').remove();
+				_data.find('[data-an="submit-ctrl"]').attr('disabled', 'true').text("<?php echo cl_translate("Please wait"); ?>");
+			},
+			success: function(data) {
+				if (data.status == 200) {
+					cl_bs_notify("<?php echo cl_translate("Your changes have been saved successfully!"); ?>", 3000);
+				}
+				else {
+					_data.find('[data-an="{0}-input"]'.format(data.err_field)).append($('<small>', {
+						text: data.message,
+						class: 'invalid-feedback animated flash'
+					})).scroll2();
+				}
+			},
+			complete: function() {
+				_data.find('[data-an="submit-ctrl"]').removeAttr('disabled').text("<?php echo cl_translate("Save changes"); ?>");
+			}
+		});
+	});
+	
+	$(document).ready(function ($) {
+			new Vue({
+				el: ".vueCat",
+				data: {
+					submitting: false,
+					posts: [],
+					categories: [],
+					editObj: [],
+					loading: false,
+					name: "ahsan",
+					search: {
+					    text: '',
+					    username: ''
+					},
+					searchLdr: false,
+					clearsearch: false
+				},
+				methods: {
+				    getAllPosts(){
+				        let that = this;
+				        that.clearsearch = true;
+				        $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_posts_admin', function(data) {
+                          // Handle the response data here
+                          console.log(data);
+                          that.posts = data.data;
+                          that.loading = false;
+                          that.clearsearch = false;
+                          console.log(that.posts);
+                        })
+                        .fail(function(error) {
+                          // Handle the error here
+                          console.error(error);
+                        });
+				    },
+				    getAllCategories(){
+				        let that = this;
+				        $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_categories', function(data) {
+                          // Handle the response data here
+                          console.log(data);
+                          that.categories = data.data;
+                        })
+                        .fail(function(error) {
+                          console.error(error);
+                        });
+				    },
+				    formatDate(timestamp){
+				        const milliseconds = timestamp * 1000;
+                        const date = new Date(milliseconds);
+                        
+                        const options = {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true,
+                        };
+                        
+                        const formattedDate = date.toLocaleString('en-US', options);
+                        return formattedDate;
+				    },
+				    editUserPost(obj){
+				        this.editObj = obj;
+				    },
+				    deleteUserPost(obj){
+				        let confirm = window.confirm('are you sure you want to delete this post?');
+				        let that = this;
+				        if(confirm){
+				            $.get('https://p-tweets.com/talk/native_api/cpanel/delete_categories?id='+obj.id, function(data) {
+                          // Handle the response data here
+                          console.log(data);
+                          that.getAllPosts();
+                        })
+                        .fail(function(error) {
+                          console.error(error);
+                        });
+				        }
+				    },
+				    updateUserPost(){
+				        console.log('updateUserPost');
+				        console.log(this.editObj);
+				        $.post('https://p-tweets.com/talk/native_api/cpanel/update_post', {
+                            'object': this.editObj
+                        }, function (data) {
+                            this.getAllPosts();
+                        });
+                          
+				    },
+				    searchPost(){
+				         let that = this;
+				         that.searchLdr = true;
+				        $.get('https://p-tweets.com/talk/native_api/cpanel/search_all_posts_admin?username='+that.search.username+'&text='+that.search.text, function(data) {
+                          // Handle the response data here
+                          console.log(data);
+                          that.posts = data.data;
+                          that.loading = false;
+                          that.searchLdr = false;
+                          console.log(that.posts);
+                        })
+                        .fail(function(error) {
+                          // Handle the error here
+                          console.error(error);
+                        });
+				    }
+				},
+				mounted: function () {
+				    console.log("mounted");
+				    this.getAllPosts();
+				    this.getAllCategories();
+				}
+			});
+		});
+</script>
