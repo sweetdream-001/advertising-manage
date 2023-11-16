@@ -4,7 +4,7 @@
 
 	$(document).ready(function($) {
         
-        $.get('https://p-tweets.com/talk/native_api/cpanel/banned_words', function(data) {
+        $.get('https://p-tweets.com/talk/native_api/home/banned_words', function(data) {
           // Handle the response data here
           console.log(data);
               let jsonData = data.data;
@@ -17,7 +17,8 @@
           console.error(error);
         });
         
-        $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_categories', function(data) {
+        // $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_categories', function(data) {
+        $.get('https://p-tweets.com/talk/native_api/home/get_all_categories', function(data) {
           // Handle the response data here
           console.log(data);
               let jsonData = data.data;

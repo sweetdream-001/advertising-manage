@@ -38,7 +38,35 @@ else if ($action == 'load_more') {
     }
     
 }
+else if ($action == 'get_all_categories') {
 
+    require_once(cl_full_path("core/apps/home/app_ctrl.php"));
+
+    $data['status']    = 200;
+    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL  order by sort ASC ;");
+
+    $flattenedData = [];
+    
+    foreach ($categories as $k => $cat) {
+        $flattenedData[] = $cat; // Add main category
+        $subcategories = $db->rawQuery("SELECT * FROM `cl_categories` WHERE parent_id = " . $cat['id'] . " order by sort ASC");
+        foreach ($subcategories as $subcategory) {
+            $flattenedData[] = $subcategory; // Add subcategory
+        }
+    }
+    
+    $data['data'] = $flattenedData;
+    
+}
+else if ($action == 'banned_words') {
+
+    require_once(cl_full_path("core/apps/home/app_ctrl.php"));
+
+    $data['status']    = 200;
+    $words = $db->rawQuery("SELECT * FROM cl_banned_words;");
+
+    $data['data'] = $words;  
+}
 // else if ($action == 'update_timeline') {
 
 //     require_once(cl_full_path("core/apps/home/app_ctrl.php"));
