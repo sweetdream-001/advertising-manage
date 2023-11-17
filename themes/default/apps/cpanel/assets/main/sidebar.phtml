@@ -55,12 +55,7 @@ p<div class="overlay"></div>
               </a>
             </li>
             
-            <li class="sidebar-list"><label class="badge badge-danger">New</label>
-              <a href="<?php echo cl_link('admin_panel/posts_pages'); ?>" class="sidebar-link <?php if ($cl["cp_section"] == 'posts_pages') { echo ('active'); } ?>">
-                <i data-feather="toggle-left"></i><span> Posts
-                </span>
-              </a>
-            </li>
+         
             
             <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'email_settings') {
                                                               echo ('active');
@@ -99,6 +94,12 @@ p<div class="overlay"></div>
                 <?php echo cl_translate('Premium account'); ?>
                 </span>
             </a>
+        </li>
+       <li class="sidebar-list"><label class="badge badge-danger">New</label>
+          <a href="<?php echo cl_link('admin_panel/posts_pages'); ?>" class="sidebar-link <?php if ($cl["cp_section"] == 'posts_pages') { echo ('active'); } ?>">
+            <i data-feather="toggle-left"></i><span> Posts
+            </span>
+          </a>
         </li>
         <li class="sidebar-list">
             <label class="badge badge-danger">New</label> <a href="<?php echo cl_link('admin_panel/blue_account'); ?>" class="sidebar-link <?php if($cl["cp_section"] == 'blue_account') {echo('active');} ?>">

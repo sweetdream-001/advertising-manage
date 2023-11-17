@@ -93,12 +93,13 @@
 				    },
 				    editUserPost(obj){
 				        this.editObj = obj;
+				        $('.id').val(this.editObj.id);
 				    },
 				    deleteUserPost(obj){
 				        let confirm = window.confirm('are you sure you want to delete this post?');
 				        let that = this;
 				        if(confirm){
-				            $.get('https://p-tweets.com/talk/native_api/cpanel/delete_categories?id='+obj.id, function(data) {
+				            $.get('https://p-tweets.com/talk/native_api/cpanel/delete_posts_data?id='+obj.id, function(data) {
                           // Handle the response data here
                           console.log(data);
                           that.getAllPosts();
@@ -111,12 +112,59 @@
 				    updateUserPost(){
 				        console.log('updateUserPost');
 				        console.log(this.editObj);
-				        $.post('https://p-tweets.com/talk/native_api/cpanel/update_post', {
-                            'object': this.editObj
-                        }, function (data) {
-                            this.getAllPosts();
+				        
+			           // Create a FormData object
+                        let formData = new FormData();
+                    
+                        // Append properties from this.editObj to formData
+                        Object.keys(this.editObj).forEach((key, val) => {
+                            console.log(key);
+                            console.log(this.editObj[key]);
+                            if(key != 'image'){
+                                formData.append(key, this.editObj[key]);
+                            }
                         });
-                          
+                    
+                        // Append the image file to formData
+                        formData.append('image', this.editObj.image);
+				       
+			            // Make the AJAX request using fetch or XMLHttpRequest
+                        fetch('https://p-tweets.com/talk/native_api/cpanel/update_post', {
+                            method: 'POST',
+                            body: formData,
+                            // Headers may need adjustment based on server requirements
+                            headers: {
+                                'Content-Type': 'multipart/form-data', // Usually not needed with FormData
+                                // Add any other headers if required
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response data as needed
+                            console.log(data);
+                            // Call getAllPosts after a successful update
+                            this.getAllPosts();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                        
+			            // Make the AJAX request using $.ajax
+                        // $.ajax({
+                        //     url: 'https://p-tweets.com/talk/native_api/cpanel/update_post',
+                        //     type: 'POST',
+                        //     data: formData,
+                        //     processData: false,  // Don't process the data
+                        //     contentType: false,  // Don't set content type (jQuery will set it automatically)
+                        //     success: (data) => {
+                        //         console.log(data);
+                        //         // Call getAllPosts after a successful update
+                        //         this.getAllPosts();
+                        //     },
+                        //     error: (error) => {
+                        //         console.error('Error:', error);
+                        //     }
+                        // });
 				    },
 				    searchPost(){
 				         let that = this;

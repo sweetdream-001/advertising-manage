@@ -1497,7 +1497,7 @@ else if ($action == 'get_all_categories') {
     $data['data'] = $flattenedData;
     
 }
-else if ($action == 'delete_categories') {
+else if ($action == 'delete_posts_data') {
     $id = $_GET['id'];
     $data['id'] = $id;
     $q = "delete from cl_publications where id = " . $id;
@@ -1505,11 +1505,68 @@ else if ($action == 'delete_categories') {
     $data['id'] = $id;
 }
 else if ($action == 'update_post') {
-    $data = $_POST['object'];
+    $data = $_POST;
     
+    // Update the cl_publications table
     $q = "UPDATE `cl_publications` SET `text` = '"  . $data['text'] . "', `category_id` = '"  . $data['category_id'] . "' WHERE `cl_publications`.`id` = ". $data['id'];
-    $resp = $db->rawQuery($q);
-    $data['data'] = $resp;
+    $resp1 = $db->rawQuery($q);
+    
+      // Check if 'image' is present in $_FILES
+    if (isset($_FILES['image'])  && !empty($_FILES['image']['name']) ) {
+        $image = $_FILES['image'];
+        $fileType = explode('/', $image['type'])[0] ?? 'unknown';
+        
+        if ($fileType === 'image') {
+            // Process image-related code
+            $file_info = array(
+                'file'      => $image['tmp_name'],
+                'size'      => $image['size'],
+                'name'      => $image['name'],
+                'type'      => $image['type'],
+                'file_type' => 'image',
+                'folder'    => 'images',
+                'slug'      => 'original',
+                'allowed'   => 'jpg,png,jpeg,gif'
+            );
+            $file_upload = cl_upload($file_info);
+            $jsonData = array(
+                "image_thumb" => $file_upload['filename']
+            );
+        } else if ($fileType === 'video') {
+             $file_info      = array(
+                'file'      => $image['tmp_name'],
+                'size'      => $image['size'],
+                'name'      => $image['name'],
+                'type'      => $image['type'],
+                'file_type' => 'video',
+                'folder'    => 'videos',
+                'slug'      => 'video_message',
+                'allowed'   => 'mp4,mov,3gp,webm',
+            );
+    
+            $file_upload = cl_upload($file_info);   
+            $jsonData = array(
+                "video_thumb" => $file_upload['filename']
+            );
+        }
+    
+         // Update the cl_pubmedia table
+        $q2 = "UPDATE `cl_pubmedia` SET 
+            `type` = '"  . $fileType . "', 
+            `src` = '"  . $file_upload['filename'] . "' ,
+            `json_data` = '"  . json_encode($jsonData) . "' 
+            WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+        
+        
+        // Execute the queries
+        $resp2 = $db->rawQuery($q2);
+        
+    }
+    
+    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/talk/admin_panel/posts_pages'; // Set a default URL if the referer is not available
+    header("Location: $referer");
+    exit(); // Make sure to exit after sending the header to prevent further execution
+
 }
 else if ($action == 'get_categories') {	
     $data['status']    = 200;
@@ -1689,7 +1746,7 @@ else if ($action == 'get_all_posts_admin') {
     $data['status']    = 200;
     $words = $db->rawQuery("
 select cl_publications.*, cl_pubmedia.src, cl_categories.name as category_name, cl_users.username as username from cl_publications 
-inner join cl_categories on cl_publications.category_id = cl_categories.id
+left join cl_categories on cl_publications.category_id = cl_categories.id
 inner join cl_users on cl_publications.user_id = cl_users.id
 left join cl_pubmedia on cl_publications.id = cl_pubmedia.pub_id
 where text is not null order by id DESC;
