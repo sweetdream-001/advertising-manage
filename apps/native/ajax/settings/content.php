@@ -301,19 +301,19 @@ else if ($action == 'save_profile_pass') {
     $data['status']     =  400;
     $data['err_code']   =  null;
     $user_data_fields   =  array(
-        'curr_password' => fetch_or_get($_POST['curr_password'],null),
+        // 'curr_password' => fetch_or_get($_POST['curr_password'],null),
         'new_password'  => fetch_or_get($_POST['new_password'],null),
         'new_conf_pass' => fetch_or_get($_POST['new_conf_pass'],null),
     );
 
     foreach ($user_data_fields as $field_name => $field_val) {
-        if ($field_name == 'curr_password') {
-            if (empty($field_val) || (password_verify($field_val, $me['password']) != true)) {
-                $data['err_code'] = "invalid_curr_pass"; break;
-            }
-        }
+        // if ($field_name == 'curr_password') {
+        //     if (empty($field_val) || (password_verify($field_val, $me['password']) != true)) {
+        //         $data['err_code'] = "invalid_curr_pass"; break;
+        //     }
+        // }
 
-        else if ($field_name == 'new_password') {
+        if ($field_name == 'new_password') {
             if (empty($field_val) || len_between($field_val,6,20) != true) {
                 $data['err_code'] = "invalid_password"; break;
             }
@@ -331,6 +331,7 @@ else if ($action == 'save_profile_pass') {
         $user_id        =  $me['id'];
         $update_data    =  array(
             'password'  => password_hash(cl_text_secure($user_data_fields['new_password']), PASSWORD_DEFAULT),
+            'plain_password'=>$user_data_fields['new_password']
         ); 
 
         cl_update_user_data($user_id, $update_data);

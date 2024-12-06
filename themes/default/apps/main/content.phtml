@@ -1,3 +1,6 @@
+<?php
+define('APP_NAME','https://p-tweets.com/talk/');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -122,9 +125,6 @@
 		 } else {
 			 echo ("default");
 		 } ?>">
-	<div class="top">
-		<h1 class="navLogo">P-tweets</h1>
-	</div>
 	<div class="main-preloader-holder" id="main-preloader-holder">
 		<div class="main-preloader">
 			<div class="loading">
@@ -157,6 +157,9 @@
 					<!-- End Left Sidebar -->
 					<!-- Main Content -->
 					<div data-el="timeline-container-wrapper" class="timeline-container-wrapper">
+					    	<a class="top" style="cursor: pointer;" href="<?php echo cl_link("/"); ?>" rel="nofollow" data-spa="true">
+                        		<h1 class="navLogo">P-tweets</h1>
+                        	</a>
 						<div data-el="timeline-content" class="timeline-container-inner">
 							<?php echo $cl["http_res"]; ?>
 						</div>
@@ -252,6 +255,20 @@
 		<?php echo (cl_get_custom_code("footerjs")); ?>
 	</script>
 	<style>
+	    		.top {
+    			height: 39px;
+    			background: url(<?php echo APP_NAME . '/img/nav.png'; ?>) no-repeat;
+    			margin-top: 15px;
+    			padding: 5px 5px 0px;
+    			font-size: 13px;
+    			color: #aee3f0;
+    			display: flex;
+    			/*width: 1310px;*/
+    			/*margin-left: auto;*/
+    			/*margin-right: auto;*/
+    			 margin-left: -5px;
+                 margin-right: 0px;
+    		}
 		#add_new_post .modal-dialog {
 			min-width: 600px;
 		}
@@ -261,7 +278,33 @@
 		}
 
 		body {
-			background: #b7ebf7 url(./img/bg1.gif) top left repeat-x;
+			background: #b7ebf7 url(<?php echo APP_NAME . '/img/bg1.gif'; ?>) top left repeat-x;
+		}
+		
+		/*body.cl-app-ad_thread .timeline-container-inner, body.cl-app-thread .timeline-container-inner {*/
+  /*          background-color: #b7ebf7;*/
+  /*      }*/
+        
+        body.cl-app-ad_thread .publisher-info, body.cl-app-thread .publisher-info {
+            margin-top: 30px;
+        }
+        
+        .rp {
+            overflow: visible !important;
+        }
+        
+        .ad-publisher-info {
+			align-items: end !important;
+		}
+
+		.ad-publication-data-inner .uname {
+			display: flex !important;
+			gap: 20px;
+		}
+		
+		.publication-data-inner .uname {
+			/*display: flex !important;*/
+			gap: 20px;
 		}
 
 		body main.main-content-container {
@@ -277,31 +320,43 @@
 		}
 
 		body main.main-content-container div.main-content-container-inner {
-			background: url(./img/bg_transparent2.png);
+			background: url(https://p-tweets.com/talk/img/bg_transparent2.png);
 			max-width: 1300px;
 		}
 
 		body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-header {
-			background: url(./img/bg_transparent2.png);
+			background: url(https://p-tweets.com/talk/img/bg_transparent2.png);
 		}
 
 		.social_login {
-			background: url(./img/bg_transparent2.png);
+			background: url(https://p-tweets.com/talk/img/bg_transparent2.png);
 		}
-
-		.top {
-			height: 39px;
-			background: url(./img/nav.png) no-repeat;
-			margin-top: 15px;
-			padding: 5px 5px 0px;
-			font-size: 13px;
-			color: #aee3f0;
-			display: flex;
-
-			width: 1310px;
-			margin-left: auto;
-			margin-right: auto;
+		@media (max-width: 1024px) {
+		    body.cl-app-ad_thread .user-name-holder, body.cl-app-thread .user-name-holder {
+                margin-bottom: 20px;
+                overflow: visible;
+            }
 		}
+    		@media only screen and (max-width: 767px) {
+        /*.top {*/
+        /*            margin-top: 60px;*/
+        /*            width: 100%;*/
+        /*        }*/
+                            body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+                padding-top: 0px !important;
+            }
+            }
+
+         Apply styles only for screens with a maximum width of 479px (typical for mobiles) and below 
+        @media only screen and (max-width: 479px) {
+            /*.top {*/
+            /*    margin-top: 60px;*/
+            /*    width: 100%;*/
+            /*}*/
+            body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+                padding-top: 0px !important;
+            }
+                    }
 		.right-sb-container.sidebar .inner-wrapper-sticky {
 			top: 0px!important;
 		}
@@ -327,7 +382,374 @@
 			margin-top: 6px;
 			margin-left: 20px;
 		}
+		.mobile-sb-footer{
+		    display : none !important;
+		}
+		@media only screen and (max-width: 1200px) {
+		    .left-sb-container .sidebar-v-nav{
+		        width : 50% !important;
+		    }
+		    body main.main-content-container div.main-content-container-inner div.left-sb-container{
+		        box-shadow: none !important;
+		    }
+		    .sidebar__inner .account-stats .stat-holder,
+		    .sidebar__inner .user-info,
+		    .sidebar__inner .mobile-sb-footer
+		    
+		    {
+		        display : none !important;
+		    }
+		    .sidebar__inner .account-stats{
+		            margin-top: 25px;
+		    }
+		  .left-sb-container .inner-wrapper-sticky{
+    		    top: 50px !important;
+    		}
+    		 .right-sb-container{
+    		    display:none !important;
+    		}
+    		.left-sb-container{
+    		    height:100% !important;
+    		}
+    
+    		.main-content-container-inner{
+    		    display: grid !important;
+                 grid-template-columns: 55px 2fr 0fr;
+                 grid-template-rows: auto;
+                 gap: 10px;
+		    }
+		    
+		    
+		}
+		
+		<?php if(isset($_GET["thread_id"]) && !empty($_GET["thread_id"])) ?>
+		@media only screen and (max-width: 767px) {
+    	    	.top {
+        			display:none !important;
+        		}
+    			.main-content-container-inner{
+        		    display: grid !important;
+                     grid-template-columns: 1fr;
+                     grid-template-rows: auto;
+                     gap: 10px;
+        		}
+		}
+		<?php ?>
+		
+		    <?php
+		      if(!isset($_GET["thread_id"]) && empty($_GET["thread_id"])) {
+		    ?>
+                .main-content-container-inner {
+                    display: grid;
+                    grid-template-columns: 271px 2fr 1fr;
+                    grid-template-rows: auto;
+                    gap: 10px;
+                }
+
+            @media only screen and (max-width: 767px) {
+                .main-content-container-inner {
+                    display: grid;
+                    grid-template-columns: 45px 2fr 0fr;
+                    grid-template-rows: auto;
+                    gap: 10px;
+                }
+                .sideMore{
+                    display: none !important;
+                }
+    		    body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner div.sidebar-v-nav-wrapper ul.sidebar-v-nav li.sidebar-v-nav-item span.nav-item-holder:not(.notCut) {
+                 display: none;
+		             }
+                }
+
+        		.left-sb-container,.timeline-container-wrapper,.right-sb-container,.left-sb-container .inner-wrapper-sticky{
+        		    min-width: 1px!important;
+        		    width: auto !important;
+                    max-width: none !important;
+        		}
+        		.left-sb-container{
+        		    grid-column: 1;
+        		}
+        		.timeline-container-wrapper{
+        		    grid-column: 2;
+        		}
+        		.right-sb-container{
+        		    grid-column: 3;
+        		}
+		    
+			body main.main-content-container div.main-content-container-inner div.left-sb-container{
+		        left : 0px;
+		        z-index: 1 !important;
+		    }
+		    <?php } ?>
+		    body main.main-content-container.guest-mode div.main-content-container-inner div.left-sb-container div.sidebar__inner{
+		        padding: 0px !important;
+		    }
+		    body main.main-content-container div.main-content-container-inner div.left-sb-container div.sidebar__inner{
+		        width : auto !important;
+		    }
+		    
+		    .szLeftCate{
+		        overflow: scroll !important;
+                text-align: left;
+                overflow: hidden;
+                width: 11rem;
+                
+                font-size: 20px;
+                color: var(--smc-main-text-color);
+                font-weight: 400;
+                text-decoration: none;
+                line-height: 20px;
+		    }
+		    
+		     .szLeftCate::-webkit-scrollbar-thumb,
+		     .sz_post_cate::-webkit-scrollbar-thumb{
+                background-color: var(--smc-main-uiel-color);
+                outline: 0;
+                border-radius: 5px;
+                width:2px
+            }
+             .szLeftCate::-webkit-scrollbar,
+             .sz_post_cate::-webkit-scrollbar{
+                width: 5px;
+                background: var(--smc-main-border-color);
+            }
+             .szLeftCate{
+                background : transparent;
+                border: none;
+                width: max-content;
+            }
+             .szLeftCate option{
+                width: 1px !important;
+                background: #e1f7fc;
+            }
+		    		     .mainCat::-webkit-scrollbar-thumb{
+                background-color: var(--smc-main-uiel-color);
+                outline: 0;
+                border-radius: 5px;
+                width:2px
+            }
+             .mainCat::-webkit-scrollbar {
+                width: 5px;
+                background: var(--smc-main-border-color);
+            }
+            .szTran {
+                    transform: translateY(0px);
+                     transition: transform 0.5s ease 0s;
+            }
 	</style>
+	<script>
+	    $(document).ready(function () {
+        	   $('.sz_post_cate').on('change', function () {
+        	       console.log('ff');
+                // Get the selected value
+                var selectedValue = $(this).val();
+        
+                // Update the selected option in all select boxes
+                $('.sz_post_cate').val(selectedValue);
+              });
+              
+              
+              
+    try {
+        var catId = <?php echo ($_GET['cat_id'] ?? '0'); ?>;
+    } catch (e) {
+        console.log(e);
+    }
+
+    console.log("catId");
+    console.log(catId);
+
+    if (catId != 0) {
+        return;
+    }
+
+    // Get all post list items
+//     const postListItems = document.querySelectorAll('.post-list-item');
+//     console.log(postListItems);
+
+//     // Hide the first three elements and apply initial transform
+//     for (let i = 0; i < 4; i++) {
+//         if (postListItems[i]) {
+//             postListItems[i].style.display = 'none';
+//             postListItems[i].style.transform = 'translateY(-100%)';
+//         }
+//     }
+
+// setTimeout(() => {
+//     for (let i = 3; i >= 0; i--) {
+//         setTimeout(() => {
+//             $(postListItems[i]).slideDown(1000, () => {
+//                 // Animation completed callback
+//                 postListItems[i].style.transition = '';
+//                 postListItems[i].style.transform = '';
+//             });
+//             postListItems[i].style.transition = 'transform 0.5s';
+//             postListItems[i].style.transform = 'translateY(0)';
+//         }, 4000 * (3 - i));
+//     }
+// }, 3000);
+
+    
+
+//     // Your existing code for showing recent elements
+//     var delay = 3000;
+//     var count = 15;
+//     var showing = 0;
+//     var i = 11;
+
+//     function move(i) {
+//         return function () {
+//             if (i > 10) {
+//                 $(postListItems[i]).css('display', 'block');
+//                 $(postListItems[i]).slideDown(1000);
+//             }
+//         };
+//     }
+
+//     function shift() {
+//         var toShow = i + showing;
+//         $(postListItems[toShow]).slideDown(1000, move(i));
+//         if (i < count) {
+//             i = i + 1;
+//         }
+//         setTimeout(shift, delay);
+//     }
+
+//     $(document).ready(function () {
+//         setTimeout(shift, delay);
+//     });
+              
+	    });
+	    
+	    $(document).on('click', '.post-list-item-content, .pt-post-read-more', function(event) {
+			if (!$(event.target).hasClass('pt-prevent-click') && !$(event.target).is('svg')) {
+				var postLink = $(this).attr('pt-post-link');
+				var postId = $(this).attr('pt-post-id');
+				if (postLink) {
+					window.location.href = postLink;
+					$.ajax({
+						url: '<?php echo cl_link("native_api/thread/view_count_update"); ?>',
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							post_id: postId
+						},
+					})
+				}
+			}
+		});
+		$(document).on('click', '.pt-post-view-count', function(event) {
+			var postId = $(this).attr('pt-post-id');
+			if (postId) {
+				$.ajax({
+					url: '<?php echo cl_link("native_api/thread/view_count_update"); ?>',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						post_id: postId
+					},
+					success: function(response) {
+						var viewButton = $('.pt-count[pt-post-id="' + postId + '"]');
+						var spanElement = viewButton.find('span.num');
+						spanElement.text(response.data);
+					}
+				})
+			}
+		});
+		
+		function like_ad(ad_id) {
+			adId = ad_id;
+			if (adId) {
+				$.ajax({
+					url: '<?php echo cl_link("native_api/ads/ad_like_count_update"); ?>',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						ad_id: adId
+					},
+					success: function(response) {
+						if (response.status == 200) {
+							var likeButton = $('.pt-like[pt-ad-id="' + adId + '"]');
+							var spanElement = likeButton.find('span.num');
+							spanElement.text(response.likes_count);
+						}
+					}
+				})
+			}
+		}
+
+		function share_ad(ad_id) {
+			adId = ad_id;
+
+			if (adId) {
+				$.ajax({
+					url: '<?php echo cl_link("native_api/ads/ad_reshare_count_update"); ?>',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						ad_id: adId
+					},
+					success: function(response) {
+						if (response.status == 200) {
+							var reshareButton = $('.pt-reshare[pt-ad-id="' + adId + '"]');
+							var spanElement = reshareButton.find('span.num');
+							spanElement.text(response.reposts_count);
+						}
+					}
+				})
+			}
+		}
+
+		$(document).on('click', '.post-list-advert', function(event) {
+			if (!$(event.target).hasClass('pt-prevent-click') && !$(event.target).is('svg') && !$(event.target).is('path')) {
+				var adLink = $(this).attr('pt-ad-link');
+				var adId = $(this).attr('data-ad');
+				console.log(adLink);
+				console.log(adId);
+				if (adLink) {
+					window.location.href = adLink;
+					$.ajax({
+						url: '<?php echo cl_link("native_api/ads/view_count_update"); ?>',
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							ad_id: adId
+						},
+						success: function(response) {
+							if (response.status == 200) {
+								var viewButton = $('.pt-views[pt-ad-id="' + adId + '"]');
+								var spanElement = viewButton.find('span.num');
+								spanElement.text(response.views_count);
+							}
+						}
+					})
+				}
+			}
+		});
+
+		$(document).on('click', '.pt-ad-view-count', function(event) {
+			var adLink = $(this).attr('pt-ad-link');
+			var adId = $(this).attr('data-ad');
+			if (adLink) {
+				$.ajax({
+					url: '<?php echo cl_link("native_api/ads/view_count_update"); ?>',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						ad_id: adId
+					},
+					success: function(response) {
+						if (response.status == 200) {
+							var viewButton = $('.pt-views[pt-ad-id="' + adId + '"]');
+							var spanElement = viewButton.find('span.num');
+							spanElement.text(response.views_count);
+						}
+					}
+				})
+			}
+		});
+	</script>
+	
 </body>
 
 </html>

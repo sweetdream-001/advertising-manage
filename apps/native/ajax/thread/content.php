@@ -10,6 +10,9 @@
 # @*************************************************************************@
 
 require_once(cl_full_path("core/apps/thread/app_ctrl.php"));
+// 28 april
+require_once(cl_full_path("core/components/user.php"));
+require_once(cl_full_path("core/components/post.php"));
 
 if ($action == 'load_thread_replys') {
 	$data['err_code'] = 0;
@@ -31,5 +34,37 @@ if ($action == 'load_thread_replys') {
 			$data['status'] = 200;
 			$data['html']   = implode("", $html_arr);
 		}
+    }
+}
+// 28 april
+elseif($action == 'view_count_update') {
+	$data['err_code'] = 0;
+    $data['status']   = 400;
+    $PostId           = fetch_or_get($_POST['post_id'], 0);
+	
+    if (is_posnum($PostId)) {
+		
+		$postData	=	cl_raw_post_data($PostId);
+		
+		if (not_empty($postData)) {
+			
+			$data['status'] = 200;
+			
+			// $views   = cl_session('post_view');
+			
+			// if (is_array($views) != true) {
+			// 	$views = array();
+			// }
+			// if (in_array($PostId, $views) != true) {
+			// 	array_push($views, $PostId);
+			
+			// 	cl_session('post_view', $views);
+			
+			// }
+			if(cl_update_post_data($PostId, array('views' => ($postData['views'] += 1)))){
+				$postData = cl_raw_post_data($PostId);
+			}
+		}
+		$data['data'] = $postData['views'];
     }
 }

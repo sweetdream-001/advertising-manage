@@ -26,6 +26,7 @@ function cl_create_orphan_post($user_id = null, $type = "text") {
 }
 
 function cl_get_orphan_post($id = null) {
+	//exit("Here1");
 	global $db;
 
 	if (not_num($id)) {
@@ -357,6 +358,9 @@ function cl_update_thread_replys($id = false, $count = "plus") {
 }
 
 function cl_post_data($post = array()) {
+
+	//echo "<pre>";print_r($post);
+	
 	global $cl;
 
 	if (empty($post)) {
@@ -547,6 +551,8 @@ function cl_post_data($post = array()) {
 			cl_recursive_delete_post($post['id']);
 		}
 	}
+
+	//echo "<pre>";print_r($post);exit("IAM");
 
 	return $post;
 }
@@ -827,3 +833,211 @@ function cl_is_poll_voted($poll = array()) {
 
 	return 0;
 }
+
+// new code 8 april updated
+
+function youTubeToText($url)
+{
+	if(empty($url) || is_url($url)) {
+
+		$og_url    = fetch_or_get($url, "");
+
+		try {
+
+			require_once(cl_full_path("core/libs/htmlParser/simple_html_dom.php"));
+
+			$og_data_object = file_get_html($og_url);
+
+			if ($og_data_object) {
+				$og_data_values = array(
+					"title" => "",
+					"description" => "",
+					"image" => "",
+					"type" => ""
+				);
+
+				foreach(array_keys($og_data_values) as $og_val) {
+					if ($og_val == "title") {
+						if ($og_data_object->find('title', 0)) {
+							$og_data_values["title"] = $og_data_object->find('title', 0)->plaintext;
+						}
+
+						else if ($og_data_object->find("meta[name='og:title']", 0)) {
+							$og_data_values["title"] = $og_data_object->find("meta[name='og:title']", 0)->content;
+						}
+					}
+
+					else if($og_val == "description") {
+						if ($og_data_object->find("meta[name='description']", 0)) {
+							$og_data_values["description"] = $og_data_object->find("meta[name='description']", 0)->content;
+						}
+
+						else if($og_data_object->find("meta[property='og:description']", 0)) {
+							$og_data_values["description"] = $og_data_object->find("meta[property='og:description']", 0)->content;
+						}
+					}
+
+					else if($og_val == "image") {
+						if($og_data_object->find("meta[name='image']", 0)) {
+							$og_data_values["image"] = $og_data_object->find("meta[name='image']", 0)->content;
+						}
+
+						else if($og_data_object->find("meta[property='og:image']", 0)) {
+							$og_data_values["image"] = $og_data_object->find("meta[property='og:image']", 0)->content;
+						}
+					}
+
+					else if($og_val == "type") {
+						if($og_data_object->find("meta[property='og:type']", 0)) {
+							$og_data_values["type"] = $og_data_object->find("meta[property='og:type']", 0)->content;
+						}
+
+						else if($og_data_object->find("meta[name='type']", 0)) {
+							$og_data_values["type"] = $og_data_object->find("meta[name='type']", 0)->content;
+						}
+					} 
+				}
+
+				$og_data_values = array(
+					'title'       => cl_croptxt($og_data_values["title"], 160, '..'),
+					'description' => cl_croptxt($og_data_values["description"], 300, '..'),
+					'image'       => $og_data_values["image"],
+					'type'        => $og_data_values["type"],
+					'url'         => $og_url
+				);
+
+				if (not_empty($og_data_values['title'])) {
+					$data['status']  = 200;
+					$data['og_data'] = $og_data_values;
+					return $data;
+				}
+			}
+		} 
+
+		catch (Exception $e) {
+			/*pass*/ 
+			$data['status']  = 400;
+			$data['og_data'] = $e->getMessage();
+			return $data;
+		}
+	}
+
+}
+	
+	function concatUrlWithText($text,$url){
+
+		$pattern = '/(https?:\/\/[^\s]+)/';
+		$urls = []; // Initialize an empty array to store URLs
+	
+		if (preg_match_all($pattern, $text, $matches)) {
+			// Check if any URLs were matched
+			if (!empty($matches[0])) {
+				// $matches[0] contains an array of matched URLs
+				$urls = $matches[0];
+			}
+		}
+		// Check if any URLs were found
+		if (!empty($urls)) {
+	
+			$youtub_url = $urls[0]; // Get the first matched URL
+			$update['type']= "text";
+	
+		}
+
+	}
+
+
+	function concatUrlWithTextNew($text, $url) {
+		$pattern = '/(https?:\/\/[^\s]+)/';
+		$urls = []; // Initialize an empty array to store URLs
+	
+		if (preg_match_all($pattern, $text, $matches)) {
+			// Check if any URLs were matched
+			if (!empty($matches[0])) {
+				// $matches[0] contains an array of matched URLs
+				$urls = $matches[0];
+			}
+		}
+
+		
+
+		// Check if any URLs were found
+		if (!empty($urls) && !empty($url)) {
+			// Remove all URLs from the text
+			$text = preg_replace($pattern, '', $text);
+	
+			// Concatenate the URL with the text
+			$newText = $text . ' ' . $urls;
+
+			// $text .= ' ' . $url;
+		}
+		return $newText;
+
+		// return $text;
+	}
+
+	function removeMultip($text){
+		$pattern = '/(https?:\/\/[^\s]+)/';
+		$urls = []; // Initialize an empty array to store URLs
+	
+		if (preg_match_all($pattern, $text, $matches)) {
+			// Check if any URLs were matched
+			if (!empty($matches[0])) {
+				// $matches[0] contains an array of matched URLs
+				$urls = $matches[0];
+				// Get the first matched URL
+				$firstUrl = $urls[0];
+				// Remove all URLs except the first one
+				$text = preg_replace($pattern, "", $text);
+				// Replace the first URL back into the text
+				$text = str_replace($firstUrl, '', $text) . $firstUrl;
+				return $text;
+			}
+		}
+		return false;
+	}
+	
+	function concatUrlWithText1($text, $url) {
+		$pattern = '/(https?:\/\/[^\s&]+)/';
+		// $textWithoutUrls = preg_replace($pattern, '', $text);
+		// $newText = $textWithoutUrls . ' ' . $url;
+		$newText = preg_replace($pattern, $url, $text);
+
+		$text = $newText . " ". $url;
+		return $text;
+	}
+
+	function getYoutubeVideoIdS($url) {
+		$pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+		preg_match($pattern, $url, $matches);
+	
+		if (isset($matches[1])) {
+			return $matches[1];
+		} else {
+			return '';
+		}
+	}
+
+	function replaceUrlsWithNewOne($text, $newUrl){
+		$pattern = '/(https?:\/\/[^\s]+)/';
+		// Replace all URLs in the text with the new URL
+		$text = preg_replace($pattern, $newUrl, $text);
+		return $text;
+	}
+
+	function removeUrls($text,$newUrl){
+		$pattern 	= '/(https?:\/\/[^\s]+)/';
+		// Remove all URLs from the text
+		$text 		= preg_replace($pattern, '', $text);
+
+		$onlyText	=	rtrim($text);
+		return $onlyText." ".$newUrl;
+	}
+
+	function filterText($text){
+		$pattern 	= '/(https?:\/\/[^\s]+)/';
+		// Remove all URLs from the text
+		$text 		= preg_replace($pattern, '', $text);
+
+		return rtrim($text);
+	}

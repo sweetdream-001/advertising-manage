@@ -9,16 +9,21 @@
 # @ Copyright (c) 2020 - 2023 JOOJ Talk. All rights reserved.               @
 # @*************************************************************************@
 
+//echo $action;exit;
+//echo $action;exit("Here123");
+
 if (empty($cl['is_admin'])) {
 	$data['status'] = 400;
     $data['error']  = 'Invalid access token';
 }
+
 
 else if ($action == 'save_settings') {	
 	$data['status']    = 400;
 	$data['err_field'] = null;
 	$raw_configs       = $db->get(T_CONFIGS);
 	$raw_configs       = ((cl_queryset($raw_configs)) ? $raw_configs : array());
+	//echo "<pre>";print_r($raw_configs);exit;
 
 	if ($raw_configs) {
 		require_once(cl_full_path("core/apps/cpanel/settings/app_ctrl.php"));
@@ -969,9 +974,17 @@ else if($action == 'approve_user_ad') {
     if (not_empty($ad_data)) {
         $data['status'] = 200;
 
-        cl_update_ad_data($ad_id, array(
-        	"approved" => "Y"
-        ));
+		if ($ad_data['approved'] == "N") {
+			cl_update_ad_data($ad_id, array(
+				"approved" => "Y"
+			));
+			$data['approved'] = "Y";
+		} else {
+			cl_update_ad_data($ad_id, array(
+				"approved" => "N"
+			));
+			$data['approved'] = "N";
+		}
 
         cl_notify_user(array(
 	        'subject'  => 'ad_approval',
@@ -1504,62 +1517,745 @@ else if ($action == 'delete_posts_data') {
     $db->rawQuery($q);
     $data['id'] = $id;
 }
+// else if ($action == 'update_post') {
+//     $data = $_POST;
+// 	$pattern = '/(https?:\/\/[^\s]+)/';
+// 	$urls = []; // Initialize an empty array to store URLs
+
+// 	if (preg_match_all($pattern, $data['text'], $matches)) {
+// 		// Check if any URLs were matched
+// 		if (!empty($matches[0])) {
+// 			// $matches[0] contains an array of matched URLs
+// 			$urls = $matches[0];
+// 		}
+// 	}
+// 	// Check if any URLs were found
+// 	if (!empty($urls)) {
+
+// 		$youtub_url = $urls[0]; // Get the first matched URL
+// 		$update['type']= "text";
+
+// 	}
+
+// 	if(isset($data['text']) && !empty($data['text'])){
+
+// 		$update['text']				=  $data['text'];
+
+// 	}
+// 	if(isset($data['category_id']) && !empty($data['category_id'])){
+
+// 		$update['category_id']				=  $data['category_id'];
+
+// 	}
+	
+	
+// 	if(isset($data['id']) && !empty($data['id'])){
+
+// 		$db->where ('id', $data['id']);
+// 		$db->update ('cl_publications', $update);
+// 	}
+// 	if(empty($youtub_url)){
+
+// 		if (isset($_FILES['image'])  && !empty($_FILES['image']['name']) ) {
+// 			$image = $_FILES['image'];
+// 			$fileType = explode('/', $image['type'])[0] ?? 'unknown';
+// 			if ($fileType == 'image') {
+				
+// 				// Process image-related code
+// 				$file_info = array(
+// 					'file'      => $image['tmp_name'],
+// 					'size'      => $image['size'],
+// 					'name'      => $image['name'],
+// 					'type'      => $image['type'],
+// 					'file_type' => 'image',
+// 					'folder'    => 'images',
+// 					'slug'      => 'original',
+// 					'allowed'   => 'jpg,png,jpeg,gif'
+// 				);
+// 				$file_upload = cl_upload($file_info);
+				
+// 				$jsonData = array(
+// 					"image_thumb" => $file_upload['filename']
+// 				);
+// 			} else if ($fileType === 'video') {
+// 				 $file_info      = array(
+// 					'file'      => $image['tmp_name'],
+// 					'size'      => $image['size'],
+// 					'name'      => $image['name'],
+// 					'type'      => $image['type'],
+// 					'file_type' => 'video',
+// 					'folder'    => 'videos',
+// 					'slug'      => 'video_message',
+// 					'allowed'   => 'mp4,mov,3gp,webm',
+// 				);
+		
+// 				$file_upload = cl_upload($file_info);   
+// 				$jsonData = array(
+// 					"video_thumb" => $file_upload['filename']
+// 				);
+// 			}
+	
+// 			$q = "UPDATE `cl_publications` SET `type` = '"  . $fileType ."' WHERE `cl_publications`.`id` = ". $data['id'];
+// 			$resp1 = $db->rawQuery($q);
+		   
+	
+// 			$isExist = $db->rawQuery("SELECT * FROM `cl_pubmedia` where pub_id= ". $data['id']);
+	
+// 			if(isset($isExist) && !empty($isExist)){
+	
+// 				$q2 = "UPDATE `cl_pubmedia` SET 
+// 					`type` = '"  . $fileType . "', 
+// 					`src` = '"  . $file_upload['filename'] . "' ,
+// 					`json_data` = '"  . json_encode($jsonData) . "' 
+// 					WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+// 					// print_r($q2);die;
+				
+// 				// Execute the queries
+// 				$resp2 = $db->rawQuery($q2);
+// 			}else{
+	
+	
+// 				$db->rawQuery("INSERT INTO `cl_pubmedia` (`pub_id`, `type`, `src`, `json_data`, `time`) VALUES ('".$data['id']."', '".$fileType."', '".$file_upload['filename']."', '".json_encode($jsonData) ."','".time()."')");
+// 			}
+// 			 // Update the cl_pubmedia table
+			
+			
+// 		}
+		
+// 		if(isset($data['yt']) && !empty($data['yt'])) {
+			
+// 			 function getYoutubeVideoId($url) {
+// 				$pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+// 				preg_match($pattern, $url, $matches);
+			
+// 				if (isset($matches[1])) {
+// 					return $matches[1];
+// 				} else {
+// 					return 'notFound';
+// 				}
+// 			}
+// 			// new code paramjeet singh
+	
+// 			$isExist = $db->rawQuery("SELECT * FROM `cl_pubmedia` where pub_id= ". $data['id']);
+	
+// 			if(isset($isExist) && !empty($isExist)){
+	
+// 				$q2 = "UPDATE `cl_pubmedia` SET 
+// 				`src` = '"  . getYoutubeVideoId($data['yt']) . "' , `type`='yt' , `json_data`='[]'
+// 				 WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+	
+// 				 $resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "yt" WHERE `id`="'.$data['id'].'" ');
+			 
+// 			 // Execute the queries
+// 			 $resp2 = $db->rawQuery($q2);
+// 			}else{
+	
+// 				$db->rawQuery("INSERT INTO `cl_pubmedia` (`pub_id`, `type`, `src`, `time`) VALUES ('".$data['id']."', 'yt', '".getYoutubeVideoId($data['yt'])."','".time()."')");
+// 				$resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "yt" WHERE `id`="'.$data['id'].'" ');
+	
+// 			}
+
+// 			$q = "UPDATE `cl_publications` SET `type` = 'yt' WHERE `cl_publications`.`id` = ". $data['id'];
+// 			$resp1 = $db->rawQuery($q);
+				
+// 		}
+		
+// 	}else{
+
+//         $og_url    	= 	fetch_or_get($youtub_url, "");
+
+//             try {
+//                 require_once(cl_full_path("core/libs/htmlParser/simple_html_dom.php"));
+
+//                 $og_data_object = file_get_html($og_url);
+
+//                 if ($og_data_object) {
+//                     $og_data_values = array(
+//                         "title" => "",
+//                         "description" => "",
+//                         "image" => "",
+//                         "type" => ""
+//                     );
+
+//                     foreach(array_keys($og_data_values) as $og_val) {
+//                         if ($og_val == "title") {
+//                             if ($og_data_object->find('title', 0)) {
+//                                 $og_data_values["title"] = $og_data_object->find('title', 0)->plaintext;
+//                             }
+
+//                             else if ($og_data_object->find("meta[name='og:title']", 0)) {
+//                                 $og_data_values["title"] = $og_data_object->find("meta[name='og:title']", 0)->content;
+//                             }
+//                         }
+
+//                         else if($og_val == "description") {
+//                             if ($og_data_object->find("meta[name='description']", 0)) {
+//                                 $og_data_values["description"] = $og_data_object->find("meta[name='description']", 0)->content;
+//                             }
+
+//                             else if($og_data_object->find("meta[property='og:description']", 0)) {
+//                                 $og_data_values["description"] = $og_data_object->find("meta[property='og:description']", 0)->content;
+//                             }
+//                         }
+
+//                         else if($og_val == "image") {
+//                             if($og_data_object->find("meta[name='image']", 0)) {
+//                                 $og_data_values["image"] = $og_data_object->find("meta[name='image']", 0)->content;
+//                             }
+
+//                             else if($og_data_object->find("meta[property='og:image']", 0)) {
+//                                 $og_data_values["image"] = $og_data_object->find("meta[property='og:image']", 0)->content;
+//                             }
+//                         }
+
+//                         else if($og_val == "type") {
+//                             if($og_data_object->find("meta[property='og:type']", 0)) {
+//                                 $og_data_values["type"] = $og_data_object->find("meta[property='og:type']", 0)->content;
+//                             }
+
+//                             else if($og_data_object->find("meta[name='type']", 0)) {
+//                                 $og_data_values["type"] = $og_data_object->find("meta[name='type']", 0)->content;
+//                             }
+//                         } 
+//                     }
+
+//                     $og_data_values = array(
+//                         'title'       => cl_croptxt($og_data_values["title"], 160, '..'),
+//                         'description' => cl_croptxt($og_data_values["description"], 300, '..'),
+//                         'image'       => $og_data_values["image"],
+//                         'type'        => $og_data_values["type"],
+//                         'url'         => $og_url
+//                     );
+
+// 					if (not_empty($og_data_values['title'])) {
+	
+// 						$db->where ('id', $data['id']);
+// 						$db->update ('cl_publications', ['og_data'=>json_encode($og_data_values)]);
+
+// 					}
+//                 }
+//             } 
+//             catch (Exception $e) {
+//                 /*pass*/ 
+//             }
+        
+// 		$resp1 = $db->rawQuery('DELETE FROM `cl_pubmedia` WHERE `pub_id`="'.$data['id'].'"');
+
+// 	}
+
+//     // $q = "UPDATE `cl_publications` SET `text` = '". $text . "', `category_id` = '"  . $category_id. "' WHERE `id` = '". $id."'";
+	
+//     // $resp1 = $db->rawQuery($e);
+
+	
+//       // Check if 'image' is present in $_FILES
+   
+
+//     if(isset($_POST['deleteVideo']) && !empty($_POST['deleteVideo'])) {
+//         $resp1 = $db->rawQuery('DELETE FROM `cl_pubmedia` WHERE `pub_id`="'.$_POST['deleteVideo'].'"');
+        
+//         $resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "text" WHERE `id`="'.$_POST['deleteVideo'].'" ');
+        
+//     }
+    
+//     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/talk/admin_panel/posts_pages'; // Set a default URL if the referer is not available
+//     header("Location: $referer");
+//     exit(); // Make sure to exit after sending the header to prevent further execution
+
+// }
+// new code 8 april
 else if ($action == 'update_post') {
-    $data = $_POST;
-    
-    // Update the cl_publications table
-    $q = "UPDATE `cl_publications` SET `text` = '"  . $data['text'] . "', `category_id` = '"  . $data['category_id'] . "' WHERE `cl_publications`.`id` = ". $data['id'];
-    $resp1 = $db->rawQuery($q);
-    
-      // Check if 'image' is present in $_FILES
-    if (isset($_FILES['image'])  && !empty($_FILES['image']['name']) ) {
-        $image = $_FILES['image'];
-        $fileType = explode('/', $image['type'])[0] ?? 'unknown';
+	// OLD CODE 7 MARCH 
+    // $data = $_POST;
+	// $pattern = '/(https?:\/\/[^\s]+)/';
+	// $urls = []; // Initialize an empty array to store URLs
+
+	// if(isset($data['yt']) && !empty($data['yt'])){
+
+	// 	$data['text']		=	concatUrlWithText1($data['text'],$data['yt']);
+	// 	$data['type']		=	'text';	
+
+	// }else{
+	// 	if (preg_match_all($pattern, $data['text'], $matches)) {
+	// 		// Check if any URLs were matched
+	// 		if (!empty($matches[0])) {
+	// 			// $matches[0] contains an array of matched URLs
+	// 			$urls = $matches[0];
+	// 		}
+	// 	}
+	// 	// Check if any URLs were found
+	// 	if (!empty($urls)) {
+	
+	// 		$youtub_url = $urls[0]; // Get the first matched URL
+	// 		$update['type']= "text";
+	// 	}
+	// }
+	// if(isset($data['text']) && !empty($data['text'])){
+	// 	$update['text']				=  $data['text'];
+	// }
+	// if(isset($data['category_id']) && !empty($data['category_id'])){
+	// 	$update['category_id']				=  $data['category_id'];
+	// }
+	// if(isset($data['id']) && !empty($data['id'])){
+
+	// 	$db->where ('id', $data['id']);
+	// 	$db->update ('cl_publications', $update);
+	// }
+	// if(empty($youtub_url)){
+
+	// 	if (isset($_FILES['image'])  && !empty($_FILES['image']['name']) ) {
+	// 		$image = $_FILES['image'];
+	// 		$fileType = explode('/', $image['type'])[0] ?? 'unknown';
+	// 		if ($fileType == 'image') {
+				
+	// 			// Process image-related code
+	// 			$file_info = array(
+	// 				'file'      => $image['tmp_name'],
+	// 				'size'      => $image['size'],
+	// 				'name'      => $image['name'],
+	// 				'type'      => $image['type'],
+	// 				'file_type' => 'image',
+	// 				'folder'    => 'images',
+	// 				'slug'      => 'original',
+	// 				'allowed'   => 'jpg,png,jpeg,gif'
+	// 			);
+	// 			$file_upload = cl_upload($file_info);
+				
+	// 			$jsonData = array(
+	// 				"image_thumb" => $file_upload['filename']
+	// 			);
+	// 		} else if ($fileType === 'video') {
+	// 			 $file_info      = array(
+	// 				'file'      => $image['tmp_name'],
+	// 				'size'      => $image['size'],
+	// 				'name'      => $image['name'],
+	// 				'type'      => $image['type'],
+	// 				'file_type' => 'video',
+	// 				'folder'    => 'videos',
+	// 				'slug'      => 'video_message',
+	// 				'allowed'   => 'mp4,mov,3gp,webm',
+	// 			);
+		
+	// 			$file_upload = cl_upload($file_info);   
+	// 			$jsonData = array(
+	// 				"video_thumb" => $file_upload['filename']
+	// 			);
+	// 		}
+	
+	// 		$q = "UPDATE `cl_publications` SET `type` = '"  . $fileType ."' WHERE `cl_publications`.`id` = ". $data['id'];
+	// 		$resp1 = $db->rawQuery($q);
+		   
+	
+	// 		$isExist = $db->rawQuery("SELECT * FROM `cl_pubmedia` where pub_id= ". $data['id']);
+	
+	// 		if(isset($isExist) && !empty($isExist)){
+	
+	// 			$q2 = "UPDATE `cl_pubmedia` SET 
+	// 				`type` = '"  . $fileType . "', 
+	// 				`src` = '"  . $file_upload['filename'] . "' ,
+	// 				`json_data` = '"  . json_encode($jsonData) . "' 
+	// 				WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+	// 				// print_r($q2);die;
+				
+	// 			// Execute the queries
+	// 			$resp2 = $db->rawQuery($q2);
+	// 		}else{
+	
+	
+	// 			$db->rawQuery("INSERT INTO `cl_pubmedia` (`pub_id`, `type`, `src`, `json_data`, `time`) VALUES ('".$data['id']."', '".$fileType."', '".$file_upload['filename']."', '".json_encode($jsonData) ."','".time()."')");
+	// 		}
+	// 		 // Update the cl_pubmedia table
+			
+			
+	// 	}
+		
+	// 	if(isset($data['yt']) && !empty($data['yt'])) {
+			
+	// 		function getYoutubeVideoId($url) {
+	// 			$pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+	// 			preg_match($pattern, $url, $matches);
+			
+	// 			if (isset($matches[1])) {
+	// 				return $matches[1];
+	// 			} else {
+	// 				return 'notFound';
+	// 			}
+	// 		}
+	// 		// new code paramjeet singh
+	
+	// 		$isExist = $db->rawQuery("SELECT * FROM `cl_pubmedia` where pub_id= ". $data['id']);
+	
+	// 		if(isset($isExist) && !empty($isExist)){
+	
+	// 			$q2 = "UPDATE `cl_pubmedia` SET 
+	// 			`src` = '"  . getYoutubeVideoId($data['yt']) . "' , `type`='yt' , `json_data`='[]'
+	// 			 WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+	
+	// 			 $resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "yt" WHERE `id`="'.$data['id'].'" ');
+			 
+	// 		 // Execute the queries
+	// 		 $resp2 = $db->rawQuery($q2);
+	// 		}else{
+	
+	// 			$db->rawQuery("INSERT INTO `cl_pubmedia` (`pub_id`, `type`, `src`, `time`) VALUES ('".$data['id']."', 'yt', '".getYoutubeVideoId($data['yt'])."','".time()."')");
+	// 			$resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "yt" WHERE `id`="'.$data['id'].'" ');
+	
+	// 		}
+
+	// 		$q = "UPDATE `cl_publications` SET `type` = 'yt' WHERE `cl_publications`.`id` = ". $data['id'];
+	// 		$resp1 = $db->rawQuery($q);
+				
+	// 	}
+		
+	// }else{
+
+    //     $og_url    	= 	fetch_or_get($youtub_url, "");
+
+    //         try {
+    //             require_once(cl_full_path("core/libs/htmlParser/simple_html_dom.php"));
+
+    //             $og_data_object = file_get_html($og_url);
+
+    //             if ($og_data_object) {
+    //                 $og_data_values = array(
+    //                     "title" => "",
+    //                     "description" => "",
+    //                     "image" => "",
+    //                     "type" => ""
+    //                 );
+
+    //                 foreach(array_keys($og_data_values) as $og_val) {
+    //                     if ($og_val == "title") {
+    //                         if ($og_data_object->find('title', 0)) {
+    //                             $og_data_values["title"] = $og_data_object->find('title', 0)->plaintext;
+    //                         }
+
+    //                         else if ($og_data_object->find("meta[name='og:title']", 0)) {
+    //                             $og_data_values["title"] = $og_data_object->find("meta[name='og:title']", 0)->content;
+    //                         }
+    //                     }
+
+    //                     else if($og_val == "description") {
+    //                         if ($og_data_object->find("meta[name='description']", 0)) {
+    //                             $og_data_values["description"] = $og_data_object->find("meta[name='description']", 0)->content;
+    //                         }
+
+    //                         else if($og_data_object->find("meta[property='og:description']", 0)) {
+    //                             $og_data_values["description"] = $og_data_object->find("meta[property='og:description']", 0)->content;
+    //                         }
+    //                     }
+
+    //                     else if($og_val == "image") {
+    //                         if($og_data_object->find("meta[name='image']", 0)) {
+    //                             $og_data_values["image"] = $og_data_object->find("meta[name='image']", 0)->content;
+    //                         }
+
+    //                         else if($og_data_object->find("meta[property='og:image']", 0)) {
+    //                             $og_data_values["image"] = $og_data_object->find("meta[property='og:image']", 0)->content;
+    //                         }
+    //                     }
+
+    //                     else if($og_val == "type") {
+    //                         if($og_data_object->find("meta[property='og:type']", 0)) {
+    //                             $og_data_values["type"] = $og_data_object->find("meta[property='og:type']", 0)->content;
+    //                         }
+
+    //                         else if($og_data_object->find("meta[name='type']", 0)) {
+    //                             $og_data_values["type"] = $og_data_object->find("meta[name='type']", 0)->content;
+    //                         }
+    //                     } 
+    //                 }
+
+    //                 $og_data_values = array(
+    //                     'title'       => cl_croptxt($og_data_values["title"], 160, '..'),
+    //                     'description' => cl_croptxt($og_data_values["description"], 300, '..'),
+    //                     'image'       => $og_data_values["image"],
+    //                     'type'        => $og_data_values["type"],
+    //                     'url'         => $og_url
+    //                 );
+
+	// 				if (not_empty($og_data_values['title'])) {
+	
+	// 					$db->where ('id', $data['id']);
+	// 					$db->update ('cl_publications', ['og_data'=>json_encode($og_data_values)]);
+
+	// 				}
+    //             }
+    //         } 
+    //         catch (Exception $e) {
+    //             /*pass*/ 
+    //         }
         
-        if ($fileType === 'image') {
-            // Process image-related code
-            $file_info = array(
-                'file'      => $image['tmp_name'],
-                'size'      => $image['size'],
-                'name'      => $image['name'],
-                'type'      => $image['type'],
-                'file_type' => 'image',
-                'folder'    => 'images',
-                'slug'      => 'original',
-                'allowed'   => 'jpg,png,jpeg,gif'
-            );
-            $file_upload = cl_upload($file_info);
-            $jsonData = array(
-                "image_thumb" => $file_upload['filename']
-            );
-        } else if ($fileType === 'video') {
-             $file_info      = array(
-                'file'      => $image['tmp_name'],
-                'size'      => $image['size'],
-                'name'      => $image['name'],
-                'type'      => $image['type'],
-                'file_type' => 'video',
-                'folder'    => 'videos',
-                'slug'      => 'video_message',
-                'allowed'   => 'mp4,mov,3gp,webm',
-            );
-    
-            $file_upload = cl_upload($file_info);   
-            $jsonData = array(
-                "video_thumb" => $file_upload['filename']
-            );
-        }
-    
-         // Update the cl_pubmedia table
-        $q2 = "UPDATE `cl_pubmedia` SET 
-            `type` = '"  . $fileType . "', 
-            `src` = '"  . $file_upload['filename'] . "' ,
-            `json_data` = '"  . json_encode($jsonData) . "' 
-            WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+	// 	$resp1 = $db->rawQuery('DELETE FROM `cl_pubmedia` WHERE `pub_id`="'.$data['id'].'"');
+
+	// }
+
+	// OLD CODE 7 MARCH
+	// NEW CODE 7 MARCH
+	$data = $_POST;
+
+	// Get Post's Old Data
+	if(isset($data['id']) && !empty($data['id'])){
+		$db->where ('id', $data['id']);
+		$oldData = $db->get(T_PUBS);
+	}
+
+	$pattern = '/(https?:\/\/[^\s]+)/';
+	$urls = [];                         // Initialize an empty array to store URLs
+	$text="";
+	$type="";
+	$youtub_url="";
+	$link_src="";
+	if(isset($data['yt']) && !empty($data['yt'])){
+
+
+		$text				=	removeUrls($data['text'],$data['yt']);
+		$type				=	'text';
+        $youtub_url         =   $data['yt']; // Get the first matched URL
+        $link_src   =   getYoutubeVideoIdS($data['yt']);
+
+	}else{
+
+        // if text contain link
+		if (preg_match_all($pattern, $data['text'], $matches)) {
+			// Check if any URLs were matched
+			if (!empty($matches[0])) {
+				// $matches[0] contains an array of matched URLs
+				$urls = $matches[0];
+			}
+		}
+		// Check if any URLs were found
+		if (!empty($urls)) {
+	
+			$youtub_url         =   $urls[0]; // Get the first matched URL
+			$type     			=   "text";
+            $link_src   		=   getYoutubeVideoIdS($youtub_url);
+
+		} else if ($oldData[0]['type'] == 'image') {
+			$type = $oldData[0]['type'];
+		} else{
+			$type     			=   "text";
+		}
+	}
+
+	if(isset($text) && !empty($text)){
+
+		$update['text']				=  $text;
+
+	}else{
+
+		$update['text']				=  $data['text'];
+	}
+
+	if(isset($type) && !empty($type)){
+		$update['type']	=  $type;
+		
+	}else{
+
+		$update['type']	=  $data['type'];
+	}
+
+	if(isset($link_src) && !empty($link_src)){
+		$update['link_src']				=  $link_src;
+		
+	}else{
+
+		$update['link_src']				=  "";
+	}
+
+	if(isset($data['category_id']) && !empty($data['category_id'])){
+		$update['category_id']				=  $data['category_id'];
+	}
+
+	if(isset($data['id']) && !empty($data['id'])){
+
+		$db->where('id', $data['id']);
+		$db->update(T_PUBS, $update);
+	}
+
+	if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+		$image = $_FILES['image'];
+		$fileType = explode('/', $image['type'])[0] ?? 'unknown';
+		if ($fileType == 'image') {
+			
+			// Process image-related code
+			$file_info = array(
+				'file'      => $image['tmp_name'],
+				'size'      => $image['size'],
+				'name'      => $image['name'],
+				'type'      => $image['type'],
+				'file_type' => 'image',
+				'folder'    => 'images',
+				'slug'      => 'original',
+				'allowed'   => 'jpg,png,jpeg,gif'
+			);
+			$file_upload = cl_upload($file_info);
+			
+			$jsonData = array(
+				"image_thumb" => $file_upload['filename']
+			);
+		} else if ($fileType === 'video') {
+				$file_info      = array(
+				'file'      => $image['tmp_name'],
+				'size'      => $image['size'],
+				'name'      => $image['name'],
+				'type'      => $image['type'],
+				'file_type' => 'video',
+				'folder'    => 'videos',
+				'slug'      => 'video_message',
+				'allowed'   => 'mp4,mov,3gp,webm',
+			);
+
+			$file_upload = cl_upload($file_info);   
+			$jsonData = array(
+				"video_thumb" => $file_upload['filename']
+			);
+		}
+
+		$q = "UPDATE `cl_publications` SET `type` = '"  . $fileType ."',link_src='',`og_data`='',`text` ='".filterText($data['text'])."'  WHERE `cl_publications`.`id` = '". $data['id']."'";
+		$resp1 = $db->rawQuery($q);
+		$isExist = $db->rawQuery("SELECT * FROM `cl_pubmedia` where pub_id= ". $data['id']);
+
+		if(isset($isExist) && !empty($isExist)){
+			$q2 = "UPDATE `cl_pubmedia` SET 
+				`type` = '"  . $fileType . "', 
+				`src` = '"  . $file_upload['filename'] . "' ,
+				`json_data` = '"  . json_encode($jsonData) . "' 
+				WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+			// Execute the querie
+			$resp2 = $db->rawQuery($q2);
+		}else{
+
+			$db->rawQuery("INSERT INTO `cl_pubmedia` (`pub_id`, `type`, `src`, `json_data`, `time`) VALUES ('".$data['id']."', '".$fileType."', '".$file_upload['filename']."', '".json_encode($jsonData) ."','".time()."')");
+		}
+			// Update the cl_pubmedia table
+	}  else {
+		if(isset($youtub_url) && !empty($youtub_url)){
+			$og_url    	= 	fetch_or_get($youtub_url, "");
+				try {
+					require_once(cl_full_path("core/libs/htmlParser/simple_html_dom.php"));
+					$og_data_object = file_get_html($og_url);
+					if ($og_data_object) {
+						$og_data_values = array(
+							"title" => "",
+							"description" => "",
+							"image" => "",
+							"type" => ""
+						);
+
+						foreach(array_keys($og_data_values) as $og_val) {
+							if ($og_val == "title") {
+								if ($og_data_object->find('title', 0)) {
+									$og_data_values["title"] = $og_data_object->find('title', 0)->plaintext;
+								}
+
+								else if ($og_data_object->find("meta[name='og:title']", 0)) {
+									$og_data_values["title"] = $og_data_object->find("meta[name='og:title']", 0)->content;
+								}
+							}
+
+							else if($og_val == "description") {
+								if ($og_data_object->find("meta[name='description']", 0)) {
+									$og_data_values["description"] = $og_data_object->find("meta[name='description']", 0)->content;
+								}
+
+								else if($og_data_object->find("meta[property='og:description']", 0)) {
+									$og_data_values["description"] = $og_data_object->find("meta[property='og:description']", 0)->content;
+								}
+							}
+
+							else if($og_val == "image") {
+								if($og_data_object->find("meta[name='image']", 0)) {
+									$og_data_values["image"] = $og_data_object->find("meta[name='image']", 0)->content;
+								}
+
+								else if($og_data_object->find("meta[property='og:image']", 0)) {
+									$og_data_values["image"] = $og_data_object->find("meta[property='og:image']", 0)->content;
+								}
+							}
+
+							else if($og_val == "type") {
+								if($og_data_object->find("meta[property='og:type']", 0)) {
+									$og_data_values["type"] = $og_data_object->find("meta[property='og:type']", 0)->content;
+								}
+
+								else if($og_data_object->find("meta[name='type']", 0)) {
+									$og_data_values["type"] = $og_data_object->find("meta[name='type']", 0)->content;
+								}
+							} 
+						}
+
+						$og_data_values = array(
+							'title'       => cl_croptxt($og_data_values["title"], 160, '..'),
+							'description' => cl_croptxt($og_data_values["description"], 300, '..'),
+							'image'       => $og_data_values["image"],
+							'type'        => $og_data_values["type"],
+							'url'         => $og_url
+						);
+
+						if (not_empty($og_data_values['title'])) {
+		
+							$db->where ('id', $data['id']);
+							$db->update ('cl_publications', ['og_data'=>json_encode($og_data_values)]);
+
+						}
+					}
+				} 
+				catch (Exception $e) {
+					/*pass*/ 
+				}
+			
+			$resp1 = $db->rawQuery('DELETE FROM `cl_pubmedia` WHERE `pub_id`="'.$data['id'].'"');
+		}
+	}
+		#--------- commented code ---------------- 7APRIL#
+		// if(isset($data['yt']) && !empty($data['yt'])) {
+		//     function getYoutubeVideoId($url) {
+		// 		$pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+		// 		preg_match($pattern, $url, $matches);
+		// 		if (isset($matches[1])) {
+		// 			return $matches[1];
+		// 		} else {
+		// 			return 'notFound';
+		// 		}
+		// 	}
+		// 	$isExist = $db->rawQuery("SELECT * FROM `cl_pubmedia` where pub_id= ". $data['id']);
+		// 	if(isset($isExist) && !empty($isExist)){
+		// 		$q2 = "UPDATE `cl_pubmedia` SET 
+		// 		`src` = '"  . getYoutubeVideoId($data['yt']) . "' , `type`='yt' , `json_data`='[]'
+		// 		 WHERE `cl_pubmedia`.`pub_id` = ". $data['id'];
+		// 		$resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "yt" WHERE `id`="'.$data['id'].'" ');
+		// 	    $resp2 = $db->rawQuery($q2);
+		// 	}else{
+		// 		$db->rawQuery("INSERT INTO `cl_pubmedia` (`pub_id`, `type`, `src`, `time`) VALUES ('".$data['id']."', 'yt', '".getYoutubeVideoId($data['yt'])."','".time()."')");
+		// 		$resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "yt" WHERE `id`="'.$data['id'].'" ');
+		// 	}
+		// 	$q = "UPDATE `cl_publications` SET `type` = 'yt' WHERE `cl_publications`.`id` = ". $data['id'];
+		// 	$resp1 = $db->rawQuery($q);	
+		// }
+		#--------- commented code ---------------- 7APRIL#
+
+	
+	// NEW CODE 7 MARCH
+
+   
+
+    if(isset($_POST['deleteVideo']) && !empty($_POST['deleteVideo'])) {
         
+        #-------- april 20 ----------#
+        $db->where ("id", $data['id']);
+		$user = $db->getOne ("cl_publications");
+		$isExist = $db->rawQuery("SELECT * FROM `cl_publications` where id= ". $data['id']);
+		if(isset($user) && !empty($user)){
+			if(!empty($user['link_src'])){
+				$text	=	filterText($_POST['text']);
+        		$db->rawQuery('UPDATE `cl_publications` SET `text`="'.$text.'" ,`link_src` = "", `og_data`="" WHERE `id`="'.$_POST['deleteVideo'].'" ');
+			}
+		}
+		#--------------------------
+        $resp1 = $db->rawQuery('DELETE FROM `cl_pubmedia` WHERE `pub_id`="'.$_POST['deleteVideo'].'"');
         
-        // Execute the queries
-        $resp2 = $db->rawQuery($q2);
+        $resp1 = $db->rawQuery('UPDATE `cl_publications` SET `type` = "text" WHERE `id`="'.$_POST['deleteVideo'].'" ');
         
     }
     
@@ -1743,16 +2439,47 @@ else if ($action == 'get_sub_categories') {
     $data['data']    = $categories;
 }
 else if ($action == 'get_all_posts_admin') {
-    $data['status']    = 200;
-    $words = $db->rawQuery("
-select cl_publications.*, cl_pubmedia.src, cl_categories.name as category_name, cl_users.username as username from cl_publications 
-left join cl_categories on cl_publications.category_id = cl_categories.id
-inner join cl_users on cl_publications.user_id = cl_users.id
-left join cl_pubmedia on cl_publications.id = cl_pubmedia.pub_id
-where text is not null order by id DESC;
-    ");
+    $data['status'] = 200;
 
-    $data['data'] = $words;  
+    // Set the page and limit values (you can adjust these dynamically via user input)
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Default to page 1 if not provided
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // Default to 10 posts per page if not provided
+    $offset = ($page - 1) * $limit;
+
+    // Modify the query to add LIMIT and OFFSET for pagination
+    $words = $db->rawQuery("
+        SELECT cl_publications.*, cl_pubmedia.src, cl_categories.name as category_name, cl_users.username as username 
+        FROM cl_publications 
+        LEFT JOIN cl_categories ON cl_publications.category_id = cl_categories.id
+        INNER JOIN cl_users ON cl_publications.user_id = cl_users.id
+        LEFT JOIN cl_pubmedia ON cl_publications.id = cl_pubmedia.pub_id
+        WHERE text IS NOT NULL 
+        ORDER BY id DESC 
+        LIMIT $limit OFFSET $offset;
+    ");
+    
+    $posts = [];
+    foreach ($words as $word) {
+        if ($word['og_data'] != '') {
+            $og_data_array = json_decode($word['og_data']);
+            if (array_key_exists('og_data', $word)) {
+                $word['og_data'] = $og_data_array;
+            }
+        }
+        $posts[] = $word;
+    }
+    
+    $data['data'] = $posts;
+
+    // Optional: Add pagination info (total count, pages)
+    $totalPosts = $db->rawQueryOne("SELECT COUNT(*) as count FROM cl_publications WHERE text IS NOT NULL");
+    $totalPages = ceil($totalPosts['count'] / $limit);
+    $data['pagination'] = [
+        'current_page' => $page,
+        'total_pages' => $totalPages,
+        'total_posts' => $totalPosts['count'],
+        'limit' => $limit,
+    ];
 }
 else if ($action == 'search_all_posts_admin') {
     $data['status']    = 200;
@@ -1779,4 +2506,122 @@ where text is not null";
     $words = $db->rawQuery($query);
 
     $data['data'] = $words;  
+}
+
+// IP RESTRICTION CODE
+else if ($action == 'add_restricted_ip') {
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$ipFormData = $_POST['ipFormData'];
+		$pairs = explode('&', $ipFormData);
+		$ipFormData = [];
+		foreach ($pairs as $pair) {
+			list($key, $value) = explode('=', $pair);
+			$ipFormData[urldecode($key)] = urldecode($value);
+		}
+
+		$ip_address = $ipFormData['ip_address'] ?? '';
+		if ($ipFormData['ip_address'] != '') {
+			$query = "INSERT INTO " . T_RESTRICTED_IPS . " (ip_address, time) VALUES ('$ip_address', '" . time() . "')";
+			$ipAddress = $db->query($query);
+			$data['status'] = 200;
+			$data['message'] = cl_translate('IP address saved!');
+		} else {
+			$data['status'] = 400;
+			$data['message'] = cl_translate('IP address in required');
+		}
+	}
+}
+
+else if ($action == 'delete_restricted_ip') {
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$restricted_ip_id = $_POST['id'];
+
+		$db = $db->where('id', $restricted_ip_id);
+		$qr = $db->delete(T_RESTRICTED_IPS);
+
+		if ($qr) {
+			$data['status'] = 200;
+			$data['message'] = cl_translate('IP address is deleted!');
+		} else {
+			$data['status'] = 400;
+			$data['message'] = cl_translate('IP address is not deleted!');
+		}
+	}
+}
+
+else if ($action == 'edit_restricted_ip') {
+	if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+		$restricted_ip_id = $_GET['id'];
+
+		$db = $db->where('id', $restricted_ip_id);
+    	$restricted_ip_data = $db->get(T_RESTRICTED_IPS);
+
+		foreach ($restricted_ip_data as $restricted_ip) {
+			$restricted_ip = $restricted_ip;
+		}
+		
+		if (!empty($restricted_ip_data)) {
+			$data['status'] = 200;
+			$data['data'] = $restricted_ip;
+		} else {
+			$data['status'] = 400;
+			$data['message'] = cl_translate('IP address data not found!');
+		}
+	}
+}
+
+else if ($action == 'update_restricted_ip') {
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$ipEditFormData = $_POST['ipEditFormData'];
+		$pairs = explode('&', $ipEditFormData);
+		$ipEditFormData = [];
+		foreach ($pairs as $pair) {
+			list($key, $value) = explode('=', $pair);
+			$ipEditFormData[urldecode($key)] = urldecode($value);
+		}
+
+		$ip_address = $ipEditFormData['ip_address'] ?? '';
+		$ip_address_id = $ipEditFormData['ip_address_id'] ?? '';
+		if ($ipEditFormData['ip_address'] != '') {
+			$db = $db->where('id', $ip_address_id);
+			$up = $db->update(T_RESTRICTED_IPS, array(
+				'ip_address' => $ip_address
+			));
+			$data['status'] = 200;
+			$data['message'] = cl_translate('IP address edit!');
+		} else {
+			$data['status'] = 400;
+			$data['message'] = cl_translate('IP address in required');
+		}
+	}
+}
+
+else if ($action == 'search_restricted_ip') {
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$query = "SELECT * FROM " . T_RESTRICTED_IPS . " WHERE ip_address LIKE '%" . $_POST['searchIp'] . "%'";
+		$cl['restricted_ips'] = $db->query($query);
+		$html = '<tbody data-an="ads-list" id="restrictedIPsData">';
+			if (not_empty($cl['restricted_ips'])) {
+				foreach ($cl['restricted_ips'] as $cl['li']) {
+					$html .= '<tr>
+								<td scope="row">' . $cl['li']['id'] . '</td>
+								<td>' . $cl['li']['ip_address'] . '</td>
+								<td><time>' . $cl['li']['time'] . '</time></td>
+								<td><div class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_horiz</i></a><div class="dropdown-menu dropdown-menu-right"><a href="javascript:void(0);" class="dropdown-item" onclick="editRestrictiedIp(' . $cl['li']['id'] . ');" ' .cl_translate('Edit') . '</a><a href="javascript:void(0);" class="dropdown-item" onclick="deleteRestrictiedIp(' . $cl['li']['id'] .');">' . cl_translate('Delete') . '</a></ul></div></td>
+							</tr>';
+				}
+			} else {
+				$html .= '<tr>
+							<td colspan="8"><div class="empty-table"><span class="icon"><i class="material-icons">library_books</i></span><h4>No restricted ip found</h4><p>It looks like there are no restricted ip in your database yet. All restricted ip of your website will be displayed here.</p></div></td>
+						</tr>';
+			}
+		$html .= '</tbody>';
+		
+		if ($cl['restricted_ips'] != '') {
+			$data['status'] = 200;
+			$data['html'] = $html;
+		} else {
+			$data['status'] = 400;
+		}
+	}
 }

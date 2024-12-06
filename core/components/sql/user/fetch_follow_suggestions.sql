@@ -24,7 +24,9 @@ SELECT `id`,`followers`,`posts`, `following`, `country_id`, `website`, `avatar`,
 		AND `id` NOT IN (SELECT b2.`user_id` FROM `<?php echo($data['t_blocks']); ?>` b2 WHERE b2.`profile_id` = <?php echo($data['user_id']); ?>)
 	<?php endif; ?>
 
-	ORDER BY `followers` DESC, `posts` DESC
+    
+
+	ORDER BY `<?php echo($data['t_users']); ?>`.id DESC
 
 <?php if($data['offset']): ?>
 	LIMIT <?php echo($data['limit']); ?> OFFSET <?php echo($data['offset']); ?>;

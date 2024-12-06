@@ -24,6 +24,7 @@
 						cs: {
 							company: "",
 							target_url: "",
+							yt: "",
 							description: "",
 							cta: ""
 						}
@@ -57,6 +58,19 @@
 							return false;
 						}
 					},
+				// 	is_invalid_yt: function() {
+				// 		if (this.$v.ad_data.yt.required && this.$v.ad_data.yt.$invalid) {
+				// 			this.fb.cs.yt = "<?php echo cl_translate("The youtube video url you entered does not match the format"); ?>";
+
+				// 			return true;
+				// 		}
+				// 		else {
+
+				// 			this.fb.cs.yt = "";
+
+				// 			return false;
+				// 		}
+				// 	},
 					is_invalid_description: function() {
 						if (this.$v.ad_data.description.required && this.$v.ad_data.description.$invalid) {
 
@@ -125,6 +139,11 @@
 						},
 						target_url: {
 							required: window.validators.required,
+							is_url: window.validators.url,
+							max_length: window.validators.maxLength(1100)
+						},
+						yt: {
+				// 			required: window.validators.required,
 							is_url: window.validators.url,
 							max_length: window.validators.maxLength(1100)
 						},
@@ -229,7 +248,6 @@
 							},
 							success: function(data) {
 								if (data.status == 200) {
-
 									<?php if ($cl['ad_data']['status'] == 'orphan'): ?>
 										cl_bs_notify("<?php echo cl_translate('Your new ad has been successfully created. Please wait..'); ?>");
 									<?php else: ?>
@@ -243,7 +261,10 @@
 										SMColibri.spa_load("<?php echo cl_link('ads/archive'); ?>");
 									}
 								}
-
+                                else if (data.status == 400) {
+                                    _app_.submitting = false;
+									cl_bs_notify(data.err_code);
+								}
 								else {
 									_app_.submitting = false;
 									SMColibri.errorMSG();
@@ -258,6 +279,7 @@
 							hash: "<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>",
 							company: _app_.ad_data.company,
 							target_url: _app_.ad_data.target_url,
+							yt: _app_.ad_data.yt,
 							status: _app_.ad_data.status,
 							audience: _app_.ad_data.audience,
 							description: _app_.ad_data.description,

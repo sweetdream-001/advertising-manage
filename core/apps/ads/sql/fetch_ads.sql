@@ -15,6 +15,8 @@ SELECT * FROM `<?php echo($data['t_ads']); ?>`
 	WHERE `user_id` = <?php echo($data['user_id']); ?>
 
 	AND `status` IN ('active', 'inactive')
+	
+	AND `target` = 'ad'
 
 	<?php if($data['type'] == 'active'): ?>
 		AND `status` = 'active' AND `approved` = 'Y'

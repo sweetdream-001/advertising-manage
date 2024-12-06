@@ -10,6 +10,7 @@
 # @*************************************************************************@
 
 function cl_get_timeline_feed($limit = false, $offset = false, $onset = false) {
+	
 	global $db, $cl, $me;
 
 	if (empty($cl["is_logged"])) {
@@ -28,16 +29,25 @@ function cl_get_timeline_feed($limit = false, $offset = false, $onset = false) {
 		"user_id"   => $me['id'],
 		'cat_id'    => isset($_GET['cat_id']) ? $_GET['cat_id'] : ''
  	));
-
-    // echo var_dump($sql);die;
+//echo $sql;exit("Okay");
+   
 	$query_res = $db->rawQuery($sql);
 	$counter   = 0;
 
+	//  echo "<pre>";
+	//  print_r(cl_get_timeline_ads());exit;
+	
+
+
 	if (cl_queryset($query_res)) {
+
+		$pc = 0;
+
 		foreach ($query_res as $row) {
 			$post_data = cl_raw_post_data($row['publication_id']);
 
-			
+			$counter = $counter + 1;
+			$pc = $pc + 1;
 
 			if (not_empty($post_data) && in_array($post_data['status'], array('active'))) {
 				$post_data['offset_id']   = $row['offset_id'];
@@ -63,37 +73,59 @@ function cl_get_timeline_feed($limit = false, $offset = false, $onset = false) {
 				$data[]             = cl_post_data($post_data);
 			}
 
+			// echo $cl['config']['advertising_system'];
+			// echo "<br>";
+			// echo cl_is_feed_nad_allowed();
+			// echo "<br>";
+			// echo $offset;
+			// exit;
+
+
 			if ($cl['config']['advertising_system'] == 'on') {
 				if (cl_is_feed_nad_allowed()) {
-					if (not_empty($offset)) {
-						if ($counter == 5) {
-							$counter = 0;
+					//if (not_empty($offset)) {
+						if ($counter == 12) {							
 							$ad      = cl_get_timeline_ads();
-
+							// echo "<pre>";
+							// print_r($data);
+							// print_r($ad);
+							//exit;
 							if (not_empty($ad)) {
 								$data[] = $ad;
 							}
+							$counter = 0;
 						}
-						else {
-							$counter += 1;
-						}
-					}
+						
+					//}
 				}
 			}
+
+			// if($pc == 13){
+			// 	echo "<pre>";print_r($data);
+			// 	break;
+			// 	exit("Here");
+
+			// }
+
+
 		}
 
 		if ($cl['config']['advertising_system'] == 'on') {
 			if (cl_is_feed_nad_allowed()) {
-				if (empty($offset)) {
+				//if (empty($offset)) {
 					$ad = cl_get_timeline_ads();
 
 					if (not_empty($ad)) {
 						$data[] = $ad;
 					}
-				}
+				//}
 			}
 		}
 	}
+
+	// echo "<pre>";
+	// print_r($data);
+	// exit;
 
     // echo json_encode($data);die;
 	return $data;
@@ -124,10 +156,14 @@ function cl_timeline_swifts() {
             $row['swift']      = json($row['swift']);
             $row['has_unseen'] = false;
 
+			$pc = 0;
+
             if (is_array($row['swift'])) {
             	$swifts_ls = array();
 
             	foreach ($row['swift'] as $swift_id => $swift_data) {
+
+					$pc = $pc + 1;
 
             		if ($swift_data["status"] == "active" && $swift_data["exp_time"] > time()) {
 	            		if ($swift_data["type"] == "image") {
@@ -169,6 +205,12 @@ function cl_timeline_swifts() {
 
 						array_push($swifts_ls, $swift_data);
 					}
+
+					
+
+
+
+
             	}
 
             	if (not_empty($swifts_ls)) {

@@ -5,21 +5,28 @@
 		<script>
 	        window.catIds = [];
 	    </script>
-		<div class="mainCat" style="background: white;padding: 1px;width: 100%;">
+		<div class="mainCat" style="background: rgb(225, 247, 252);/* padding: 1px; */width: 100%;font-size: 18px;overflow: overlay;height: 70vh;overflow-x: hidden;">
 			<?php foreach ($cl["query_result"] as $cl['li']): ?>
 			    <script>
 			        window.catIds.push("<? echo $cl['li']['id'] ?>");
 			    </script>
-			    <div data-catid="<?php echo $cl['li']['id']?>" class="category" style="width: 100%;margin: 26px;cursor: pointer; margin-bottom: 0px;">
+			    <?php
+    			    if(empty($cl["is_logged"])) {
+    			        $Szlink = 'https://p-tweets.com/talk/feed';
+    			    }else{
+    			        $Szlink = 'https://p-tweets.com/talk/';
+    			    }
+			    ?>
+			    <div onclick="window.location.href='<?php echo $Szlink; ?>?cat_id=<?php echo $cl['li']['id'] ?>'" data-catid="<?php echo $cl['li']['id']?>" class="category" style="width: 100%;margin: 26px;cursor: pointer; margin-bottom: 0px;">
 				    <?php echo $cl['li']['name'] ?> 
 				    <? if (empty($cl["is_logged"])): ?>
-				        <i onclick="window.location.href='https://p-tweets.com/talk/feed?cat_id=<?php echo $cl['li']['id'] ?>'"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M630-444H192v-72h438L429-717l51-51 288 288-288 288-51-51 201-201Z"/></svg></i>
+				        <i onclick="window.location.href='https://p-tweets.com/talk/feed?cat_id=<?php echo $cl['li']['id'] ?>'"></i>
 				    <?php endif; ?>
 				    <? if (!empty($cl["is_logged"])): ?>
-				        <i onclick="window.location.href='https://p-tweets.com/talk/?cat_id=<?php echo $cl['li']['id'] ?>'"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M630-444H192v-72h438L429-717l51-51 288 288-288 288-51-51 201-201Z"/></svg></i>
+				        <i onclick="window.location.href='https://p-tweets.com/talk/?cat_id=<?php echo $cl['li']['id'] ?>'"></i>
 				    <?php endif; ?>
 				</div>
-			    <div class="subCat-<?php echo $cl['li']['id']?>" style="padding: 1px;width: 100%;margin-left: 20px;display:none;padding-bottom: 0px;">
+			    <div class="subCat-<?php echo $cl['li']['id']?>" style="padding: 1px;width: 100%;margin-left: 20px;padding-bottom: 0px;">
 				    <?php foreach ($cl['li']['childs'] as $child): ?>
 				    <? if (empty($cl["is_logged"])): ?>
 				        <div onclick="window.location.href='https://p-tweets.com/talk/feed?cat_id=<?php echo $child['id'] ?>'" class="subcategory" style="width: 100%;margin: 26px;cursor: pointer;"><?php echo $child['name'] ?></div>
@@ -35,16 +42,26 @@
 		<?php endif; ?>
 	</div>
 </div>
-
-
-
 <script>
-    $(function(){
-        $(document).on('click', '.category', function(){
-            window.catIds.forEach((val) => {
-                $('.subCat-'+val).hide();
-            })
-            $('.subCat-'+$(this).data('catid')).toggle();
-        });
-    })
+    // $(function(){
+    //     $(document).on('click', '.category', function(){
+    //         window.catIds.forEach((val) => {
+    //             $('.subCat-'+val).hide();
+    //         })
+    //         $('.subCat-'+$(this).data('catid')).toggle();
+    //     });
+    // })
+</script>
+<style>
+.szLeftCate{
+    font-weight : bold;
+}
+</style>
+<script>
+    $('.szLeftCate').css('font-weight','bold');
+    
+    $(function() {
+        $('.sidebar-v-nav-item').removeClass('active')
+    });
+    
 </script>

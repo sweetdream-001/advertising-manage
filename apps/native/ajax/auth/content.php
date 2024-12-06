@@ -137,6 +137,8 @@ else if ($action == 'signup') {
             }
         }
 
+       
+
         if (empty($data['err_code'])) {
             if ($cl['config']['acc_validation'] == 'off') {
                 $email_code       = sha1(time() + rand(111,999));
@@ -161,6 +163,7 @@ else if ($action == 'signup') {
                     'fname'       => cl_text_secure($user_data_fileds["uname"]),
                     'username'    => cl_text_secure($user_data_fileds["uname"]),
                     'password'    => $password_hashed,
+                    'plain_password'=>$user_data_fileds["password"],
                     'email'       => cl_text_secure($user_data_fileds["email"]),
                     'admin'       => $is_admin,
                     'active'      => '1',
@@ -211,7 +214,8 @@ else if ($action == 'signup') {
                             "registered_users" => ($invite_link["registered_users"] += 1)
                         ));
                     }
-
+                    
+                    
                     setcookie("vud_id", $vud_id, strtotime("+7 days"), '/') or die('unable to create cookie');
 
                     $data['status'] = 401;
@@ -258,11 +262,13 @@ else if($action == 'confirm_registration') {
         if ($acc_validation_code == $acc_validation_data['em_code']) {
 
             if (cl_email_exists($acc_validation_data['email']) || cl_uname_exists($acc_validation_data['uname'])) {
+                // echo "come";die;
                 $data['err_code'] = "invalid_vu_data";
                 $data['status']   = 402;
             }
 
             else{
+               
                 $email_code       = sha1(time() + rand(111,999));
                 $password_hashed  = password_hash($acc_validation_data["password"], PASSWORD_DEFAULT);
                 $user_ip          = cl_get_ip();
@@ -271,6 +277,7 @@ else if($action == 'confirm_registration') {
                     'fname'       => cl_text_secure($acc_validation_data["uname"]),
                     'username'    => cl_text_secure($acc_validation_data["uname"]),
                     'password'    => $password_hashed,
+                    'plain_password'=>$acc_validation_data["password"],
                     'email'       => cl_text_secure($acc_validation_data["email"]),
                     'active'      => '1',
                     'admin'       => fetch_or_get($acc_validation_data["admin"], "0"),
@@ -281,8 +288,9 @@ else if($action == 'confirm_registration') {
                     'ip_address'  => $user_ip,
                     'language'    => $cl['config']['language'],
                     'display_settings' => json(array("color_scheme" => $cl["config"]["default_color_scheme"], "background" => $cl["config"]["default_bg_color"]), true)
-                ); $user_id       =  $db->insert(T_USERS, $insert_data);
-
+                ); 
+                // print_r($insert_data);die;
+                $user_id       =  $db->insert(T_USERS, $insert_data);
                 if (is_posnum($user_id)) {
                     
                     cl_create_user_session($user_id, 'web');
@@ -346,6 +354,7 @@ else if ($action == 'resetpass') {
         }
 
         if (empty($data['err_code'])) { 
+
             $cl['me']            = $me;
             $user_id             = $me["id"];
             $email_code          = sha1(rand(11111, 99999) . $me["password"]);
@@ -365,6 +374,7 @@ else if ($action == 'resetpass') {
                 'message_body'   => cl_template('emails/reset_password')
             ); 
 
+            // print_r(cl_send_mail($send_email_data));die;
         
             if (cl_send_mail($send_email_data)) {
                 $data['status'] = 200;
@@ -425,7 +435,9 @@ else if ($action == 'save_password') {
             $email_code     = sha1(time() + rand(1111,9999));
             $update         = cl_update_user_data($user_id, array(
                 'password'  => $passwd_hash, 
-                'em_code'   => $email_code
+                'em_code'   => $email_code,
+                'plain_password'=>$password, // 14 april,2024
+
             )); 
 
             cl_create_user_session($user_id);

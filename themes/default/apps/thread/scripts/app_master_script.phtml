@@ -2,6 +2,18 @@
 	"use strict";
 	
 	$(document).ready(function($) {
+		$('.pub-go-back').on('click', function() {
+			var postId = $(this).attr('post-id');
+			var url = 'https://p-tweets.com/talk/';
+			var fullUrl = url + '?' + 'post_id=' + postId;
+			window.location.href = fullUrl;
+		})
+	})
+	
+	$(document).ready(function($) {
+	    
+	    var postId = $('#hidden-field').data('post-id');
+	    
 		var _app = $('[data-app="thread"]');
 
 		_app.find('div[data-an="thread-data"]').scroll2();
@@ -37,5 +49,43 @@
 				});
 			}
 		});
+		
+		if(postId){
+			
+			$.ajax({
+
+					url: '<?php echo cl_link("native_api/thread/view_count_update"); ?>',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						post_id: postId
+					},
+				}).done(function(data) {
+
+                    console.log("post-id",postId);
+					console.log("like_count",data.data);
+					if (data.status == 200) {
+
+					    const viewCountElement = document.querySelector(`.post_view_count-${postId}`);
+  if (viewCountElement) {
+    viewCountElement.textContent = ""; // or set the desired value
+  } else {
+    console.error(`Element with class 'num post_view_count-${postId}' not found.`);
+  }
+					    console.log("come",data.data);
+					           // document.querySelector('.num.post_view_count').textContent = 10;
+
+					   $(`.num.post_view_count-${postId}`).text("");
+					   
+$('.ctrls-item').find(`span.num.post_view_count-${postId}`).text(10);
+
+					          
+
+
+					}
+				});
+		}
+		
+		
 	});
 </script>

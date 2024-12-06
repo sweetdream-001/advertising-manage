@@ -71,13 +71,18 @@
 			<!-- End Post Privacy -->
 			<div class="input-holder">
 				<textarea ref="text_input" v-on:input.trim="text_input_trigger" v-on:blur="text_blur_trigger"
-					class="autoresize" v-model="text" name="post_text" v-bind:placeholder="text_ph"></textarea>
+					class="autoresize" v-model="text" name="post_text" placeholder="Select Category first then type your tweet here!"></textarea>
 					<div>
-                      <select id="categorySelect" class="categorySelect" style="padding: 10px;">
+                      <select id="categorySelect" name="cat_id" class="categorySelect sz_post_cate" style="padding: 10px;" <?php if (isset($_GET['thread_id']) && !empty($_GET['thread_id'])) { echo 'disabled'; } ?>>
                         <option value="">Select category...</option>
                       </select>
                     </div>
 			</div>
+			
+		<div class="input-holder mt-2 mb-2">
+			    <input type="text" name="yt" id="yt-input-id" class="form-control yt-input"  placeholder="Youtube link text" style="display:none;">
+			</div>
+			
 			<div class="input-autocomplete" v-if="hashtags.tags.length">
 				<div class="input-autocomplete__hashtags">
 					<div class="input-autocomplete__hashtags-list">
@@ -510,11 +515,20 @@
 					v-bind:disabled="image_ctrl != true">
 					<?php echo cl_ikon("image"); ?>
 				</button>
+				
+				
+				
+				
+				<!-- 21 april -->
 				<button type="button" class="ctrl-item" data-toggle="tooltip" data-placement="bottom"
-					title="<?php echo cl_translate("Video"); ?>" v-on:click="select_video"
+					title="<?php echo cl_translate("Video"); ?>" onclick="toggleInputVisibility(<?= $cl['pb_id'] ;?>)"
 					v-bind:disabled="video_ctrl != true">
 					<?php echo cl_ikon("film"); ?>
 				</button>
+				
+				
+				
+				
 				<button type="button" class="ctrl-item" data-toggle="tooltip" data-placement="bottom"
 					title="<?php echo cl_translate("Music"); ?>" v-on:click="select_music"
 					v-bind:disabled="music_ctrl != true">
@@ -554,7 +568,7 @@
 				</button>
 				
 				<button type="button" class="ctrl-item" data-toggle="tooltip" data-placement="bottom"
-					title="URL shortner" onclick="window.open('https://cutt.ly/')">
+					title="URL shortner" onclick="window.open('https://free-url-shortener.rb.gy/')">
 					<?php echo cl_icon('ads_click'); ?>
 				</button>
 				
@@ -585,6 +599,31 @@
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip()
 	});
+	
+	function toggleInputVisibility(id) {
+		
+		var formClass = "vue-pubbox-app-" + id;
+		var formElement = document.getElementById(formClass);
+		if (formElement) {
+    		var ytInputElement = formElement.querySelector(".yt-input");
+			if (ytInputElement) {
+				// Check the current display style of ytInputElement
+				var currentDisplay = window.getComputedStyle(ytInputElement).getPropertyValue('display');
+
+				// Toggle the display style based on its current value
+				if (currentDisplay === 'none') {
+
+					ytInputElement.style.display = 'block';
+				} else {
+					ytInputElement.style.display = 'none';
+				}
+			} else {
+				console.error("Element with class 'yt-input' not found inside formElement.");
+			}
+		} else {
+			console.error("Element with ID 'vue-pubbox-app-2' not found in the document.");
+		}
+	}
 </script>
 <style>
 	/* Og Data */
@@ -1002,3 +1041,22 @@
 		transform: scale(1.2);
 	}
 </style>
+<script>
+            // $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_categories', function(data) {
+        $.get('{%config url%}/native_api/home/get_all_categories', function(data) {
+          // Handle the response data here
+          console.log(data);
+              let jsonData = data.data;
+              const $categorySelect = $('.sz_post_cate');
+
+              // Add options to select box
+                jsonData.forEach(category => {
+                    const indentation = category.parent_id !== null ? '&nbsp;&nbsp;&nbsp;' : '';
+                    $categorySelect.append(`<option value="${category.id}">${indentation}${category.name}</option>`);
+                });
+        })
+        .fail(function(error) {
+          // Handle the error here
+          console.error(error);
+        });
+</script>

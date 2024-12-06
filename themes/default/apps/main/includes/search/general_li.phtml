@@ -1,5 +1,7 @@
 <div class="search-result__list-item search-result__list-item_user">
-    <a href="<?php echo($cl['li']['url']); ?>" data-spa="true">
+<?php $url = isset($cl['li']['url']) ? $cl['li']['url'] : '#'; ?>
+
+    <a href="<?php echo $url; ?>" data-spa="true">
         <div class="result-item-data">
             <div class="result-item-data__avatar">
                 <div class="avatar">
@@ -24,7 +26,7 @@
 					</span>
                 </div>
                 <div class="result-item-data__botline" style="color: var(--cl-primary-text-color);font-size: 16px;padding-top: 7px;">
-                    <?php echo(strip_tags($cl['li']['text'])); ?>
+                    <?= strip_tags($cl['li']['text'] ?? '') ?>
                 </div>
             </div>
         </div>

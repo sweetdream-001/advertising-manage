@@ -26,9 +26,18 @@
 				</div>
 			</div>
 			<div class="form-info-label">
-                <?php echo cl_translate("The cover of your advertisement should be as catchy as possible for the client's attention and have a clear and concise offer for the client"); ?>
+                <?php echo cl_translate("&nbsp;The cover of your advertisement should be as catchy as possible for the clients attention and have a clear and concise offer for the client or add a youtube video url if you want to show the video"); ?>
             </div>
-		</div>	
+		</div>
+		<div class="form-group">
+			<label>
+				<?php echo cl_translate("Youtube Video URL"); ?>
+			</label>
+			<input v-model="$v.ad_data.yt.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter the youtube video URL of your ad"); ?>">
+			<!--<div v-if="is_invalid_yt" class="invalid-main-feedback">-->
+			<!--	{{fb.cs.yt}}-->
+			<!--</div>-->
+		</div>
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
@@ -111,9 +120,9 @@
 		</div>
 		<div class="form-group">
 			<label>
-				CTA
+				<?php echo cl_translate("Call To Action"); ?>
 			</label>
-			<input v-model="$v.ad_data.cta.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter the CTA of your ad. E.g. (Take our free trial)"); ?>">
+			<input v-model="$v.ad_data.cta.$model" type="text" class="form-control" placeholder="<?php echo cl_translate("Enter the call to action of your ad. E.g. (Take our free trial)"); ?>">
 			<div v-if="is_invalid_cta" class="invalid-main-feedback">
 				{{fb.cs.cta}}
 			</div>

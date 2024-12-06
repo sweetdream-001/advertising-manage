@@ -9,6 +9,8 @@
 			event.preventDefault();
 
 			var _form = $(this);
+			//alert("here");
+			//console.log(_form);
 			
 			_form.ajaxSubmit({
 				url: '<?php echo cl_link("native_api/cpanel/save_settings"); ?>',

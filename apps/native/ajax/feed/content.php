@@ -24,7 +24,7 @@ if ($action == 'load_more') {
 
             require_once(cl_full_path("core/apps/feed/app_ctrl.php"));
         	
-        	$feed_ls = cl_get_guest_feed($offset, 30);
+        	$feed_ls = cl_get_guest_feed($offset, 3000);
 
         	if (not_empty($feed_ls)) {
     			foreach ($feed_ls as $cl['li']) {

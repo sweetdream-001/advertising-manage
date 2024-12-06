@@ -1,13 +1,13 @@
-<div class="post-list-advert" data-ad="<?php echo $cl['li']['id']; ?>">
+<div class="post-list-advert" data-ad="<?php echo $cl['li']['id']; ?>" pt-ad-link="<?php echo(cl_link('ad_thread/'.$cl['li']['id'])); ?>">
 	<div class="post-list-advert__header">
 	<div class="publisher-avatar">
 			<div class="avatar-holder">
-				<img class="lozad" data-src="<?php echo($cl['li']['owner']['avatar']); ?>">
+				<img class="lozad pt-prevent-click pt-post-view-count" data-src="<?php echo($cl['li']['owner']['avatar']); ?>">
 			</div> 
 		</div>
 		<div class="post-list-advert__sponsor">
 			<?php echo cl_translate("Sponsored by"); ?> 
-			<a href="<?php echo($cl['li']['owner']['url']); ?>" data-spa="true">
+			<a href="<?php echo(@$cl['li']['owner']['url']); ?>" data-spa="true">
 				<span class="user-name-holder">
 					<span class="user-name-holder__name">
 						<?php echo($cl['li']['owner']['name']); ?>
@@ -26,89 +26,197 @@
 			<?php echo $cl['li']['time']; ?>
 		</div>
 	</div>
-	<div class="post-list-advert__body">
-		<div class="post-list-advert__text">
+	<div style="background: #ffff" class="post-list-advert__body post-list-item pt-active-div"  <?php if (not_empty($cl["is_logged"])) {echo 'pt-post-link=' . @$cl['li']['url'];} else {echo 'data-toggle="modal" data-target="#loginModal"';}?> pt-post-id="<?php echo $cl['li']['id']; ?>" >
+		<div class="post-list-advert__text" >
+
+		<div class="publication-text">
 			<h4>
-				<?php echo $cl['li']['company']; ?>
-			</h4>
+				<?php
+				if(isset($cl['li']['company']) && !empty($cl['li']['company']) ){
+				 echo $cl['li']['company']; 
+				}
+				 ?>
+			</h4>	 
+			
 			<p>
-				<?php echo $cl['li']['description']; ?>
+				<?php 
+				    if(isset($cl['li']['description']) && !empty($cl['li']['description']) ){
+						echo $cl['li']['description']; 
+					}
+				?>
 			</p>
+			</div>	
 		</div>
-		<div class="post-list-advert__image">
+		<?php if (not_empty($cl['li']['og_data'])): ?>
+
+		<?php
+		 /*
+		?>		
+
 			<div class="lozad-media">
-				<a href="<?php echo $cl['li']['cover']; ?>" class="fbox-media">
-					<img class="lozad" data-src="<?php echo $cl['li']['cover']; ?>" alt="Picture">
-				</a>
+	<div class="publication-image">
+		<a href="https://www.youtube.com/embed/<?php echo $cl['li']['link_src']; ?>"
+			data-type="html5video" class="fbox-media2"
+			data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery"
+			data-info='<?php echo cl_template('timeline/right_col'); ?>'>
+			<img class="lozad pt-prevent-click pt-post-view-count"
+				src="<?php echo cl_get_media(fetch_or_get($cl['li']['media'][0]['x']['poster_thumb'], '')); ?>"
+				alt="Video">
+			<div class="video-icon">
+				<span>
+					<?php echo cl_ikon("play"); ?>
+				</span>
 			</div>
-		</div>
+		</a>
+	</div>
+</div>
+<?php
+*/
+?>
+<style>
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publication-content div.publication-og-data div.publication-og-data-inner.embeded-iframe div.og-image a div.og-icon span {
+    width: 45px;
+    height: 45px;
+    background: var(--smc-main-uiel-color);
+    border-radius: 10em;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 10px 0px;
+    border: 3px solid #fff;
+}
+</style>
+            <script>
+                document.querySelector('.lozad-media').addEventListener('click', function() {
+                    const iframe = document.querySelector('iframe');
+                    iframe.style.pointerEvents = 'auto';
+                });
+            </script>  
+            
+          <div class="og-image pt-prevent-click musa" style="text-align: center; position: relative;"> 
+            <div class="lozad-media pt-post-view-count pt-prevent-click fbox-media2" pt-post-id="<?php echo $cl['li']['id']; ?>"
+                   data-btn='<?php echo cl_template('timeline/likes'); ?>' 
+                   data-fancybox="gallery" 
+                   data-src="https://www.youtube.com/embed/<?php echo $cl['li']['link_src'] ?>?autoplay=1&mute=1"
+                   data-info='<?php echo cl_template('timeline/right_col'); ?>'> 
+                <a href="https://www.youtube-nocookie.com/embed/<?php echo $cl['li']['link_src']; ?>" 
+                   class="fbox-media2" 
+                   data-btn='<?php echo cl_template('timeline/likes'); ?>' 
+                   data-fancybox="gallery" 
+                   data-info='<?php echo cl_template('timeline/right_col'); ?>'> 
+                    <img style="width: 613.34px; height: 345px; border-radius: 16px; display:none" 
+                         class="lozad pt-prevent-click pt-post-view-count" 
+                         data-src="https://img.youtube.com/vi/<?php echo $cl['li']['link_src']; ?>/hqdefault.jpg" 
+                         alt="Video" pt-post-id="<?php echo $cl['li']['id']; ?>"> 
+                    <iframe 
+                        src="https://www.youtube.com/embed/<?php echo $cl['li']['link_src'] ?>?autoplay=1&mute=1" 
+                        style="width:100%; height:300px; pointer-events: none;" 
+                        title="YouTube video player" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        class="pt-prevent-click pt-post-view-count" 
+                        allowfullscreen autoplay> 
+                    </iframe> 
+                    <div class="og-icon pt-prevent-click" pt-post-id="<?php echo $cl['li']['id']; ?>"> 
+                        <span class="pt-prevent-click pt-post-view-count" 
+                              pt-post-id="<?php echo $cl['li']['id']; ?>" 
+                              style="display: block; width: 45px !important; height: 45px; background: var(--smc-main-uiel-color) !important; border-radius: 10em; padding: 5px; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 10px 0px; border: 3px solid #fff; position: absolute; margin-top: -175px; margin-left: 43%;"> 
+                            <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-labelledby="playIconTitle" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter" fill="#ffff"> 
+                                <path d="M20 12L5 21V3z"></path> 
+                            </svg> 
+                        </span> 
+                    </div> 
+                </a> 
+            </div> 
+        </div>
+
+							
+			
+			
+		<?php elseif (not_empty($cl['li']['cover'])): ?>
+			<div class="lozad-media">
+				<div class="post-list-advert__image pt-post-view-count" pt-post-id="<?php echo $cl['li']['id']; ?>">
+					<a href="<?php echo fetch_or_get($cl['li']['cover'], ''); ?>" class="fbox-media2" data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery" data-info='<?php echo cl_template('timeline/right_col'); ?>'>
+						<img class="lozad pt-prevent-click pt-post-view-count" data-src="<?php echo fetch_or_get($cl['li']['cover'], ''); ?>" alt="Picture" style="width: 100%; object-fit: cover;">
+					</a>
+				</div>
+			</div>
+		<?php endif; ?>
 		<div class="post-list-advert__ctrl">
-			<?php if (not_empty($cl['li']['is_owner']) || not_empty($cl['li']['is_conversed'])): ?>
-				<a target="_blank" href="<?php echo $cl['li']['target_url']; ?>" class="block-link">
-					<button class="btn target-url-btn btn-custom main-outline lg btn-block">
+			<?php if (isset($cl['li']['is_conversed'])):
+				if (not_empty($cl['li']['is_owner']) || not_empty($cl['li']['is_conversed'])): ?>
+					<a target="_blank" href="<?php echo $cl['li']['target_url']; ?>" class="block-link">
+						<button class="btn target-url-btn btn-custom main-outline lg btn-block pt-prevent-click">
+							<?php echo $cl['li']['cta']; ?>
+						</button>
+					</a>
+				<?php else: ?>
+					<button onclick="SMColibri.ad_conversion(this);" data-ad-id="<?php echo $cl['li']['id']; ?>" data-ad-url="<?php echo $cl['li']['target_url']; ?>" class="btn target-url-btn btn-custom main-outline lg btn-block pt-prevent-click">
 						<?php echo $cl['li']['cta']; ?>
 					</button>
-				</a>
-			<?php else: ?>
-				<button onclick="SMColibri.ad_conversion(this);" data-ad-id="<?php echo $cl['li']['id']; ?>" data-ad-url="<?php echo $cl['li']['target_url']; ?>" class="btn target-url-btn btn-custom main-outline lg btn-block">
-					<?php echo $cl['li']['cta']; ?>
-				</button>
-			<?php endif; ?>
+				<?php endif;
+			endif;  ?>
 		</div>
 	</div>
-	<?php if (not_empty($cl['li']['show_stats'])): ?>
-		<div class="post-list-advert__footer">
-			<button class="ctrls-item">
-				<span class="icon ctrls-item__icon">
-					<?php echo cl_icon('ads_click'); ?>
+	<?php //if (not_empty($cl['li']['show_stats'])): ?>
+	<?php //endif; ?>
+	<div class="post-list-advert__footer pt-prevent-click">
+		<button class="ctrls-item pt-prevent-click">
+			<a href="<?php echo $cl['li']['url']; ?>">
+				<span class="icon ctrls-item__icon pt-prevent-click">
+					<?php echo cl_ikon('chat-post'); ?>
 				</span>
-				<span class="num">
-					<?php echo $cl['li']['clicks']; ?>
+				<span class="num pt-prevent-click">
+					<?php echo $cl['li']['replys_count']; ?>
 				</span>
-			</button>
-			<button class="ctrls-item">
-				<span class="icon ctrls-item__icon">
-					<?php echo cl_icon('preview'); ?>
-				</span>
-				<span class="num">
-					<?php echo $cl['li']['views']; ?>
-				</span>
-			</button>
-			<button class="ctrls-item">
-				<span class="icon ctrls-item__icon">
-					<?php echo cl_icon('money'); ?>
-				</span>
-				<span class="num">
-					<?php echo $cl['li']['budget']; ?>
-				</span>
-			</button>
-			<button class="ctrls-item dropleft">
-				<div class="dropdown-toggle icon ctrls-item__icon" data-toggle="dropdown">
-					<?php echo cl_icon('more_horiz'); ?>
-				</div>
-				<div class="dropdown-menu dropdown-icons">
-					<a class="dropdown-item" href="<?php echo $cl['li']['edit']; ?>" data-spa="true">
-						<span class="flex-item dropdown-item-icon">
-							<?php echo cl_icon("edit_note"); ?>
-						</span>
-						<span class="flex-item">
-							<?php echo cl_translate('Edit ad'); ?>
-						</span>
-						<span class="flex-item dropdown-item-icon dropdown-item-icon_adinfo">
-							<?php echo cl_icon('navigate_next'); ?>
-						</span>
-					</a>
-					<div class="dropdown-divider"></div>
-					<a onclick="SMCAccountAds.delete(<?php echo $cl['li']['id']; ?>);" class="dropdown-item col-red" href="javascript:void(0);">
-						<span class="flex-item dropdown-item-icon">
-							<?php echo cl_icon("delete"); ?>
-						</span>
-						<span class="flex-item">
-							<?php echo cl_translate('Delete'); ?>
-						</span>
-					</a>
-				</div>
-			</button>
-		</div>
-	<?php endif; ?>
+			</a>
+		</button>
+		<?php if (empty($cl['li']['has_liked'])): ?>
+		<button class="ctrls-item pt-reshare pt-prevent-click" onclick="share_ad('<?php echo $cl['li']['id']; ?>', this);" pt-ad-id="<?php echo $cl['li']['id']; ?>">
+			<span class="icon ctrls-item__icon pt-prevent-click">
+				<?php echo cl_ikon('repost'); ?>
+			</span>
+			<span class="num pt-prevent-click">
+				<?php echo $cl['li']['reposts_count']; ?>
+			</span>
+		</button>
+		<?php endif; ?>
+		<?php if (empty($cl['li']['has_liked'])): ?>
+		<button class="ctrls-item pt-like pt-prevent-click" onclick="like_ad('<?php echo $cl['li']['id']; ?>', this);" pt-ad-id="<?php echo $cl['li']['id']; ?>">
+			<span class="icon ctrls-item__icon pt-prevent-click">
+				<?php echo cl_ikon('likes'); ?>
+			</span>
+			<span class="num pt-prevent-click">
+				<?php echo $cl['li']['likes_count']; ?>
+			</span>
+		</button>
+		<?php else: ?>
+		<button class="ctrls-item liked pt-prevent-click" onclick="like_ad('<?php echo $cl['li']['id']; ?>', this);">
+			<span class="icon pt-prevent-click">
+				<?php echo cl_ikon('liked'); ?>
+			</span>
+			<span class="num pt-prevent-click" data-an="likes-count">
+				<?php echo $cl['li']['likes_count']; ?>
+			</span>
+		</button>
+		<?php endif; ?>
+		<button class="ctrls-item pt-views pt-prevent-click" pt-ad-id="<?php echo $cl['li']['id']; ?>">
+			<span class="icon ctrls-item__icon pt-prevent-click">
+				<?php echo cl_icon('preview'); ?>
+			</span>
+			<span class="num pt-prevent-click">
+				<?php
+					if ($cl['li']['views'] >= 1000 && $cl['li']['views'] < 1000000) {
+						echo number_format($cl['li']['views'] / 1000, 1) . 'K';
+					} elseif ($cl['li']['views'] >= 1000000) {
+						echo number_format($cl['li']['views'] / 1000000, 1) . 'M';
+					} else {
+						echo $cl['li']['views'];
+					}
+				?>
+			</span>
+		</button>
+		<button class="ctrls-item pt-prevent-click" onclick="SMColibri.share_post('<?php echo(cl_link('ad_thread/'.$cl['li']['id'])); ?>','<?php echo(cl_link('ad_thread/'.$cl['li']['id'])); ?>');">
+			<span class="icon ctrls-item__icon pt-prevent-click">
+				<?php echo cl_ikon('share'); ?>
+			</span>
+		</button>
+	</div>
 </div>

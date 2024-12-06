@@ -1,3 +1,36 @@
+
+<?php
+
+$servername = "localhost";
+$username = "tweetsp_talkus";
+$password = "Kiwm&@mkeIW212";
+$dbname = "tweetsp_talk";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to get data where name is 'showmore_validation'
+$sql = "SELECT * FROM cl_configs WHERE name = 'showmore_validation'";
+$result = $conn->query($sql);
+
+// Fetch the data if it exists
+$config_value = null;
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $config_value = $row['value']; // Assuming 'value' is the column holding the data you need
+} else {
+    echo "No records found";
+}
+
+$conn->close();
+
+?>
+
+
 <div class="timeline-container" data-app="explore">
 	<div class="timeline-header" data-el="tl-header">
 		<div class="timeline-header__botline">
@@ -114,8 +147,12 @@
 			<?php echo cl_template(cl_strf('explore/includes/%s', $cl["page_tab"])); ?>
 			<?php echo cl_template('explore/includes/empty_result'); ?>
 		<?php endif; ?>
+		
+		<?php 
+		if($config_value == "on"){
+		?>
 
-		<div class="timeline-data-loader" v-if="show_loader">
+		<div class="timeline-data-loader" style="padding-bottom: 9rem;" v-if="show_loader">
 			<button v-if="loading_more" class="btn btn-custom main-outline lg" disabled="true">
 				<?php echo cl_translate("Please wait"); ?>
 			</button>
@@ -126,6 +163,11 @@
 				<?php echo cl_translate("That is all for now!"); ?>
 			</button>
 		</div>
+		<?php
+		}
+		?>
+		
+		
 	</div>
 
 	<?php echo cl_template('explore/scripts/app_master_script'); ?>

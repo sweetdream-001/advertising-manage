@@ -1,4 +1,4 @@
-p<div class="overlay"></div>
+<div class="overlay"></div>
 <div class="page-body-wrapper" id="acp-main-left-sidebar">
   <!-- Page Sidebar Start-->
   <div class="sidebar-wrapper">
@@ -74,6 +74,15 @@ p<div class="overlay"></div>
                 <i data-feather="sun"></i><span> <?php echo cl_translate('display_settings'); ?></span></a>
 
             </li>
+
+            <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'show_more') {
+                                                                                                            echo ('active');
+                                                                                                          } ?>" href="<?php echo cl_link('admin_panel/show_more'); ?>">
+                <i data-feather="sun"></i><span> <?php echo cl_translate('Show More Setting'); ?></span></a>
+
+            </li>
+
+            
             <li class="sidebar-list"><a class="sidebar-link <?php if ($cl["cp_section"] == 'languages') {
                                                               echo ('active');
                                                             } ?>" href="<?php echo cl_link('admin_panel/languages'); ?>">
@@ -137,6 +146,15 @@ p<div class="overlay"></div>
                 </span>
             </a>
         </li>
+            <li class="sidebar-list"> 
+                <label class="badge badge-danger">New</label>
+                <a href="<?php echo cl_link('admin_panel/ip_restrictions'); ?>" class="sidebar-link <?php if(in_array($cl["cp_section"], array('ip_restrictions'))) {echo('active');} ?>">
+                    <i data-feather="slash"></i>
+                    <span>
+                        IP Restrictions
+                    </span>
+                </a>
+            </li>
             <!-- Reports -->
             <li class="sidebar-main-title">
               <div>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		<?php if (not_empty($me['new_notifs'])): ?>
+			(
+			<?php echo fetch_or_get($me['new_notifs']); ?>)
+		<?php endif; ?>
+
+		<?php echo fetch_or_get($cl["page_title"], $cl["config"]["title"]); ?> /
+		<?php echo fetch_or_get($cl["config"]["title"]); ?>
+	</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="title" content="<?php echo fetch_or_get($cl["page_title"], $cl["config"]["title"]); ?>" />
+	<meta name="description" content="<?php echo fetch_or_get($cl["page_desc"], $cl["config"]["description"]); ?>" />
+	<meta name="keywords" content="<?php echo fetch_or_get($cl['page_kw'], $cl["config"]["keywords"]); ?>" />
+	<meta name="image" content="<?php echo fetch_or_get($cl['page_img'], $cl["config"]["site_logo"]); ?>" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<?php if ($cl["pn"] == 'thread'): ?>
+		<meta property="og:type" content="article" />
+		<meta property="og:image" content="<?php echo fetch_or_get($cl["page_image"], ''); ?>" />
+		<meta property="og:image:secure_url" content="<?php echo fetch_or_get($cl["page_image"], ''); ?>" />
+		<meta property="og:description"
+			content="<?php echo fetch_or_get($cl["page_desc"], $cl["config"]["description"]); ?>" />
+		<meta property="og:title" content="<?php echo fetch_or_get($cl["page_title"], $cl["config"]["title"]); ?>" />
+		<meta property="og:url" content="<?php echo fetch_or_get($cl["page_url"], $cl["config"]["url"]); ?>" />
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:title" content="<?php echo fetch_or_get($cl["page_title"], $cl["config"]["title"]); ?>" />
+		<meta name="twitter:description"
+			content="<?php echo fetch_or_get($cl["page_desc"], $cl["config"]["description"]); ?>" />
+		<meta name="twitter:image" content="<?php echo fetch_or_get($cl["page_image"], ''); ?>" />
+	<?php endif; ?>
+
+	<?php if (in_array($cl["pn"], array("profile", "connections"))): ?>
+		<?php if ($cl['prof_user']['index_privacy'] == 'N'): ?>
+			<meta name="robots" content="noindex">
+			<meta name="googlebot" content="noindex">
+		<?php endif; ?>
+	<?php endif; ?>
+
+	<link rel="stylesheet" href="{%config theme_url%}/statics/css/libs/animate.min.css?v={%config version%}">
+	<link rel="stylesheet" href="{%config theme_url%}/statics/css/custom-style.css">
+	<link rel="stylesheet" href="{%config theme_url%}/statics/css/css-libs.css">
+	<link rel="stylesheet"
+		href="{%config theme_url%}/statics/css/main.styles.css?v={%config version%}&v={%config version%}">
+	<link rel="stylesheet"
+		href="{%config theme_url%}/statics/css/master.styles.css?v={%config version%}&v={%config version%}">
+
+
+	<?php if ($cl["curr_lang"]["lang_data"]["is_rtl"] == "Y"): ?>
+
+	<?php endif; ?>
+	<link rel="stylesheet" href="{%config theme_url%}/statics/css/libs/jquery.fancybox.css?v={%config version%}">
+	<link rel="stylesheet" href="{%config theme_url%}/statics/js/libs/plyr/plyr-code/plyr.css?v={%config version%}">
+	<link rel="icon" href="{%config site_fav%}" type="image/png">
+	<link rel="icon" href="{%config site_fav%}" type="image/x-icon">
+	<script src="{%config theme_url%}/statics/js/libs/jquery-3.5.1.min.js?v={%config version%}"></script>
+	<?php if ($cl["server_mode"] == 'dev'): ?>
+		<script src="{%config theme_url%}/statics/js/libs/vuejs/vue-v2.6.11.dev.min.js?v={%config version%}"></script>
+	<?php else: ?>
+		<script src="{%config theme_url%}/statics/js/libs/vuejs/vue-v2.6.11.min.js?v={%config version%}"></script>
+	<?php endif; ?>
+
+	<script
+		src="{%config theme_url%}/statics/js/libs/vuejs/vue-plugins/validators.min.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/libs/vuejs/vue-plugins/vuelidate.min.js?v={%config version%}"></script>
+	<script
+		src="{%config theme_url%}/statics/js/libs/jquery-plugins/jquery.form-v4.2.2.min.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/libs/popper.1.12.9.min.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/libs/bootstrap.v4.0.0.min.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/libs/afterglow/afterglow.min.js?v={%config version%}"></script>
+	<script
+		src="{%config theme_url%}/statics/js/libs/sticky-sidebar/source/jquery.sticky-sidebar.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/master.script.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/custom.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/libs/clipboard.min.js?v={%config version%}"></script>
+	<script
+		src="{%config theme_url%}/statics/js/libs/jquery-plugins/jquery.fancybox.min.js?v={%config version%}"></script>
+	<script src="{%config theme_url%}/statics/js/libs/lozad.min.js"></script>
+	<script src="{%config theme_url%}/statics/js/libs/waitme/waitMe.min.js"></script>
+	<script src="{%config theme_url%}/statics/js/libs/txt.autoresize.min.js"></script>
+	<script src="{%config theme_url%}/statics/js/libs/audio-recorder.js"></script>
+	<script src="{%config theme_url%}/statics/js/libs/plyr/plyr-code/plyr.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+	<?php if ($cl["server_mode"] == 'dev'): ?>
+		<script>
+			document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+		</script>
+	<?php endif; ?>
+
+	<?php if ($cl["pn"] == "guest" && $cl["auth_type"] == "signup"): ?>
+		<?php if ($cl["config"]["google_recaptcha"] == "on"): ?>
+			<script src='https://www.google.com/recaptcha/api.js' async defer></script>
+		<?php endif; ?>
+	<?php endif; ?>
+	<script>
+		<?php echo (cl_get_custom_code("headerjs")); ?>
+	</script>
+	<style>
+		<?php echo (cl_get_custom_code("headercss")); ?>
+	</style>
+</head>
+
+<body <?php if ($cl["curr_lang"]["lang_data"]["is_rtl"] == "Y") {
+	echo ('dir="rtl"');
+} else {
+	echo ('dir="ltr"');
+} ?>
+	class="cl-app-<?php echo fetch_or_get($cl["pn"], "none"); ?>"
+	data-page-tab="<?php echo fetch_or_get($cl["page_tab"], "none"); ?>" data-skin="<?php if ($cl["pn"] != "guest") {
+			echo ($cl["display_set"]["color_scheme"]);
+		} else {
+			echo ("default");
+		} ?>" data-bg="<?php if ($cl["pn"] != "guest") {
+			 echo ($cl["display_set"]["background"]);
+		 } else {
+			 echo ("default");
+		 } ?>">
+	<div class="top">
+		<h1 class="navLogo">P-tweets</h1>
+	</div>
+	<div class="main-preloader-holder" id="main-preloader-holder">
+		<div class="main-preloader">
+			<div class="loading">
+				<div class="lds-ellipsis">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-el="main-content-holder">
+
+		<main class="main-content-container <?php echo (($cl["is_logged"]) ? "" : "guest-mode"); ?>">
+
+			<div class="main-content-container-inner">
+
+				<?php if ($cl["pn"] == "guest"): ?>
+					<?php echo $cl["http_res"]; ?>
+				<?php else: ?>
+					<!-- Left Sidebar -->
+					<?php if (not_empty($cl["sbl"])): ?>
+						<?php if (not_empty($cl["is_logged"])): ?>
+							<?php echo cl_template('main/left_sidebar'); ?>
+						<?php else: ?>
+							<?php echo cl_template('main/left_sidebar_guest'); ?>
+						<?php endif; ?>
+					<?php endif; ?>
+					<!-- End Left Sidebar -->
+					<!-- Main Content -->
+					<div data-el="timeline-container-wrapper" class="timeline-container-wrapper">
+						<div data-el="timeline-content" class="timeline-container-inner">
+							<?php echo $cl["http_res"]; ?>
+						</div>
+
+						<div data-el="spa-preloader" class="spa-preloader d-none">
+							<div class="spa-preloader-inner">
+								<span class="spinner-icon">
+									<?php echo cl_icon("spinner-icon"); ?>
+								</span>
+							</div>
+						</div>
+					</div>
+					<!-- End Main Content -->
+					<!-- Right Sidebar -->
+					<?php
+					$cl["right_sidebar_main"] = cl_template('main/right_sidebar');
+					?>
+					<?php echo fetch_or_get($cl["right_sidebar"], $cl["right_sidebar_main"]); ?>
+					<!-- End Right Sidebar -->
+				</div>
+			<?php endif; ?>
+		</main>
+
+
+		<input id="csrf-token" type="hidden" class="hidden d-none"
+			value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>">
+
+		<?php if ($cl['is_logged']): ?>
+			<div class="modal fade modal-pubbox" data-app="modal-pubbox" id="add_new_post" tabindex="-1" role="dialog"
+				aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<div class="close">
+								<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+							</div>
+
+						</div>
+						<div class="modal-body">
+							<?php $cl['pb_id'] = 2;
+							echo cl_template('timeline/pubbox'); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade modal-pubbox" data-app="modal-pubbox" id="add_new_post_reply" tabindex="-1" role="dialog"
+				aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<div class="close">
+								<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+							</div>
+
+						</div>
+						<div class="modal-body">
+							<?php $cl['pb_id'] = 3;
+							echo cl_template('timeline/pubbox'); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php echo cl_template('timeline/scripts/pubbox_master_script'); ?>
+		<?php endif; ?>
+		<div data-app="black-hole"></div>
+		<?php if (not_empty($cl['config']['google_analytics'])): ?>
+			<?php echo htmlspecialchars_decode($cl['config']['google_analytics']); ?>
+		<?php endif; ?>
+
+		<?php if ($cl["pn"] != 'guest'): ?>
+			<?php echo cl_template("main/scripts/app_master_script"); ?>
+		<?php endif; ?>
+
+		<?php if ($cl['is_logged']): ?>
+			<?php if (in_array($cl["pn"], array("bookmarks", "home", "profile", "search", "thread"))): ?>
+				<?php echo cl_template("main/modals/report_post"); ?>
+			<?php endif; ?>
+
+			<?php echo cl_template("main/modals/display_settings"); ?>
+		<?php endif; ?>
+	</div>
+
+	<?php if ($cl['config']['cookie_warning_popup'] == "on"): ?>
+		<?php if (empty($_COOKIE['__c_u_a__'])): ?>
+			<?php if ($cl["pn"] != "stat_pages"): ?>
+				<?php echo cl_template("main/modals/cookies_alert"); ?>
+			<?php endif; ?>
+		<?php endif; ?>
+	<?php endif; ?>
+
+
+	<script>
+		<?php echo (cl_get_custom_code("footerjs")); ?>
+	</script>
+	<style>
+		#add_new_post .modal-dialog {
+			min-width: 600px;
+		}
+
+		#add_new_post .modal-header {
+			border: none;
+		}
+
+		body {
+			background: #b7ebf7 url(./img/bg1.gif) top left repeat-x;
+		}
+
+		body main.main-content-container {
+			background: transparent;
+		}
+
+		body main.main-content-container div.main-content-container-inner div.left-sb-container {
+			background: transparent;
+		}
+
+		body main.main-content-container div.main-content-container-inner div.right-sb-container {
+			background: transparent;
+		}
+
+		body main.main-content-container div.main-content-container-inner {
+			background: url(./img/bg_transparent2.png);
+			max-width: 1300px;
+		}
+
+		body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-header {
+			background: url(./img/bg_transparent2.png);
+		}
+
+		.social_login {
+			background: url(./img/bg_transparent2.png);
+		}
+
+		.top {
+			height: 39px;
+			background: url(./img/nav.png) no-repeat;
+			margin-top: 15px;
+			padding: 5px 5px 0px;
+			font-size: 13px;
+			color: #aee3f0;
+			display: flex;
+
+			width: 1310px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+    		@media only screen and (max-width: 767px) {
+        .top {
+                    margin-top: 60px;
+                    width: 100%;
+                }
+                            body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+                padding-top: 0px !important;
+            }
+            }
+
+        /* Apply styles only for screens with a maximum width of 479px (typical for mobiles) and below */
+        @media only screen and (max-width: 479px) {
+            .top {
+                margin-top: 60px;
+                width: 100%;
+            }
+            body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+                padding-top: 0px !important;
+            }
+                    }
+		.right-sb-container.sidebar .inner-wrapper-sticky {
+			top: 0px!important;
+		}
+
+		.tweet2 {
+				display: flex;
+				width: 100%;
+				justify-content: center;
+			}
+			.tweet2 img {
+				width: 100%;
+				height: auto;
+				text-align: center;
+			}
+		.top h1 {
+			float: left;
+			text-align: left;
+			color: #fff;
+			font-size: 24px;
+			line-height: 24px;
+			display: flex;
+			justify-content: start;
+			margin-top: 6px;
+			margin-left: 20px;
+		}
+	</style>
+</body>
+
+</html>

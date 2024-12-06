@@ -9,6 +9,10 @@
 # @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
 # @*************************************************************************@
 
+// RESTRICT USER CODE
+$visitor_ip = $_SERVER['REMOTE_ADDR'];
+cl_check_ip_restriction($visitor_ip);
+
 if (not_empty($cl['is_logged'])) {
 	cl_redirect('404');
 }

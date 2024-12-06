@@ -1,0 +1,91 @@
+<div class="cp-app-container" data-app="restricted-ips">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-6">
+                    <h3> <?php echo cl_translate('IP Restrictions'); ?></h3>
+                </div>
+                <div class="col-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>"> <i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"> <?php echo cl_translate('IP Restrictions'); ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-block" id="vue-cpanel-users-app">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between">
+                                <h5>
+                                    <?php echo cl_translate('Manage IP Restrictions'); ?>
+                                </h5>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addIpsModal">
+                                    <?php echo cl_translate('Add restricted ip'); ?>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <form id="ipSearchForm" class="d-flex">
+                                    <input name="search_ip" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required>
+                                    <button id="ipSearchFormBtn" class="btn btn-primary" type="button">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="body">
+                            <div class="regular-table">
+                                <table class="table table-hover no-mb">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>
+                                                <?php echo cl_translate('IP Address'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Time'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Action'); ?>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-an="ads-list">
+                                        <?php if (not_empty($cl['restricted_ips'])) : ?>
+                                            <?php foreach ($cl['restricted_ips'] as $cl['li']) : ?>
+                                                <?php echo cl_template('cpanel/assets/ip_restrictions/includes/list_item'); ?>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <tr>
+                                                <td colspan="8">
+                                                    <div class="empty-table">
+                                                        <span class="icon">
+                                                            <i class="material-icons">library_books</i>
+                                                        </span>
+                                                        <h4><?php echo ('No restricted ip found'); ?></h4>
+                                                        <p>
+                                                            <?php echo ('It looks like there are no restricted ip in your database yet. All restricted ip of your website will be displayed here.'); ?>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                                <?php if (not_empty($cl['restricted_ips'])) : ?>
+                                    <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="prev" href="javascript:void(0);" class="pagination-ctrls prev">
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                    <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="next" href="javascript:void(0);" class="pagination-ctrls next">
+                                        <i class="material-icons">chevron_right</i>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php echo cl_template('cpanel/assets/ip_restrictions/scripts/app_master_script'); ?>

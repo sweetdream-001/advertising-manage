@@ -120,18 +120,18 @@ if (empty($cl['prof_user']['is_blocked']) && empty($cl['prof_user']['me_blocked'
 
 			<?php if (not_empty($cl["can_view"])): ?>
 				<style>
-	.grid-media {
-		display: flex;
-		max-height: 200px;
-		background-color: var(--smc-main-bg-color-2);
-		border-radius: 16px;
-		margin-bottom: 16px;
-	}
-
-	.media_sidebar {
-		margin-bottom: 0px !important;
-	}
-</style>
+                	.grid-media {
+                		display: flex;
+						background-color: var(--smc-main-bg-color-2);
+						border-radius: 16px;
+						margin-bottom: 16px;
+						padding: 20px;
+                	}
+                
+                	.media_sidebar {
+                		margin-bottom: 0px !important;
+                	}
+                </style>
 				<?php if (in_array($cl['page_tab'], array('posts', 'media'))): ?>
 					<div class="grid-media">
 						<div class="media_sidebar">

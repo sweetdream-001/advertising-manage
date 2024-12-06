@@ -20,3 +20,6 @@
         padding-top: 0px;
     padding-top: 10vh;
 }
+.post-list-item-content, .post-list-advert {
+    cursor: pointer;
+}

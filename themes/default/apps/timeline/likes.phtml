@@ -46,6 +46,20 @@
                 </span>
             </button>
         <?php endif; ?>
+        
+         <!-- show post views -->
+<button class="ctrls-item">
+				<span class="icon ctrls-item__icon ">
+					<?php echo cl_icon('preview'); ?>
+				</span>
+				<span class="num post_view_count-<?php echo $cl['li']['id']; ?>" id="post_view_count-<?php echo $cl['li']['id']; ?>">
+					<?php echo $cl['li']['views']; ?>
+				</span>
+			</button>
+			<!-- show post views -->
+        
+        
+        
         <button class="ctrls-item chat" onclick="SMColibri.share_post(`<?php echo $cl['li']['url']; ?>`,`<?php echo urlencode($cl['li']['url']); ?>`);">
             <span class="icon">
                 <?php echo cl_ikon('share'); ?>
@@ -82,6 +96,8 @@
 
     .fancybox__rightCol .avatar-holder-r {
         display: flex;
+        gap: 20px;
+        align-items: flex-start;
     }
 
     .fancybox__rightCol .name {
@@ -91,10 +107,12 @@
         display: flex;
         -moz-box-direction: normal;
         -moz-box-orient: horizontal;
-        flex-direction: column;
+        /*flex-direction: column;*/
         transform: translateX(-20%) translateY(-50%);
         margin-top: 15px;
         margin-left: 10px;
+        align-items: baseline;
+        gap: 20px;
     }
 
     .fancybox__rightCol .name .user-name-holder {

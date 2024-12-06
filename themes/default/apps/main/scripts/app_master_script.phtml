@@ -1315,7 +1315,8 @@
 			}
 
 			_smc.go_back = function () {
-				history.back();
+				console.log('aqib:' + history.go(-1));
+				history.go(-1);
 			}
 
 			_smc.jump_back = function (step = 1) {
@@ -1560,6 +1561,17 @@
 			});
 		}
 	});
+	
+	$(document).ready(function() {
+		var queryString = window.location.search;
+		var urlParams = new URLSearchParams(queryString);
+		if (urlParams.has('post_id')) {
+			var postId = urlParams.get('post_id');
+			$('html, body').animate({
+				scrollTop: $("#post-" + postId).offset().top + $("#post-" + postId).outerHeight() - $(window).height()
+			}, 2000);
+		}
+	})
 </script>
 
 

@@ -134,6 +134,8 @@ function cl_html_attrs($attrs = array()) {
 }
 
 function cl_text_secure($text = "") {
+  
+ 
     global $mysqli;
     $text = trim($text);
     $text = stripslashes($text);
@@ -271,14 +273,14 @@ function cl_send_mail($data = array()) {
         $to_email        = $data['to_email']   = cl_text_secure($data['to_email']);
         $subject         = $data['subject'];
         $data['charSet'] = cl_text_secure($data['charSet']);
-        $mail->SMTPDebug = true;
+        $mail->SMTPDebug = false;
 
         if ($cl['config']['smtp_or_mail'] == 'mail') {
             $mail->IsMail();
         } else if ($cl['config']['smtp_or_mail'] == 'smtp') {
             $mail->isSMTP();
             $mail->Timeout     = 30;
-            $mail->SMTPDebug   = true;
+            $mail->SMTPDebug   = false;
             $mail->Host        = $cl['config']['smtp_host'];
             $mail->SMTPAuth    = true;
             $mail->Username    = $cl['config']['smtp_username'];
@@ -297,9 +299,9 @@ function cl_send_mail($data = array()) {
         else {
             return false;
         }
-
+        
         $mail->IsHTML($data['is_html']);
-        $mail->setFrom($data['from_email'], $data['from_name']);
+        $mail->setFrom($cl['config']['smtp_username'], $data['from_name']);
         $mail->addAddress($data['to_email'], $data['to_name']);
         $mail->Subject = $data['subject'];
         $mail->CharSet = $data['charSet'];
@@ -310,7 +312,7 @@ function cl_send_mail($data = array()) {
 
             return true;
         }
-    } 
+    }
 
     catch (Exception $e) {
        return false; 
@@ -1389,5 +1391,25 @@ function cl_get_custom_code($type = false) {
         $code = file_get_contents(cl_full_path(cl_strf("themes/%s/statics/custom_code/header.css", $cl["config"]["theme"])));
 
         return $code;
+    }
+}
+
+// RESTRICT USER FUNCTION
+function cl_check_ip_restriction($visitor_ip) {
+    // echo '<pre>';print_r($visitor_ip);'</pre>';die;
+    global $db;
+
+    $query = "SELECT ip_address FROM " . T_RESTRICTED_IPS;
+	$results = $db->query($query);
+
+    $blocked_ips = [];
+    foreach ($results as $result) {
+        $blocked_ips[] = $result['ip_address'];
+    }
+
+    if (in_array($visitor_ip, $blocked_ips)) {
+        header('HTTP/1.0 403 Forbidden');
+        echo 'You are not allowed to access this website.';
+        exit;
     }
 }

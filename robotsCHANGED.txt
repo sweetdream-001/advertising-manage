@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /apps
+Disallow: /core
+Disallow: /install
+Disallow: /site_backups
+Disallow: /themes/default/apps

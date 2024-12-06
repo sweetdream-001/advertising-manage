@@ -36,6 +36,8 @@ function cl_get_profile_posts($user_id = false, $limit = 30, $media = false, $of
 				$post_data['offset_id']   = $row['offset_id'];
 				$post_data['is_repost']   = (($row['type'] == 'repost') ? true : false);
 				$post_data['is_reposter'] = false;
+				$post_data['cat_id'] = $row['cat_id'];
+				$post_data['cat_name'] = $row['cat_name'];
 				$post_data['attrs']       = array();
 
 				if ($post_data['is_repost']) {

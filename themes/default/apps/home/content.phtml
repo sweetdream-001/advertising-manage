@@ -1,13 +1,62 @@
+
+<?php
+
+$servername = "localhost";
+$username = "tweetsp_talkus";
+$password = "Kiwm&@mkeIW212";
+$dbname = "tweetsp_talk";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to get data where name is 'showmore_validation'
+$sql = "SELECT * FROM cl_configs WHERE name = 'showmore_validation'";
+$result = $conn->query($sql);
+
+// Fetch the data if it exists
+$config_value = null;
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $config_value = $row['value']; // Assuming 'value' is the column holding the data you need
+} else {
+    echo "No records found";
+}
+
+$conn->close();
+
+?>
+
+
 <div class="timeline-container" data-app="homepage">
-<div class="tweet2">
+<a class="tweet2" style="cursor: pointer;" rel="nofollow" data-spa="true">
 		<img src="https://p-tweets.com/talk/img/tweets.png"  alt="">
-		</div>
+		</a>
 	<div class="timeline-header" data-el="tl-header" style="display: block; padding: 0;">
 		<div class="timeline-header__botline" style="">
 			<div class="lp">
 				<div class="nav-link-holder h-mobile">
-					<a href="Javascript:;" onclick="window.location.href= '/talk'" data-spa="true">
-						<?php echo cl_translate("Home"); ?>
+					<a style="cursor: pointer;" href="<?php 
+					
+					if(isset($_SESSION['lastV'])){
+					    $ll = cl_link("/");
+					    unset($_SESSION['lastV']);
+					}else{
+					    $ll = cl_link("/") . '/';
+					    $_SESSION['lastV'] = '/';
+					}
+					
+					echo $ll;
+					
+					?>" rel="nofollow" data-spa="true">
+						<?php 
+
+						         echo cl_translate("Home");     
+						     
+						?>
 					</a>
 				</div>
 			</div>
@@ -92,6 +141,21 @@
 						<div class="swiper-scrollbar" id="homepage-swifts-scrollbar"></div>
 					</div>
 				</div>
+				<div style="
+    text-align: center;
+    font-size: 18px;
+    padding: 8px;
+    font-weight: bold;
+">
+				    <?php
+				    		if(isset($_GET['cat_id'])) {
+						        $mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
+								$db = new MysqliDb($mysqli);
+							    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE `id`='".$_GET['cat_id']."'");
+						        echo $categories[0]['name'];
+						    }
+				    ?>
+				</div>
 			</div>
 		<?php endif; ?>
 	</div>
@@ -100,18 +164,41 @@
 			<?php $count = 0; ?>
 			<?php if (not_empty($cl["feed"])): ?>
 				<div class="timeline-posts-container">
-					<div class="timeline-posts-ls" data-an="entry-list">
-						<?php foreach ($cl["feed"] as $cl['li']): ?>
-							<?php $count++; ?>
+					<div class="timeline-posts-ls szHomeTimeline" data-an="entry-list">
+
+
+						<?php
+						// echo "<pre>";
+						// print_r($cl["feed"]);
+						foreach ($cl["feed"] as $cl['li']): ?>
+
+							<?php 
+							$count++;
+							// print_r($cl['li']);
+							
+							?>
+
 							<?php echo cl_template('timeline/post'); ?>
-							<?php if ($count == 3) {
+
+
+							<?php if ($count == 4) {
 								echo cl_template('home/follow');
 							} ?>
-						<?php endforeach; ?>
+
+
+
+
+						<?php
+					 	endforeach;
+					 
+						 ?>
+
+
+
 					</div>
-					<?php if (count($cl["feed"]) == 30): ?>
+					<?php if (count($cl["feed"]) == 4000 || count($cl["feed"]) > 4000): ?>
 						<div class="timeline-data-loader">
-							<button class="btn btn-custom main-outline lg" data-an="load-more">
+							<button class="btn btn-custom main-outline lg szLoadMoreBtn" ss="<?= count($cl["feed"]); ?>" onclick="szLoadMoreHome();" data-an="load-more">
 								<?php echo cl_translate("Show more"); ?>
 							</button>
 						</div>
@@ -140,7 +227,7 @@
 			<div class="timeline-posts-container" style="margin-top: 0px;">
 				<?php $count = 0; ?>
 				<?php if (not_empty($cl["tl_feed"])): ?>
-					<div class="timeline-posts-ls" data-an="entry-list">
+					<div class="timeline-posts-ls szHomeTimeline" data-an="entry-list">
 						<?php foreach ($cl["tl_feed"] as $cl["li"]): ?>
 							<?php $count++; ?>
 							<?php echo cl_template('timeline/post'); ?>
@@ -149,12 +236,22 @@
 							} ?>
 						<?php endforeach; ?>
 					</div>
-					<?php if (count($cl["tl_feed"]) == 30): ?>
+					<?php if (count($cl["tl_feed"]) >= 30): ?>
+
+
+						<?php 
+							if($config_value == "on"){
+						?>
 						<div class="timeline-data-loader">
-							<button class="btn btn-custom main-outline lg" data-an="load-more">
+							<button class="btn btn-custom main-outline lg szLoadMoreBtn" onclick="szLoadMoreHome();" data-an="load-more">
 								<?php echo cl_translate("Show more"); ?>
 							</button>
 						</div>
+
+						<?php
+							}
+						?>
+
 					<?php endif; ?>
 				<?php else: ?>
 					<?php echo cl_template('home/includes/no_posts'); ?>

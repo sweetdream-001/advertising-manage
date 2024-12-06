@@ -1,4 +1,4 @@
-<?php if ($cl['li']['advertising']): ?>
+<?php if ( isset($cl['li']['advertising']) && !empty(($cl['li']['advertising']))): ?>
 	<?php echo cl_template('timeline/ad'); ?>
 <?php else: ?>
 
@@ -9,6 +9,7 @@
      <?php endif; ?>
         
     <?php else: ?>
+       
         <?php echo cl_template('timeline/post_inner'); ?>
     <?php endif; ?>
         

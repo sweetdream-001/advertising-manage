@@ -3,19 +3,23 @@
 	<div class="timeline-posts-ls" data-an="entry-list">
 		<?php if (not_empty($cl["query_result"])): ?>
 		    <?php
-		    function compareById($a, $b) {
-                return $b["id"] - $a["id"];
-            }
+		    //function compareById($a, $b) {
+               // return $b["id"] - $a["id"];
+            //}
             
             // Sort the array using the custom comparison function
-                usort($cl["query_result"], "compareById");
+               // usort($cl["query_result"], "compareById");
 		      //  echo var_dump(json_encode($cl["query_result"])); die;
 		    ?>
 		
-			<?php foreach ($cl["query_result"] as $cl['li']): ?>
-				<?php   $count++; ?>
+			<?php 
+
+			//echo "<pre>";print_r($cl["query_result"]);exit("OK");
+			
+			foreach ($cl["query_result"] as $cl['li']): ?>
+				<?php  $count++; ?>
 				<?php echo cl_template('timeline/post'); ?>
-				<?php  if ($count == 1) {
+				<?php  if ($count == 4) {
             echo cl_template('feed/includes/htags');
         }?>
 		<?php  if ($count == 3) {
@@ -30,5 +34,3 @@
 <?php 
 $hash = cl_template('feed/includes/htags');
 ?>
-
-

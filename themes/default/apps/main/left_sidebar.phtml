@@ -3,6 +3,14 @@
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
         }
+        function szChange(value){
+            if(value == 'pp' || value == 'PP') {
+                return true;
+            }
+            
+            window.location.href = 'https://p-tweets.com/talk/?cat_id=' + value;
+            
+        }
     </script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <style>
@@ -14,8 +22,8 @@
 
 <div class="left-sb-container sidebar" data-app="left-sidebar">
 	<div class="sidebar__inner">
-		<div class="cp h-mobile" style="margin-bottom: 10px;">
-			<a href="<?php echo cl_link("/"); ?>">
+		<div class="cp h-mobile">
+			<a href="<?php echo cl_link("/"); ?>" style="margin-bottom: 10px;">
 				<img src="{%config site_logo%}" alt="Logo">
 				<h1 class="ml11">
 					<span class="text-wrapper">
@@ -99,23 +107,27 @@
 		<div class="sidebar-v-nav-wrapper">
 		    <div id="google_translate_element"></div>
 			<ul class="sidebar-v-nav">
-				<li data-navitem="home" class="sidebar-v-nav-item <?php if ($cl['pn'] == 'home') {
+				<li data-navitem="home" class="sidebar-v-nav-item <?php if ($cl['pn'] == 'home' && !isset($_GET['cat_id'])) {
 					echo ('active');
 				} ?>">
 					<span class="icon home">
+					    <a href="<?php echo cl_link('/'); ?>">
 						<?php echo cl_ikon('home'); ?>
+						</a>
 					</span>
 					<span class="nav-item-holder">
-						<a href="<?php echo cl_link('/'); ?>">
+						<a href="<?php echo cl_link('/'); ?>" >
 							<?php echo cl_translate('Home'); ?>
 						</a>
 					</span>
 				</li>
-				<li data-navitem="explore" class="sidebar-v-nav-item <?php if ($cl['pn'] == 'explore') {
+				<li data-navitem="explore" class="sidebar-v-nav-item <?php if ($cl['pn'] == 'explore' && $cl["page_tab"] !== 'categories') {
 					echo ('active');
 				} ?>">
 					<span class="icon">
+					    <a href="<?php echo cl_link("explore"); ?>">
 						<?php echo cl_ikon('explore'); ?>
+						</a>
 					</span>
 					<span class="nav-item-holder">
 						<a href="<?php echo cl_link("explore"); ?>">
@@ -125,19 +137,88 @@
 				</li>
 				<li data-navitem="explore" class="sidebar-v-nav-item">
 					<span class="icon">
-						<?php echo cl_ikon('explore'); ?>
+					    <a href="<?php echo cl_link("explore/categories"); ?>">
+						<svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        	 width="800px" height="800px" viewBox="0 0 36.09 36.09" xml:space="preserve"
+                        	>
+                        <g>
+                        	<path d="M36.042,13.909c-0.123-0.377-0.456-0.646-0.85-0.688l-11.549-1.172L18.96,1.43c-0.16-0.36-0.519-0.596-0.915-0.596
+                        		s-0.755,0.234-0.915,0.598L12.446,12.05L0.899,13.221c-0.394,0.04-0.728,0.312-0.85,0.688c-0.123,0.377-0.011,0.791,0.285,1.055
+                        		l8.652,7.738L6.533,34.045c-0.083,0.387,0.069,0.787,0.39,1.02c0.175,0.127,0.381,0.191,0.588,0.191
+                        		c0.173,0,0.347-0.045,0.503-0.137l10.032-5.84l10.03,5.84c0.342,0.197,0.77,0.178,1.091-0.059c0.32-0.229,0.474-0.633,0.391-1.02
+                        		l-2.453-11.344l8.653-7.737C36.052,14.699,36.165,14.285,36.042,13.909z M25.336,21.598c-0.268,0.24-0.387,0.605-0.311,0.957
+                        		l2.097,9.695l-8.574-4.99c-0.311-0.182-0.695-0.182-1.006,0l-8.576,4.99l2.097-9.695c0.076-0.352-0.043-0.717-0.311-0.957
+                        		l-7.396-6.613l9.87-1.002c0.358-0.035,0.668-0.264,0.814-0.592l4.004-9.077l4.003,9.077c0.146,0.328,0.456,0.557,0.814,0.592
+                        		l9.87,1.002L25.336,21.598z"/>
+                        </g>
+                        </svg>
+						</a>
 					</span>
 					<span class="nav-item-holder">
-						<a href="<?php echo cl_link("explore"); ?>">
-							<?php echo cl_translate('Categories'); ?>
-						</a>
+
+                <select id="categorySelect" class="categorySelect szLeftCate" onchange="szChange(this.value)" style="/* padding: 10px; */overflow: scroll !important;text-align: left;margin-left: -2px;overflow: hidden;width: 11rem; <?php if(isset($_GET['cat_id']) || $cl["page_tab"] == 'categories') { echo 'font-weight: bold;'; }  ?>">
+                                 <option value="PP">Categories</option>
+    								<?php
+							
+								$mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
+								$db = new MysqliDb($mysqli);
+								
+								    // require_once(cl_full_path('core/web_req_init.php'));
+								    require_once(cl_full_path("core/apps/home/app_ctrl.php"));
+								    
+								    
+                                        $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL  order by sort ASC ;");
+                                    
+                                        foreach ($categories as $k => $cat) {
+                                            
+                                            $subcategories = $db->rawQuery("SELECT * FROM `cl_categories` WHERE parent_id = " . $cat['id'] . " order by sort ASC");
+                                            
+                                                // if(count($subcategories) > 0){
+                                                //     echo '<option value="PP">'.$cat['name'].'</option>';
+                                                // }else{
+                                                //     echo '<option value="'.$cat['id'].'">'.$cat['name'].'</option>';
+                                                // }
+                                        
+                                        
+                                               echo '<option value="'.$cat['id'].'">'.$cat['name'].'</option>';
+                                                
+                									
+                    							 
+                                                if(count($subcategories) > 0) {
+                                                        foreach ($subcategories as $subcategory) {
+                                                            echo '<option value="'.$subcategory['id'].'">&nbsp;&nbsp;&nbsp;'.$subcategory['name'].'</option>';
+                                                        }
+                                                }
+                							  
+                                        
+                                            
+                                        }
+                                    
+								
+								?>
+</select>
+						<!--<a href="<?php echo cl_link("explore"); ?>">-->
+						<!--	<?php echo cl_translate('Categories'); ?>-->
+						<!--</a>-->
+						<span class="nav-item-holder dropdown">
+						<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+					 <!--   	cc-->
+						<!--</a>-->
+						<div class="dropdown-menu dropdown-icons">
+						    
+
+	
+						</div>
+					</span>
 					</span>
 				</li>
 				<li data-navitem="notifications" class="sidebar-v-nav-item <?php if ($cl['pn'] == 'notifications') {
 					echo ('active');
 				} ?>">
 					<span class="icon">
+					    <a href="<?php echo cl_link("notifications"); ?>">
 						<?php echo cl_ikon('bell-h'); ?>
+						</a>
 					</span>
 
 					<span class="nav-item-holder">
@@ -154,7 +235,9 @@
 					echo ('active');
 				} ?>">
 					<span class="icon">
+					    <a href="<?php echo cl_link("chats"); ?>">
 						<?php echo cl_ikon('envelope-h'); ?>
+						</a>
 					</span>
 					<span class="nav-item-holder">
 						<a href="<?php echo cl_link("chats"); ?>">
@@ -170,7 +253,9 @@
 					echo ('active');
 				} ?>">
 					<span class="icon">
+					    <a href="<?php echo cl_link("bookmarks"); ?>">
 						<?php echo cl_ikon('bookmark'); ?>
+						</a>
 					</span>
 					<span class="nav-item-holder">
 						<a href="<?php echo cl_link("bookmarks"); ?>">
@@ -183,7 +268,9 @@
 						echo ('active');
 					} ?>">
 						<span class="icon">
+						    <a href="<?php echo cl_link('trending'); ?>">
 							<?php echo cl_ikon('activity'); ?>
+							</a>
 						</span>
 						<span class="nav-item-holder">
 							<a href="<?php echo cl_link('trending'); ?>" data-spa="true">
@@ -199,7 +286,9 @@
 							echo ('active');
 						} ?>">
 							<span class="icon">
+							    <a href="<?php echo cl_link('trending'); ?>">
 								<?php echo cl_ikon('activity'); ?>
+								</a>
 							</span>
 							<span class="nav-item-holder">
 								<a href="<?php echo cl_link('trending'); ?>" data-spa="true">
@@ -213,6 +302,7 @@
 						} ?>">
 
 							<span class="icon">
+							    <a href="<?php echo cl_link("blue_account"); ?>">
 								<svg viewBox="0 0 24 24" aria-hidden="true"
 									class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
 									<g>
@@ -221,6 +311,7 @@
 										</path>
 									</g>
 								</svg>
+								</a>
 							</span>
 							<span class="nav-item-holder">
 								<a href="<?php echo cl_link("blue_account"); ?>" data-spa="true">
@@ -234,7 +325,9 @@
 					echo ('active');
 				} ?>">
 					<span class="icon">
+					    <a href="<?php echo ($me["url"]); ?>">
 						<?php echo cl_ikon('user'); ?>
+						</a>
 					</span>
 					<span class="nav-item-holder">
 						<a href="<?php echo ($me["url"]); ?>">
@@ -242,11 +335,11 @@
 						</a>
 					</span>
 				</li>
-				<li class="sidebar-v-nav-item">
+				<li class="sidebar-v-nav-item sideMore">
 					<span class="icon">
 						<?php echo cl_ikon('more'); ?>
 					</span>
-					<span class="nav-item-holder dropdown">
+					<span class="nav-item-holder dropdown notCut">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<?php echo cl_translate('More'); ?>
 						</a>

@@ -9,6 +9,10 @@
 # @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
 # @*************************************************************************@
 
+// RESTRICT USER CODE
+$visitor_ip = $_SERVER['REMOTE_ADDR'];
+cl_check_ip_restriction($visitor_ip);
+
 $cl["page_title"] = cl_translate("Hot topics");
 $cl["page_desc"]  = $cl["config"]["description"];
 $cl["page_kw"]    = $cl["config"]["keywords"];

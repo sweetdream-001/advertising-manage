@@ -70,17 +70,10 @@ function file_get_html(
 		$defaultSpanText
 	);
 
-	$context = stream_context_create(array(
-		"http" => array(
-			"ignore_errors" => true,
-			"user_agent" => ""
-		),
-		"ssl" => array(
-			"verify_peer" => false,
-			"verify_peer_name" => false
-		)
-	));
-	
+	/**
+	 * For sourceforge users: uncomment the next line and comment the
+	 * retrieve_url_contents line 2 lines down if it is not already done.
+	 */
 	$contents = file_get_contents(
 		$url,
 		$use_include_path,
@@ -88,6 +81,7 @@ function file_get_html(
 		$offset,
 		$maxLen
 	);
+	// $contents = retrieve_url_contents($url);
 
 	if (empty($contents) || strlen($contents) > $maxLen) {
 		$dom->clear();
@@ -1768,7 +1762,7 @@ class simple_html_dom
 					// 'CP1251'/'ISO-8859-5' will be detected as
 					// 'CP1252'/'ISO-8859-1'. This will cause iconv to fail, in
 					// which case we can simply assume it is the other charset.
-					if (!@iconv('CP1252', 'UTF-8//IGNORE', $this->doc)) {
+					if (!@iconv('CP1252', 'UTF-8', $this->doc)) {
 						$encoding = 'CP1251';
 					}
 				}

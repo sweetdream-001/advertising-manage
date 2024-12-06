@@ -1,0 +1,28 @@
+<tr data-ip-item="<?php echo($cl['li']['id']); ?>">
+    <td scope="row">
+        <?php echo($cl['li']['id']); ?>
+    </td>
+    <td>
+        <?php echo($cl['li']['ip_address']); ?>
+    </td>
+    <td>
+    	<time>
+    		<?php echo($cl['li']['time']); ?>
+    	</time>
+    </td>
+    <td>
+    	<div class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">more_horiz</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="javascript:void(0);" class="dropdown-item" onclick="editRestrictiedIp('<?php echo($cl['li']['id']); ?>');">
+                    <?php echo cl_translate('Edit'); ?>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item" onclick="deleteRestrictiedIp('<?php echo($cl['li']['id']); ?>');">
+                    <?php echo cl_translate('Delete'); ?>
+                </a>
+            </ul>
+        </div>
+    </td>
+</tr>

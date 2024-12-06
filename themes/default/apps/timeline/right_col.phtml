@@ -12,12 +12,42 @@
                 <?php echo ($cl['li']['text']); ?>
             </p>
         </div>
+    <?php elseif (not_empty($cl['li']['company'])) : ?>
+        <?php
+        $cl['li']['company'] = cl_rn2br($cl['li']['company']);
+        $cl['li']['company'] = cl_strip_brs($cl['li']['company']);
+        ?>
+        <div class="publication-text">
+            <p class="pub-text">
+                <?php echo ($cl['li']['company']); ?>
+            </p>
+        </div>
+        <?php
+        $cl['li']['description'] = cl_rn2br($cl['li']['description']);
+        $cl['li']['description'] = cl_strip_brs($cl['li']['description']);
+        ?>
+        <div class="">
+            <p class="">
+                <?php echo ($cl['li']['description']); ?>
+            </p>
+        </div>
     <?php endif; ?>
     <span class="posted-time">
         <time>
-            <?php echo cl_date("h:i A - M d, Y", $cl['li']['time_raw']); ?>
+            <?php
+            if (isset($cl['li']['time_raw'])) {
+                echo cl_date("h:i A - M d, Y", $cl['li']['time_raw']); 
+            } else {
+                echo $cl['li']['time'];
+            }
+            ?>
         </time>
     </span>
+    <?php if (not_empty($cl['li']['target_url'])) : ?>
+        <button onclick="SMColibri.ad_conversion(this);" data-ad-id="<?php echo $cl['li']['id']; ?>" data-ad-url="<?php echo $cl['li']['target_url']; ?>" class="btn target-url-btn btn-custom main-outline lg btn-block pt-prevent-click">
+            <?php echo $cl['li']['cta']; ?>
+        </button>
+    <?php endif; ?>
     <!-- Bottom icons -->
     <div class="media_liked">
         <span class="num"><?php echo $cl['li']['replys_count']; ?> <span><?php echo cl_translate('Replies'); ?></span></span>

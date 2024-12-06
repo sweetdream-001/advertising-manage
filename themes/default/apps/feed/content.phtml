@@ -1,8 +1,39 @@
+
+<?php
+
+$servername = "localhost";
+$username = "tweetsp_talkus";
+$password = "Kiwm&@mkeIW212";
+$dbname = "tweetsp_talk";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to get data where name is 'showmore_validation'
+$sql = "SELECT * FROM cl_configs WHERE name = 'showmore_validation'";
+$result = $conn->query($sql);
+
+// Fetch the data if it exists
+$config_value = null;
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $config_value = $row['value']; // Assuming 'value' is the column holding the data you need
+} else {
+    echo "No records found";
+}
+
+$conn->close();
+
+?>
 <div class="timeline-container" data-app="explore">
 	<div class="d-block" id="vue-explore-app">
 		<div class="timeline-header feed" data-el="tl-header">
 		<a href="<?php echo cl_link("/"); ?>" class="m_logo h-laptop">
-				<img src="{%config site_logo%}" alt="Logo">
+				<img src="<?php echo cl_link("/"); ?>/themes/default/statics/img/logo.png" alt="Logo">
 </a>
 			<div class="timeline-searchbar" style="width:100%">
 			
@@ -49,16 +80,38 @@
 			<div class="tweet2">
 		<img src="https://p-tweets.com/talk/img/tweets.png"  alt="">
 		</div>
+									<div style="
+    text-align: center;
+    font-size: 18px;
+    padding: 8px;
+    font-weight: bold;
+">
+				    <?php
+				    		if(isset($_GET['cat_id'])) {
+						        $mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
+								$db = new MysqliDb($mysqli);
+							    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE `id`='".$_GET['cat_id']."'");
+						        echo $categories[0]['name'];
+						    }
+				    ?>
+				</div>
 		<?php if (empty($cl["query_result"]) && empty($cl["search_query"])): ?>
 
 			<?php echo cl_template('feed/includes/empty_list'); ?>
-		<?php else: ?>
+		<?php else:
+
+		//echo $cl["page_tab"];exit("Ok");
+			 ?>
 			<?php echo cl_template(cl_strf('feed/includes/%s', $cl["page_tab"])); ?>
 
 			<?php echo cl_template('feed/includes/empty_result'); ?>
 		<?php endif; ?>
 
-		<div class="timeline-data-loader" v-if="show_loader">
+		<?php 
+		if($config_value == "on"){
+		?>
+
+		<div class="timeline-data-loader" style="padding-bottom: 9rem;" v-if="show_loader">
 			<button v-if="loading_more" class="btn btn-custom main-outline lg" disabled="true">
 				<?php echo cl_translate("Please wait"); ?>
 			</button>
@@ -69,6 +122,9 @@
 				<?php echo cl_translate("That is all for now!"); ?>
 			</button>
 		</div>
+		<?php
+		}
+		?>
 	</div>
 
 	<?php echo cl_template('explore/scripts/app_master_script'); ?>

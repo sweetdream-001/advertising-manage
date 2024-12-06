@@ -9,6 +9,10 @@
 # @ Copyright (c) 2020 - 2023 JOOJ Talk. All rights reserved.               @
 # @*************************************************************************@
 
+// RESTRICT USER CODE
+$visitor_ip = $_SERVER['REMOTE_ADDR'];
+cl_check_ip_restriction($visitor_ip);
+
 if (empty($cl["is_logged"])) {
 	if ($cl["config"]["guest_page_status"] == "on") {
 		cl_redirect("guest");
@@ -33,9 +37,9 @@ else {
 	$cl["pn"]            = "home";
 	$cl["sbr"]           = true;
 	$cl["sbl"]           = true;
-	$cl["tl_feed"]       = cl_get_timeline_feed(30);
-	$cl["feed"]       = cl_get_guest_feed(false, 30);
-	$cl["tl_feed_total"] = 30;
+	$cl["tl_feed"]       = cl_get_timeline_feed(3000);
+	$cl["feed"]       = cl_get_guest_feed(false, 3000);
+	$cl["tl_feed_total"] = 3000;
 	$cl["tl_swifts"]     = cl_timeline_swifts();
 	$cl["http_res"]      = cl_template("home/content");
 }

@@ -1,3 +1,15 @@
+<style>.rmv {
+  cursor: pointer;
+  color: #fff;
+  border-radius: 30px;
+  border: 1px solid #fff;
+  display: inline-block;
+  background: rgba(255, 0, 0, 1);
+  margin: -5px -10px;
+  position: relative;
+    top: 0;
+   
+}</style>
 <div class="cp-app-container" data-app="about_settings">
    <div class="container-fluid">
       <div class="page-title">
@@ -23,6 +35,23 @@
                      Posts
                   </h5>
                </div>
+               
+                 <div class="row justify-content-center mt-3">
+                      <nav v-if="totalPages > 1">
+                        <ul class="pagination">
+                          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
+                          </li>
+                          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                            <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+                          </li>
+                          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+               
                <div class="row mb-3 mt-4">
                    <div class="col-md-3">
                         <label for="username">Username:</label>
@@ -40,14 +69,20 @@
                    </div>
                </div>
                <div class="row">
+                   
+                   
+                   
                   <table class="table table-bordered">
+                    
                      <thead>
                         <tr>
                            <th>#</th>
                            <th>Update</th>
+                           <th>Image</th>
                            <th>Username</th>
                            <th>Category</th>
                            <th>Date</th>
+                           <th>views</th>
                            <th>Action</th>
                         </tr>
                      </thead>
@@ -56,18 +91,68 @@
                            <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
                         </tr>
                         <tr v-for="(cat, id) in posts">
-                           <td>{{id+1}}</td>
-                           <td>{{cat.text}}</td>
-                           <td>{{cat.username}}</td>
-                           <td>{{cat.category_name}}</td>
-                           <td>{{formatDate(cat.time)}}</td>
-                           <td>
+                           <td style="width:60px; max-width: 60px !important;"                                         data-toggle="modal" 
+                                        data-target="#editModal" 
+                                        @mouseover="editUserPost(cat)">{{ (currentPage - 1) * perPage + id + 1  }}</td>
+                           <td style=
+                           "max-width:260px !important;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                           " :title="cat.text">
+                                        <span v-html="formattedText(cat.text)"></span>
+                               </td>
+                            <td style="max-width:150px !important; width: 150px !important;">
+                                                                        <div v-if="cat.src && cat.type !== 'yt'">
+                                            <img :src="'https://p-tweets.com/talk/' + cat.src" style="width: 80px" v-if="cat.src && cat.type !== 'yt'">
+                                        </div>
+                                    
+                                    <div v-else-if="cat.type === 'yt'">
+                                        <iframe :src="'https://www.youtube.com/embed/' + cat.src" style="width:80px; height:80px;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+        								        </iframe>
+                                    </div>   
+                                    
+                                    
+                                    
+                                     <!-- CHECK IF TEXT WITH LINK 7 APRIL  -->
+                                     <div v-if="cat.og_data.image && cat.type === 'text' && cat.og_data.title !== ' - YouTube' && cat.og_data.type != 'video.other'">
+                                                                         <img :src="getImageUrl(cat.og_data.image)" style="width: 80px" v-if="cat.og_data.image && cat.type === 'text' && cat.og_data.title !== ' - YouTube' && cat.og_data.type != 'video.other'">
+
+                                     </div>
+                                <div v-if="cat.type === 'text' && cat.link_src">
+                                    <iframe :src="'https://www.youtube.com/embed/' + cat.link_src" style="width:80px; height:80px;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+                                    </iframe>
+                                 </div>
+                              <!-- CHECK IF TEXT WITH LINK 7 APRIL  -->
+                            </td>   
+                           <td style="max-width:10px !important; width:10px !important;">{{cat.username}}</td>
+                           <td style="max-width:10px !important; width:10px !important;">{{cat.category_name}}</td>
+   
+                           <td style="width: 114px !important; max-width: 114px !important;">{{formatDate(cat.time)}}</td>
+                            <td style="width:5px !important; max-width:5px !important;">{{cat.views}}</td>
+                           <td  style="max-width:10px !important; width:10px !important;">
                               <a href="Javascript:;" data-toggle="modal" data-target="#editModal" v-on:click="editUserPost(cat)">Edit</a> | 
                               <a href="Javascript:;" v-on:click="deleteUserPost(cat)">Delete</a>
                            </td>
                         </tr>
                      </tbody>
                   </table>
+                  
+                  <div class="row justify-content-center mt-3">
+                      <nav v-if="totalPages > 1">
+                        <ul class="pagination">
+                          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
+                          </li>
+                          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                            <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+                          </li>
+                          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+
                </div>
             </div>
          </div>
@@ -81,7 +166,7 @@
               <!-- Modal Header -->
               <div class="modal-header">
                 <h4 class="modal-title">Edit Post</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button v-on:click="closeModal()" type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
         
               <!-- Modal body -->
@@ -100,15 +185,69 @@
                     </select>
                   </div>
                   
-                  <div class="form-group mt-4">
-                    <label for="text">Photo:</label>
-                    <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;"> 
+                  <!--<div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">-->
+                  <!--  <label for="text">Photo:</label>-->
+                  <!--  <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;"> -->
+                  <!--</div>-->
+                  <div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">
+                        <label for="text">Photo:</label>
+                        <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;">
+                     </div>
+                  
+                  <!-- <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">-->
+                  <!--  <label for="text">Youtube Link:</label>-->
+                  <!--  <input type="text" :value="'https://www.youtube.com/watch?v=' + editObj.src" class="form-control" name="yt"> -->
+                  <!--</div>-->
+                  
+                  <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">
+                        <label for="text">Youtube Link:</label>
+                        <input type="text" :value="'https://www.youtube.com/watch?v=' + editObj.src" class="form-control" name="yt_old" v-on:keyup="videoLinkText" readonly>
+                     </div>
+                      <!-- IF TEXT AND LINK EXIST  7 APRIL -->
+                     <div class="form-group mt-4" v-if="editObj.link_src!='' && editObj.link_src!=null   && editObj.type == 'text'">
+                        <label for="text">Video:</label>
+                        <iframe :src="'https://www.youtube.com/embed/' + editObj.link_src" style="width:100%; height:100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+                        </iframe>
+                     </div>
+
+                                          <!-- IF TEXT AND LINK EXIST  7 APRIL -->
+                  <!--<div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">-->
+                  <!--  <label for="text">Image:</label>-->
+                  <!--  <input type="file" v-model='editObj.image' name="image">-->
+                  <!--</div>-->
+                  
+              <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">
+                        <label for="text">Video:</label>
+                        <iframe :src="'https://www.youtube.com/embed/' + editObj.src" style="width:100%; height:100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+                        </iframe>
+                     </div>
+                  
+                  <!-- 4 april-->
+                  
+                  <div class="form-group mt-4" v-if="!files">
+                        <label for="text">New Youtube Video Link:</label>
+                        <div id="thumbnail"></div>
+                        <input class="form-control" type="text" v-on:keyup="videoLinkText" accept="audio/*|video/*|image/*" :value="videoLink" name="yt" >
+                     </div>
+                     
+                     
+                      <img v-if="imagePreview"  v-show="files && !videoLink" id="imagePreview" :src="files" style="max-width: 250px; height:auto;">
+                     <input type="button" v-if="files && !videoLink" class="rmv" @click="removeVideo" value="x" />
+
+                     <div class="form-group mt-4">
+                     <input type="file" value="files" name="image" v-if="!videoLink" id="fileInput"  class="file_multi_video" accept="audio/*|video/*|image/*" @change="previewFiles">
+                     </div>
+                  <!-- 4 april -->
+                  
+                  <div class="form-group mt-4" v-if="editObj.src && editObj.type!='yt'">
+                    <label for="text">Delete:</label>
+                    <input style="left: auto; opacity: 1;" type="checkbox" name="deleteVideo" :value="editObj.id">
                   </div>
                   
-                  <div class="form-group mt-4">
-                    <label for="text">Image:</label>
-                    <input type="file" v-model='editObj.image' name="image">
-                  </div>
+                  <div class="form-group mt-4" v-if="editObj.link_src && editObj.type == 'text'">
+                        <label for="text">Delete:</label>
+                        <input style="left: auto; opacity: 1;" type="checkbox" name="deleteVideo" :value="editObj.id">
+                     </div>
                   
                   <button type="submit" class="btn btn-primary mt-4" >Update</button>
                   </form>

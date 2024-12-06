@@ -105,10 +105,16 @@
                     }).done(function(data) {
                         if (data.status != 200) {
                             SMC_CPanel.errorMSG();
-                        }
-                        else {
-                            _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').replaceClass('bg-grey', 'bg-blue');
-                            _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').text("Yes");
+                        } else {
+                            if (data.approved == "Y") {
+                                _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').replaceClass('bg-grey', 'bg-blue');
+                                _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').text("Yes");
+                                _app_.find(".pt-ad-approve").text("Unapproved");
+                            } else if (data.approved == "N") {
+                                _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').replaceClass('bg-blue', 'bg-grey');
+                                _app_.find("[data-ads-item='{0}']".format(id)).find('[data-an="approval-status"]').text("No");
+                                _app_.find(".pt-ad-approve").text("Approved");
+                            }
                         }
                     }).always(function() {
                         SMC_CPanel.waitme();

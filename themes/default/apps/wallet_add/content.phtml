@@ -46,7 +46,11 @@
 					<button v-on:click="topup_amount = quick_options.op3" type="button" class="btn btn-custom md" v-bind:class="{'main-inline': topup_amount == quick_options.op3, 'main-outline': topup_amount != quick_options.op3}">
 						<?php echo cl_money(($cl["config"]["wallet_min_amount"] * 3)); ?>
 					</button>
+					
+					<b style="margin-left: 4px;">or your preferred maximum amount.</b>
+					
 				</div>
+				
 				<div class="form-divider"></div>
 				<div class="form-group no-mb">
 					<label>
@@ -112,6 +116,18 @@
 										</div>
 									</div>
 								<?php endif; ?>
+							<?php endif; ?>
+							
+							<?php if ($cl['config']['square_method_status'] == 'on') : ?>
+								<div class="col-xxl-3 col-sm-6 col-6">
+									<div class="form-paymethods__item" v-on:click="topup_method = 'square'" v-bind:class="{'active': topup_method == 'square'}">
+										<img src="https://images.squarespace-cdn.com/content/5134cbefe4b0c6fb04df8065/1540481411828-EI6QOPHKV2JQWV550JIP/squarespace-logo-horizontal-white.jpg" alt="Square">
+
+										<div class="form-paymethods__item-checkmark">
+											<?php echo cl_icon("ok_single"); ?>
+										</div>
+									</div>
+								</div>
 							<?php endif; ?>
 
 							<?php if ($cl['config']['bank_method_status'] == 'on') : ?>

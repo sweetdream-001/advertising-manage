@@ -76,10 +76,14 @@
                 <?php echo cl_translate('Show'); ?>
                 </a>
                 <?php if ($cl['li']['approved'] == "N"): ?>
-                    <a onclick="SMC_CPanel.PS.approve('<?php echo($cl['li']['id']); ?>');" href="javascript:void(0);" class="dropdown-item">
+                    <a onclick="SMC_CPanel.PS.approve('<?php echo($cl['li']['id']); ?>');" href="javascript:void(0);" class="dropdown-item pt-ad-approve">
                     <?php echo cl_translate('Approve'); ?>
                     </a>
-                 <?php endif; ?>
+                <?php elseif ($cl['li']['approved'] == "Y"): ?>
+                    <a onclick="SMC_CPanel.PS.approve('<?php echo($cl['li']['id']); ?>');" href="javascript:void(0);" class="dropdown-item pt-ad-approve">
+                    <?php echo cl_translate('Unapproved'); ?>
+                    </a>
+                <?php endif; ?>
                 <a href="javascript:void(0);" class="dropdown-item" onclick="SMC_CPanel.PS.delete('<?php echo($cl['li']['id']); ?>');">
                 <?php echo cl_translate('Delete'); ?>
                 </a>

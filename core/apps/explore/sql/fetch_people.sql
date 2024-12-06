@@ -25,8 +25,12 @@ SELECT `id`, `about`, `followers`, `following`, `posts`, `website`, `country_id`
 	<?php if($data['keyword']): ?>
 		AND (`username` LIKE "%<?php echo($data['keyword']); ?>%" OR `fname` LIKE "%<?php echo($data['keyword']); ?>%" OR `about` LIKE "%<?php echo($data['keyword']); ?>%" OR CONCAT(`fname`) LIKE "%<?php echo($data['keyword']); ?>%")
 	<?php endif; ?>
-
-	ORDER BY `followers` DESC, `posts` DESC
+    
+    <?php if($data['t_users'] == 'cl_users'){ ?>
+    	ORDER BY `cl_users`.`id` DESC
+    <?php }else { ?>
+    	ORDER BY `followers` DESC, `posts` DESC
+    <?php } ?>
 
 <?php if(is_posnum($data['limit'])): ?>
 	LIMIT <?php echo($data['limit']); ?>

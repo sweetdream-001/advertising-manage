@@ -128,5 +128,6 @@ function cl_sqltepmlate($path = '', $data = array()){
     else {
         exit("$temp_path: Does not exists on the server!");
     }
+    //echo $template;exit("Okay");
     return $template;
 }

@@ -19,15 +19,34 @@
         
         // $.get('https://p-tweets.com/talk/native_api/cpanel/get_all_categories', function(data) {
         $.get('https://p-tweets.com/talk/native_api/home/get_all_categories', function(data) {
-          // Handle the response data here
-          console.log(data);
-              let jsonData = data.data;
-              const $categorySelect = $('.categorySelect');
-
-              // Add options to select box
+            <?php 
+              if (isset($_GET['thread_id']) && !empty($_GET['thread_id'])) {
+                  global $db;
+                  $db->where('id', $_GET['thread_id']);
+                  $threadData = $db->get(T_PUBS);
+    
+                  $db->where('id', $threadData[0]['category_id']);
+                  $threadCategoryData = $db->get(T_CATEGORY);
+              }
+              ?>
+                // Assuming you have the 'data' object available
+                let jsonData = data.data;
+                const $categorySelect = $('.sz_post_cate');
+                
+                $categorySelect.html(''); // Clear existing options
+                
+                // Add options to select box
                 jsonData.forEach(category => {
-                    const indentation = category.parent_id !== null ? '&nbsp;&nbsp;&nbsp;' : '';
-                    $categorySelect.append(`<option value="${category.id}">${indentation}${category.name}</option>`);
+                  const indentation = category.parent_id !== null ? '&nbsp;&nbsp;&nbsp;' : '';
+                  let selected = '';
+                
+                  <?php if (isset($threadCategoryData[0]['id']) && !empty($threadCategoryData[0]['id'])) { ?>
+                      if (category.id == <?= $threadCategoryData[0]['id']; ?>) {
+                        selected = 'selected';
+                      }
+                  <?php } ?>
+                
+                  $categorySelect.append(`<option value="${category.id}" ${selected}>${indentation}${category.name}</option>`);
                 });
         })
         .fail(function(error) {
@@ -78,38 +97,70 @@
 	});
 	
 	
-document.addEventListener('DOMContentLoaded', function () {
-    try{
-        var catId = <?php echo ($_GET['cat_id'] ?? '0'); ?>;
-    } catch(e){
-        console.log(e);
-    }
-  
-  console.log("catId")
-  console.log(catId)
-if(catId != 0){return}
-    
-  // Get all post list items
-  const postListItems = document.querySelectorAll('.post-list-item');
-  console.log(postListItems);
+// document.addEventListener('DOMContentLoaded', function () {
+//     try {
+//         var catId = <?php echo ($_GET['cat_id'] ?? '0'); ?>;
+//     } catch (e) {
+//         console.log(e);
+//     }
 
-  // Hide the first three elements and apply initial transform
-  postListItems[0].style.display = 'none';
-  postListItems[1].style.display = 'none';
-  postListItems[2].style.display = 'none';
-  postListItems[0].style.transform = 'translateY(-100%)';
-  postListItems[1].style.transform = 'translateY(-100%)';
-  postListItems[2].style.transform = 'translateY(-100%)';
+//     console.log("catId");
+//     console.log(catId);
 
-  setTimeout(() => {
-    [2, 1, 0].forEach((val, i) => {
-      setTimeout(() => {
-        postListItems[val].style.display = 'block'; // Show the element
-        postListItems[val].style.transition = 'transform 0.5s';
-        postListItems[val].style.transform = 'translateY(0)';
-      }, 4000 * i);
-    });
-  }, 3000);
-});
+//     if (catId != 0) {
+//         return;
+//     }
+
+//     // Get all post list items
+//     const postListItems = document.querySelectorAll('.post-list-item');
+//     console.log(postListItems);
+
+//     // Hide the first three elements and apply initial transform
+//     for (let i = 0; i < 4; i++) {
+//         if (postListItems[i]) {
+//             postListItems[i].style.display = 'none';
+//             postListItems[i].style.transform = 'translateY(-100%)';
+//         }
+//     }
+
+//     setTimeout(() => {
+//         for (let i = 3; i >= 0; i--) {
+//             setTimeout(() => {
+//                 $(postListItems[i]).slideDown(1000); // Apply slideDown effect
+//                 postListItems[i].style.transition = 'transform 0.5s';
+//                 postListItems[i].style.transform = 'translateY(0)';
+//             }, 4000 * (3 - i));
+//         }
+//     }, 3000);
+
+//     // Your existing code for showing recent elements
+//     var delay = 3000;
+//     var count = 15;
+//     var showing = 0;
+//     var i = 11;
+
+//     function move(i) {
+//         return function () {
+//             if (i > 10) {
+//                 $(postListItems[i]).css('display', 'block');
+//                 $(postListItems[i]).slideDown(1000);
+//             }
+//         };
+//     }
+
+//     function shift() {
+//         var toShow = i + showing;
+//         $(postListItems[toShow]).slideDown(1000, move(i));
+//         if (i < count) {
+//             i = i + 1;
+//         }
+//         setTimeout(shift, delay);
+//     }
+
+//     $(document).ready(function () {
+//         setTimeout(shift, delay);
+//     });
+// });
+
 	
 </script>

@@ -1,0 +1,239 @@
+<div class="timeline-container" data-app="thread">
+    <div class="timeline-header__topline">
+        <div data-el="timeline-bs-notifs" class="timeline-bs-notifs"></div>
+    </div>
+    <div class="publication--thread-container">
+        <div class="publication--thread-container-inner">
+            <?php if (not_empty($cl['thread_data']['parent'])) : ?>
+                <div class="publication--thread-chain-holder">
+                    <div class="timeline-posts-container">
+                        <div class="timeline-posts-ls" data-an="chain-list">
+                            <?php foreach ($cl['thread_data']['parent'] as $cl["li"]) : ?>
+                                <?php echo cl_template('timeline/post'); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="publication--thread-data-holder media" data-an="thread-data">
+                <?php echo cl_template('thread/thread'); ?>
+            </div>
+            <div class="reply_button">
+                <button onclick="SMColibri.pub_reply('<?php echo $cl['thread_data']['post']['id']; ?>');" class="btn-custom reply main-inline md post-pub-btn">
+                    <?php echo cl_translate("Tweet Your Reply"); ?></button>
+            </div>
+            <?php if (empty($cl['thread_data']['can_reply']) && not_empty($cl['thread_data']['post']['can_see'])) : ?>
+                <?php if ($cl['thread_data']["post"]["priv_wcr"] == "followers") : ?>
+                    <div class="publication--thread-reply-privacy">
+                        <div class="info-message">
+                            <div class="d-flex align-items-center flex-wn">
+                                <div class="flex-item">
+                                    <div class="icon">
+                                        <?php echo cl_ikon("people"); ?>
+                                    </div>
+                                </div>
+                                <div class="flex-item">
+                                    <p>
+                                        <?php echo cl_translate("Only followers of ({@uname@}) can respond to this publication", array(
+                                            "uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+                                        )); ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php else : ?>
+                    <div class="publication--thread-reply-privacy">
+                        <div class="info-message">
+                            <div class="d-flex align-items-center flex-wn">
+                                <div class="flex-item">
+                                    <div class="icon">
+                                        <?php echo cl_ikon("ear"); ?>
+                                    </div>
+                                </div>
+                                <div class="flex-item">
+                                    <p>
+                                        <?php echo cl_translate("Only people mentioned by {@uname@} in this post can reply", array(
+                                            "uname" => cl_html_el("a", $cl['thread_data']['post']['owner']['username'], array("href" => $cl['thread_data']['post']['owner']['url']))
+                                        )); ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+            <div class="publication--thread-replys-holder">
+                <?php if (not_empty($cl['thread_data']['next'])) : ?>
+                    <div class="timeline-posts-container">
+                        <div class="timeline-posts-ls" data-an="replys-list">
+                            <?php foreach ($cl['thread_data']['next'] as $cl["li"]) : ?>
+                                <?php if (empty($cl["li"]["replys"])) : ?>
+                                    <?php echo cl_template('timeline/post'); ?>
+                                <?php else : ?>
+                                    <div class="timeline-posts-ls-group">
+                                        <div class="timeline-posts-ls-group-inner">
+                                            <?php echo cl_template('timeline/post'); ?>
+                                            <?php
+                                            $parent_thread = $cl['li'];
+                                            $post_replys   = $parent_thread['replys'];
+                                            $post_replys   = array_reverse($post_replys);
+
+                                            foreach ($post_replys as $cl['li']) {
+                                                echo cl_template('timeline/post');
+                                            }
+                                            ?>
+                                        </div>
+                                        <a class="show-thread" href="<?php echo ($parent_thread["url"]); ?>" data-spa="true">
+                                            <span class="txt-label">
+                                                (<?php echo ($parent_thread["replys_count"]); ?>) <?php echo cl_translate("Show this thread"); ?>
+                                            </span>
+                                            <span class="icon">
+                                                <?php echo cl_ikon('arrow-right'); ?>
+                                            </span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php if (count($cl['thread_data']['next']) == 30) : ?>
+                        <div class="load-more">
+                            <button class="btn btn-custom main-outline lg" data-an="load-more">
+                                <?php echo cl_translate("Show more"); ?>
+                            </button>
+                        </div>
+                    <?php else : ?>
+                        <div class="load-more">
+                            <button disabled="true" class="btn btn-custom main-outline lg" data-an="load-more">
+                                <?php echo cl_translate("That is all for now!"); ?>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <div class="no-thread-replys">
+                        <div class="icon">
+                            <?php echo cl_ikon('chat-post'); ?>
+                        </div>
+                        <div class="pl-message">
+                            <h4>
+                                <?php echo cl_translate("No replys yet!"); ?>
+                            </h4>
+                            <p>
+                                <?php echo cl_translate("It seems that this publication does not yet have any comments. In order to respond to this publication from {@publisher_name@}, click on at the button above", array(
+                                    "svg_icon" => cl_html_el("span", cl_ikon('chat-post')),
+                                    "publisher_name" => cl_html_el('a', $cl['thread_data']['post']['owner']['name'], array(
+                                        "href" => $cl['thread_data']['post']['owner']['url'],
+                                        'target' => '_parent',
+                                        'onclick' => 'parent.$.fancybox.close();'
+                                    ))
+                                )); ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <?php echo cl_template('thread/scripts/app_master_script'); ?>
+</div>
+
+<style>
+    .left-sb-container.sidebar {
+        display: none !important;
+    }
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container {
+        padding-top: 0 !important;
+    }
+
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container {
+        margin-top: 10px;
+    }
+
+    body div.mobile-bottom-navbar div.mobile-bottom-navbar-inner {
+        display: none;
+    }
+
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publisher-info div.lp a span {
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-flex;
+        vertical-align: middle;
+    }
+
+    .reply_button {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        padding: 10px;
+        padding-bottom: 0px;
+    }
+
+    .reply_button button.btn-custom.reply {
+        max-height: 36px !important;
+        min-height: 36px !important;
+        color: rgb(255, 255, 255);
+        font-weight: 700;
+        -moz-box-align: center;
+        align-items: center;
+        -moz-box-pack: center;
+        justify-content: center;
+        font-size: 15px !important;
+        display: flex;
+        background-color: rgb(29, 155, 240) !important;
+        transition-property: background-color, box-shadow !important;
+        border-color: rgba(0, 0, 0, 0) !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publisher-info div.lp a span.user-name-holder {
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-flex;
+        vertical-align: middle;
+    }
+
+    div.lp span.posted-time {
+        line-height: 14px;
+        
+    }
+
+    @media (max-width: 1199.98px) {
+        body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publisher-avatar {
+            width: 48px;
+            flex-basis: 48px;
+            max-width: 48px;
+            min-width: 48px;
+        }
+
+        body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publisher-avatar div.avatar-holder {
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publisher-info div.lp a span.user-name-holder.verified-badge {
+        vertical-align: middle;
+    }
+
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publisher-info div.lp a span.user-name-holder.verified-badge::after {
+        height: 1px;
+    }
+
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publication-footer-ctrls {
+        padding-right: 0px;
+    }
+</style>
+<style>
+	 .guest_bottom {
+		display: none!important;
+	}
+	</style>

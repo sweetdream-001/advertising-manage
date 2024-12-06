@@ -73,7 +73,7 @@
 						},
 						success: function(data) {
 							if (data.status == 200) {
-								if (_app_.topup_method == "paypal" || _app_.topup_method == "paystack") {
+								if (_app_.topup_method == "paypal" || _app_.topup_method == "paystack"  || data.type == "square") {
 									cl_redirect(data.url);
 								}
 								else if(_app_.topup_method == "stripe_alipay" || _app_.topup_method == "stripe") {

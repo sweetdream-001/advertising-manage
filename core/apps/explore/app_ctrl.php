@@ -90,7 +90,8 @@ function cl_search_people($keyword = "", $offset = false, $limit = 30) {
     return $data;
 }
 
-function cl_search_posts($keyword = "", $offset = false, $limit = 10) {
+function cl_search_posts($keyword = "", $offset = false, $post_id = false, $limit = 3000) {
+    //exit("HERE");
 	global $db,$cl,$me;
 
 	$user_id       = ((not_empty($cl['is_logged'])) ? $me['id'] : true);
@@ -105,6 +106,7 @@ function cl_search_posts($keyword = "", $offset = false, $limit = 10) {
         "user_id"   => $user_id,
         "htag"      => $htag,
 		"offset"    => $offset,
+		"post_id"   => $post_id,
 		"limit"     => $limit
  	));
 
@@ -113,12 +115,14 @@ function cl_search_posts($keyword = "", $offset = false, $limit = 10) {
 
 	if (cl_queryset($query_res)) {
 		foreach ($query_res as $row) {
+
+            $counter += 1;
 			$data[] = cl_post_data($row);
 
             if ($cl['config']['advertising_system'] == 'on') {
                 if (cl_is_feed_nad_allowed()) {
-                    if (not_empty($offset)) {
-                        if ($counter == 5) {
+                   // if (not_empty($offset)) {
+                        if ($counter == 12) {
                             $counter = 0;
                             $ad      = cl_get_timeline_ads();
 
@@ -126,26 +130,27 @@ function cl_search_posts($keyword = "", $offset = false, $limit = 10) {
                                 $data[] = $ad;
                             }
                         }
-                        else {
-                            $counter += 1;
-                        }
-                    }
+                        // else {
+                        //     $counter += 1;
+                        // }
+                   // }
                 }
             }
 		}
 
         if ($cl['config']['advertising_system'] == 'on') {
             if (cl_is_feed_nad_allowed()) {
-                if (empty($offset)) {
+                //if (empty($offset)) {
                     $ad = cl_get_timeline_ads();
 
                     if (not_empty($ad)) {
                         $data[] = $ad;
                     }
-                }
+               // }
             }
         }
 	}
-
+//echo "<pre>";print_r($data);exit("RAM");
+$data = array_reverse($data);
 	return $data;
 }

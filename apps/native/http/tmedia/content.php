@@ -9,6 +9,10 @@
 # @ Copyright (c) 2020 - 2021 JOOJ Talk. All rights reserved.               @
 # @*************************************************************************@
 
+// RESTRICT USER CODE
+$visitor_ip = $_SERVER['REMOTE_ADDR'];
+cl_check_ip_restriction($visitor_ip);
+
 require_once(cl_full_path("core/apps/thread/app_ctrl.php"));
 
 $thread_id         = fetch_or_get($_GET["thread_id"], false);

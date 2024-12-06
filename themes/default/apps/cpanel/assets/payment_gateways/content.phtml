@@ -256,6 +256,75 @@
                     </div>
                 </div>
             </div>
+            <!--  Square gateway -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" style="padding: 15px;">
+                        <div class="card-header">
+                            <h5>
+                                Square gateway API settings
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <form class="form" data-an="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="square_api_key-input">
+                                            <label>
+                                                Square API Public key
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config square_api_key%}" name="square_api_key" type="text" class="form-control" placeholder="Enter Square API public key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" data-an="square_api_pass-input">
+                                            <label>
+                                                Square API Secret key
+                                            </label>
+                                            <div class="form-line">
+                                                <input value="{%config square_api_pass%}" name="square_api_pass" type="text" class="form-control" placeholder="Enter Square API secret key">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group no-mb" data-an="square_method_status-input">
+                                            <label>
+                                                Square Payment Status
+                                            </label>
+                                            <div class="form-line">
+                                                <select name="square_method_status" class="form-select form-control-primary">
+                                                    <option value="on" <?php if ($cl['config']['square_method_status'] == 'on') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('enabled'); ?></option>
+                                                    <option value="off" <?php if ($cl['config']['square_method_status'] == 'off') {
+                                                        echo ('selected');
+                                                    } ?>> <?php echo cl_translate('disabled'); ?></option>
+                                                </select>
+                                            </div>
+                                            <div class="alert alert-light dark m-15" role="alert">
+                                                <p>
+                                                    If you disable this option, then users will not be able to use Square as a payment gateway.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 no-mb">
+                                        <button class="btn btn-primary" type="submit" data-an="submit-ctrl">
+                                            <?php echo cl_translate("Save changes"); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--  AliPay gateway  -->
             <div class="row">
                 <div class="col-sm-12">

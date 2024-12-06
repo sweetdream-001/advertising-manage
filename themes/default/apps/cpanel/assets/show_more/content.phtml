@@ -1,0 +1,67 @@
+<div class="cp-app-container" data-app="show-more">
+<div class="container-fluid">
+            <div class="page-title">
+              <div class="row">
+                <div class="col-6">
+                  <h3>  <?php echo cl_translate('show_more'); ?></h3>
+                </div>
+                <div class="col-6">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><?php echo cl_translate('ui_show_more'); ?></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+    <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                    <?php echo cl_translate('manage_show_more'); ?>
+                    </h5>
+                </div>
+               <div class="card-body">
+
+
+               <form class="form" data-an="form">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group" data-an="showmore_validation-input">
+                                    <label>
+                                    <?php echo cl_translate('Show More activation or deactivation'); ?>
+                                    </label>
+                                   <div class="input-group">
+                                    <span class="input-group-text"><i class="icofont icofont-toggle-on"></i></span>
+                                    <select name="showmore_validation" class="form-select form-control-primary">
+                                        <option <?php if (isset($cl['config']['showmore_validation']) && $cl['config']['showmore_validation'] == 'on') {echo 'selected';}?> value="on">On</option>
+                                        <option <?php if (isset($cl['config']['showmore_validation']) && $cl['config']['showmore_validation'] == 'off') {echo 'selected';}?> value="off">Off</option>
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 no-mb">
+                                <button data-an="submit-ctrl" type="submit" class="btn btn-primary" data-an="submit-ctrl">
+                                <?php echo cl_translate("Save changes"); ?>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" class="d-none" value="<?php echo fetch_or_get($cl['csrf_token'], 'none'); ?>" name="hash">
+                    </form>
+                    <div class="alert alert-light dark" role="alert" style="margin-top: 15px;">
+                      <p>
+                                  <?php echo cl_translate('display_settings_help'); ?>
+                                </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo cl_template('cpanel/assets/show_more/scripts/app_master_script'); ?>

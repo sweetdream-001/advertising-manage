@@ -29,7 +29,7 @@ else if($action == 'topup_wallet') {
         $data['err_code'] = 'invalid_topup_amount';
     }
 
-    else if (empty($topup_method) || in_array($topup_method, array("paypal", "stripe", "razorpay", "paystack", "stripe_alipay", "bank")) != true) {
+    else if (empty($topup_method) || in_array($topup_method, array("paypal", "stripe", "razorpay", "paystack", "stripe_alipay", "bank","square")) != true) {
         $data['err_code'] = 'invalid_topup_method';
     }
 
@@ -181,23 +181,38 @@ else if($action == 'topup_wallet') {
 
                 $stripe_methods = array("stripe" => "card", "stripe_alipay" => "alipay");
                 $stripe         = new \Stripe\StripeClient($cl["config"]["stripe_api_pass"]);
-                $stripe_session = $stripe->checkout->sessions->create(array(
+                $stripe_session = $stripe->checkout->sessions->create([
+                    
                     "payment_method_types" => array($stripe_methods[$topup_method]),
-                    "success_url"          => cl_link("native_api/wallet/pgw3_wallet_tup_success"),
-                    "cancel_url"           => cl_link("wallet"),
-                    "line_items"           => array(
-                        array(
-                            "name"      => cl_translate('Top up your account balance'),
+                    
+                    "line_items" => [[
+                        
+                        "price_data" => [
+                            
                             "currency"  => strtoupper($cl["config"]["site_currency"]),
-                            "amount"    => ($topup_amount * 100),
-                            "quantity"  => 1
-                        )
-                    )
-                ));
+                            "unit_amount"    => ($topup_amount * 100),
+                            
+                            "product_data" => [
+                                "name"      => cl_translate('Top up your account balance'),
+                                "description" => cl_translate('Top up your account balance'),
+                            ],
+                            
+                        ],
+                        
+                        "quantity"  => 1
+                        
+                    ]],
+                    
+                    "mode" => 'payment',
+                    "success_url"  => cl_link("native_api/wallet/pgw3_wallet_tup_success"),
+                    "cancel_url"   => cl_link("wallet"),
+                    
+                ]);
 
                 if (not_empty($stripe_session)) {
                     $data["status"]  = 200;
                     $data["sess_id"] = $stripe_session->id;
+                    $data['url'] = $stripe_session->url;
 
                     cl_session('stripe_session', $data["sess_id"]);
                     cl_session('tup_amount', $topup_amount);
@@ -209,6 +224,63 @@ else if($action == 'topup_wallet') {
                 $data['message'] = $ex->getMessage();
             }
         }
+        
+        else if($topup_method == "square" && $cl['config']['square_method_status'] == 'on') {
+            try {
+                
+                $sq = sqaure([
+                    
+                            'checkoutOptions' => [
+                                "accepted_payment_methods" => [
+                                    "apple_pay" => true,
+                                    "cash_app_pay" => true,
+                                    "google_pay" => true,
+                                    "afterpay_clearpay" => true
+                                ],
+                                "allow_tipping" => false,
+                                "ask_for_shipping_address" => false,
+                                "enable_coupon" => false,
+                                "enable_loyalty" => false,
+                                "redirect_url" => cl_link("native_api/wallet/squareup_webhook?a=" . intval($topup_amount))
+                            ],
+                            
+                            'description' => "P-tweet Credit",
+                            
+                            'order' => [
+                                "location_id" => "L44HTDYCSQ3DM",
+                                "pricing_options" => [
+                                    "auto_apply_discounts" => false,
+                                    "auto_apply_taxes" => false
+                                ],
+                                "line_items" => [
+                                    [
+                                        "quantity" => "1",
+                                        "base_price_money" => [
+                                            "amount" => intval($topup_amount)*100,
+                                            "currency" => "USD"
+                                        ],
+                                        "name" => "Credit"
+                                    ]
+                                ]
+                            ]
+                    
+                        
+                    ]);
+                    
+                $sq_json = json_decode($sq);
+              
+                $data["status"]  = 200;
+                $data["type"] = 'square';
+                $data["message"]  = 'successfully !';
+                $data['url'] = $sq_json->payment_link->long_url;
+            }
+
+            catch(Exception $ex){
+                $data['status']  = 500;
+                $data['message'] = $ex->getMessage();
+            }
+        }
+        
     }
 }
 
@@ -554,3 +626,71 @@ else if($action == 'verify_rzp_payment') {
         }
     }
 }
+
+else if($action == 'squareup_webhook') {
+    if(not_empty($_GET['a'])) {
+    
+        $amount = base64_decode($_GET['a']);
+        
+        $amount = intval($amount);
+
+        cl_update_user_data($me['id'], array(
+                'wallet' => ($me['wallet'] += $amount*1000)
+        ));
+
+        cl_db_insert(T_WALLET_HISTORY, array(
+                'user_id'   => $me['id'],
+                'operation' => 'squareup',
+                'amount'    => $amount,
+                'json_data' => json(array(
+                    'success' => true
+                ), true),
+                    'time' => time()
+            ));
+
+        cl_redirect('wallet');
+        
+    }
+}
+
+function sqaure($data) {
+                    global $cl;
+                        // Initialize cURL
+                        $ch = curl_init();
+                    
+                        // Set cURL options
+                        curl_setopt($ch, CURLOPT_URL, 'https://connect.squareup.com/v2/online-checkout/payment-links');
+                        curl_setopt($ch, CURLOPT_POST, true);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    
+                        // Set headers
+                        $headers = [
+                            "Square-Version: 2024-04-17",
+                            "Authorization: Bearer " .  $cl['config']['square_api_key'],
+                            "Content-Type: application/json"
+                        ];
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    
+                        // Create the request payload
+                        $payload = [
+                            "checkout_options" => $data['checkoutOptions'],
+                            "description" => $data['description'],
+                            "order" => $data['order']
+                        ];
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+                    
+                        // Execute the request and get the response
+                        $response = curl_exec($ch);
+                        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        $error = curl_error($ch);
+                    
+                        // Close cURL
+                        curl_close($ch);
+                    
+                        // Check for errors
+                        if ($response === false || $httpCode >= 400) {
+                            throw new Exception("cURL Error: " . $error);
+                        }
+                    
+                        return $response;
+                    }

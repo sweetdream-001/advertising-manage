@@ -1,0 +1,206 @@
+<!-- ADD Modal -->
+<div class="modal fade" id="addIpsModal" tabindex="-1" role="dialog" aria-labelledby="addIpsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addIpsModalLabel"><?php echo cl_translate('Add restricted ip'); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="POST" id="restrictIPForm">
+                    <div class="form-group" data-an="name-input">
+                        <label><?php echo cl_translate('IP Address'); ?></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="icofont icofont-pencil-alt-5"></i>
+                            </span>
+                            <input name="ip_address" type="text" class="form-control" placeholder="Enter ip address">
+                        </div>
+                    </div>
+                    <button id="submitIPFormData" type="button" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editIpsModal" tabindex="-1" role="dialog" aria-labelledby="editIpsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editIpsModalLabel"><?php echo cl_translate('Add restricted ip'); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="POST" id="restrictIPEditForm">
+                    <div class="form-group" data-an="name-input">
+                        <label><?php echo cl_translate('IP Address'); ?></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="icofont icofont-pencil-alt-5"></i>
+                            </span>
+                            <input name="ip_address" id="ipAddress" type="text" class="form-control" placeholder="Enter ip address">
+                            <input name="ip_address_id" id="ipAddressId" type="hidden" class="form-control">
+                        </div>
+                    </div>
+                    <button id="submitIPEditFormData" type="button" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    "use strict";
+    $(document).ready(function() {
+        $('#submitIPFormData').on('click', function() {
+            var ipFormData = $('#restrictIPForm').serialize();
+            $.ajax({
+                url: '<?php echo cl_link("native_api/cpanel/add_restricted_ip"); ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    ipFormData: ipFormData
+                },
+            }).done(function(data) {
+                if (data.status == 200) {
+					$("#addIpsModal").hide();
+                    $('.modal-backdrop').remove();
+                    var notify = $.notify('<i class="fa fa-bell-o"></i><strong>Loading</strong> page Do not close this page...', {
+                        type: 'theme',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        animate:{
+                            enter:'animated fadeInDown',
+                            exit:'animated fadeOutUp'
+                        }
+                    });
+                    setTimeout(function() {
+                        notify.update('message', '<i class="fa fa-bell-o"></i>' + data.message);
+                    }, 1000);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                }
+            })
+        });
+
+		$('#submitIPEditFormData').on('click', function() {
+			var ipEditFormData = $('#restrictIPEditForm').serialize();
+			$.ajax({
+                url: '<?php echo cl_link("native_api/cpanel/update_restricted_ip"); ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    ipEditFormData: ipEditFormData
+                },
+            }).done(function(data) {
+                if (data.status == 200) {
+					$("#editIpsModal").modal("hide");
+                    var notify = $.notify('<i class="fa fa-bell-o"></i><strong>Loading</strong> page Do not close this page...', {
+                        type: 'theme',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        animate:{
+                            enter:'animated fadeInDown',
+                            exit:'animated fadeOutUp'
+                        }
+                    });
+                    setTimeout(function() {
+                        notify.update('message', '<i class="fa fa-bell-o"></i>' + data.message);
+                    }, 1000);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                }
+            })
+		});
+		
+		$('#ipSearchFormBtn').on('click', function() {
+            var searchIp = $('#ipSearchForm input[name="search_ip"]').val();
+            if (searchIp == '') {
+                alert('serach field is required');
+            } else {
+                $.ajax({
+                    url: '<?php echo cl_link("native_api/cpanel/search_restricted_ip"); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        searchIp: searchIp
+                    },
+                }).done(function(data) {
+                    if (data.status == 200) {
+                        $('#restrictedIPsData').html('');
+                        $('#restrictedIPsData').replaceWith(data.html);
+                    }
+                })
+            }
+        });
+
+    });
+	function deleteRestrictiedIp(id) {
+		$.ajax({
+			url: '<?php echo cl_link("native_api/cpanel/delete_restricted_ip"); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				id: id
+			},
+		}).done(function(data) {
+			if (data.status == 200) {
+                var notify = $.notify('<i class="fa fa-bell-o"></i><strong>Loading</strong> page Do not close this page...', {
+                    type: 'theme',
+                    allow_dismiss: true,
+                    delay: 2000,
+                    showProgressbar: true,
+                    timer: 300,
+                    animate:{
+                        enter:'animated fadeInDown',
+                        exit:'animated fadeOutUp'
+                    }
+                });
+                setTimeout(function() {
+                    notify.update('message', '<i class="fa fa-bell-o"></i>' + data.message);
+                }, 1000);
+                $('[data-ip-item="{0}"]'.format(id)).slideUp(300, function() {
+                    $(this).remove();
+
+                    if ($('[data-ip-item]').length < 1) {
+                        $(window).reloadPage(500);
+                    }
+                });
+			}
+		})
+	}
+
+	function editRestrictiedIp(id) {
+		$.ajax({
+			url: '<?php echo cl_link("native_api/cpanel/edit_restricted_ip"); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: {
+				id: id
+			},
+		}).done(function(data) {
+			if (data.status == 200) {
+				$('#ipAddress').attr('value', data.data.ip_address);
+				$('#ipAddressId').attr('value', data.data.id);
+				$("#editIpsModal").modal("show");
+			}
+		})
+	}
+</script>

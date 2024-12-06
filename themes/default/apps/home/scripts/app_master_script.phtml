@@ -19,6 +19,7 @@
 				
 				$(window).on('scroll', function() {
 					if (SMColibri.curr_pn == "home") {
+						//alert(12345);
 					    if(($(window).scrollTop() + $(window).height()) > ($(document).height() - 100)) {
 					    	if (cl_empty(_self_.timeline.loading) && _self_.timeline.loadmore) {
 					            _self_.timeline.load_old();
@@ -43,8 +44,9 @@
 		            var _self_  = this;
 
 		            if ($.isNumeric(offset) && offset) {
+		              
 						$.ajax({
-							url: '<?php echo cl_link("native_api/home/load_more"); ?>',
+						//	url: '<?php echo cl_link("native_api/home/load_more"); ?>',
 							type: 'GET',
 							dataType: 'json',
 							data: {
@@ -54,6 +56,7 @@
 								_self_.loading = true;
 							}
 						}).done(function(data) {
+						    console.log('load_more_result',data);
 							if (data.status == 200) {
 								post_ls.append($(data.html));
 

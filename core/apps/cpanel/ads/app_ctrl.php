@@ -40,7 +40,7 @@ function cl_admin_get_user_ads($args = array()) {
 
     if (cl_queryset($ads)) {
         foreach ($ads as $ad_data) {
-            $ad_data['ad_url']  = cl_link(cl_strf("ads/%d", $ad_data["id"]));
+            $ad_data['ad_url']  = cl_link(cl_strf("ad_thread/%d", $ad_data["id"]));
             $ad_data['cover']   = cl_get_media($ad_data['cover']);
             $ad_data['time']    = cl_time2str($ad_data['time']);
             $ad_data['views']   = cl_number($ad_data['views']);

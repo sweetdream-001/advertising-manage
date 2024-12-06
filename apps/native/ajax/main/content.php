@@ -610,6 +610,292 @@ else if($action == 'import_og_data') {
     }
 }
 
+// else if ($action == 'publish_new_post') {
+//     if (empty($cl["is_logged"])) {
+//         $data['status'] = 400;
+//         $data['error']  = 'Invalid access token';
+//     }
+//     else {
+//         $data['err_code'] = 0;
+//         $data['status']   = 400;
+//         $max_post_length  = $cl["config"]["max_post_len"];
+//         $post_data        = $me['draft_post'];
+//         $curr_pn          = fetch_or_get($_POST['curr_pn'], "none");
+//         $post_text        = fetch_or_get($_POST['post_text'], "");
+//         $gif_src          = fetch_or_get($_POST['gif_src'], "");
+//         $og_data          = fetch_or_get($_POST['og_data'], array());
+//         $poll_data        = fetch_or_get($_POST['poll_data'], array());
+//         $thread_id        = fetch_or_get($_POST['thread_id'], 0);
+//         $post_privacy     = fetch_or_get($_POST['privacy'], "everyone");
+//         $category_id     = fetch_or_get($_POST['cat_id'], "");
+//         $post_text        = cl_croptxt($post_text, $max_post_length);
+//         $thread_data      = array();
+
+//         if (not_empty($thread_id)) {
+//             $thread_data  = cl_raw_post_data($thread_id);
+//             $post_privacy = "everyone";
+
+//             if (empty($thread_data) || cl_can_reply($thread_data) != true) {
+//                 $thread_id   = 0; 
+//                 $thread_data = array();
+//             }
+//         }
+
+//         else {
+//             if (in_array($post_privacy, array("everyone", "followers", "mentioned")) != true) {
+//                 $post_privacy = "everyone";
+//             }
+//         }
+
+//         if (not_empty($post_data) && not_empty($post_data["media"])) {
+//             $data['status'] = 200;
+//             $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
+//             $post_id        = $post_data['id'];
+//             $post_text      = cl_upsert_htags($post_text);
+//             $mentions       = cl_get_user_mentions($post_text);
+//             $qr             = cl_update_post_data($post_id, array(
+//                 "text"      => cl_text_secure($post_text),
+//                 "status"    => "active",
+//                 "thread_id" => $thread_id,
+//                 "time"      => time(),
+//                 "priv_wcs"  => $me["profile_privacy"],
+//                 "priv_wcr"  => $post_privacy,
+//                 "category_id" => $category_id
+//             ));
+
+//             if (empty($thread_id)) {
+//                 cl_db_insert(T_POSTS, array(
+//                     "user_id"        => $me['id'],
+//                     "publication_id" => $post_id,
+//                     "time"           => time()
+//                 ));
+
+//                 $data['posts_total'] = ($me['posts'] += 1);
+                
+//                 cl_update_user_data($me['id'], array(
+//                     'posts' => $data['posts_total']
+//                 ));
+//             }
+
+//             else {
+//                 $data['replys_total'] = cl_update_thread_replys($thread_id, 'plus');
+
+//                 cl_update_post_data($post_id, array(
+//                     "target" => "pub_reply"
+//                 ));
+
+//                 if ($thread_data['user_id'] != $me['id']) {
+//                     cl_notify_user(array(
+//                         'subject'  => 'reply',
+//                         'user_id'  => $thread_data['user_id'],
+//                         'entry_id' => $post_id
+//                     ));
+//                 }
+//             }
+
+//             if (in_array($curr_pn, array('home','thread'))) {
+//                 $post_data    = cl_raw_post_data($post_id);
+//                 $cl['li']     = cl_post_data($post_data);
+//                 $data['html'] = cl_template('timeline/post');
+//             }
+
+//             if (not_empty($mentions)) {
+//                 cl_notify_mentioned_users($mentions, $post_id);
+//             }
+
+//             cl_delete_post_junk_files($post_data['id'], $post_data['type']);
+//         }
+
+//         else {
+//             if (not_empty($post_text) || not_empty($gif_src) || not_empty($og_data) || not_empty($poll_data)) {
+//                 $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
+//                 $post_text      = cl_upsert_htags($post_text);
+//                 $mentions       = cl_get_user_mentions($post_text);
+//                 $insert_data    = array(
+//                     "user_id"   => $me['id'],
+//                     "text"      => cl_text_secure($post_text),
+//                     "status"    => "active",
+//                     "type"      => "text",
+//                     "thread_id" => $thread_id,
+//                     "time"      => time(),
+//                     "priv_wcs"  => $me["profile_privacy"],
+//                     "priv_wcr"  => $post_privacy,
+//                     "category_id" => $category_id
+//                 );
+
+//                 if(not_empty($post_text) && not_empty($poll_data) && cl_is_valid_poll($poll_data)) {
+//                     $insert_data['og_data']   = "";
+//                     $gif_src                  = "";
+//                     $insert_data['type']      = "poll";
+//                     $insert_data['poll_data'] = array_map(function($option) {
+//                         return array(
+//                             "option" => cl_text_secure($option["value"]),
+//                             "voters" => array(),
+//                             "votes"  => 0
+//                         );
+//                     }, $poll_data);
+
+//                     $insert_data['poll_data'] = json($insert_data['poll_data'], true);
+//                 }
+
+//                 else if (not_empty($gif_src) && is_url($gif_src)) {
+//                     $insert_data['og_data'] = "";
+//                     $insert_data['type']    = "gif";
+//                 }
+
+//                 else if(not_empty($og_data) && cl_is_valid_og($og_data)) {
+//                     if (not_empty($og_data["image"]) && is_url($og_data["image"])) {
+//                         $og_data["image"] = cl_import_image(array(
+//                             'url' => $og_data["image"],
+//                             'file_type' => 'thumbnail',
+//                             'folder' => 'images',
+//                             'slug' => 'og_img'
+//                         ));
+
+//                         if (empty($og_data["image"])) {
+//                             $og_data["image"] = "";
+//                         }
+//                         else{
+//                             $og_data["image_loc"] = true;
+//                         }
+
+//                         $insert_data['og_data'] = json($og_data, true);
+//                         $gif_src = "";
+//                     }
+//                     else{
+//                         $insert_data['og_data'] = json(array(), true);
+//                         $gif_src = "";
+//                     }
+                    
+//                       // comment on 7 april 
+//                     $url_ps= removeMultip($_POST['post_text']);
+    
+//                     if(isset($url_ps) && !empty($url_ps)){
+
+//                         $insert_data['text']= $url_ps;
+//                     }
+//                     // comment on 7 april 
+//                 }
+
+//                 else if(not_empty($_POST['yt'])) {
+//                     $insert_data['type']      = "yt";
+                    
+//                      // comment on 6 APRIL,2024
+//                     $insert_data['type']      		= 	"text";
+                    
+// 					$result							=	youTubeToText($_POST['yt']);
+                    
+// 					if($result['status']==200){
+
+// 						$insert_data['og_data']      =  json_encode($result["og_data"]);
+//                         $insert_data['text']         =  concatUrlWithText1($_POST['post_text'],$_POST['yt']);
+                        
+//                         // link src
+//                         $insert_data['link_src']     =  getYoutubeVideoIdS($_POST['yt']);
+//                         // link src
+// 					}
+// 					   // comment on 6 APRIL,2024
+
+//                 }
+                
+//                 // CHECK IF TEXT CONTAIN URL 7 APRIL
+//                 $isLinkSrc                          =   getYoutubeVideoIdS($_POST['post_text']);
+               
+//                 if(isset($isLinkSrc) && !empty($isLinkSrc)){
+
+//                     $insert_data['link_src']        =   $isLinkSrc;
+//                 }
+//                 // CHECK IF TEXT CONTAIN URL  7 APRIL
+
+//                 $post_id = cl_db_insert(T_PUBS, $insert_data);
+
+//                 if (is_posnum($post_id)) {
+
+//                     $data['status'] = 200;
+
+//                     if (empty($thread_id)) {
+//                         cl_db_insert(T_POSTS, array(
+//                             "user_id" => $me['id'],
+//                             "publication_id" => $post_id,
+//                             "time" => time()
+//                         ));
+
+
+//                         $data['posts_total'] = ($me['posts'] += 1);
+
+//                         cl_update_user_data($me['id'], array(
+//                             'posts' => $data['posts_total']
+//                         ));
+//                     }
+
+//                     else {
+//                         $data['replys_total'] = cl_update_thread_replys($thread_id, 'plus');
+
+//                         cl_update_post_data($post_id, array(
+//                             "target" => "pub_reply"
+//                         ));
+
+//                         if ($thread_data['user_id'] != $me['id']) {
+//                             cl_notify_user(array(
+//                                 'subject'  => 'reply',
+//                                 'user_id'  => $thread_data['user_id'],
+//                                 'entry_id' => $post_id
+//                             ));
+//                         }
+//                     }
+
+//                     if ($insert_data["type"] == "gif") {
+//                         cl_db_insert(T_PUBMEDIA, array(
+//                             "pub_id" => $post_id,
+//                             "type"   => "gif",
+//                             "src"    => $gif_src,
+//                             "time"   => time(),
+//                         ));
+//                     }
+                    
+//                     function getYoutubeVideoId($url) {
+//                         $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+//                         preg_match($pattern, $url, $matches);
+                    
+//                         if (isset($matches[1])) {
+//                             return $matches[1];
+//                         } else {
+//                             return '';
+//                         }
+//                     }
+                    
+//                     // comment on  april,2024
+                    
+//                     // if ($insert_data["type"] == "yt") {
+//                     //     cl_db_insert(T_PUBMEDIA, array(
+//                     //         "pub_id" => $post_id,
+//                     //         "type"   => "yt",
+//                     //         "src"    => getYoutubeVideoId($_POST['yt']),
+//                     //         "time"   => time(),
+//                     //     ));
+//                     // }
+                    
+//                      // comment on  april,2024
+
+//                     if (in_array($curr_pn, array('home', 'thread'))) {
+//                         $post_data    = cl_raw_post_data($post_id);
+//                         $cl['li']     = cl_post_data($post_data);
+//                         $data['html'] = cl_template('timeline/post');
+//                     }
+
+//                     if (not_empty($mentions)) {
+//                         cl_notify_mentioned_users($mentions, $post_id);
+//                     }
+//                 }
+//             }
+//         }
+
+//         cl_delete_orphan_posts($me['id']);
+//         cl_update_user_data($me['id'], array(
+//             'last_post' => 0
+//         ));
+//     }
+// }
 else if ($action == 'publish_new_post') {
     if (empty($cl["is_logged"])) {
         $data['status'] = 400;
@@ -627,205 +913,539 @@ else if ($action == 'publish_new_post') {
         $poll_data        = fetch_or_get($_POST['poll_data'], array());
         $thread_id        = fetch_or_get($_POST['thread_id'], 0);
         $post_privacy     = fetch_or_get($_POST['privacy'], "everyone");
-        $category_id     = fetch_or_get($_POST['cat_id'], "");
+        $category_id      = fetch_or_get($_POST['cat_id'], "");
         $post_text        = cl_croptxt($post_text, $max_post_length);
         $thread_data      = array();
 
-        if (not_empty($thread_id)) {
-            $thread_data  = cl_raw_post_data($thread_id);
-            $post_privacy = "everyone";
-
-            if (empty($thread_data) || cl_can_reply($thread_data) != true) {
-                $thread_id   = 0; 
-                $thread_data = array();
-            }
-        }
-
-        else {
-            if (in_array($post_privacy, array("everyone", "followers", "mentioned")) != true) {
+        if ($curr_pn == 'ad_thread') {
+            if (not_empty($thread_id)) {
+                $thread_data  = cl_raw_ad_data($thread_id);
                 $post_privacy = "everyone";
-            }
-        }
-
-        if (not_empty($post_data) && not_empty($post_data["media"])) {
-            $data['status'] = 200;
-            $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
-            $post_id        = $post_data['id'];
-            $post_text      = cl_upsert_htags($post_text);
-            $mentions       = cl_get_user_mentions($post_text);
-            $qr             = cl_update_post_data($post_id, array(
-                "text"      => cl_text_secure($post_text),
-                "status"    => "active",
-                "thread_id" => $thread_id,
-                "time"      => time(),
-                "priv_wcs"  => $me["profile_privacy"],
-                "priv_wcr"  => $post_privacy,
-                "category_id" => $category_id
-            ));
-
-            if (empty($thread_id)) {
-                cl_db_insert(T_POSTS, array(
-                    "user_id"        => $me['id'],
-                    "publication_id" => $post_id,
-                    "time"           => time()
-                ));
-
-                $data['posts_total'] = ($me['posts'] += 1);
-                
-                cl_update_user_data($me['id'], array(
-                    'posts' => $data['posts_total']
-                ));
-            }
-
-            else {
-                $data['replys_total'] = cl_update_thread_replys($thread_id, 'plus');
-
-                cl_update_post_data($post_id, array(
-                    "target" => "pub_reply"
-                ));
-
-                if ($thread_data['user_id'] != $me['id']) {
-                    cl_notify_user(array(
-                        'subject'  => 'reply',
-                        'user_id'  => $thread_data['user_id'],
-                        'entry_id' => $post_id
-                    ));
+    
+                if (empty($thread_data)) {
+                    $thread_id   = 0; 
+                    $thread_data = array();
+                }
+            } else {
+                if (in_array($post_privacy, array("everyone", "followers", "mentioned")) != true) {
+                    $post_privacy = "everyone";
                 }
             }
 
-            if (in_array($curr_pn, array('home','thread'))) {
-                $post_data    = cl_raw_post_data($post_id);
-                $cl['li']     = cl_post_data($post_data);
-                $data['html'] = cl_template('timeline/post');
-            }
-
-            if (not_empty($mentions)) {
-                cl_notify_mentioned_users($mentions, $post_id);
-            }
-
-            cl_delete_post_junk_files($post_data['id'], $post_data['type']);
-        }
-
-        else {
-            if (not_empty($post_text) || not_empty($gif_src) || not_empty($og_data) || not_empty($poll_data)) {
+            if (not_empty($post_data) && not_empty($post_data["media"])) {
+                $data['status'] = 200;
                 $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
+                $post_id        = $post_data['id'];
                 $post_text      = cl_upsert_htags($post_text);
                 $mentions       = cl_get_user_mentions($post_text);
                 $insert_data    = array(
-                    "user_id"   => $me['id'],
+                    "user_id"       => $me['id'],
+                    "description"   => cl_text_secure($post_text),
+                    "status"        => "active",
+                    "approved"      => "y",
+                    "ad_thread_id"  => $thread_id,
+                    "time"          => time(),
+                    "category_id"   => $category_id,
+                    "target"        => 'ad_reply'
+                );
+
+                $post_id = cl_db_insert(T_ADS, $insert_data);
+    
+                if (empty($thread_id)) {
+                    cl_db_insert(T_POSTS, array(
+                        "user_id"        => $me['id'],
+                        "publication_id" => $post_id,
+                        "time"           => time()
+                    ));
+    
+                    $data['posts_total'] = ($me['posts'] += 1);
+                    
+                    cl_update_user_data($me['id'], array(
+                        'posts' => $data['posts_total']
+                    ));
+                } else {
+                    $data['replys_total'] = cl_update_ad_thread_replys($thread_id, 'plus');
+    
+                    cl_update_ad_data($post_id, array(
+                        "target" => "ad_reply"
+                    ));
+    
+                    if ($thread_data['user_id'] != $me['id']) {
+                        cl_notify_user(array(
+                            'subject'  => 'reply',
+                            'user_id'  => $thread_data['user_id'],
+                            'entry_id' => $post_id
+                        ));
+                    }
+                }
+
+                if (in_array($curr_pn, array('home', 'thread', 'ad_thread'))) {
+                    $post_data    = cl_raw_ad_data($post_id);
+                    $cl['li']     = cl_ad_data($post_data);
+                    $data['html'] = cl_template('timeline/post');
+                }
+
+                if (not_empty($mentions)) {
+                    cl_notify_mentioned_users($mentions, $post_id);
+                }
+    
+                cl_delete_post_junk_files($post_data['id'], $post_data['type']);
+            } else {
+                if (not_empty($post_text) || not_empty($gif_src) || not_empty($og_data) || not_empty($poll_data)) {
+                    $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
+                    $post_text      = cl_upsert_htags($post_text);
+                    $mentions       = cl_get_user_mentions($post_text);
+                    $insert_data    = array(
+                        "user_id"       => $me['id'],
+                        "description"   => cl_text_secure($post_text),
+                        "status"        => "active",
+                        "approved"      => "y",
+                        "ad_thread_id"  => $thread_id,
+                        "time"          => time(),
+                        "category_id"   => $category_id,
+                        "target"        => 'ad_reply'
+                    );
+    
+                    if(not_empty($post_text) && not_empty($poll_data) && cl_is_valid_poll($poll_data)) {
+                        $insert_data['og_data']   = "";
+                        $gif_src                  = "";
+                        $insert_data['type']      = "poll";
+                        $insert_data['poll_data'] = array_map(function($option) {
+                            return array(
+                                "option" => cl_text_secure($option["value"]),
+                                "voters" => array(),
+                                "votes"  => 0
+                            );
+                        }, $poll_data);
+    
+                        $insert_data['poll_data'] = json($insert_data['poll_data'], true);
+                    }
+    
+                    else if (not_empty($gif_src) && is_url($gif_src)) {
+                        $insert_data['og_data'] = "";
+                        $insert_data['type']    = "gif";
+                    }
+    
+                    else if(not_empty($og_data) && cl_is_valid_og($og_data)) {
+                        if (not_empty($og_data["image"]) && is_url($og_data["image"])) {
+                            $og_data["image"] = cl_import_image(array(
+                                'url' => $og_data["image"],
+                                'file_type' => 'thumbnail',
+                                'folder' => 'images',
+                                'slug' => 'og_img'
+                            ));
+    
+                            if (empty($og_data["image"])) {
+                                $og_data["image"] = "";
+                            }
+                            else{
+                                $og_data["image_loc"] = true;
+                            }
+    
+                            $insert_data['og_data'] = json($og_data, true);
+                            $gif_src = "";
+                        }
+                        else{
+                            $insert_data['og_data'] = json(array(), true);
+                            $gif_src = "";
+                        }
+    
+                       
+                        // comment on 7 april 
+                        $url_ps= removeMultip($_POST['post_text']);
+        
+                        if(isset($url_ps) && !empty($url_ps)){
+    
+                            $insert_data['text']= $url_ps;
+                        }
+                        // comment on 7 april 
+                    }
+    
+                    else if(not_empty($_POST['yt'])) {
+                        // $insert_data['type']      = "yt";
+                        // comment on 6 APRIL,2024
+                        $insert_data['type']      		= 	"text";
+                        
+                        $result							=	youTubeToText($_POST['yt']);
+                        
+                        if($result['status']==200){
+    
+                            $insert_data['og_data']      =  json_encode($result["og_data"]);
+                            $insert_data['text']         =  concatUrlWithText1($_POST['post_text'],$_POST['yt']);
+                            
+                            // link src
+                            $insert_data['link_src']     =  getYoutubeVideoIdS($_POST['yt']);
+                            // link src
+                        }
+                    }
+                    // CHECK IF TEXT CONTAIN URL 7 APRIL
+                    $isLinkSrc                          =   getYoutubeVideoIdS($_POST['post_text']);
+                   
+                    if(isset($isLinkSrc) && !empty($isLinkSrc)){
+    
+                        $insert_data['link_src']        =   $isLinkSrc;
+                    }
+                    // CHECK IF TEXT CONTAIN URL  7 APRIL
+                    $post_id = cl_db_insert(T_ADS, $insert_data);
+    
+                    if (is_posnum($post_id)) {
+                        $data['status'] = 200;
+    
+                        if (empty($thread_id)) {
+                            cl_db_insert(T_POSTS, array(
+                                "user_id" => $me['id'],
+                                "publication_id" => $post_id,
+                                "time" => time()
+                            ));
+    
+    
+                            $data['posts_total'] = ($me['posts'] += 1);
+    
+                            cl_update_user_data($me['id'], array(
+                                'posts' => $data['posts_total']
+                            ));
+                        }
+    
+                        else {
+                            $data['replys_total'] = cl_update_ad_thread_replys($thread_id, 'plus');
+    
+                            cl_update_ad_data($post_id, array(
+                                "target" => "ad_reply"
+                            ));
+    
+                            if ($thread_data['user_id'] != $me['id']) {
+                                cl_notify_user(array(
+                                    'subject'  => 'reply',
+                                    'user_id'  => $thread_data['user_id'],
+                                    'entry_id' => $post_id
+                                ));
+                            }
+                        }
+                        
+                        // echo '<pre>';print_r($insert_data);'</pre>';die;
+                        // if ($insert_data["type"] == "gif") {
+                        //     cl_db_insert(T_PUBMEDIA, array(
+                        //         "pub_id" => $post_id,
+                        //         "type"   => "gif",
+                        //         "src"    => $gif_src,
+                        //         "time"   => time(),
+                        //     ));
+                        // }
+                        
+                        // function getYoutubeVideoId($url) {
+                        //     $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+                        //     preg_match($pattern, $url, $matches);
+                        
+                        //     if (isset($matches[1])) {
+                        //         return $matches[1];
+                        //     } else {
+                        //         return '';
+                        //     }
+                        // }
+                        // comment on 6 APRIL,2024
+    
+                        // if ($insert_data["type"] == "yt") {
+                        //     cl_db_insert(T_PUBMEDIA, array(
+                        //         "pub_id" => $post_id,
+                        //         "type"   => "yt",
+                        //         "src"    => getYoutubeVideoId($_POST['yt']),
+                        //         "time"   => time(),
+                        //     ));
+                        // }
+                        // comment on 6 APRIL,2024
+    
+                        if (in_array($curr_pn, array('home', 'thread', 'ad_thread'))) {
+                            $post_data    = cl_raw_ad_data($post_id);
+                            $cl['li']     = cl_ad_data($post_data);
+                            $data['html'] = cl_template('timeline/post');
+                        }
+    
+                        if (not_empty($mentions)) {
+                            cl_notify_mentioned_users($mentions, $post_id);
+                        }
+                    }
+                }
+            }
+        } else {
+            if (not_empty($thread_id)) {
+                $thread_data  = cl_raw_post_data($thread_id);
+                $post_privacy = "everyone";
+    
+                if (empty($thread_data) || cl_can_reply($thread_data) != true) {
+                    $thread_id   = 0; 
+                    $thread_data = array();
+                }
+            } else {
+                if (in_array($post_privacy, array("everyone", "followers", "mentioned")) != true) {
+                    $post_privacy = "everyone";
+                }
+            }
+            
+            if (not_empty($post_data) && not_empty($post_data["media"])) {
+                $data['status'] = 200;
+                $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
+                $post_id        = $post_data['id'];
+                $post_text      = cl_upsert_htags($post_text);
+                $mentions       = cl_get_user_mentions($post_text);
+                $qr             = cl_update_post_data($post_id, array(
                     "text"      => cl_text_secure($post_text),
                     "status"    => "active",
-                    "type"      => "text",
                     "thread_id" => $thread_id,
                     "time"      => time(),
                     "priv_wcs"  => $me["profile_privacy"],
                     "priv_wcr"  => $post_privacy,
                     "category_id" => $category_id
-                );
-
-                if(not_empty($post_text) && not_empty($poll_data) && cl_is_valid_poll($poll_data)) {
-                    $insert_data['og_data']   = "";
-                    $gif_src                  = "";
-                    $insert_data['type']      = "poll";
-                    $insert_data['poll_data'] = array_map(function($option) {
-                        return array(
-                            "option" => cl_text_secure($option["value"]),
-                            "voters" => array(),
-                            "votes"  => 0
-                        );
-                    }, $poll_data);
-
-                    $insert_data['poll_data'] = json($insert_data['poll_data'], true);
+                ));
+    
+                if (empty($thread_id)) {
+                    cl_db_insert(T_POSTS, array(
+                        "user_id"        => $me['id'],
+                        "publication_id" => $post_id,
+                        "time"           => time()
+                    ));
+    
+                    $data['posts_total'] = ($me['posts'] += 1);
+                    
+                    cl_update_user_data($me['id'], array(
+                        'posts' => $data['posts_total']
+                    ));
                 }
-
-                else if (not_empty($gif_src) && is_url($gif_src)) {
-                    $insert_data['og_data'] = "";
-                    $insert_data['type']    = "gif";
-                }
-
-                else if(not_empty($og_data) && cl_is_valid_og($og_data)) {
-                    if (not_empty($og_data["image"]) && is_url($og_data["image"])) {
-                        $og_data["image"] = cl_import_image(array(
-                            'url' => $og_data["image"],
-                            'file_type' => 'thumbnail',
-                            'folder' => 'images',
-                            'slug' => 'og_img'
+    
+                else {
+                    $data['replys_total'] = cl_update_thread_replys($thread_id, 'plus');
+    
+                    cl_update_post_data($post_id, array(
+                        "target" => "pub_reply"
+                    ));
+    
+                    if ($thread_data['user_id'] != $me['id']) {
+                        cl_notify_user(array(
+                            'subject'  => 'reply',
+                            'user_id'  => $thread_data['user_id'],
+                            'entry_id' => $post_id
                         ));
-
-                        if (empty($og_data["image"])) {
-                            $og_data["image"] = "";
+                    }
+                }
+    
+                if (in_array($curr_pn, array('home','thread'))) {
+                    $post_data    = cl_raw_post_data($post_id);
+                    $cl['li']     = cl_post_data($post_data);
+                    $data['html'] = cl_template('timeline/post');
+                }
+    
+                if (not_empty($mentions)) {
+                    cl_notify_mentioned_users($mentions, $post_id);
+                }
+    
+                cl_delete_post_junk_files($post_data['id'], $post_data['type']);
+            } else {
+                if (not_empty($post_text) || not_empty($gif_src) || not_empty($og_data) || not_empty($poll_data)) {
+                    $thread_id      = ((is_posnum($thread_id)) ? $thread_id : 0);
+                    $post_text      = cl_upsert_htags($post_text);
+                    $mentions       = cl_get_user_mentions($post_text);
+                    $insert_data    = array(
+                        "user_id"   => $me['id'],
+                        "text"      => cl_text_secure($post_text),
+                        "status"    => "active",
+                        "type"      => "text",
+                        "thread_id" => $thread_id,
+                        "time"      => time(),
+                        "priv_wcs"  => $me["profile_privacy"],
+                        "priv_wcr"  => $post_privacy,
+                        "category_id" => $category_id
+                    );
+    
+                    if(not_empty($post_text) && not_empty($poll_data) && cl_is_valid_poll($poll_data)) {
+                        $insert_data['og_data']   = "";
+                        $gif_src                  = "";
+                        $insert_data['type']      = "poll";
+                        $insert_data['poll_data'] = array_map(function($option) {
+                            return array(
+                                "option" => cl_text_secure($option["value"]),
+                                "voters" => array(),
+                                "votes"  => 0
+                            );
+                        }, $poll_data);
+    
+                        $insert_data['poll_data'] = json($insert_data['poll_data'], true);
+                    }
+    
+                    else if (not_empty($gif_src) && is_url($gif_src)) {
+                        $insert_data['og_data'] = "";
+                        $insert_data['type']    = "gif";
+                    }
+    
+                    else if(not_empty($og_data) && cl_is_valid_og($og_data)) {
+                        if (not_empty($og_data["image"]) && is_url($og_data["image"])) {
+                            $og_data["image"] = cl_import_image(array(
+                                'url' => $og_data["image"],
+                                'file_type' => 'thumbnail',
+                                'folder' => 'images',
+                                'slug' => 'og_img'
+                            ));
+    
+                            if (empty($og_data["image"])) {
+                                $og_data["image"] = "";
+                            }
+                            else{
+                                $og_data["image_loc"] = true;
+                            }
+    
+                            $insert_data['og_data'] = json($og_data, true);
+                            $gif_src = "";
                         }
                         else{
-                            $og_data["image_loc"] = true;
+                            $insert_data['og_data'] = json(array(), true);
+                            $gif_src = "";
                         }
-
-                        $insert_data['og_data'] = json($og_data, true);
-                        $gif_src = "";
+    
+                       
+                        // comment on 7 april 
+                        $url_ps= removeMultip($_POST['post_text']);
+        
+                        if(isset($url_ps) && !empty($url_ps)){
+    
+                            $insert_data['text']= $url_ps;
+                        }
+                        // comment on 7 april 
                     }
-                    else{
-                        $insert_data['og_data'] = json(array(), true);
-                        $gif_src = "";
+    
+                    else if(not_empty($_POST['yt'])) {
+                        // $insert_data['type']      = "yt";
+                        // comment on 6 APRIL,2024
+                        $insert_data['type']      		= 	"text";
+                        
+                        $result							=	youTubeToText($_POST['yt']);
+                        
+                        if($result['status']==200){
+    
+    
+    
+    
+                            $insert_data['og_data']      =  json_encode($result["og_data"]);
+                            
+                            
+                            // Step 1: Decode the JSON data to an array
+                            $ogData = json_decode($insert_data['og_data'] , true);
+                            
+                            // Step 2: Extract the video key from the URL
+                            if (isset($ogData['url'])) {
+                                // Assuming the URL is a YouTube URL like https://www.youtube.com/watch?v=video_key
+                                $urlParts = parse_url($ogData['url']);
+                                
+                                if (isset($urlParts['query'])) {
+                                    parse_str($urlParts['query'], $queryParams);
+                                    
+                                    if (isset($queryParams['v'])) {
+                                        // Step 3: Modify the image key with the YouTube thumbnail URL
+                                        $videoKey = $queryParams['v'];
+                                        $ogData['image'] = "https://img.youtube.com/vi/$videoKey/hqdefault.jpg";
+                                    }
+                                }
+                            }
+                            
+                            // Step 4: Re-encode the modified array back to JSON
+                            $insert_data['og_data'] = json_encode($ogData);
+                            
+                            
+                            $insert_data['text']         =  concatUrlWithText1($_POST['post_text'],$_POST['yt']);
+                            
+                            // link src
+                            $insert_data['link_src']     =  getYoutubeVideoIdS($_POST['yt']);
+                            // link src
+                        }
                     }
-                }
-
-                $post_id = cl_db_insert(T_PUBS, $insert_data);
-
-                if (is_posnum($post_id)) {
-
-                    $data['status'] = 200;
-
-                    if (empty($thread_id)) {
-                        cl_db_insert(T_POSTS, array(
-                            "user_id" => $me['id'],
-                            "publication_id" => $post_id,
-                            "time" => time()
-                        ));
-
-
-                        $data['posts_total'] = ($me['posts'] += 1);
-
-                        cl_update_user_data($me['id'], array(
-                            'posts' => $data['posts_total']
-                        ));
+                    // CHECK IF TEXT CONTAIN URL 7 APRIL
+                    $isLinkSrc                          =   getYoutubeVideoIdS($_POST['post_text']);
+                   
+                    if(isset($isLinkSrc) && !empty($isLinkSrc)){
+    
+                        $insert_data['link_src']        =   $isLinkSrc;
                     }
-
-                    else {
-                        $data['replys_total'] = cl_update_thread_replys($thread_id, 'plus');
-
-                        cl_update_post_data($post_id, array(
-                            "target" => "pub_reply"
-                        ));
-
-                        if ($thread_data['user_id'] != $me['id']) {
-                            cl_notify_user(array(
-                                'subject'  => 'reply',
-                                'user_id'  => $thread_data['user_id'],
-                                'entry_id' => $post_id
+                    // CHECK IF TEXT CONTAIN URL  7 APRIL
+                    
+                    $post_id = cl_db_insert(T_PUBS, $insert_data);
+    
+                    if (is_posnum($post_id)) {
+    
+                        $data['status'] = 200;
+    
+                        if (empty($thread_id)) {
+                            cl_db_insert(T_POSTS, array(
+                                "user_id" => $me['id'],
+                                "publication_id" => $post_id,
+                                "time" => time()
+                            ));
+    
+    
+                            $data['posts_total'] = ($me['posts'] += 1);
+    
+                            cl_update_user_data($me['id'], array(
+                                'posts' => $data['posts_total']
                             ));
                         }
-                    }
-
-                    if ($insert_data["type"] == "gif") {
-                        cl_db_insert(T_PUBMEDIA, array(
-                            "pub_id" => $post_id,
-                            "type"   => "gif",
-                            "src"    => $gif_src,
-                            "time"   => time(),
-                        ));
-                    }
-
-                    if (in_array($curr_pn, array('home', 'thread'))) {
-                        $post_data    = cl_raw_post_data($post_id);
-                        $cl['li']     = cl_post_data($post_data);
-                        $data['html'] = cl_template('timeline/post');
-                    }
-
-                    if (not_empty($mentions)) {
-                        cl_notify_mentioned_users($mentions, $post_id);
+    
+                        else {
+                            $data['replys_total'] = cl_update_thread_replys($thread_id, 'plus');
+    
+                            cl_update_post_data($post_id, array(
+                                "target" => "pub_reply"
+                            ));
+    
+                            if ($thread_data['user_id'] != $me['id']) {
+                                cl_notify_user(array(
+                                    'subject'  => 'reply',
+                                    'user_id'  => $thread_data['user_id'],
+                                    'entry_id' => $post_id
+                                ));
+                            }
+                        }
+    
+                        if ($insert_data["type"] == "gif") {
+                            cl_db_insert(T_PUBMEDIA, array(
+                                "pub_id" => $post_id,
+                                "type"   => "gif",
+                                "src"    => $gif_src,
+                                "time"   => time(),
+                            ));
+                        }
+                        
+                        function getYoutubeVideoId($url) {
+                            $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+                            preg_match($pattern, $url, $matches);
+                        
+                            if (isset($matches[1])) {
+                                return $matches[1];
+                            } else {
+                                return '';
+                            }
+                        }
+                        // comment on 6 APRIL,2024
+    
+                        // if ($insert_data["type"] == "yt") {
+                        //     cl_db_insert(T_PUBMEDIA, array(
+                        //         "pub_id" => $post_id,
+                        //         "type"   => "yt",
+                        //         "src"    => getYoutubeVideoId($_POST['yt']),
+                        //         "time"   => time(),
+                        //     ));
+                        // }
+                        // comment on 6 APRIL,2024
+    
+                        if (in_array($curr_pn, array('home', 'thread'))) {
+                            $post_data    = cl_raw_post_data($post_id);
+                            $cl['li']     = cl_post_data($post_data);
+                            $data['html'] = cl_template('timeline/post');
+                        }
+    
+                        if (not_empty($mentions)) {
+                            cl_notify_mentioned_users($mentions, $post_id);
+                        }
                     }
                 }
             }
         }
+        
 
         cl_delete_orphan_posts($me['id']);
         cl_update_user_data($me['id'], array(
@@ -833,7 +1453,6 @@ else if ($action == 'publish_new_post') {
         ));
     }
 }
-
 else if($action == 'get_draft_post') {
     $data['status']   = 404;
     $data['err_code'] = 0;
@@ -1300,7 +1919,7 @@ else if($action == 'search') {
             }
 
             $query_result = cl_search_posts($search_query, $offset, 30);
-            // echo json_encode($query_result);die;
+            //echo json_encode($query_result);die;
             if (not_empty($query_result)) {
                 foreach ($query_result as $cl['li']) {
                     $html_arr[] = cl_template('main/includes/search/general_li');

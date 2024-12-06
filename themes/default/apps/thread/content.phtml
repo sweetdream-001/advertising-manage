@@ -1,9 +1,13 @@
 <div class="timeline-container" data-app="thread">
 	<div class="timeline-header" data-el="tl-header">
 		<div class="lp" style="display: inline-flex;">
-			<span class="go-back" onclick="SMColibri.go_back();">
-				<?php echo cl_ikon('arrow-left'); ?>
-			</span>
+		    <!--
+			<span class="go-back pub-go-back" onclick="SMColibri.go_back();" post-id="<?= $cl['thread_data']['post']['id']; ?>">
+			    -->
+             <span class="go-back" onclick="window.history.go(-2);">
+                <?php echo cl_ikon('arrow-left'); ?>
+            </span>
+
 			<div class="nav-link-holder">
 				<a href="<?php echo $cl['thread_data']['post']['url']; ?>" data-spa="true">
 					<?php echo cl_translate("Publication"); ?>
@@ -111,95 +115,48 @@
 									</div>
 								</div>
 								<div class="rp">
-									<div class="flex-row">
-										<a class="uname" href="<?php echo ($cl['thread_data']['post']['owner']['url']); ?>"
-											data-uinfo-lbox="<?php echo ($cl['thread_data']['post']['user_id']); ?>"
-											data-toggle="popover" data-placement="bottom">
-											<b>
-												<span class="user-name-holder">
-													<?php echo ($cl['thread_data']['post']['owner']['name']); ?>
-												</span>
-												<p class="<?php if ($cl['thread_data']['post']['owner']['verified'] == '1') {
-													echo ('verified-badge');
-												} ?>" style="display:inline-block; margin-left:10px;"></p>
-											</b>
-											<span>@
-												<?php echo ($cl['thread_data']['post']['owner']['username']); ?>
+									<a href="<?php echo ($cl['thread_data']['post']['owner']['url']); ?>" data-spa="true"
+										data-uinfo-lbox="<?php echo ($cl['thread_data']['post']['owner']['id']); ?>" data-toggle="popover"
+										data-placement="bottom"
+										class="pt-prevent-click">
+										<b>
+											<span class="user-name-holder pt-prevent-click">
+												<?php echo ($cl['thread_data']['post']['owner']['name']); ?>
 											</span>
-										</a>
-										<button class="dropleft">
-											<a href="#" class="dropdown-toggle icon" data-toggle="dropdown">
-												<?php echo cl_ikon('pub-more'); ?>
-											</a>
-											<div class="dropdown-menu dropdown-icons">
-												<a class="dropdown-item"
-													href="<?php echo ($cl['thread_data']['post']['owner']['url']); ?>"
-													data-spa="true">
-													<span class="flex-item dropdown-item-icon">
-														<?php echo cl_ikon('person'); ?>
-													</span>
-													<span class="flex-item">
-														<?php echo ($cl['thread_data']['post']['owner']['name']); ?>
-													</span>
-												</a>
-												<?php if (not_empty($cl['thread_data']['post']['can_delete'])): ?>
-													<a class="dropdown-item col-red" href="javascript:void(0);">
-														<span class="flex-item dropdown-item-icon">
-															<svg viewBox="0 0 24 24" aria-hidden="true"
-																class="r-9l7dzd r-4qtqp9 r-yyyyoo r-1q142lx r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr">
-																<g>
-																	<path
-																		d="M16 6V4.5C16 3.12 14.88 2 13.5 2h-3C9.11 2 8 3.12 8 4.5V6H3v2h1.06l.81 11.21C4.98 20.78 6.28 22 7.86 22h8.27c1.58 0 2.88-1.22 3-2.79L19.93 8H21V6h-5zm-6-1.5c0-.28.22-.5.5-.5h3c.27 0 .5.22.5.5V6h-4V4.5zm7.13 14.57c-.04.52-.47.93-1 .93H7.86c-.53 0-.96-.41-1-.93L6.07 8h11.85l-.79 11.07zM9 17v-6h2v6H9zm4 0v-6h2v6h-2z">
-																	</path>
-																</g>
-															</svg>
-														</span>
-														<span class="flex-item"
-															onclick="SMColibri.delete_post('<?php echo $cl['thread_data']['post']['id']; ?>');">
-															<?php echo cl_translate('Delete'); ?>
-														</span>
-													</a>
-												<?php endif; ?>
-												<a onclick="SMColibri.show_likes('<?php echo $cl['thread_data']['post']['id']; ?>');"
-													class="dropdown-item" href="javascript:void(0);">
-													<span class="flex-item dropdown-item-icon">
-														<?php echo cl_ikon('favourite'); ?>
-													</span>
-													<span class="flex-item">
-														<?php echo cl_translate('Show likes'); ?>
-													</span>
-												</a>
-												<a class="dropdown-item" href="javascript:void(0);">
-													<span class="flex-item dropdown-item-icon">
-														<?php echo cl_ikon('bookmark'); ?>
-													</span>
-													<span class="flex-item"
-														onclick="SMColibri.bookmark_post('<?php echo $cl['thread_data']['post']['id']; ?>', this);">
-														<?php echo ((empty($cl['thread_data']['post']['has_saved'])) ? cl_translate('Bookmark') : cl_translate('Unbookmark')); ?>
-													</span>
-												</a>
-												<a data-clipboard-text="<?php echo ($cl['thread_data']['post']['url']); ?>"
-													class="dropdown-item clip-board-copy" href="javascript:void(0);">
-													<span class="flex-item dropdown-item-icon">
-														<?php echo cl_ikon('copy'); ?>
-													</span>
-													<span class="flex-item">
-														<?php echo cl_translate('Copy link'); ?>
-													</span>
-												</a>
-												<div class="dropdown-divider"></div>
-												<a onclick="SMColibri.share_post('<?php echo ($cl['thread_data']['post']['url']); ?>','<?php echo urlencode($cl['thread_data']['post']['url']); ?>');"
-													class="dropdown-item" href="javascript:void(0);">
-													<span class="flex-item dropdown-item-icon">
-														<?php echo cl_ikon('share'); ?>
-													</span>
-													<span class="flex-item">
-														<?php echo cl_translate('Share'); ?>
-													</span>
-												</a>
-											</div>
-										</button>
-									</div>
+											<p class="pt-prevent-click <?php if ($cl['thread_data']['post']['owner']['verified'] == '1') {
+												echo ('verified-badge');
+											} ?>" style="display:inline-block;"></p>
+										</b>
+									</a>
+									<span class="uname pt-prevent-click">
+										@<?php echo ($cl['thread_data']['post']['owner']['username']); ?>
+									</span>
+
+
+									<span class="point pt-prevent-click">&#183;</span>
+
+									<span class="posted-time ahsan1 pt-prevent-click">
+										<time>
+											<?php
+											$catId = isset($cl['thread_data']['post']['category_id']) ? $cl['thread_data']['post']['category_id'] : '';
+											// DB Connection
+											$mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
+											$db = new MysqliDb($mysqli);
+
+											$catName = $db->rawQuery("SELECT `name` FROM cl_categories WHERE id = $catId");
+
+											$catName = isset($catName[0]['name']) ? $catName[0]['name'] : '';
+											?>
+											
+											<a href="/talk/?cat_id=<?php echo ($catId); ?>"> <?php echo ($catName); ?> </a>	- <?php echo ($cl['thread_data']['post']['time']); ?>
+										</time>
+										<?php if (not_empty($cl['thread_data']['post']['edited'])): ?>
+											<span
+												title="<?php echo cl_translate("Edited"); ?>: <?php echo cl_date("h:i A - M d, Y", $cl['thread_data']['post']['edited']); ?>">
+												&nbsp; (E)
+											</span>
+										<?php endif; ?>
+									</span>
 								</div>
 							</div>
 							<div class="publication-content">
@@ -624,7 +581,7 @@
 						</div>
 					</div>
 				<?php else: ?>
-					<div class="publication--thread-reply-privacy">
+					<div class="publication--thread-reply-privacy" style="display:none;">
 						<div class="info-message">
 							<div class="d-flex align-items-center flex-wn">
 								<div class="flex-item">

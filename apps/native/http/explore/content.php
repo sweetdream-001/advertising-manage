@@ -9,6 +9,10 @@
 # @ Copyright (c) 2020 - 2023 JOOJ Talk. All rights reserved.               @
 # @*************************************************************************@
 
+// RESTRICT USER CODE
+$visitor_ip = $_SERVER['REMOTE_ADDR'];
+cl_check_ip_restriction($visitor_ip);
+
 require_once(cl_full_path("core/apps/explore/app_ctrl.php"));
 
 $cl["page_title"]   = cl_translate("Explore");
@@ -50,7 +54,10 @@ else if($cl["page_tab"] == 'categories') {
 }
 
 else {
+    
 	$cl["query_result"] = cl_search_posts($cl["search_query"], false, 30);
+
+    //echo "<pre>";print_r($cl["query_result"]);exit("Okay");
 }
 
 $cl["http_res"] = cl_template("explore/content");

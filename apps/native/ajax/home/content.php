@@ -26,6 +26,9 @@ else if ($action == 'load_more') {
     if (is_posnum($offset)) {    
 
         $posts_ls = cl_get_timeline_feed(30, $offset);
+        
+        $data['status'] = 200;
+            $data['html']   = $posts_ls;
 
         if (not_empty($posts_ls)) {
             foreach ($posts_ls as $cl['li']) {
@@ -46,6 +49,9 @@ else if ($action == 'get_all_categories') {
     $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE parent_id IS NULL  order by sort ASC ;");
 
     $flattenedData = [];
+    $flattenedData = [
+        ['name' => 'Select category...']
+        ];
     
     foreach ($categories as $k => $cat) {
         $flattenedData[] = $cat; // Add main category

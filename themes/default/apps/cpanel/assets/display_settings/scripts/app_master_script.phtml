@@ -4,6 +4,11 @@
 	$(document).ready(function($) {
 		var _app  = $('[data-app="display-settings"]');
 		var _data = _app.find('form[data-an="form"]');
+		
+		//console.log(_data);
+		//alert(123);
+		
+		//alert('<?php echo cl_link("native_api/cpanel/save_settings"); ?>')
 
 		_data.ajaxForm({
 			url: '<?php echo cl_link("native_api/cpanel/save_settings"); ?>',

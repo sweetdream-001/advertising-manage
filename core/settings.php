@@ -17,7 +17,7 @@ $sql_db_host = "localhost";
 $sql_db_user = "tweetsp_talkus";
 
 # MySQL db Password
-$sql_db_pass = "NLP71lQhsJSe";
+$sql_db_pass = "Kiwm&@mkeIW212";
 
 # MySQL db Name
 $sql_db_name = "tweetsp_talk";

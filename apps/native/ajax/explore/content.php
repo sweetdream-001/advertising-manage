@@ -11,15 +11,17 @@
 
 require_once(cl_full_path("core/apps/explore/app_ctrl.php"));
 
+//exit("OK");
+
 if ($action == 'load_more') {
 	$data['err_code'] = "0";
     $data['status']   = 400;
     $offset           = fetch_or_get($_GET['offset'], 0);
+    $post_id          = fetch_or_get($_GET['post_id']);
     $type             = fetch_or_get($_GET['type'], null);
     $search_query     = fetch_or_get($_GET['q'], null);
     $query_result     = array();
     $html_arr         = array();
-
     if (is_posnum($offset)) {  	
     	if ($type == "htags") {
             if (not_empty($search_query)) {
@@ -46,7 +48,7 @@ if ($action == 'load_more') {
             }
 
             $query_result = cl_search_people($search_query, $offset, 30);
-
+            print_r($query_result);die;
             if (not_empty($query_result)) {
                 foreach ($query_result as $cl['li']) {
                     $html_arr[] = cl_template('explore/includes/li/people_li');
@@ -58,13 +60,13 @@ if ($action == 'load_more') {
         }
 
         else if($type == "posts") {
+           
             if (not_empty($search_query)) {
                 $search_query = cl_text_secure($search_query);
                 $search_query = cl_croptxt($search_query, 32);
             }
 
-            $query_result = cl_search_posts($search_query, $offset, 30);
-
+            $query_result = cl_search_posts($search_query, $offset, $post_id, 30);
             if (not_empty($query_result)) {
                 foreach ($query_result as $cl['li']) {
                     $html_arr[] = cl_template('timeline/post');

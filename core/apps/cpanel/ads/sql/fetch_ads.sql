@@ -15,6 +15,8 @@ SELECT a.`id`, a.`user_id`, a.`cover`, a.`target_url`, a.`views`, a.`clicks`, a.
 	INNER JOIN `<?php echo($data['t_users']); ?>` u ON a.`user_id` = u.`id`
 
 	WHERE a.`status` != 'orphan'
+	
+	AND a.`target` = 'ad'
 
 	AND u.`active` = '1'
 

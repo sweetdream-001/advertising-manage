@@ -74,6 +74,14 @@ function cl_ad_vue_preprocess($ad_data = array()) {
 	else {
 		$ad_data['audience'] = json($ad_data['audience']);
 	}
+	
+	if (empty($ad_data['og_data'])) {
+		$ad_data['yt'] = "";
+	}
+	else {
+		$og_data = json_decode($ad_data['og_data']);
+		$ad_data['yt'] = $og_data->og_data->url;
+	}
 
 	return $ad_data;
 }
@@ -105,6 +113,12 @@ function cl_get_user_ads($args = array()) {
 
 	if (cl_queryset($ads)) {
 		foreach ($ads as $row) {
+		    if (isset($row['og_data'])) {
+				if (!empty($row['og_data'])) {
+					$adYTData = json_decode($row['og_data']);
+					$row['og_data']       = $adYTData->og_data;
+				}
+			}
 			$row['edit']        = cl_link(cl_strf('ads/edit/%d', $row['id']));
 			$row['cover']       = cl_get_media($row['cover']);
 			$row['budget']      = cl_money($row['budget']);
