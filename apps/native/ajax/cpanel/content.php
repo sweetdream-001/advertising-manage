@@ -956,9 +956,139 @@ else if ($action == 'show_user_ad') {
     $ad_data          = cl_raw_ad_data($ad_id);
 	
     $data['data'] = $ad_data;
+	$data['url'] = $site_url;
 }
+
+else if ($action == 'update_admin_ad') {
+    $data['err_code'] = 0;
+    $data['status']   = 400;
+    // Get ad ID from POST
+    $ad_id = fetch_or_get($_POST['ad_id'], false);
+    
+    // Validate the ad ID
+    if (not_num($ad_id)) {
+        $data['err_code'] = 'invalid_ad_id';
+        $data['message']  = 'Ad ID is invalid.';
+        return;
+    }
+    
+    // Retrieve current ad data
+    $ad_data = cl_raw_ad_data($ad_id);
+    if (empty($ad_data)) {
+        $data['err_code'] = 'ad_not_found';
+        $data['message']  = 'Ad not found.';
+        return;
+    }
+    
+    // Build update array based on provided POST parameters
+    $update = array();
+    
+    $new_company = fetch_or_get($_POST['company'], false);
+    if (!empty($new_company)) {
+        $update['company'] = $new_company;
+    }
+
+	$new_target_url = fetch_or_get($_POST['target_url'], false);
+    if (!empty($new_target_url) && is_url($new_target_url)) {
+        $update['target_url'] = $new_target_url;
+    }
+    
+    $new_youtube_url = fetch_or_get($_POST['youtube_url'], null);
+    if (!empty($new_youtube_url)) {
+        // Validate YouTube URL with a regex
+        if (preg_match('/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/', $new_youtube_url)) {
+            $update['youtube_url'] = $new_youtube_url;
+            // Optionally, update related fields
+            $update['og_data']  = json_encode(youTubeToText($new_youtube_url));
+            $update['link_src'] = getYoutubeVideoIdS($new_youtube_url);
+        } else {
+            $data['err_code'] = 'invalid_youtube_url';
+            $data['message']  = 'YouTube URL is invalid.';
+            return;
+        }
+    }
+    
+    $new_description = fetch_or_get($_POST['description'], false);
+    if (!empty($new_description)) {
+        if (strlen($new_description) > 550) {
+            $data['err_code'] = 'invalid_description';
+            $data['message']  = 'Description is too long.';
+            return;
+        }
+        $update['description'] = $new_description;
+    }
+    
+    $new_cta = fetch_or_get($_POST['cta'], false);
+    if (!empty($new_cta)) {
+        if (strlen($new_cta) > 32) {
+            $data['err_code'] = 'invalid_cta';
+            $data['message']  = 'CTA is too long.';
+            return;
+        }
+        $update['cta'] = $new_cta;
+    }
+    
+    if (empty($update)) {
+        $data['err_code'] = 'no_update_fields';
+        $data['message']  = 'No valid fields provided to update.';
+    } else {
+        // Update the ad data
+        if (cl_update_ad_data($ad_id, $update)) {
+            $data['status']  = 200;
+            $data['message'] = 'Ad updated successfully.';
+            // Optionally return the updated ad data:
+            $data['data']    = cl_raw_ad_data($ad_id);
+        } else {
+            $data['err_code'] = 'update_failed';
+            $data['message']  = 'Failed to update ad.';
+        }
+	}
+}
+
+else if($action == 'upload_user_ad_cover') {
+    $data['err_code'] = 0;
+    $data['status']   = 400;
+    $ad_id            = fetch_or_get($_POST['ad_id'], false);
+    $ad_data          = cl_raw_ad_data($ad_id);
+    if (not_empty($ad_data)) {
+        if (not_empty($_FILES['cover']) && not_empty($_FILES['cover']['tmp_name'])) {
+            $file_info = array(
+                'file'      => $_FILES['cover']['tmp_name'],
+                'size'      => $_FILES['cover']['size'],
+                'name'      => $_FILES['cover']['name'],
+                'type'      => $_FILES['cover']['type'],
+                'file_type' => 'image',
+                'folder'    => 'covers',
+                'slug'      => 'cover',
+                'allowed'   => 'jpg,png,jpeg,gif'
+            );
+            
+            $file_upload = cl_upload($file_info);
+            
+            if (not_empty($file_upload['filename'])) {
+                // Optionally delete the previous cover image
+                cl_delete_media($ad_data['cover']);
+                
+                // Update the ad record with the new cover file name
+                cl_update_ad_data($ad_id, array(
+                    'cover' => $file_upload['filename']
+                ));
+                // If the ad was active, you may want to change its status
+                if ($ad_data['status'] == 'active') {
+                    cl_update_ad_data($ad_id, array(
+                        'status' => 'inactive'
+                    ));
+                }
+                
+                $data['status'] = 200;
+                $data['url']    = cl_get_media($file_upload['filename']);
+            }
+        }
+    }
+}
+
 else if($action == 'delete_user_ad') {
-	$data['err_code'] = 0;
+    $data['err_code'] = 0;
     $data['status']   = 400;
     $ad_id            = fetch_or_get($_POST['id'], false);
     $ad_data          = cl_raw_ad_data($ad_id);
@@ -966,10 +1096,11 @@ else if($action == 'delete_user_ad') {
     if (not_empty($ad_data)) {
         cl_delete_media($ad_data['cover']);
         cl_db_delete_item(T_ADS, array("id" => $ad_id));
-
         $data['status'] = 200;
     }
 }
+
+
 
 else if($action == 'approve_user_ad') {
 	$data['err_code'] = 0;

@@ -173,26 +173,12 @@
                                         </nav>
                                     </div>
                                 <?php endif; ?>
-
-
-                                <!--
-                                <?php if (not_empty($cl['user_ads'])) : ?>
-                                    <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="prev" href="javascript:void(0);" class="pagination-ctrls prev">
-                                        <i class="material-icons">chevron_left</i>
-                                    </a>
-                                    <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="next" href="javascript:void(0);" class="pagination-ctrls next">
-                                        <i class="material-icons">chevron_right</i>
-                                    </a>
-                                <?php endif; ?>
-                                -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        
+        </div>               
         <!-- Edit Modal -->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -201,25 +187,46 @@
                      <h5 class="modal-title text-center" id="editModalLabel">Edit Ads</h5>
                  </div>
                  <div class="modal-body">
-                    <form>
+                    <!-- Cover Image Section -->
+                    <div class="form-group text-center">
+                        <!-- Cover preview: if no cover exists, you can show a placeholder -->
+                        <img id="cover_preview" src="" alt="Cover Image" style="display: none; max-width: 100%; height: auto; margin-bottom: 10px;">
+                        <br>
+                        <button type="button" class="btn btn-secondary" id="changeCoverBtn">
+                            Cover Image
+                        </button>
+                        <!-- Hidden file input for cover -->
+                        <input type="file" id="cover_input" name="cover" style="display: none;" accept="image/*">
+                    </div>
+
+                    <form id="editAdForm">
+                        <input type="hidden" id="ad_id" name="ad_id" />
                         <div class="form-group">
-                            <label for="ad_cover">Title</label>
-                            <input type="text" class="form-control" id="ad_title" />
+                            <label for="ad_company">Company</label>
+                            <input type="text" class="form-control" id="ad_company" name="ad_company"/>
                         </div>
-                        <!-- <div class="form-group">
+                        <div class="form-group">
+                            <label for="ad_target_url">Target URL</label>
+                            <input type="text" class="form-control" id="ad_target_url" name="ad_target_url"/>
+                        </div>
+                        <div class="form-group">
                             <label for="ad_youtube_url">YouTube URL</label>
-                            <input type="url" class="form-control" id="ad_youtube_url" placeholder="https://www.youtube.com/watch?v=..." />
+                            <input type="text" class="form-control" id="ad_youtube_url" name="ad_youtube_url"/>
                         </div>
                         <div class="form-group">
-                            <label for="ad_click">Click Count</label>
-                            <input type="number" class="form-control" id="ad_click" placeholder="Enter click count" />
-                        </div> -->
+                            <label for="ad_description">Description</label>
+                            <textarea class="form-control" id="ad_description" name="ad_description" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="ad_cta">Call To Action (CTA)</label>
+                            <input type="text" class="form-control" id="ad_cta" name="ad_cta"/>
+                        </div>
                     </form>
-                 </div>
-                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveAdChanges">Save changes</button>
+                    <button type="button" class="btn btn-secondary" id="close-modal-button" data-dismiss="modal">Close</button>
+                </div>
              </div>
           </div>
         </div>

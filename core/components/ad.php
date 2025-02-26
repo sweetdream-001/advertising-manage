@@ -37,8 +37,8 @@ function cl_insert_ad_data($data = array()) {
 
 function cl_update_ad_data($ad_id = null, $data = array()) {
     global $db;
-    
-    if ((not_num($ad_id)) || (empty($data) || is_array($data) != true)) {
+
+	if ((not_num($ad_id)) || (empty($data) || is_array($data) != true)) {
         return false;
     } 
 

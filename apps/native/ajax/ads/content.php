@@ -15,6 +15,7 @@ if ($action == 'upload_ad_cover' && not_empty($cl['is_logged'])) {
     $ad_id            = fetch_or_get($_POST['ad_id'], false);
     $ad_data          = cl_raw_ad_data($ad_id);
 
+    // var_dump($ad_data);die();
     if (not_empty($ad_data) && $ad_data['user_id'] == $me['id']) {
 		if (not_empty($_FILES['cover']) && not_empty($_FILES['cover']['tmp_name'])) {
 	        $file_info      = array(

@@ -12,15 +12,24 @@
                         type: 'POST',
                         dataType: 'json',
                         data: {id: id},
-                        // beforeSend: function() {
-                        //     SMC_CPanel.waitme("show");
-                        // }
                     }).done(function(data) {
                         if (data.status != 200) {
                             SMC_CPanel.errorMSG();
                         }
-                        else {                            
-                            $("#ad_title").val(data.data.target_url);
+                        else {          
+                            $("#ad_id").val(data.data.id);                  
+                            $("#ad_company").val(data.data.company);
+                            $("#ad_target_url").val(data.data.target_url);
+                            $("#ad_youtube_url").val(data.data.link_src);
+                            $("#ad_description").val(data.data.description);
+                            $("#ad_cta").val(data.data.cta);
+                            
+                            if(data.data.cover){
+                                var url =   data.url+"/"+data.data.cover;
+                                $("#cover_preview").show();
+                                $("#cover_preview").attr("src",url);
+                            }
+
                             $("#editModal").modal("show");
                         }
                     }).always(function() {
@@ -147,7 +156,128 @@
             }
         });
 	});
-	
 
+    // <!-- jQuery to handle the close button click -->
+
+    $(document).ready(function($){
+        $("#close-modal-button").click(function(){
+            $("#editModal").modal("hide");
+        });
+    });
+
+    $(document).ready(function() {
+
+        // Trigger file input when "Change Cover Image" button is clicked
+        $("#changeCoverBtn").click(function(){
+            $("#cover_input").click();
+        });
+
+        // Update preview image when a file is selected
+        $("#cover_input").change(function(e) {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $("#cover_preview").attr('src', e.target.result).show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+        // When the Save changes button is clicked...
+        $("#saveAdChanges").click(function() {
+            // Get values from form fields
+            var ad_id       = $("#ad_id").val();
+            var company     = $("#ad_company").val();
+            var target_url  = $("#ad_target_url").val();
+            var youtube_url = $("#ad_youtube_url").val();
+            var description = $("#ad_description").val();
+            var cta         = $("#ad_cta").val();
+            var coverFile   = $("#cover_input")[0].files[0];
+
+            // Basic validation for required fields
+            if (!$.isNumeric(ad_id) || company.trim() === "" || target_url.trim() === "" || description.trim() === "" || cta.trim() === "") {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            // Function to update other ad details
+            function updateAd() {
+                $.ajax({
+                    url: '<?php echo cl_link("native_api/cpanel/update_admin_ad"); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        ad_id: ad_id,
+                        company: company,
+                        target_url: target_url,
+                        youtube_url: youtube_url,
+                        description: description,
+                        cta: cta
+                        // Optionally include cover URL if your backend requires it.
+                    },
+                    beforeSend: function() {
+                        SMC_CPanel.waitme("show");
+                    }
+                }).done(function(response) {
+                    if (response.status === 200) {
+                        alert("Ad updated successfully!");
+                        $("#editModal").modal("hide");
+                        window.location.reload();
+                    } else {
+                        SMC_CPanel.errorMSG("Failed to update ad. Please try again.");
+                    }
+                }).fail(function() {
+                    SMC_CPanel.errorMSG("An error occurred while updating the ad.");
+                }).always(function() {
+                    SMC_CPanel.waitme();
+                });
+            }
+
+            // If a new cover file is selected, upload it first.
+            if (coverFile) {
+                var formData = new FormData();
+                formData.append('ad_id', ad_id);
+                formData.append('cover', coverFile);
+
+                $.ajax({
+                    url: '<?php echo cl_link("native_api/cpanel/upload_user_ad_cover"); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        SMC_CPanel.waitme("show");
+                    }
+                })
+                .done(function(uploadResponse) {
+                    if (uploadResponse.status === 200) {
+                        // Proceed to update other fields after successful upload.
+                        
+                        updateAd();
+                    } else {
+                        SMC_CPanel.errorMSG(uploadResponse.message || "Failed to upload cover image.");
+                    }
+                })
+                .fail(function() {
+                    SMC_CPanel.errorMSG("An error occurred while uploading the cover image.");
+                })
+                .always(function() {
+                    SMC_CPanel.waitme();
+                });
+            } else {
+                // No new cover file; just update the other fields.
+                updateAd();
+            }
+        });
+
+        // Single event binding for modal close: reset the form and hide preview.
+        $("#close-modal-button").click(function(){
+            $("#editAdForm")[0].reset();
+            $("#cover_input").val('');
+            $("#cover_preview").hide();
+        });
+    });
 
 </script>
