@@ -954,6 +954,7 @@ else if ($action == 'show_user_ad') {
     $data['status']   = 200;
     $ad_id            = fetch_or_get($_POST['id'], false);
     $ad_data          = cl_raw_ad_data($ad_id);
+	
     $data['data'] = $ad_data;
 }
 else if($action == 'delete_user_ad') {
