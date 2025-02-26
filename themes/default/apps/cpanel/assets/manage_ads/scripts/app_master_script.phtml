@@ -16,18 +16,42 @@
                         if (data.status != 200) {
                             SMC_CPanel.errorMSG();
                         }
-                        else {          
+                        else {
+
+                            function extractYoutubeId(url) {
+                                var regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+                                var match = url.match(regex);
+                                return match ? match[1] : null;
+                            }
+                            var youtube_url;
+                                      
                             $("#ad_id").val(data.data.id);                  
                             $("#ad_company").val(data.data.company);
                             $("#ad_target_url").val(data.data.target_url);
-                            $("#ad_youtube_url").val(data.data.link_src);
                             $("#ad_description").val(data.data.description);
                             $("#ad_cta").val(data.data.cta);
                             
-                            if(data.data.cover){
-                                var url =   data.url+"/"+data.data.cover;
-                                $("#cover_preview").show();
-                                $("#cover_preview").attr("src",url);
+                            if (data.data.link_src) {
+                                // Build the YouTube embed URL (using the embed format)
+                                var youtubeEmbedUrl = "https://www.youtube.com/embed/" + data.data.link_src;
+                                // Set the YouTube iframe source and show the container
+                                $("#youtube_iframe").attr("src", youtubeEmbedUrl);
+                                $("#youtube_container").show();
+                                // Hide the cover image preview
+                                $("#cover_preview").hide();
+                            } else if (data.data.cover) {
+                                // Build the image URL
+                                var imgUrl = data.url + "/" + data.data.cover;
+                                // Set the cover image source and show it
+                                $("#cover_preview").attr("src", imgUrl).show();
+                                // Hide the YouTube container
+                                $("#youtube_container").hide();
+                                // Optional: clear any previous YouTube URL
+                                $("#youtube_iframe").attr("src", "");
+                            } else {
+                                // If neither media is available, hide both containers (or set a placeholder as needed)
+                                $("#cover_preview").hide();
+                                $("#youtube_container").hide();
                             }
 
                             $("#editModal").modal("show");
@@ -254,7 +278,7 @@
                 .done(function(uploadResponse) {
                     if (uploadResponse.status === 200) {
                         // Proceed to update other fields after successful upload.
-                        
+                        console.log("Cover image uploaded successfully.");
                         updateAd();
                     } else {
                         SMC_CPanel.errorMSG(uploadResponse.message || "Failed to upload cover image.");

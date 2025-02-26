@@ -191,6 +191,13 @@
                     <div class="form-group text-center">
                         <!-- Cover preview: if no cover exists, you can show a placeholder -->
                         <img id="cover_preview" src="" alt="Cover Image" style="display: none; max-width: 100%; height: auto; margin-bottom: 10px;">
+                        <!-- YouTube video container: initially hidden -->
+                        <div id="youtube_container" style="display: none; margin-bottom: 10px;">
+                            <iframe id="youtube_iframe" style="display: none; max-width: 100%; height: auto;" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
                         <br>
                         <button type="button" class="btn btn-secondary" id="changeCoverBtn">
                             Cover Image

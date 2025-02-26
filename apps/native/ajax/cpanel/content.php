@@ -1100,8 +1100,6 @@ else if($action == 'delete_user_ad') {
     }
 }
 
-
-
 else if($action == 'approve_user_ad') {
 	$data['err_code'] = 0;
     $data['status']   = 400;
