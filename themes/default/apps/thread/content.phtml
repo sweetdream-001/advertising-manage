@@ -174,7 +174,7 @@ body main.main-content-container div.main-content-container-inner div.timeline-c
 											<?php
 											$catId = isset($cl['thread_data']['post']['category_id']) ? $cl['thread_data']['post']['category_id'] : '';
 											// DB Connection
-											$mysqli = new mysqli('localhost', 'root', '', 'tweetsp_talk');
+											$mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
 											$db = new MysqliDb($mysqli);
 
 											$catName = $db->rawQuery("SELECT `name` FROM cl_categories WHERE id = $catId");

@@ -14,14 +14,14 @@
 $sql_db_host = "localhost";
 
 # MySQL db User
-$sql_db_user = "root";
+$sql_db_user = "tweetsp_talkus";
 
 # MySQL db Password
-$sql_db_pass = "";
+$sql_db_pass = "Kiwm&@mkeIW212";
 
 # MySQL db Name
 $sql_db_name = "tweetsp_talk";
 
 # Site URL
-$site_url    = "https://localhost/test"; // E.g (https://www.mysite.com)
+$site_url    = "https://p-tweets.com/test_talk"; // E.g (https://www.mysite.com)
 ?>
