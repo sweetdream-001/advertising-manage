@@ -85,13 +85,17 @@
 }
 </style>
             <script>
-                document.querySelector('.lozad-media').addEventListener('click', function() {
-                    const iframe = document.querySelector('iframe');
-                    iframe.style.pointerEvents = 'auto';
-                });
+                try {
+                    document.querySelector('.lozad-media').addEventListener('click', function() {
+                        const iframe = document.querySelector('iframe');
+                        iframe.style.pointerEvents = 'auto';
+                    });
+                } catch(e){
+                    console.log(e);
+                }
             </script>  
             
-          <div class="og-image pt-prevent-click musa" style="text-align: center; position: relative;"> 
+          <div class="og-image pt-prevent-click musa" style="text-align: center; position: relative; background-image:url('https://img.youtube.com/vi/<?php echo $cl['li']['link_src']; ?>/hqdefault.jpg');background-size: contain;"> 
             <div class="lozad-media pt-post-view-count pt-prevent-click fbox-media2" pt-post-id="<?php echo $cl['li']['id']; ?>"
                    data-btn='<?php echo cl_template('timeline/likes'); ?>' 
                    data-fancybox="gallery" 
@@ -107,13 +111,24 @@
                          data-src="https://img.youtube.com/vi/<?php echo $cl['li']['link_src']; ?>/hqdefault.jpg" 
                          alt="Video" pt-post-id="<?php echo $cl['li']['id']; ?>"> 
                     <iframe 
-                        src="https://www.youtube.com/embed/<?php echo $cl['li']['link_src'] ?>?autoplay=1&mute=1" 
+                        src="https://www.youtube.com/embed/<?php echo $cl['li']['link_src'] ?>?autoplay=1&mute=1&loop=1&playlist=<?php echo $cl['li']['link_src'] ?>" 
                         style="width:100%; height:300px; pointer-events: none;" 
-                        title="YouTube video player" frameborder="0" 
+                        title="YouTube video player" 
+                        frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         class="pt-prevent-click pt-post-view-count" 
-                        allowfullscreen autoplay> 
-                    </iframe> 
+                        allowfullscreen> 
+                    </iframe>
+
+                  <!--  <iframe-->
+                  <!--  class="youtube-ad-video pt-prevent-click pt-post-view-count"-->
+                  <!--  data-src="https://www.youtube.com/embed/<?php echo $cl['li']['link_src'] ?>?enablejsapi=1"-->
+                  <!--  frameborder="0"-->
+                  <!--  style="width:100%; height:300px; pointer-events: none;"-->
+                  <!--  loading="lazy"-->
+                  <!--  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"-->
+                  <!--  allowfullscreen autoplay-->
+                  <!--></iframe>-->
                     <div class="og-icon pt-prevent-click" pt-post-id="<?php echo $cl['li']['id']; ?>"> 
                         <span class="pt-prevent-click pt-post-view-count" 
                               pt-post-id="<?php echo $cl['li']['id']; ?>" 

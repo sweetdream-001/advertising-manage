@@ -20,6 +20,9 @@
         </div>
     </td>
     <td>
+        <?php echo $cl['li']['company']; ?>
+    </td>
+    <td>
     	<a target="_blank" href="<?php echo($cl['li']['target_url']); ?>">
             <?php echo($cl['li']['domain']); ?>   
         </a>
@@ -67,12 +70,20 @@
     	</time>
     </td>
     <td>
+    	<time>
+    		<?php echo($cl['li']['timeleft'] . "  days left"); ?>
+    	</time>
+    </td>
+    <td>
     	<div class="dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">more_horiz</i>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a target="_blank" href="<?php echo($cl['li']['ad_url']); ?>" class="dropdown-item">
+                <a href="javascript:void(0);" class="dropdown-item" onclick="SMC_CPanel.PS.edit('<?php echo($cl['li']['id']); ?>');">
+                    <?php echo cl_translate('Edit'); ?>
+                </a>
+                    <a target="_blank" href="<?php echo($cl['li']['ad_url']); ?>" class="dropdown-item">
                 <?php echo cl_translate('Show'); ?>
                 </a>
                 <?php if ($cl['li']['approved'] == "N"): ?>

@@ -920,7 +920,6 @@ else if ($action == 'get_user_ads') {
 	$data['status']   = 404;
 	$data['err_code'] = 0;
 	$html_arr         = array();
-
 	if ($offset_to == 'up' && $offset_lt) {
 		$user_ads       = cl_admin_get_user_ads(array(
 			'limit'     => 10,
@@ -950,7 +949,13 @@ else if ($action == 'get_user_ads') {
 		$data['html']   = implode('', $html_arr);
 	}
 }
-
+else if ($action == 'show_user_ad') {
+	$data['err_code'] = 0;
+    $data['status']   = 200;
+    $ad_id            = fetch_or_get($_POST['id'], false);
+    $ad_data          = cl_raw_ad_data($ad_id);
+    $data['data'] = $ad_data;
+}
 else if($action == 'delete_user_ad') {
 	$data['err_code'] = 0;
     $data['status']   = 400;
@@ -2437,6 +2442,34 @@ else if ($action == 'get_sub_categories') {
     // }
     
     $data['data']    = $categories;
+}
+else if ($action == 'get_posts_comments_admin') {
+    $data['status'] = 200;
+
+    // Set the page and limit values (you can adjust these dynamically via user input)
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Default to page 1 if not provided
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // Default to 10 posts per page if not provided
+    $offset = ($page - 1) * $limit;
+    $postId = $_GET['post_id'];
+
+    // Modify the query to add LIMIT and OFFSET for pagination
+    $posts = $db->rawQuery("
+        SELECT cl_publications.*, cl_pubmedia.*,cl_users.username,cl_users.avatar
+        FROM cl_publications
+        LEFT JOIN cl_pubmedia ON cl_publications.id = cl_pubmedia.pub_id
+        INNER JOIN cl_users ON cl_publications.user_id = cl_users.id
+        WHERE cl_publications.thread_id = $postId
+        ORDER BY cl_publications.id DESC;
+    ");
+    
+    $data['data'] = $posts;
+
+    $data['pagination'] = [
+        'current_page' => 1,
+        'total_pages' => 1,
+        'total_posts' => 100,
+        'limit' => 0,
+    ];
 }
 else if ($action == 'get_all_posts_admin') {
     $data['status'] = 200;

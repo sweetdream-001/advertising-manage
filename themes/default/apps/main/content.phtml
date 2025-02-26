@@ -22,6 +22,7 @@ define('APP_NAME','https://p-tweets.com/talk/');
 	<meta name="keywords" content="<?php echo fetch_or_get($cl['page_kw'], $cl["config"]["keywords"]); ?>" />
 	<meta name="image" content="<?php echo fetch_or_get($cl['page_img'], $cl["config"]["site_logo"]); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
 	<?php if ($cl["pn"] == 'thread'): ?>
 		<meta property="og:type" content="article" />
@@ -52,6 +53,8 @@ define('APP_NAME','https://p-tweets.com/talk/');
 		href="{%config theme_url%}/statics/css/main.styles.css?v={%config version%}&v={%config version%}">
 	<link rel="stylesheet"
 		href="{%config theme_url%}/statics/css/master.styles.css?v={%config version%}&v={%config version%}">
+		
+	<link rel="stylesheet" href="{%config theme_url%}/statics/css/custom.styles.css?v=0.021">
 
 
 	<?php if ($cl["curr_lang"]["lang_data"]["is_rtl"] == "Y"): ?>
@@ -88,6 +91,9 @@ define('APP_NAME','https://p-tweets.com/talk/');
 	<script src="{%config theme_url%}/statics/js/libs/txt.autoresize.min.js"></script>
 	<script src="{%config theme_url%}/statics/js/libs/audio-recorder.js"></script>
 	<script src="{%config theme_url%}/statics/js/libs/plyr/plyr-code/plyr.min.js"></script>
+	
+	<script src="{%config theme_url%}/statics/js/libs/plyr/lite-youtube/lite-yt-embed.js"></script>
+	<link rel="stylesheet" href="{%config theme_url%}/statics/js/libs/plyr/lite-youtube/lite-yt-embed.css?v={%config version%}">
 
 	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 

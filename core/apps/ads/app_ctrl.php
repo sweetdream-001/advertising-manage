@@ -152,7 +152,7 @@ function cl_get_user_ads($args = array()) {
 }
 function cl_get_total_ads($type = 'active') {
 	global $db, $cl, $me;
-
+	
 	if ($type == 'active') {
 		$db = $db->where('status', 'active');
 		$db = $db->where('approved', 'Y');

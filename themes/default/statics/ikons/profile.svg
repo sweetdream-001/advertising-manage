@@ -1,0 +1,15 @@
+<svg 
+    version="1.1" 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 400 400"
+    width="24" height="24"
+>
+    <!-- Background Circle -->
+    <circle cx="200" cy="200" r="200" fill="#CBD2D9" />
+
+    <!-- Head -->
+    <circle cx="200" cy="140" r="80" fill="#6B7280" />
+
+    <!-- Shoulders/Body -->
+    <path d="M100 320 C120 230, 280 230, 300 320 Z" fill="#6B7280" />
+</svg>

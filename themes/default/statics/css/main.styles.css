@@ -1412,7 +1412,7 @@ align-items: center;
   body span.uname {
     overflow-wrap: break-word;
     min-width: 0px;
-    max-width: 65px;
+    /* max-width: 65px; */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1429,7 +1429,7 @@ align-items: center;
   div.lp span.posted-time {
     overflow-wrap: break-word;
     min-width: 0px;
-    max-width: 60px;
+    /*max-width: 60px;*/
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -34827,7 +34827,6 @@ body.cl-app-wallet
   line-height: 20px;
   color: var(--smc-main-text-color-2);
 }
-
 /* ===================================================== */
 
 /*# sourceMappingURL=master.styles.css.map */

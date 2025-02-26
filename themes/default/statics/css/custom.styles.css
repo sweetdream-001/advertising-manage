@@ -1,0 +1,4 @@
+::-webkit-scrollbar {
+    width: 10px !important;
+    background: var(--cl-primary-border-color);
+}

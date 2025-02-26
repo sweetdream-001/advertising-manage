@@ -10,7 +10,7 @@
 @*************************************************************************@
 */
       
-SELECT a.`id`, a.`user_id`, a.`cover`, a.`company`, a.`target_url`, a.`views`, a.`clicks`, a.`budget`, a.`link_src`, a.`og_data`, a.`likes_count`, a.`reposts_count`, a.`replys_count`, a.`time`,  u.`avatar`, a.`description`, a.`cta`, u.`username`, u.`verified`, CONCAT(u.`fname`) AS name FROM `<?php echo($data['t_ads']); ?>` a
+SELECT a.`id`, a.`user_id`, a.`cover`, a.`company`, a.`target_url`, a.`timeleft`, a.`views`, a.`clicks`, a.`budget`, a.`link_src`, a.`og_data`, a.`likes_count`, a.`reposts_count`, a.`replys_count`, a.`time`,  u.`avatar`, a.`description`, a.`cta`, u.`username`, u.`verified`, CONCAT(u.`fname`) AS name FROM `<?php echo($data['t_ads']); ?>` a
 	 
 	INNER JOIN `<?php echo($data['t_users']); ?>` u ON a.`user_id` = u.`id`
 

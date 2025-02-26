@@ -1,3 +1,37 @@
+<style>
+    @media screen and (max-width: 1200px) {
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-advert div.post-list-advert__header div.post-list-advert__sponsor{
+        flex: auto !important;
+        margin-left: 20px !important;
+    }
+}
+
+@media (max-width: 1199.98px) {
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-advert div.post-list-advert__header div.post-list-advert__sponsor{        font-size: 11px;
+            margin-right: auto;
+        }
+}
+
+@media (max-width: 1199.98px) {
+    body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-advert div.post-list-advert__header div.post-list-advert__time {
+        font-size: 11px;
+        margin-right: auto;
+    }
+}
+
+
+
+body main.main-content-container div.main-content-container-inner div.timeline-container-wrapper div.timeline-container-inner div.timeline-container div.timeline-posts-container div.timeline-posts-ls div.post-list-item div.post-list-item-content div.publication-data div.publication-data-inner div.publisher-info div.lp{
+    flex: none !important;
+}
+
+@media (max-width: 1024px) {
+    body.cl-app-ad_thread .user-name-holder, body.cl-app-thread .user-name-holder {
+        margin-bottom: 0px !important;
+    }
+}
+
+</style>
 <div class="timeline-container" data-app="thread">
 	<div class="timeline-header" data-el="tl-header">
 		<div class="lp" style="display: inline-flex;">
@@ -140,7 +174,7 @@
 											<?php
 											$catId = isset($cl['thread_data']['post']['category_id']) ? $cl['thread_data']['post']['category_id'] : '';
 											// DB Connection
-											$mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
+											$mysqli = new mysqli('localhost', 'root', '', 'tweetsp_talk');
 											$db = new MysqliDb($mysqli);
 
 											$catName = $db->rawQuery("SELECT `name` FROM cl_categories WHERE id = $catId");
@@ -680,6 +714,43 @@
 		</div>
 	</div>
 	<?php echo cl_template('thread/scripts/app_master_script'); ?>
+	<style>
+	    body.cl-app-ad_thread .publisher-info, body.cl-app-thread .publisher-info {
+	        margin-top: 0px !important;
+	    }
+	</style>
+	<hr>
+    	<div class="timeline-posts-container">
+        	<div class="timeline-posts-ls szHomeTimeline" data-an="entry-list">
+        
+        
+        		<?php
+        		// echo "<pre>";
+        		// print_r($cl["feed"]);
+        		foreach ($cl["feed"] as $cl['li']): ?>
+                    <?
+                    // echo json_encode($cl['li']);die;
+                    ?>
+        			<?php echo cl_template('timeline/post'); ?>
+        
+        
+        		<?php
+        	 	endforeach;
+        	 
+        		 ?>
+        
+        
+        
+        	</div>
+        	<?php if (count($cl["feed"]) == 4000 || count($cl["feed"]) > 4000): ?>
+        		<div class="timeline-data-loader">
+        			<button class="btn btn-custom main-outline lg szLoadMoreBtn" ss="<?= count($cl["feed"]); ?>" onclick="szLoadMoreHome();" data-an="load-more">
+        				<?php echo cl_translate("Show more"); ?>
+        			</button>
+        		</div>
+        	<?php endif; ?>
+        </div>
+
 </div>
 
 <style>
@@ -711,4 +782,15 @@
 		border-width: 1px;
 		border-style: solid;
 	}
+	@media only screen and (max-width: 1200px) {
+    .main-content-container-inner {
+        display: grid !important;
+        grid-template-columns: auto !important;
+        grid-template-rows: auto !important;
+        gap: 10px !important;
+    }
+    .timeline-container-inner{
+            margin-top: 50px;
+    }
+}
 </style>

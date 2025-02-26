@@ -1,3 +1,6 @@
+<style>
+
+</style>
 <div class="timeline-container" data-app="thread">
 	<div class="timeline-header" data-el="tl-header">
 		<div class="lp" style="display: inline-flex;">
@@ -111,11 +114,11 @@
 									</div>
 								</div>
 								<div class="rp">
-									<div class="flex-row">
+									<div class="flex-row" style="margin-left: -7px;">
 										<a class="uname" href="<?php echo ($cl['thread_data']['post']['owner']['url']); ?>"
 											data-uinfo-lbox="<?php echo ($cl['thread_data']['post']['user_id']); ?>"
 											data-toggle="popover" data-placement="bottom">
-											<b style="display: flex;">
+											<b style="display: flex;     flex: 1;">
 												<span class="user-name-holder">
 													<?php echo ($cl['thread_data']['post']['owner']['name']); ?>
 												</span>
@@ -123,7 +126,7 @@
 													echo ('verified-badge');
 												} ?>" style="display:inline-block; margin-left:10px;"></p>
 											</b>
-											<span>@
+											<span style="margin-left: -12px;">@
 												<?php echo ($cl['thread_data']['post']['owner']['username']); ?>
 											</span>
 										</a>

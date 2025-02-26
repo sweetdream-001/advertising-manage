@@ -140,7 +140,7 @@ $catId = isset($cl['li']['cat_id']) ? $cl['li']['cat_id'] : '';
 $catName = isset($cl['li']['cat_name']) ? $cl['li']['cat_name'] : '';
 ?>
 
-								<a href="?cat_id=<?php echo ($catId); ?>"> <?php echo ($catName); ?> </a>	- <?php echo ($cl['li']['time']); ?>
+								<a href="/talk/?cat_id=<?php echo ($catId); ?>"> <?php echo ($catName); ?> </a>	- <?php echo ($cl['li']['time']); ?>
 							</time>
 							<?php if (not_empty($cl['li']['edited'])): ?>
 								<span
@@ -500,14 +500,23 @@ echo $string;
 					<?php elseif ($cl['li']['type'] == 'yt' && not_empty($cl['li']['media'])): ?>
 					<div class="publication-yt pt-prevent-click" style="margin-top:15px;">
 						<div class="yt-content" style="height: 25rem;">
-							<iframe
-							src="https://www.youtube.com/embed/<?php echo $cl['li']['media'][0]['src']; ?>"
-							style="width:100%; height:100%;"
-							title="YouTube video player" frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-							class="pt-prevent-click pt-post-view-count"
-							allowfullscreen>
-							</iframe>
+							<!--<iframe-->
+							<!--src="https://www.youtube.com/embed/<?php echo $cl['li']['media'][0]['src']; ?>"-->
+							<!--style="width:100%; height:100%;"-->
+							<!--title="YouTube video player" frameborder="0"-->
+							<!--allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"-->
+							<!--class="pt-prevent-click pt-post-view-count"-->
+							<!--allowfullscreen>-->
+							<!--</iframe>-->
+							 <iframe
+                                class="youtube-video pt-prevent-click pt-post-view-count"
+                                style="width:100%; height:100%;"
+                                data-src="https://www.youtube.com/embed/<?php echo $cl['li']['media'][0]['src']; ?>?enablejsapi=1"
+                                frameborder="0"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen
+                              ></iframe>
 						</div>
 					</div>
 					<?php elseif ($cl['li']['type'] == 'document' && not_empty($cl['li']['media'])): ?>
@@ -576,7 +585,7 @@ echo $string;
 						<?php if (not_empty($cl['li']['og_data']['video_embed'])): ?>
 						<div class="publication-og-data pt-prevent-click" pt-post-id="<?php echo $cl['li']['id']; ?>">
 							<div class="publication-og-data-inner embeded-iframe">
-								<div class="og-image pt-prevent-click">
+								<div class="og-image pt-prevent-click" style="background-image:url('https://img.youtube.com/vi/<?php echo $cl['li']['link_src']; ?>/hqdefault.jpg');">
 									<div class="lozad-media pt-post-view-count pt-prevent-click" pt-post-id="<?php echo $cl['li']['id']; ?>">
 										<a href="<?php echo ($cl['li']['og_data']['video_embed']); ?>" class="fbox-media2"
 											data-btn='<?php echo cl_template('timeline/likes'); ?>' data-fancybox="gallery"

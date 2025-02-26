@@ -1610,6 +1610,7 @@ else if($action == 'follow') {
 }
 
 else if($action == 'delete_post') {
+    
     if (empty($cl["is_logged"])) {
         $data['status'] = 400;
         $data['error']  = 'Invalid access token';

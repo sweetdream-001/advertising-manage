@@ -36,10 +36,12 @@
 				data: {
 					submitting: false,
 					posts: [],
+					post_comments: [],
 					categories: [],
 					editObj: [],
 					files: null,
                     currentPage: 1,
+                    limit: 10,
                     perPage: 10, // Items per page
                     totalPages: 0,
                     videoLink: null,
@@ -87,10 +89,16 @@
                         '<a href="$1" target="_blank" style="color: blue; text-decoration: underline;">$1</a>'
                       );
                     },
+                    changeLimit(event) {
+                      const limit = event.target.value; // Get the selected value
+                      this.limit = limit;
+                      this.getAllPosts()
+                    },
                     getAllPosts(page = 1) {
                         this.loading = true;
                         this.currentPage = page;
-                        $.get(`https://p-tweets.com/talk/native_api/cpanel/get_all_posts_admin?page=${page}`, (data) => {
+                        const limit = this.limit;
+                        $.get(`https://p-tweets.com/talk/native_api/cpanel/get_all_posts_admin?page=${page}&limit=${limit}`, (data) => {
                             
                           this.posts = data.data;
                           this.totalPages = data.pagination.total_pages;
@@ -99,6 +107,20 @@
                           this.loading = false;
                           
                           window.scrollTo({ top: 0, behavior: 'smooth' });
+                          
+                        }).fail((error) => {
+                          console.error(error);
+                          this.loading = false;
+                        });
+                      },
+                      getPostComments(id) {
+                        this.loading = true;
+                        this.currentPage = 1;
+                        const limit = this.limit;
+                        $.get(`https://p-tweets.com/talk/native_api/cpanel/get_posts_comments_admin?post_id=${id}`, (data) => {
+                            console.log(data);
+                            this.loading = false;
+                            this.post_comments = data.data;
                           
                         }).fail((error) => {
                           console.error(error);
@@ -155,19 +177,20 @@
         //                 const formattedDate = date.toLocaleString('en-US', options);
         //                 return formattedDate;
 				    // },
-editUserPost(obj) {
-    this.editObj = obj; // Assign the object to your data property
-
-    // Set the modal input field value
-    $('.id').val(this.editObj.id);
-
-    // Open the modal programmatically
-    $('#editModal').modal('show'); // For Bootstrap 4
-
-    // If using Bootstrap 5, replace with:
-    // const modal = new bootstrap.Modal(document.getElementById('editModal'));
-    // modal.show();
-},
+                    editUserPost(obj) {
+                        this.editObj = obj; // Assign the object to your data property
+                    
+                        // Set the modal input field value
+                        $('.id').val(this.editObj.id);
+                    
+                        // Open the modal programmatically
+                        $('#editModal').modal('show'); // For Bootstrap 4
+                        
+                        this.getPostComments(this.editObj.id);
+                        // If using Bootstrap 5, replace with:
+                        // const modal = new bootstrap.Modal(document.getElementById('editModal'));
+                        // modal.show();
+                    },
 				    deleteUserPost(obj){
 				        let confirm = window.confirm('are you sure you want to delete this post?');
 				        let that = this;

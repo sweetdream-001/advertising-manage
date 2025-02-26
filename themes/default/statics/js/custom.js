@@ -83,3 +83,77 @@ $(document).ready(function() {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const videoFrames = document.querySelectorAll(".youtube-video");
+  const videoAdFrames = document.querySelectorAll(".youtube-ad-video");
+
+  // Initialize Intersection Observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const iframe = entry.target;
+      try {
+        // Ensure iframe is lazy-loaded
+        if (entry.isIntersecting) {
+          if (!iframe.src) {
+            iframe.src = `${iframe.dataset.src}?enablejsapi=1&autoplay=1&loop=1&playlist=${iframe.dataset.videoId}`;
+          }
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"playVideo","args":""}',
+            "*"
+          );
+        } else {
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"pauseVideo","args":""}',
+            "*"
+          );
+        }
+      } catch (e) {
+        console.error("Error interacting with iframe:", e);
+      }
+    });
+  });
+
+  setTimeout(() => {
+    // Observe each video frame
+    videoFrames.forEach((iframe) => observer.observe(iframe));
+    videoAdFrames.forEach((iframe) => observer.observe(iframe));
+  }, 3000);
+});
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const videoFrames = document.querySelectorAll(".youtube-video");
+//   const videoAdFrames = document.querySelectorAll(".youtube-ad-video");
+
+//   // Initialize Intersection Observer
+//   const observer = new IntersectionObserver((entries) => {
+//       entries.forEach((entry) => {
+//       console.log(entry, 'entry')
+//       const iframe = entry.target;
+//         try {
+//           // Ensure iframe is lazy-loaded
+//           if (entry.isIntersecting) {
+//               if (!iframe.src) {
+//               iframe.src = iframe.dataset.src;
+//               }
+//               iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+//           } else {
+//               iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+//           }
+//           console.log("workked"); 
+//             console.log(iframe); 
+//         } catch(e){
+//             console.log("failed"); 
+//             console.log(iframe); 
+//             console.log(e)
+//         }
+//       });
+//   });
+
+// setTimeout(() => {
+//     console.log('calling ob')
+//   // Observe each video frame
+//   videoFrames.forEach((iframe) => observer.observe(iframe));
+//   videoAdFrames.forEach((iframe) => observer.observe(iframe));
+// }, 3000)
+// });

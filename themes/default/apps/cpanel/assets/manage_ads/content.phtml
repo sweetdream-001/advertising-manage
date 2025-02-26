@@ -23,7 +23,56 @@
                             <h5>
                                 <?php echo cl_translate('Manage user ads'); ?>
                             </h5>
+                            
+                                <form method="get" action="">
+                                         <label>Show : </label>
+                                    <select onchange="this.form.submit()" name="limit" class="mt-4" style="width:55px; padding:4px;">
+                                        <option <?= (isset($_GET['limit']) && $_GET['limit'] == 10) ? 'selected' : ''; ?> value="10">10</option>
+                                        <option <?= (isset($_GET['limit']) && $_GET['limit'] == 25) ? 'selected' : ''; ?> value="25">25</option>
+                                        <option <?= (isset($_GET['limit']) && $_GET['limit'] == 50) ? 'selected' : ''; ?> value="50">50</option>
+                                        <option <?= (isset($_GET['limit']) && $_GET['limit'] == 100) ? 'selected' : ''; ?> value="100">100</option>
+                                    </select>
+                                </form>
+
+                            
+                                <?php if (!empty($cl['user_ads'])): ?>
+                                    <div class="pagination-container mt-4">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                <!-- Previous Button -->
+                                                <?php if ($cl['current_page'] > 1): ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=<?php echo $cl['current_page'] - 1; ?>">
+                                                            &laquo; <?php echo cl_translate('Previous'); ?>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                
+                                                <!-- Page Numbers -->
+                                                <?php for ($i = 1; $i <= $cl['total_pages']; $i++): ?>
+                                                    <li class="page-item <?php echo ($cl['current_page'] == $i) ? 'active' : ''; ?>">
+                                                        <a class="page-link" href="?page=<?php echo $i; ?>">
+                                                            <?php echo $i; ?>
+                                                        </a>
+                                                    </li>
+                                                <?php endfor; ?>
+                                
+                                                <!-- Next Button -->
+                                                <?php if ($cl['current_page'] < $cl['total_pages']): ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=<?php echo $cl['current_page'] + 1; ?>">
+                                                            <?php echo cl_translate('Next'); ?> &raquo;
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                <?php endif; ?>
+                            
                         </div>
+                        
+                        
 
 
                         <div class="body">
@@ -34,6 +83,9 @@
                                             <th>ID</th>
                                             <th>
                                                 <?php echo cl_translate('Username'); ?>
+                                            </th>
+                                             <th>
+                                                AdTitle
                                             </th>
                                             <th>
                                                 Target URL
@@ -55,6 +107,9 @@
                                             </th>
                                             <th>
                                                 <?php echo cl_translate('Date'); ?>
+                                            </th>
+                                            <th>
+                                                <?php echo cl_translate('Time Left'); ?>
                                             </th>
                                             <th>
                                                 <?php echo cl_translate('Action'); ?>
@@ -83,6 +138,44 @@
                                         <?php endif; ?>
                                     </tbody>
                                 </table>
+                                
+                                <?php if (!empty($cl['user_ads'])): ?>
+                                    <div class="pagination-container mt-2">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                                <!-- Previous Button -->
+                                                <?php if ($cl['current_page'] > 1): ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=<?php echo $cl['current_page'] - 1; ?>">
+                                                            &laquo; <?php echo cl_translate('Previous'); ?>
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                
+                                                <!-- Page Numbers -->
+                                                <?php for ($i = 1; $i <= $cl['total_pages']; $i++): ?>
+                                                    <li class="page-item <?php echo ($cl['current_page'] == $i) ? 'active' : ''; ?>">
+                                                        <a class="page-link" href="?page=<?php echo $i; ?>">
+                                                            <?php echo $i; ?>
+                                                        </a>
+                                                    </li>
+                                                <?php endfor; ?>
+                                
+                                                <!-- Next Button -->
+                                                <?php if ($cl['current_page'] < $cl['total_pages']): ?>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=<?php echo $cl['current_page'] + 1; ?>">
+                                                            <?php echo cl_translate('Next'); ?> &raquo;
+                                                        </a>
+                                                    </li>
+                                                <?php endif; ?>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                <?php endif; ?>
+
+
+                                <!--
                                 <?php if (not_empty($cl['user_ads'])) : ?>
                                     <a onclick="SMC_CPanel.PS.paginate(this);" data-dir="prev" href="javascript:void(0);" class="pagination-ctrls prev">
                                         <i class="material-icons">chevron_left</i>
@@ -91,10 +184,44 @@
                                         <i class="material-icons">chevron_right</i>
                                     </a>
                                 <?php endif; ?>
+                                -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title text-center" id="editModalLabel">Edit Ads</h5>
+                 </div>
+                 <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="ad_cover">Title</label>
+                            <input type="text" class="form-control" id="ad_title" />
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="ad_youtube_url">YouTube URL</label>
+                            <input type="url" class="form-control" id="ad_youtube_url" placeholder="https://www.youtube.com/watch?v=..." />
+                        </div>
+                        <div class="form-group">
+                            <label for="ad_click">Click Count</label>
+                            <input type="number" class="form-control" id="ad_click" placeholder="Enter click count" />
+                        </div> -->
+                    </form>
+                 </div>
+                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 </div>
+             </div>
+          </div>
+        </div>
+        
         <?php echo cl_template('cpanel/assets/manage_ads/scripts/app_master_script'); ?>

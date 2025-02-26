@@ -1,266 +1,342 @@
-<style>.rmv {
-  cursor: pointer;
-  color: #fff;
-  border-radius: 30px;
-  border: 1px solid #fff;
-  display: inline-block;
-  background: rgba(255, 0, 0, 1);
-  margin: -5px -10px;
-  position: relative;
+<style>
+  .rmv {
+    cursor: pointer;
+    color: #fff;
+    border-radius: 30px;
+    border: 1px solid #fff;
+    display: inline-block;
+    background: rgba(255, 0, 0, 1);
+    margin: -5px -10px;
+    position: relative;
     top: 0;
-   
-}</style>
+  }
+</style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f8fa;
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+    }
+    .main-container {
+        width: auto;
+        margin-top: 40px;
+        height: 320px;
+        overflow: scroll;
+    }
+    .tweet-container {
+        background-color: #e8f5fd;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        align-items: flex-start;
+        border: 1px solid #cfd9de;
+        margin-bottom: 10px;
+        justify-content: space-between;
+    }
+    .profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    .tweet-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .user-info {
+        font-weight: bold;
+        font-size: 14px;
+        color: #14171a;
+    }
+    .username {
+        color: #657786;
+        font-weight: normal;
+        margin-left: 5px;
+    }
+    .time {
+        color: #657786;
+        margin-left: 5px;
+    }
+    .replying-to {
+        color: #657786;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+    .replying-to a {
+        color: #1da1f2;
+        text-decoration: none;
+    }
+    .tweet-text {
+        font-size: 14px;
+        color: #14171a;
+    }
+    .actions {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        font-size: 13px;
+    }
+    .actions a {
+        color: #1da1f2;
+        text-decoration: none;
+        margin-bottom: 3px;
+    }
+    .actions a:hover {
+        text-decoration: underline;
+    }
+</style>
 <div class="cp-app-container" data-app="about_settings">
-   <div class="container-fluid">
-      <div class="page-title">
-         <div class="row">
-            <div class="col-6">
-               <h3>Posts Page </h3>
-            </div>
-            <div class="col-6">
-               <ol class="breadcrumb">
-                  <li class="breadcrumb-item"> <a href="<?php echo cl_link('admin_panel'); ?>">                                    <i data-feather="home"></i></a></li>
-                  <li class="breadcrumb-item">    <?php echo cl_translate('Categories'); ?></li>
-               </ol>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="container-fluid vueCat">
+  <div class="container-fluid">
+    <div class="page-title">
       <div class="row">
-         <div class="col-sm-12">
-            <div class="card"  style="padding: 15px;">
-               <div class="card-header">
-                  <h5>
-                     Posts
-                  </h5>
-               </div>
-               
-                 <div class="row justify-content-center mt-3">
-                      <nav v-if="totalPages > 1">
-                        <ul class="pagination">
-                          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
-                          </li>
-                          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
-                            <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
-                          </li>
-                          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
-                          </li>
-                        </ul>
-                      </nav>
-                    </div>
-               
-               <div class="row mb-3 mt-4">
-                   <div class="col-md-3">
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control" placeholder="Enter username to search" id="username" v-model='search.username'>
-                   </div>
-                   
-                   <div class="col-md-3">
-                        <label for="text">Text:</label>
-                        <input type="text" class="form-control" placeholder="Enter text to search" id="text"  v-model='search.text'>
-                   </div>
-                   
-                   <div class="col-md-3 pt-4">
-                      <button type="button" class="btn btn-primary" v-on:click="searchPost()">Search <i class="fa fa-spinner fa-spin" v-if="searchLdr"></i> </button>
-                      <button type="button" class="btn btn-primary" v-on:click="getAllPosts()">Clear Filter <i class="fa fa-spinner fa-spin" v-if="clearsearch"></i> </button>
-                   </div>
-               </div>
-               <div class="row">
-                   
-                   
-                   
-                  <table class="table table-bordered">
-                    
-                     <thead>
-                        <tr>
-                           <th>#</th>
-                           <th>Update</th>
-                           <th>Image</th>
-                           <th>Username</th>
-                           <th>Category</th>
-                           <th>Date</th>
-                           <th>views</th>
-                           <th>Action</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr v-if="loading">
-                           <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
-                        </tr>
-                        <tr v-for="(cat, id) in posts">
-                           <td style="width:60px; max-width: 60px !important;"                                         data-toggle="modal" 
-                                        data-target="#editModal" 
-                                        @mouseover="editUserPost(cat)">{{ (currentPage - 1) * perPage + id + 1  }}</td>
-                           <td style=
-                           "max-width:260px !important;
+        <div class="col-6">
+          <h3>Posts Page </h3>
+        </div>
+        <div class="col-6">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="
+								<?php echo cl_link('admin_panel'); ?>">
+                <i data-feather="home"></i>
+              </a>
+            </li>
+            <li class="breadcrumb-item"> <?php echo cl_translate('Categories'); ?> </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid vueCat">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card" style="padding: 15px;">
+          <div class="card-header">
+            <h5> Posts </h5>
+          </div>
+          <div class="row justify-content-center mt-3">
+            <nav v-if="totalPages > 1">
+              <ul class="pagination">
+                <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                  <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                  <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                  <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div>
+            <span>Show : </span>
+            <select v-on:change="changeLimit" class="mt-4">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+          <div class="row mb-3 mt-4">
+            <div class="col-md-3">
+              <label for="username">Username:</label>
+              <input type="text" class="form-control" placeholder="Enter username to search" id="username" v-model='search.username'>
+            </div>
+            <div class="col-md-3">
+              <label for="text">Text:</label>
+              <input type="text" class="form-control" placeholder="Enter text to search" id="text" v-model='search.text'>
+            </div>
+            <div class="col-md-3 pt-4">
+              <button type="button" class="btn btn-primary" v-on:click="searchPost()">Search <i class="fa fa-spinner fa-spin" v-if="searchLdr"></i>
+              </button>
+              <button type="button" class="btn btn-primary" v-on:click="getAllPosts()">Clear Filter <i class="fa fa-spinner fa-spin" v-if="clearsearch"></i>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Update</th>
+                  <th>Image</th>
+                  <th>Username</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>views</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="loading">
+                  <td colspan="3">
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </td>
+                </tr>
+                <tr v-for="(cat, id) in posts">
+                  <!--<td style="width:60px; max-width: 60px !important;" data-toggle="modal" data-target="#editModal" @mouseover="editUserPost(cat)">{{ (currentPage - 1) * perPage + id + 1  }}</td>-->
+                  <td style="width:60px; max-width: 60px !important;" data-toggle="modal" data-target="#editModal">{{ (currentPage - 1) * perPage + id + 1  }}</td>
+                  <td style="max-width:260px !important;
                             overflow: hidden;
                             text-overflow: ellipsis;
                            " :title="cat.text">
-                                        <span v-html="formattedText(cat.text)"></span>
-                               </td>
-                            <td style="max-width:150px !important; width: 150px !important;">
-                                                                        <div v-if="cat.src && cat.type !== 'yt'">
-                                            <img :src="'https://p-tweets.com/talk/' + cat.src" style="width: 80px" v-if="cat.src && cat.type !== 'yt'">
-                                        </div>
-                                    
-                                    <div v-else-if="cat.type === 'yt'">
-                                        <iframe :src="'https://www.youtube.com/embed/' + cat.src" style="width:80px; height:80px;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-        								        </iframe>
-                                    </div>   
-                                    
-                                    
-                                    
-                                     <!-- CHECK IF TEXT WITH LINK 7 APRIL  -->
-                                     <div v-if="cat.og_data.image && cat.type === 'text' && cat.og_data.title !== ' - YouTube' && cat.og_data.type != 'video.other'">
-                                                                         <img :src="getImageUrl(cat.og_data.image)" style="width: 80px" v-if="cat.og_data.image && cat.type === 'text' && cat.og_data.title !== ' - YouTube' && cat.og_data.type != 'video.other'">
-
-                                     </div>
-                                <div v-if="cat.type === 'text' && cat.link_src">
-                                    <iframe :src="'https://www.youtube.com/embed/' + cat.link_src" style="width:80px; height:80px;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-                                    </iframe>
-                                 </div>
-                              <!-- CHECK IF TEXT WITH LINK 7 APRIL  -->
-                            </td>   
-                           <td style="max-width:10px !important; width:10px !important;">{{cat.username}}</td>
-                           <td style="max-width:10px !important; width:10px !important;">{{cat.category_name}}</td>
-   
-                           <td style="width: 114px !important; max-width: 114px !important;">{{formatDate(cat.time)}}</td>
-                            <td style="width:5px !important; max-width:5px !important;">{{cat.views}}</td>
-                           <td  style="max-width:10px !important; width:10px !important;">
-                              <a href="Javascript:;" data-toggle="modal" data-target="#editModal" v-on:click="editUserPost(cat)">Edit</a> | 
-                              <a href="Javascript:;" v-on:click="deleteUserPost(cat)">Delete</a>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-                  
-                  <div class="row justify-content-center mt-3">
-                      <nav v-if="totalPages > 1">
-                        <ul class="pagination">
-                          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
-                          </li>
-                          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
-                            <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
-                          </li>
-                          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                            <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
-                          </li>
-                        </ul>
-                      </nav>
+                    <span v-html="formattedText(cat.text)"></span>
+                  </td>
+                  <td style="max-width:150px !important; width: 150px !important;">
+                    <div v-if="cat.src && cat.type !== 'yt'">
+                      <img :src="'https://p-tweets.com/talk/' + cat.src" style="width: 80px" v-if="cat.src && cat.type !== 'yt'">
                     </div>
-
-               </div>
-            </div>
-         </div>
-      </div>
-      
-       <!-- Edit Modal -->
-      <div class="modal" id="editModal">
-          <div class="modal-dialog">
-            <div class="modal-content">
-        
-              <!-- Modal Header -->
-              <div class="modal-header">
-                <h4 class="modal-title">Edit Post</h4>
-                <button v-on:click="closeModal()" type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-        
-              <!-- Modal body -->
-              <div class="modal-body">
-                  <form enctype="multipart/form-data" method="post" action="https://p-tweets.com/talk/native_api/cpanel/update_post">
-                    <input type="text" name="id" style="display:none" class="id">
-                  <div class="form-group">
-                    <label for="text">Text:</label>
-                    <textarea name="text" v-model='editObj.text' class="form-control" placeholder="Enter text" cols="10" style="background: transparent"></textarea>
-                  </div>
-                  
-                  <div class="form-group mt-4">
-                    <label for="text">Category:</label>
-                    <select class="form-control" v-model='editObj.category_id' name="category_id">
-                        <option v-for="(cat, id) in categories" :value=cat.id>{{cat.name}}</option>  
-                    </select>
-                  </div>
-                  
-                  <!--<div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">-->
-                  <!--  <label for="text">Photo:</label>-->
-                  <!--  <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;"> -->
-                  <!--</div>-->
-                  <div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">
-                        <label for="text">Photo:</label>
-                        <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;">
-                     </div>
-                  
-                  <!-- <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">-->
-                  <!--  <label for="text">Youtube Link:</label>-->
-                  <!--  <input type="text" :value="'https://www.youtube.com/watch?v=' + editObj.src" class="form-control" name="yt"> -->
-                  <!--</div>-->
-                  
-                  <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">
-                        <label for="text">Youtube Link:</label>
-                        <input type="text" :value="'https://www.youtube.com/watch?v=' + editObj.src" class="form-control" name="yt_old" v-on:keyup="videoLinkText" readonly>
-                     </div>
-                      <!-- IF TEXT AND LINK EXIST  7 APRIL -->
-                     <div class="form-group mt-4" v-if="editObj.link_src!='' && editObj.link_src!=null   && editObj.type == 'text'">
-                        <label for="text">Video:</label>
-                        <iframe :src="'https://www.youtube.com/embed/' + editObj.link_src" style="width:100%; height:100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-                        </iframe>
-                     </div>
-
-                                          <!-- IF TEXT AND LINK EXIST  7 APRIL -->
-                  <!--<div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">-->
-                  <!--  <label for="text">Image:</label>-->
-                  <!--  <input type="file" v-model='editObj.image' name="image">-->
-                  <!--</div>-->
-                  
-              <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">
-                        <label for="text">Video:</label>
-                        <iframe :src="'https://www.youtube.com/embed/' + editObj.src" style="width:100%; height:100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-                        </iframe>
-                     </div>
-                  
-                  <!-- 4 april-->
-                  
-                  <div class="form-group mt-4" v-if="!files">
-                        <label for="text">New Youtube Video Link:</label>
-                        <div id="thumbnail"></div>
-                        <input class="form-control" type="text" v-on:keyup="videoLinkText" accept="audio/*|video/*|image/*" :value="videoLink" name="yt" >
-                     </div>
-                     
-                     
-                      <img v-if="imagePreview"  v-show="files && !videoLink" id="imagePreview" :src="files" style="max-width: 250px; height:auto;">
-                     <input type="button" v-if="files && !videoLink" class="rmv" @click="removeVideo" value="x" />
-
-                     <div class="form-group mt-4">
-                     <input type="file" value="files" name="image" v-if="!videoLink" id="fileInput"  class="file_multi_video" accept="audio/*|video/*|image/*" @change="previewFiles">
-                     </div>
-                  <!-- 4 april -->
-                  
-                  <div class="form-group mt-4" v-if="editObj.src && editObj.type!='yt'">
-                    <label for="text">Delete:</label>
-                    <input style="left: auto; opacity: 1;" type="checkbox" name="deleteVideo" :value="editObj.id">
-                  </div>
-                  
-                  <div class="form-group mt-4" v-if="editObj.link_src && editObj.type == 'text'">
-                        <label for="text">Delete:</label>
-                        <input style="left: auto; opacity: 1;" type="checkbox" name="deleteVideo" :value="editObj.id">
-                     </div>
-                  
-                  <button type="submit" class="btn btn-primary mt-4" >Update</button>
-                  </form>
-              </div>
-        
-              <!-- Modal footer -->
-              <!--<div class="modal-footer">-->
-              <!--  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
-              <!--</div>-->
-        
+                    <div v-else-if="cat.type === 'yt'">
+                      <iframe :src="'https://www.youtube.com/embed/' + cat.src" style="width:80px; height:80px;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+                    </div>
+                    <!-- CHECK IF TEXT WITH LINK 7 APRIL  -->
+                    <div v-if="cat.og_data.image && cat.type === 'text' && cat.og_data.title !== ' - YouTube' && cat.og_data.type != 'video.other'">
+                      <img :src="getImageUrl(cat.og_data.image)" style="width: 80px" v-if="cat.og_data.image && cat.type === 'text' && cat.og_data.title !== ' - YouTube' && cat.og_data.type != 'video.other'">
+                    </div>
+                    <div v-if="cat.type === 'text' && cat.link_src">
+                      <iframe :src="'https://www.youtube.com/embed/' + cat.link_src" style="width:80px; height:80px;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+                    </div>
+                    <!-- CHECK IF TEXT WITH LINK 7 APRIL  -->
+                  </td>
+                  <td style="max-width:10px !important; width:10px !important;">{{cat.username}}</td>
+                  <td style="max-width:10px !important; width:10px !important;">{{cat.category_name}}</td>
+                  <td style="width: 114px !important; max-width: 114px !important;">{{formatDate(cat.time)}}</td>
+                  <td style="width:5px !important; max-width:5px !important;">{{cat.views}}</td>
+                  <td style="max-width:10px !important; width:10px !important;">
+                    <a href="Javascript:;" data-toggle="modal" data-target="#editModal" v-on:click="editUserPost(cat)">Edit</a> | <a href="Javascript:;" v-on:click="deleteUserPost(cat)">Delete</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row justify-content-center mt-3">
+              <nav v-if="totalPages > 1">
+                <ul class="pagination">
+                  <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                    <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
+                  </li>
+                  <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                    <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
+                  </li>
+                  <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
-   </div>
-</div>
-<?php echo cl_template('cpanel/assets/posts_pages/scripts/app_master_script'); ?>
+      </div>
+    </div>
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Post</h4>
+            <button v-on:click="closeModal()" type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form enctype="multipart/form-data" method="post" action="https://p-tweets.com/talk/native_api/cpanel/update_post">
+              <input type="text" name="id" style="display:none" class="id">
+              <div class="form-group">
+                <label for="text">Text:</label>
+                <textarea name="text" v-model='editObj.text' class="form-control" placeholder="Enter text" cols="10" style="background: transparent"></textarea>
+              </div>
+              <div class="form-group mt-4">
+                <label for="text">Category:</label>
+                <select class="form-control" v-model='editObj.category_id' name="category_id">
+                  <option v-for="(cat, id) in categories" :value=cat.id>{{cat.name}}</option>
+                </select>
+              </div>
+              <!--<div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">-->
+              <!--  <label for="text">Photo:</label>-->
+              <!--  <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;"> -->
+              <!--</div>-->
+              <div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">
+                <label for="text">Photo:</label>
+                <img :src="'https://p-tweets.com/talk/'+editObj.src" style="width: 250px;">
+              </div>
+              <!-- <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">-->
+              <!--  <label for="text">Youtube Link:</label>-->
+              <!--  <input type="text" :value="'https://www.youtube.com/watch?v=' + editObj.src" class="form-control" name="yt"> -->
+              <!--</div>-->
+              <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">
+                <label for="text">Youtube Link:</label>
+                <input type="text" :value="'https://www.youtube.com/watch?v=' + editObj.src" class="form-control" name="yt_old" v-on:keyup="videoLinkText" readonly>
+              </div>
+              <!-- IF TEXT AND LINK EXIST  7 APRIL -->
+              <div class="form-group mt-4" v-if="editObj.link_src!='' && editObj.link_src!=null   && editObj.type == 'text'">
+                <label for="text">Video:</label>
+                <iframe :src="'https://www.youtube.com/embed/' + editObj.link_src" style="width:100%; height:100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+              </div>
+              <!-- IF TEXT AND LINK EXIST  7 APRIL -->
+              <!--<div class="form-group mt-4" v-if="editObj.src && editObj.type !== 'yt'">-->
+              <!--  <label for="text">Image:</label>-->
+              <!--  <input type="file" v-model='editObj.image' name="image">-->
+              <!--</div>-->
+              <div class="form-group mt-4" v-if="editObj.src && editObj.type == 'yt'">
+                <label for="text">Video:</label>
+                <iframe :src="'https://www.youtube.com/embed/' + editObj.src" style="width:100%; height:100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+              </div>
+              <!-- 4 april-->
+              <div class="form-group mt-4" v-if="!files">
+                <label for="text">New Youtube Video Link:</label>
+                <div id="thumbnail"></div>
+                <input class="form-control" type="text" v-on:keyup="videoLinkText" accept="audio/*|video/*|image/*" :value="videoLink" name="yt">
+              </div>
+              <img v-if="imagePreview" v-show="files && !videoLink" id="imagePreview" :src="files" style="max-width: 250px; height:auto;">
+              <input type="button" v-if="files && !videoLink" class="rmv" @click="removeVideo" value="x" />
+              <div class="form-group mt-4">
+                <input type="file" value="files" name="image" v-if="!videoLink" id="fileInput" class="file_multi_video" accept="audio/*|video/*|image/*" @change="previewFiles">
+              </div>
+              <!-- 4 april -->
+              <div class="form-group mt-4" v-if="editObj.src && editObj.type!='yt'">
+                <label for="text">Delete:</label>
+                <input style="left: auto; opacity: 1;" type="checkbox" name="deleteVideo" :value="editObj.id">
+              </div>
+              <div class="form-group mt-4" v-if="editObj.link_src && editObj.type == 'text'">
+                <label for="text">Delete:</label>
+                <input style="left: auto; opacity: 1;" type="checkbox" name="deleteVideo" :value="editObj.id">
+              </div>
+              <button type="submit" class="btn btn-primary mt-4">Update</button>
+            </form>
+            
+            <div class="main-container">
+                <!-- Loop starts here -->
+                <div class="tweet-container" v-for="(comment, commentId) in post_comments">
+                    <img :src="'https://p-tweets.com/talk/'+comment.avatar" alt="Profile Picture" class="profile-pic">
+                    <div class="tweet-content">
+                        <div class="user-info">
+                            {{comment.username}} <span class="username">@{{comment.username}}</span>
+                        </div>
+                        <div class="replying-to">In response to your <a href="#">post</a></div>
+                        <div class="tweet-text">
+                            {{comment.text}}
+                            <img :src="comment.src" style="width: 80px" v-if="comment.type == 'gif'">
+                            <img :src="'https://p-tweets.com/talk/'+comment.src" style="width: 80px" v-if="comment.type == 'image'">
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <a href="#">Edit</a>
+                        <a href="#">Delete</a>
+                    </div>
+                </div>
+        
+                <!-- Loop ends here -->
+            </div>
+    
+          </div>
+          <!-- Modal footer -->
+          <!--<div class="modal-footer">-->
+          <!--  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+          <!--</div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <?php echo cl_template('cpanel/assets/posts_pages/scripts/app_master_script'); ?>

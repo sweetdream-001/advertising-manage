@@ -2,9 +2,33 @@
 	"use strict";
 
 	$(document).ready(function($) {
-
+	    
         SMC_CPanel.PS = Object({
             app: $('[data-app="user-ads"]'),
+            edit: function(id = false) {
+                if ($.isNumeric(id) && id) {
+                    $.ajax({
+                        url: '<?php echo cl_link("native_api/cpanel/show_user_ad"); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: id},
+                        // beforeSend: function() {
+                        //     SMC_CPanel.waitme("show");
+                        // }
+                    }).done(function(data) {
+                        if (data.status != 200) {
+                            SMC_CPanel.errorMSG();
+                        }
+                        else {                            
+                            $("#ad_title").val(data.data.target_url);
+                            $("#editModal").modal("show");
+                        }
+                    }).always(function() {
+                        $("div.confirm-actions-modal").modal("hide");
+                        SMC_CPanel.waitme();
+                    });
+                }
+            },
             paginate: function(e = false) {
 
                 var _self = $(e);
@@ -123,4 +147,7 @@
             }
         });
 	});
+	
+
+
 </script>

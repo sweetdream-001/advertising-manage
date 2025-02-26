@@ -5355,13 +5355,12 @@ body
   div.post-list-advert
   div.post-list-advert__header
   div.post-list-advert__sponsor {
-  text-align: left;
-  width: 73%;
-  margin-left: 20px;
-vertical-align: top;
-line-height: 20px;
-display: flex;
-font-size: 13px;
+      text-align: left;
+    line-height: 20px;
+    display: flex;
+    flex: 1;
+    font-size: 13px;
+    margin-left: 12px;
 }
 
 body
@@ -5402,6 +5401,8 @@ body
   color: var(--cl-secondary-text-color);
   font-size: 13px;
   line-height: 1;
+  flex: 2;
+  margin-right: 80px;
 }
 
 @media (max-width: 1199.98px) {
@@ -22159,6 +22160,19 @@ body.cl-app-wallet
     div.account-wallet__card
     div.wallet-balance {
     padding: 20px;
+    z-index : 0!important;
+  }
+  .account-wallet__card-title
+  {
+      margin-top : 20px !important;
+  }
+  .timeline-hashtags-ls
+  {
+      margin-top : 38px !important;
+  }
+  body.cl-app-stat_pages main.main-content-container div.main-content-container-inner div.timeline-container div.stat-page-content
+  {
+      margin-top : 31px !important;
   }
 }
 

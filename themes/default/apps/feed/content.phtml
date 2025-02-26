@@ -2,8 +2,8 @@
 <?php
 
 $servername = "localhost";
-$username = "tweetsp_talkus";
-$password = "Kiwm&@mkeIW212";
+$username = "root";
+$password = "";
 $dbname = "tweetsp_talk";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -88,7 +88,7 @@ $conn->close();
 ">
 				    <?php
 				    		if(isset($_GET['cat_id'])) {
-						        $mysqli = new mysqli('localhost', 'tweetsp_talkus', 'Kiwm&@mkeIW212', 'tweetsp_talk');
+						        $mysqli = new mysqli('localhost', 'root', '', 'tweetsp_talk');
 								$db = new MysqliDb($mysqli);
 							    $categories = $db->rawQuery("SELECT * FROM cl_categories WHERE `id`='".$_GET['cat_id']."'");
 						        echo $categories[0]['name'];
